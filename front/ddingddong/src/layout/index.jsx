@@ -22,7 +22,7 @@ const a = 3;
 const LayOut = (props) => {
   const { children } = props;
   return (
-    <Box>
+    <Box style={{ background: 'rgba(0, 0, 0, 0.05)' }}>
       <Header></Header>
       <Container maxwidth="fluid" style={{ marginTop: 10 }}>
         <Grid container spacing={1}>
