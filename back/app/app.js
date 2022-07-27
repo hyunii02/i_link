@@ -1,18 +1,19 @@
 const express = require("express");
-// const bodyParser = require("body-parser");
-// const cors = require("cors");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 const PORT = process.env.PORT || 3001;
 
+// Routes
+const indexRouter = require('./routes/index.routes');
 const userRouter = require('./routes/users.routes');
+
 const app = express();
 
-// app.use(cors());
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.send('Root');
-});
+app.use('/', indexRouter);
 app.use('/users', userRouter);
 
 app.listen(PORT, () => {
