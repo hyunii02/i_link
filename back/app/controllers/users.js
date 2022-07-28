@@ -1,5 +1,5 @@
-const db = require("../config/db.config");
-const users = require("../models/users.models");
+const db = require("../config/db");
+const users = require("../models/users");
 
 // 비밀번호 암호화
 const bcrypt = require("bcrypt");
