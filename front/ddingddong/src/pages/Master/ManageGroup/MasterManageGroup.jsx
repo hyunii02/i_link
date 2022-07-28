@@ -1,8 +1,8 @@
-import LayOut from '../../../layout/';
-import GroupManagement from '../../../components/Group/GroupManagement/';
+import LayOut from '../../../layout';
+import GroupManagement from '../../../components/Group/GroupManagement';
 import { Box, Grid } from '@mui/material';
 
-const ManageGroup = () => {
+const MasterManageGroup = () => {
   return (
     <LayOut>
       <Box style={{ borderRadius: '20px', background: 'white' }}>
@@ -12,4 +12,4 @@ const ManageGroup = () => {
   );
 };
 
-export default ManageGroup;
+export default MasterManageGroup;
