@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Box, Container, Grid, Paper } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Header from './Header';
-import SideBar from './Sidebar';
+import Header from './header';
+import SideBar from './sidebar';
 import { Outlet } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
