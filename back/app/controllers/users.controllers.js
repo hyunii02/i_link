@@ -54,8 +54,14 @@ exports.user_regist_post = function (req, res) {
 // 로그인
 // [get]  /users/login
 exports.user_login_get = function (req, res) { 
-  console.log("[get] /users/login (로그인 페이지)");
-  res.send("[get] /users/login (로그인 페이지)");
+  if (req.session.logined) {
+    console.log("로그인 되어 있음");
+    res.redirect("/");
+  }
+  else {
+    console.log("[get] /users/login (로그인 페이지)");
+    res.send("[get] /users/login (로그인 페이지)");
+  }
 };
 
 // [post] /users/login
@@ -77,8 +83,9 @@ exports.user_login_post = function (req, res) {
         if (response) { // 로그인 성공
           console.log("로그인 성공");
 
-          req.session.user = result;
-          console.log(req.session.user);
+          req.session.logined = true;
+          req.session.user_no = result[0].user_no;
+          console.log(req.session.user_no);
 
           res.redirect("/");
         } else { // 로그인 실패
@@ -114,10 +121,10 @@ exports.user_logout_get = function (req, res) {
 // [get] /users/:user_id
 exports.user_detail_get = function (req, res) { 
   
-  const userNo = 1;
+  const userNo = req.session.user_no;
   const sqlSELECT = "SELECT user_type, user_email, user_name, user_phone, user_profile_url, class_no, preschool_no FROM users WHERE user_no = ?";
   
-  db.query(sqlSELECT, [userNo], (err, result) => {
+  db.query(sqlSELECT, userNo, (err, result) => {
     if (err) console.log(err);
     else {
       res.send(result);
@@ -130,9 +137,10 @@ exports.user_detail_get = function (req, res) {
 // 회원 정보 수정
 // [get] /users/:user_id/edit
 exports.user_update_get = function (req, res) { 
-  console.log("[get] /users/logout (회원 정보 수정 페이지)");
-  res.send("[get] /users/logout");
+  console.log("[get] /users/:user_id/edit (회원 정보 수정 페이지)");
+  res.send("[get] /users/:user_id/edit");
 };
+
 // [put] /users/:user_id
 exports.user_update_put = function (req, res, next) { 
 
@@ -143,4 +151,14 @@ exports.user_update_put = function (req, res, next) {
 // [delete] /users/:user_id
 exports.user_remove_delete = function (req, res, next) { 
 
+  const userNo = req.session.user_no;
+  const sqlDELETE = "DELETE FROM users WHERE user_no = ?;";
+
+  db.query(sqlDELETE, userNo, (err, result) => {
+    if (err) console.log(err);
+    else {
+      console.log("회원 탈퇴");
+      res.redirect("/users/logout");
+    }
+  });
 };
