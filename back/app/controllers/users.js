@@ -1,53 +1,37 @@
-const db = require("../config/db");
-const users = require("../models/users");
+const db = require("../models");
+const User = db.users;
 
 // 비밀번호 암호화
 const bcrypt = require("bcrypt");
-const saltRounds = 10;
-
-// [get]  /users -> DB 연결 확인 위한 더미 페이지
-exports.user_get = function (req, res) {
-  console.log("[get] /users")
-  const sqlSELECT = "SELECT * FROM users;";
-  db.query(sqlSELECT, (error, result) => {
-    if (error) console.log(error);
-    else res.send(result);
-  });
-}
 
 // 회원가입
-// [get]  /users/register
-exports.user_regist_get = function (req, res) {
-  console.log("[get] /users/register (회원가입 페이지)")
-  res.send("[get] /users/register (회원가입 페이지)");
-}
-
 // [post] /users/register
 exports.user_regist_post = function (req, res) {
 
 // *** Content-Type: application/json
 
-  // 임시로 몇몇 값만 가져와서 테스트
-  const userType = req.body.type;
-  const userEmail = req.body.email;
-  const userPassword = req.body.password;
-  const userName = req.body.name;
+  // User
+  const user = {
+    user_type: req.body.userType,
+    user_email: req.body.userEmail,
+    user_pw: req.body.userPw,
+    user_name: req.body.userName,
+    user_phone: req.body.userPhone ? req.body.userPhone : null,
+    user_profile_url: req.body.userProfileUrl ? req.body.userProfileUrl : null,
+    class_no: req.body.classNo ? req.body.classNo : null,
+    preschool_no: req.body.preschoolNo ? req.body.preschoolNo : null,
+  }
 
-  bcrypt.hash(userPassword, saltRounds, (err, hash) => {
-
-    if (err) console.log(err);
-
-    const sqlINSERT = "INSERT INTO users(user_type, user_email, user_pw, user_name) VALUES (?, ?, ?, ?);";
-
-    db.query(sqlINSERT, [userType, userEmail, hash, userName], (error, result) => {
-      if (error) console.log(error);
-      else {
-        console.log("회원 가입 완료");
-        res.redirect("/users/login");
-      }
+  User.create(user)
+    .then(data => {
+      console.log("회원가입 완료");
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || "회원가입 실패"
+      });
     });
-
-  });
 }
 
 
@@ -65,38 +49,33 @@ exports.user_login_get = function (req, res) {
 };
 
 // [post] /users/login
-exports.user_login_post = function (req, res) {
+exports.user_login_post = async function (req, res) {
 
-  const userEmail = req.body.email;
-  const userPassword = req.body.password;
+  const userEmail = req.body.userEmail;
+  const userPassword = req.body.userPw;
 
-  const sqlSELECT = "SELECT * FROM users WHERE user_email = ?;";
-  
-  db.query(sqlSELECT, userEmail, (err, result) => {
+  // 입력된 이메일로 사용자 찾기
+  const user = await User.findOne({ where: { user_email: userEmail } });
 
-    if (err) {
-      res.send({ err: err });
+  if (user) { // 아이디가 있는 경우
+
+    // 입력 비밀번호와 DB에 저장된 비밀번호 비교
+    const password_valid = await bcrypt.compare(userPassword, user.user_pw);
+
+    if (password_valid) { // 로그인 성공
+      req.session.logined = true; // 로그인 상태
+      req.session.userNo = user.user_no; // 로그인 유저
+
+      console.log("로그인 유저 번호: " + req.session.userNo);
+      res.redirect("/");
     }
-
-    if (result.length > 0) { // 아이디가 있는 경우
-      bcrypt.compare(userPassword, result[0].user_pw, (error, response) => {
-        if (response) { // 로그인 성공
-          console.log("로그인 성공");
-
-          req.session.logined = true;
-          req.session.user_no = result[0].user_no;
-          console.log(req.session.user_no);
-
-          res.redirect("/");
-        } else { // 로그인 실패
-          res.send({ message: "비밀번호 다시 확인" });
-        }
-      });
-    } else { // 아이디가 없는 경우
-      res.send({ message: "존재하지 않는 사용자" });
+    else { // 로그인 실패
+      res.send({ message: "비밀번호 오류" });
     }
-  });
-  
+  }
+  else { // 아이디가 없는 경우
+    res.send({ message: "존재하지 않는 사용자" });
+  }
 };
 
 
@@ -106,59 +85,90 @@ exports.user_logout_get = function (req, res) {
   console.log("[get] /users/logout (로그아웃)");
 
   // 쿠키 삭제
-  console.log("logout - clear cookie");
-  res.clearCookie('userid');
-  res.clearCookie('username');
+  res.clearCookie("connect.sid");
 
   // 세션 종료
-  console.log("logout - destroy session");
   req.session.destroy();
   res.redirect("/");
 };
 
 
 // 회원 정보 조회
-// [get] /users/:user_id
-exports.user_detail_get = function (req, res) { 
-  
-  const userNo = req.session.user_no;
-  const sqlSELECT = "SELECT user_type, user_email, user_name, user_phone, user_profile_url, class_no, preschool_no FROM users WHERE user_no = ?";
-  
-  db.query(sqlSELECT, userNo, (err, result) => {
-    if (err) console.log(err);
-    else {
-      res.send(result);
-    };
-  });
-  
+// [get] /users/:user_no
+exports.user_detail_get = async function (req, res) { 
+
+  const userNo = req.params.user_no;
+
+  // pk로 사용자 정보 조회
+  const user = await User.findByPk(userNo);
+
+  if (user === null) {
+    console.log("사용자를 찾을 수 없습니다.");
+  } else {
+    console.log(user);
+    res.send(user);
+  }
 };
 
 
 // 회원 정보 수정
-// [get] /users/:user_id/edit
-exports.user_update_get = function (req, res) { 
-  console.log("[get] /users/:user_id/edit (회원 정보 수정 페이지)");
-  res.send("[get] /users/:user_id/edit");
-};
-
-// [put] /users/:user_id
+// [put] /users/:user_no
 exports.user_update_put = function (req, res, next) { 
 
+  const userNo = req.params.user_no;
+
+  // User
+  const user = {
+    user_type: req.body.userType,
+    user_email: req.body.userEmail,
+    user_pw: req.body.userPw,
+    user_name: req.body.userName,
+    user_phone: req.body.userPhone ? req.body.userPhone : null,
+    user_profile_url: req.body.userProfileUrl ? req.body.userProfileUrl : null,
+    class_no: req.body.classNo ? req.body.classNo : null,
+    preschool_no: req.body.preschoolNo ? req.body.preschoolNo : null,
+  }
+  
+  User.update(user, { where: { user_no: userNo }, individualHooks: true })
+    .then(result => {
+      if (result[0] === 1) { // 수정 완료
+        console.log("회원 수정 완료");
+        res.redirect("/users/logout"); // 재로그인
+      } else { // 수정 실패
+        res.send({
+          message: "회원을 찾을 수 없거나 데이터가 데이터가 비어있음"
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "회원 수정 실패"
+      });
+    });
 };
 
 
 // 회원 정보 삭제
-// [delete] /users/:user_id
-exports.user_remove_delete = function (req, res, next) { 
+// [delete] /users/:user_no
+exports.user_remove_delete = function (req, res, next) {
 
-  const userNo = req.session.user_no;
-  const sqlDELETE = "DELETE FROM users WHERE user_no = ?;";
+  const userNo = req.params.user_no;
 
-  db.query(sqlDELETE, userNo, (err, result) => {
-    if (err) console.log(err);
-    else {
-      console.log("회원 탈퇴");
-      res.redirect("/users/logout");
-    }
-  });
-};
+  User.destroy({ where: { user_no: userNo } })
+    .then(result => {
+      if (result == 1) { // 삭제 완료
+        res.send({
+          message: "회원 탈퇴 완료"
+        });
+      } else { // 삭제 실패
+        res.send({
+          message: "해당 회원을 찾을 수 없습니다."
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "회원 탈퇴 실패"
+      });
+    });
+}

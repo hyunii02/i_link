@@ -5,6 +5,8 @@ const PORT = process.env.PORT || 3001;
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 
+const db = require("./models");
+
 // Routes
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/users');
@@ -19,8 +21,7 @@ app.use(cors({
 
 app.use(cookieParser());
 app.use(session({
-  key: "user",
-  secret: "Secret",
+  secret: "keyboard cat",
   resave: false,
   saveUninitialized: false,
   cookie: {
@@ -30,6 +31,8 @@ app.use(session({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+db.sequelize.sync();
 
 app.use('/', indexRouter);
 app.use('/users', userRouter);
