@@ -5,7 +5,7 @@ const User = db.users;
 const bcrypt = require("bcrypt");
 
 // 회원가입
-// [post] /users/register
+// [post] /user/register
 exports.user_regist_post = function (req, res) {
 
 // *** Content-Type: application/json
@@ -36,19 +36,19 @@ exports.user_regist_post = function (req, res) {
 
 
 // 로그인
-// [get]  /users/login
+// [get]  /user/login
 exports.user_login_get = function (req, res) { 
   if (req.session.logined) {
     console.log("로그인 되어 있음");
     res.redirect("/");
   }
   else {
-    console.log("[get] /users/login (로그인 페이지)");
-    res.send("[get] /users/login (로그인 페이지)");
+    console.log("[get] /user/login (로그인 페이지)");
+    res.send("[get] /user/login (로그인 페이지)");
   }
 };
 
-// [post] /users/login
+// [post] /user/login
 exports.user_login_post = async function (req, res) {
 
   const userEmail = req.body.userEmail;
@@ -80,9 +80,9 @@ exports.user_login_post = async function (req, res) {
 
 
 // 로그아웃
-// [get] /users/logout
+// [get] /user/logout
 exports.user_logout_get = function (req, res) { 
-  console.log("[get] /users/logout (로그아웃)");
+  console.log("[get] /user/logout (로그아웃)");
 
   // 쿠키 삭제
   res.clearCookie("connect.sid");
@@ -94,10 +94,10 @@ exports.user_logout_get = function (req, res) {
 
 
 // 회원 정보 조회
-// [get] /users/:user_no
+// [get] /user/:no
 exports.user_detail_get = async function (req, res) { 
 
-  const userNo = req.params.user_no;
+  const userNo = req.params.no;
 
   // pk로 사용자 정보 조회
   const user = await User.findByPk(userNo);
@@ -112,10 +112,10 @@ exports.user_detail_get = async function (req, res) {
 
 
 // 회원 정보 수정
-// [put] /users/:user_no
+// [put] /user/:no
 exports.user_update_put = function (req, res, next) { 
 
-  const userNo = req.params.user_no;
+  const userNo = req.params.no;
 
   // User
   const user = {
@@ -133,7 +133,7 @@ exports.user_update_put = function (req, res, next) {
     .then(result => {
       if (result[0] === 1) { // 수정 완료
         console.log("회원 수정 완료");
-        res.redirect("/users/logout"); // 재로그인
+        res.redirect("/user/logout"); // 재로그인
       } else { // 수정 실패
         res.send({
           message: "회원을 찾을 수 없거나 데이터가 데이터가 비어있음"
@@ -149,17 +149,16 @@ exports.user_update_put = function (req, res, next) {
 
 
 // 회원 정보 삭제
-// [delete] /users/:user_no
+// [delete] /user/:no
 exports.user_remove_delete = function (req, res, next) {
 
-  const userNo = req.params.user_no;
+  const userNo = req.params.no;
 
   User.destroy({ where: { user_no: userNo } })
     .then(result => {
       if (result == 1) { // 삭제 완료
-        res.send({
-          message: "회원 탈퇴 완료"
-        });
+        console.log("회원 탈퇴 완료");
+        res.redirect("/user/logout");
       } else { // 삭제 실패
         res.send({
           message: "해당 회원을 찾을 수 없습니다."

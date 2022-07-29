@@ -8,8 +8,7 @@ const session = require("express-session");
 const db = require("./models");
 
 // Routes
-const indexRouter = require('./routes/index');
-const userRouter = require('./routes/users');
+const router = require('./routes');
 
 const app = express();
 
@@ -34,8 +33,8 @@ app.use(express.urlencoded({ extended: true }));
 
 db.sequelize.sync();
 
-app.use('/', indexRouter);
-app.use('/users', userRouter);
+app.use('/', router);
+app.use('/user', router.user);
 
 app.listen(PORT, () => {
   console.log(`server is running on PORT ${PORT}`);
