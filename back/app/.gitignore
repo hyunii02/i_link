@@ -1,6 +1,5 @@
-# dependencies
+# Ignore dependencies
 /node_modules
-*~
 
-.DS_Store
+# The file environment variables
 .env

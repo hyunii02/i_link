@@ -44,13 +44,13 @@ module.exports = (sequelize, Sequelize) => {
     hooks: {
       beforeCreate: async (user) => {
         if (user.user_pw) {
-          const salt = await bcrypt.genSaltSync(10, 'a');
+          const salt = await bcrypt.genSaltSync(10, "a");
           user.user_pw = bcrypt.hashSync(user.user_pw, salt);
         }
       },
       beforeUpdate: async (user) => {
         if (user.user_pw) {
-          const salt = await bcrypt.genSaltSync(10, 'a');
+          const salt = await bcrypt.genSaltSync(10, "a");
           user.user_pw = bcrypt.hashSync(user.user_pw, salt);
         }
       },
