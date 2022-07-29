@@ -71,10 +71,36 @@ exports.preschool_detail = async function (req, res) {
 };
 
 // 유치원 정보 수정
+// [put]  /preschool/:no
 exports.preschool_update = async function (req, res) { 
-  
-  const preschoolNo = req.params.no;
 
+  const preschoolNo = req.params.no;
+  
+  // 유치원
+  const preschool = {
+    preschool_name: req.body.name,
+    preschool_addr: req.body.address,
+    preschool_tel: req.body.tel
+    // TODO: 원장변경도?
+  }
+
+  
+  Preschool.update(preschool, { where: { preschool_no: preschoolNo }})
+    .then(result => {
+      if (result[0] === 1) { // 수정 완료
+        console.log("유치원 수정 완료");
+        res.redirect(`/preschool/${preschoolNo}`); // 유치원 정보 조회 페이지
+      } else { // 수정 실패
+        res.send({
+          message: "해당 유치원을 찾을 수 없거나 데이터가 비어있음"
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "유치원 수정 실패"
+      });
+    });
 };
 
 // 유치원 정보 삭제
