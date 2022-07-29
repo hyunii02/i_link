@@ -84,7 +84,6 @@ exports.preschool_update = async function (req, res) {
     // TODO: 원장변경도?
   }
 
-  
   Preschool.update(preschool, { where: { preschool_no: preschoolNo }})
     .then(result => {
       if (result[0] === 1) { // 수정 완료
@@ -104,8 +103,25 @@ exports.preschool_update = async function (req, res) {
 };
 
 // 유치원 정보 삭제
+// [delete] /preschool/:no
 exports.preschool_remove = async function (req, res) { 
-  
-  const preschoolNo = req.params.no;
 
+  const preschoolNo = req.params.no;
+  
+  Preschool.destroy({ where: { preschool_no: preschoolNo } })
+    .then(result => {
+      if (result == 1) { // 삭제 완료
+        console.log("유치원 삭제 완료");
+        res.redirect("/");
+      } else { // 삭제 실패
+        res.send({
+          message: "해당 유치원을 찾을 수 없습니다."
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "유치원 삭제 실패"
+      });
+    });
 };
