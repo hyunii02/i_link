@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 
 // 회원가입
 // [post] /user/register
-exports.user_regist_post = function (req, res) {
+exports.user_regist = function (req, res) {
 
 // *** Content-Type: application/json
 
@@ -81,7 +81,7 @@ exports.user_login_post = async function (req, res) {
 
 // 로그아웃
 // [get] /user/logout
-exports.user_logout_get = function (req, res) { 
+exports.user_logout = function (req, res) { 
   console.log("[get] /user/logout (로그아웃)");
 
   // 쿠키 삭제
@@ -95,7 +95,7 @@ exports.user_logout_get = function (req, res) {
 
 // 회원 정보 조회
 // [get] /user/:no
-exports.user_detail_get = async function (req, res) { 
+exports.user_detail = async function (req, res) { 
 
   const userNo = req.params.no;
 
@@ -113,7 +113,7 @@ exports.user_detail_get = async function (req, res) {
 
 // 회원 정보 수정
 // [put] /user/:no
-exports.user_update_put = function (req, res, next) { 
+exports.user_update = function (req, res, next) { 
 
   const userNo = req.params.no;
 
@@ -150,7 +150,7 @@ exports.user_update_put = function (req, res, next) {
 
 // 회원 정보 삭제
 // [delete] /user/:no
-exports.user_remove_delete = function (req, res, next) {
+exports.user_remove = function (req, res, next) {
 
   const userNo = req.params.no;
 
