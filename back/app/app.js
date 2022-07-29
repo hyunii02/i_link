@@ -1,19 +1,40 @@
 const express = require("express");
-// const bodyParser = require("body-parser");
-// const cors = require("cors");
+const cors = require("cors");
 const PORT = process.env.PORT || 3001;
 
-const userRouter = require('./routes/users.routes');
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+
+const db = require("./models");
+
+// Routes
+const router = require('./routes');
+
 const app = express();
 
-// app.use(cors());
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+  origin: ["http://localhost:3000"],
+  methods: ["GET", "POST"],
+  credentials: true
+}));
 
-app.get('/', (req, res) => {
-  res.send('Root');
-});
-app.use('/users', userRouter);
+app.use(cookieParser());
+app.use(session({
+  secret: "keyboard cat",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    expires: 60 * 60 * 24,
+  },
+}));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+db.sequelize.sync();
+
+app.use('/', router);
+app.use('/user', router.user);
 
 app.listen(PORT, () => {
   console.log(`server is running on PORT ${PORT}`);
