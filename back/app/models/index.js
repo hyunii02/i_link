@@ -23,7 +23,4 @@ db.sequelize = sequelize;
 db.users = require("./user.js")(sequelize, Sequelize);
 db.preschool = require("./preschool")(sequelize, Sequelize);
 
-// associate
-db.users.hasOne(db.preschool, { foreignKey: "principal_no", sourceKey: "user_no" }); // 1명의 원장은 1개의 유치원을 가진다
-
 module.exports = db;
