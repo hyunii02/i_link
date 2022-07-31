@@ -1,6 +1,9 @@
-// 2022.07.27 배지우 // 
+// 2022.07.27 배지우 //
+// 2022.07.29 안정현 validation //
 
 import * as React from 'react';
+import { useState, useEffect } from 'react';
+
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,15 +19,50 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme = createTheme();
 
-export default function LogIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+export default function Login() {
+  // validation
+  const initialValues = { id: '', password: '' };
+  const [formValues, setFormValues] = useState(initialValues);
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
+
+  const validate = target => {
+    console.log(target.name, target.value);
+    const errors = {};
+    if (target.name === 'id') {
+      errors.id = '아이디를 입력해주세요.';
+    }
+    if (target.name === 'password') {
+      errors.password = '비밀번호를 입력해주세요';
+    }
+    return errors;
   };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    setFormErrors(validate(formValues));
+    setIsSubmit(true);
+    const data = new FormData(event.currentTarget);
+    // console.log({
+    //   id: data.get('id'),
+    //   password: data.get('password'),
+    // });
+  };
+
+  const handleChange = event => {
+    console.log(event.target);
+    const { name, value } = event.target;
+    setFormValues({ ...formValues, [name]: value });
+    console.log(event.target);
+    setFormErrors(validate(event.target));
+  };
+
+  useEffect(() => {
+    console.log(formErrors);
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      console.log(formValues);
+    }
+  }, [formErrors]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -44,31 +82,34 @@ export default function LogIn() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
             noValidate
-            sx={{ mt: 1 }}
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
           >
             <TextField
-              margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="id"
+              label="아이디"
+              name="id"
+              autoComplete="id"
               autoFocus
+              value={formValues.id}
+              onChange={handleChange}
             />
+            <p>{formErrors.id}</p>
             <TextField
-              margin="normal"
               required
               fullWidth
               name="password"
-              label="Password"
+              label="비밀번호"
               type="password"
               id="password"
               autoComplete="current-password"
+              value={formValues.password}
+              onChange={handleChange}
             />
-
+            <p>{formErrors.password}</p>
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="자동로그인"
@@ -80,6 +121,7 @@ export default function LogIn() {
               variant="contained"
               color="warning"
               sx={{ mt: 3, mb: 2 }}
+              onChange={handleChange}
             >
               로그인
             </Button>

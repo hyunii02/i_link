@@ -1,11 +1,11 @@
 // 원장>반관리>반 추가하기 컴포넌트
 // create by 김국진
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import TextField from '@mui/material/TextField';
 import { Box, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 
-const GroupInsert = (props) => {
+const GroupInsert = props => {
   // 부모의 props 함수 가져오기
   const { insertClass } = props;
 
@@ -13,8 +13,8 @@ const GroupInsert = (props) => {
   const [newClass, setNewClass] = useState('');
 
   // 텍스트 Change Event
-  const onChange = (e) => {
-    setNewClass((newClass) => e.target.value);
+  const onChange = e => {
+    setNewClass(newClass => e.target.value);
     console.log(newClass);
   };
 
