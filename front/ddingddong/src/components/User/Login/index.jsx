@@ -1,4 +1,4 @@
-// 2022.07.27 배지우 // 
+// 2022.07.27 배지우 //
 
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
@@ -13,6 +13,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useContext } from 'react';
+import ColorContext from '../../../context/color';
 
 const theme = createTheme();
 
@@ -25,7 +27,7 @@ export default function LogIn() {
       password: data.get('password'),
     });
   };
-
+  const { state } = useContext(ColorContext);
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">

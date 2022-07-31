@@ -7,22 +7,31 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
 const GroupListItem = (props) => {
-  const { className, studentNum, teacherNum } = props;
+  const { classData, deleteClicked } = props;
+
+  const deleteClickedHandler = () => {
+    deleteClicked(classData.className);
+  };
 
   return (
-    <ListItemButton style={{ borderRadius: '20px' }}>
+    <ListItemButton style={{ borderRadius: '5px' }}>
       <Grid container>
         <Grid item xs={4}>
-          <ListItemText primary={className} />
+          <ListItemText primary={classData.className} />
         </Grid>
         <Grid item xs={4}>
-          <ListItemText primary={studentNum} />
+          <ListItemText primary={classData.studentNum} />
         </Grid>
         <Grid item xs={3}>
-          <ListItemText primary={teacherNum} />
+          <ListItemText primary={classData.teacherNum} />
         </Grid>
         <Grid item xs={1}>
-          <Button variant="outlined" size="small" style={{ marginRight: '5%' }}>
+          <Button
+            variant="outlined"
+            size="small"
+            style={{ marginRight: '5%' }}
+            onClick={deleteClickedHandler}
+          >
             삭제
           </Button>
         </Grid>

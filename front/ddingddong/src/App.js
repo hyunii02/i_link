@@ -29,52 +29,55 @@ import TeacherNotice from './pages/Teacher/Notice/TeacherNotice';
 import TeacherQuiz from './pages/Teacher/Quiz/TeacherQuiz';
 import Error from './pages/Error/Error'
 import LayoutWithoutSidebar from './layout/WithoutSidebar';
+import { useState } from 'react';
+import { ColorProvider } from './context/color';
+
 
 const App = () => {
+  const [color, setColor] = useState('blue');
+
   return (
+    <ColorProvider>
+      <Routes>
+        <Route element={<LayoutWithoutSidebar />} >
+          <Route path='/' element={<UserLogin />} />
+          <Route path='/user/signup' element={<UserSignUp />} />
+          <Route path='/user/update' element={<UserUpdate />} />
+        </Route>
 
-    <Routes>
-      <Route element= {<LayoutWithoutSidebar/>} >
-        <Route path='/' element ={ <UserLogin/> } />
-        <Route path= '/user/signup' element={ <UserSignUp/> } />
-        <Route path= '/user/update' element={ <UserUpdate/> } />
-      </Route>
+        <Route element={<LayOut />}>
 
-      <Route  element ={ <LayOut/> }>
-        
-        <Route path= '/master/diet' element={ <MasterDiet/> } />
-        <Route path= '/master/managegroup' element={ <MasterManageGroup/> } />
-        <Route path= '/master/managemember' element={ <MasterManageMember/> } />
-        <Route path= '/master/memo' element={ <MasterMemo/> } />
-        <Route path= '/master/notice' element={ <MasterNotice/> } />
-        <Route path= '/master/registacademy' element={ <MasterRegistAcademy/> } />
-
-
-        <Route path= '/parents/diet' element={ <ParentsDiet/> } />
-        <Route path= '/parents/home' element={ <ParentsHome/> } />
-        <Route path= '/parents/notice' element={ <ParentsNotice/> } />
-        <Route path= '/parents/quiz' element={ <ParentsQuiz/> } />
-        <Route path= '/parents/registkid' element={ <ParentsRegistKid/> } />
+          <Route path='/master/diet' element={<MasterDiet />} />
+          <Route path='/master/managegroup' element={<MasterManageGroup />} />
+          <Route path='/master/managemember' element={<MasterManageMember />} />
+          <Route path='/master/memo' element={<MasterMemo />} />
+          <Route path='/master/notice' element={<MasterNotice />} />
+          <Route path='/master/registacademy' element={<MasterRegistAcademy />} />
 
 
-        <Route path= '/teacher/detail' element={ <TeacherDetail/> } />
-        <Route path= '/teacher/diet' element={ <TeacherDiet/> } />
-        <Route path= '/teacher/management' element={ <TeacherManagement/> } />
-        <Route path= '/teacher/memo' element={ <TeacherMemo/> } />
-        <Route path= '/teacher/notice' element={ <TeacherNotice/> } />
-        <Route path= '/teacher/quiz' element={ <TeacherQuiz/> } />
-      </Route>
-
-      <Route path= '*' element={ <Error/> } />
-      <Route path= '/kiosk/award' element={ <KioskAward/> } />
-      <Route path= '/kiosk/main' element={ <KioskMain/> } />
-      <Route path= '/kiosk/quiz' element={ <KioskQuiz/> } />
-      <Route path= '/kiosk/vote' element={ <KioskVote/> } />
-      
+          <Route path='/parents/diet' element={<ParentsDiet />} />
+          <Route path='/parents/home' element={<ParentsHome />} />
+          <Route path='/parents/notice' element={<ParentsNotice />} />
+          <Route path='/parents/quiz' element={<ParentsQuiz />} />
+          <Route path='/parents/registkid' element={<ParentsRegistKid />} />
 
 
-      
-    </Routes>
+          <Route path='/teacher/detail' element={<TeacherDetail />} />
+          <Route path='/teacher/diet' element={<TeacherDiet />} />
+          <Route path='/teacher/management' element={<TeacherManagement />} />
+          <Route path='/teacher/memo' element={<TeacherMemo />} />
+          <Route path='/teacher/notice' element={<TeacherNotice />} />
+          <Route path='/teacher/quiz' element={<TeacherQuiz />} />
+        </Route>
+
+        <Route path='*' element={<Error />} />
+        <Route path='/kiosk/award' element={<KioskAward />} />
+        <Route path='/kiosk/main' element={<KioskMain />} />
+        <Route path='/kiosk/quiz' element={<KioskQuiz />} />
+        <Route path='/kiosk/vote' element={<KioskVote />} />
+
+      </Routes>
+    </ColorProvider>
   );
 };
 

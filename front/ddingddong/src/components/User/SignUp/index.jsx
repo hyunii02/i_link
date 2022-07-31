@@ -18,7 +18,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
 const RowRadioButtonsGroup = (props) => {
   const { handleRadio } = props;
@@ -72,7 +72,6 @@ export default function SignUp() {
       type: radioState,
     });
   };
-
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
