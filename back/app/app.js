@@ -13,7 +13,7 @@ const router = require("./routes");
 const app = express();
 
 app.use(cors({
-  origin: ["http://localhost:8000"],
+  origin: ["http://i7e102.p.ssafy.io:8000"],
   methods: ["*"],
   credentials: true
 }));
