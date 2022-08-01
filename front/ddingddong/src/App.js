@@ -1,5 +1,5 @@
+import React from 'react';
 import LayOut from './layout/';
-import * as React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import './App.css';
