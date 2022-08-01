@@ -22,5 +22,6 @@ db.sequelize = sequelize;
 
 db.users = require("./user.js")(sequelize, Sequelize);
 db.preschool = require("./preschool")(sequelize, Sequelize);
+db.class = require("./class")(sequelize, Sequelize);
 
 module.exports = db;
