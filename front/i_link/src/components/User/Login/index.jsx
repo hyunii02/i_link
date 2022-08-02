@@ -1,70 +1,71 @@
 // 2022.07.27 배지우 //
 // 2022.07.29 안정현 validation //
+// 2022.08.02 강민재
 
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React from "react";
+import { useState, useEffect } from "react";
 
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { postApiData, urls } from "../../../api/axios";
 
 const theme = createTheme();
 
 export default function Login() {
   // validation
-  const initialValues = { id: '', password: '' };
+  const initialValues = { id: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
 
   // 에러메시지
-  const validate = target => {
-    console.log(target.name, target.value);
+  const validate = () => {
     const errors = {};
-    if (target.name === 'id') {
-      errors.id = '아이디를 입력해주세요.';
-      if (target.value.length > 1) {
-        errors.id = '';
-      }
+    if (!formValues.id) {
+      errors.id = "아이디를 입력해주세요.";
     }
-    if (target.name === 'password') {
-      errors.password = '비밀번호를 입력해주세요';
-      if (target.value.length > 1) {
-        errors.password = '';
-      }
+    if (!formValues.password) {
+      errors.password = "비밀번호를 입력해주세요.";
     }
-    return errors;
+    setFormErrors(errors);
+    if (!(errors.id + errors.password)) {
+      return true;
+    }
+    return false;
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    setFormErrors(validate(formValues));
     setIsSubmit(true);
-    const data = new FormData(event.currentTarget);
+    validate();
+
+    // 에러가 없으면 로그인 함수 실행
+    handleLogin(formValues.id, formValues.password);
+  };
+
+  // API서버에 로그인 폼을 전달하는 함수
+  const handleLogin = (id, password) => {
+    const request = postApiData(urls.fetchLogin);
+    //console.log(request);
   };
 
   //로그인 form 입력 시
-  const handleChange = event => {
-    console.log(event.target);
+  const handleChange = (event) => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
-    console.log(event.target);
-    setFormErrors(validate(event.target));
+    //setFormErrors(validate(event.target));
   };
 
-  useEffect(() => {
-    console.log(formErrors);
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(formValues);
-    }
-  }, [formErrors]);
+  // 로그인 버튼을 눌렀을때 에러 체크
+  useEffect(() => {}, [isSubmit]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -73,9 +74,9 @@ export default function Login() {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           {/* 로고 이미지 */}
