@@ -1,12 +1,12 @@
 // 원장페이지>반관리>반 리스트 출력 컴포넌트
 // create by 김국진
-
+import React from 'react';
 import { Box, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-const GroupListItem = (props) => {
+const GroupListItem = props => {
   const { className, studentNum, teacherNum } = props;
 
   return (

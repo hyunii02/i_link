@@ -1,3 +1,4 @@
+import React from 'react';
 import LayOut from '../../../layout';
 import GroupManagement from '../../../components/Group/GroupManagement';
 import { Box, Grid } from '@mui/material';

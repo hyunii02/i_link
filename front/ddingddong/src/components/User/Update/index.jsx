@@ -1,6 +1,5 @@
 // 2022.07.27 배지우 //
-// 2022.07.29 안정현 validation //
-// 2022.08.01 안정현 select components //
+// 2022.08.01 안정현 validation //
 
 import React from 'react';
 import { useState, useEffect } from 'react';
@@ -9,88 +8,52 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import NativeSelect from '@mui/material/NativeSelect';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import FormHelperText from '@mui/material/FormHelperText';
-
-// Select components
-const BasicSelectCheck = () => {
-  const [position, setPosition] = React.useState('');
-
-  const selectChange = event => {
-    setPosition(event.target.value);
-  };
-
-  return (
-    <FormControl fullWidth>
-      <InputLabel id="label">Please check your position!</InputLabel>
-      <Select
-        defaultValue={10}
-        value={position}
-        onChange={selectChange}
-        displayEmpty
-        inputProps={{ 'aria-label': 'Without label' }}
-      >
-        <MenuItem value={10}>부모님</MenuItem>
-        <MenuItem value={20}>원장님</MenuItem>
-        <MenuItem value={30}>선생님</MenuItem>
-      </Select>
-    </FormControl>
-  );
-};
 
 const theme = createTheme();
 
-export default function SignUp() {
-  const [radioState, SetRadioState] = useState(0);
-  const handleRadio = data => {
-    SetRadioState(data);
-  };
-
+export default function Update() {
   // validation
   const initialValues = {
     id: '',
     password: '',
-    check_password: '',
-    username: '',
+    new_password: '',
+    new_check_password: '',
+    new_username: '',
     phone_number: '',
   };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
 
+  // 에러메시지
   const validate = target => {
     console.log(target.name, target.value);
     const errors = {};
-    if (target.name === 'id') {
-      errors.id = '아이디를 입력해주세요.';
-    }
     if (target.name === 'password') {
       errors.password = '비밀번호를 입력해주세요';
+    }
+    if (target.name === 'new_password') {
+      errors.new_password = '새로운 비밀번호를 입력해주세요';
       if (target.value.length < 6) {
-        errors.password = '비밀번호 6자리 이상 입력해주세요';
+        errors.new_password = '새로운 비밀번호 6자리 이상 입력해주세요';
       }
     }
-    if (target.name === 'check_password') {
-      errors.check_password = '비밀번호를 다시 입력해주세요';
+    if (target.name === 'new_check_password') {
+      errors.new_check_password = '새로운 비밀번호를 다시 입력해주세요';
       if (target.value !== formValues.password) {
-        errors.check_password = '비밀번호가 일치하지 않습니다';
+        errors.new_check_password = '새로운 비밀번호가 일치하지 않습니다';
       }
     }
-    if (target.name === 'phone_number') {
-      errors.phone_number = '휴대폰 번호를 입력해주세요';
+    if (target.name === 'new_username') {
+      errors.new_username = '이름을 입력해주세요';
     }
-    if (target.name === 'username') {
-      errors.username = '이름을 입력해주세요';
+    if (target.name === 'new_phone_number') {
+      errors.new_phone_number = '휴대폰 번호를 입력해주세요';
     }
     return errors;
   };
@@ -101,11 +64,11 @@ export default function SignUp() {
     setIsSubmit(true);
     const data = new FormData(event.currentTarget);
     // console.log({
-    //   id: data.get('id'),
+    //   email: data.get('email'),
     //   password: data.get('password'),
-    //   username: data.get('username'),
-    //   phone_number: data.get('phone_number'),
-    //   type: radioState,
+    //   new_password: data.get('new_password'),
+    //   username: data.get('new_username'),
+    //   new_phone_number: data.get('new_phone_number'),
     // });
   };
 
@@ -116,11 +79,12 @@ export default function SignUp() {
     console.log(event.target);
     setFormErrors(validate(event.target));
   };
-  //submit 후 비밀번호 일치여부 확인 메시지
+  //submit 후 새로운 비밀번호 일치여부 확인 메시지
   const passwordCheck = () => {
     const errors = {};
-    if (formValues.password === formValues.check_password) return errors;
-    errors.check_password = '비밀번호가 일치하지 않습니다';
+    if (formValues.new_password === formValues.new_check_password)
+      return errors;
+    errors.new_check_password = '새로운 비밀번호가 일치하지 않습니다';
     return errors;
   };
 
@@ -150,9 +114,9 @@ export default function SignUp() {
             src="/images/login.png"
           ></Avatar>
           <Typography component="h1" variant="h5">
-            회원가입
+            회원정보수정
           </Typography>
-          {/* 회원가입 form */}
+          {/* 회원정보수정 form */}
           <Box
             component="form"
             noValidate
@@ -160,103 +124,102 @@ export default function SignUp() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              {/* 아이디 입력창*/}
-              <Grid item xs={12} sm={12}>
-                <BasicSelectCheck></BasicSelectCheck>
-              </Grid>
+              {/* 아이디창 => 기존의 아이디 값이 입력되어있어야한다! 어떻게 하지??? */}
               <Grid item xs={12} sm={12}>
                 <TextField
                   required
                   fullWidth
+                  autoComplete="id"
+                  name="id"
                   id="id"
                   label="아이디"
-                  name="id"
-                  autoComplete="id"
                   autoFocus
-                  value={formValues.id}
-                  onChange={handleChange}
                 />
-                <p>{formErrors.id}</p>
               </Grid>
-              {/* 비밀번호 입력창*/}
+              {/* 기존 비밀번호 입력창 => 기존의 비밀번호 값이랑 일치여부 확인해야함! 어떻게 하지???*/}
               <Grid item xs={12} sm={12}>
                 <TextField
                   required
                   fullWidth
                   name="password"
-                  label="비밀번호"
+                  label="현재 비밀번호"
                   type="password"
                   id="password"
-                  autoComplete="new-password"
+                  autoComplete="password"
                   value={formValues.password}
                   onChange={handleChange}
                 />
                 <p>{formErrors.password}</p>
               </Grid>
-              {/* 비밀번호 재입력창 */}
+              {/* 새로운 비밀번호 입력창 */}
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="check_password"
-                  label="비밀번호확인"
-                  id="check_password"
+                  name="new_password"
+                  label="새로운 비밀번호"
                   type="password"
-                  autoComplete="new-password"
-                  value={formValues.check_password}
+                  id="new_password"
+                  autoComplete="new_password"
+                  value={formValues.new_password}
                   onChange={handleChange}
                 />
-                <p>{formErrors.check_password}</p>
+                <p>{formErrors.new_password}</p>
               </Grid>
-              {/* 이름 입력창 */}
+              {/* 새로운 비밀번호 재입력창 */}
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="username"
+                  name="new_check_password"
+                  label="새로운 비밀번호 확인"
+                  type="password"
+                  id="new_check_password"
+                  autoComplete="new_check_password"
+                  value={formValues.new_check_password}
+                  onChange={handleChange}
+                />
+                <p>{formErrors.new_check_password}</p>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="new_username" // 바꾸기전 이름 기본입력 필요
                   label="이름"
-                  id="username"
-                  autoComplete="username"
-                  value={formValues.username}
+                  id="new_username"
+                  autoComplete="new_username"
+                  value={formValues.new_username}
                   onChange={handleChange}
                 />
-                <p>{formErrors.username}</p>
               </Grid>
-              {/* 전화번호 입력창 */}
+              <p>{formErrors.new_username}</p>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="phone_number"
+                  name="new_phone_number" // 바꾸기전 번호 기본입력 필요
                   label="전화번호"
-                  id="phone_number"
+                  id="new_phone_number"
                   autoComplete="phone_number"
-                  value={formValues.phone_number}
+                  value={formValues.new_phone_number}
                   onChange={handleChange}
                 />
-                <p>{formErrors.phone_number}</p>
+                <p>{formErrors.new_phone_number}</p>
               </Grid>
             </Grid>
-            {/* 회원가입 버튼 */}
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="warning"
-              size="string"
-              height="512px"
+              size="large"
               sx={{ mt: 3, mb: 2 }}
-              onChange={handleChange}
             >
-              회원가입
+              회원수정 완료
             </Button>
             <Grid container justifyContent="flex-end">
-              {/* 로그인 페이지로 연결 */}
-              <Grid item>
-                <Link href="#" variant="body2">
-                  아이디가 있으신가요? 로그인하기
-                </Link>
-              </Grid>
+              <Button>뒤로가기</Button>
             </Grid>
           </Box>
         </Box>
