@@ -9,19 +9,20 @@ const MasterManageGroup = () => {
   const [server, setServer] = useState([]);
 
   // useEffect 함수 내에서 async await 동작하는 함수 생성 후, 바로 호출
-  useEffect(() => {
-    const getApi = async () => {
-      const data = await postApiData("");
-      setServer((server) => data);
-      console.log("데이터:", server);
-    };
-    getApi("");
-  }, []);
+  // useEffect(() => {
+  //   const getApi = async () => {
+  //     const data = await postApiData("");
+  //     setServer((server) => data);
+  //     console.log("데이터:", server);
+  //   };
+  //   getApi("");
+  // }, []);
 
   return (
     <Box style={{ borderRadius: "20px", background: "white" }}>
       <GroupManagement />
       <Box style={{ width: "100%", marginTop: "10px", marginBottom: "10px" }} />
+      <RegistKids />
     </Box>
   );
 };
