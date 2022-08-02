@@ -1,11 +1,13 @@
-const db = require("../models");
-const User = db.users;
+const path = require("path");
+
+const db = require(path.join(__dirname, "..", "models"));
+const Users = db.users;
 
 // 비밀번호 암호화
 const bcrypt = require("bcrypt");
 
 // 회원가입
-// [post] /user/register
+// [post] /users/register
 exports.user_regist = function (req, res) {
 
 // *** Content-Type: application/json
@@ -18,11 +20,11 @@ exports.user_regist = function (req, res) {
     user_name: req.body.userName,
     user_phone: req.body.userPhone ? req.body.userPhone : null,
     user_profile_url: req.body.userProfileUrl ? req.body.userProfileUrl : null,
-    class_no: req.body.classNo ? req.body.classNo : null,
-    preschool_no: req.body.preschoolNo ? req.body.preschoolNo : null,
+    group_no: req.body.groupNo ? req.body.groupNo : null,
+    center_no: req.body.centerNo ? req.body.centerNo : null,
   }
 
-  User.create(user)
+  Users.create(user)
     .then(data => {
       console.log("회원가입 완료");
       res.send(data);
@@ -36,31 +38,25 @@ exports.user_regist = function (req, res) {
 
 
 // 로그인
-// [get]  /user/login
+// [get]  /users/login
 exports.user_login_get = function (req, res) { 
-  if (req.session.logined) {
-    console.log("로그인 되어 있음");
-    res.redirect("/");
-  }
-  else {
-    console.log("[get] /user/login (로그인 페이지)");
     res.send("[get] /user/login (로그인 페이지)");
-  }
-};
+}
 
-// [post] /user/login
+
+// [post] /users/login
 exports.user_login_post = async function (req, res) {
 
   const userEmail = req.body.userEmail;
-  const userPassword = req.body.userPw;
+  const userPw = req.body.userPw;
 
   // 입력된 이메일로 사용자 찾기
-  const user = await User.findOne({ where: { user_email: userEmail } });
+  const user = await Users.findOne({ where: { user_email: userEmail } });
 
   if (user) { // 아이디가 있는 경우
 
     // 입력 비밀번호와 DB에 저장된 비밀번호 비교
-    const password_valid = await bcrypt.compare(userPassword, user.user_pw);
+    const password_valid = await bcrypt.compare(userPw, user.user_pw);
 
     if (password_valid) { // 로그인 성공
       req.session.logined = true; // 로그인 상태
@@ -76,13 +72,13 @@ exports.user_login_post = async function (req, res) {
   else { // 아이디가 없는 경우
     res.send({ message: "존재하지 않는 사용자" });
   }
-};
+}
 
 
 // 로그아웃
-// [get] /user/logout
+// [get] /users/logout
 exports.user_logout = function (req, res) { 
-  console.log("[get] /user/logout (로그아웃)");
+  console.log("[get] /users/logout (로그아웃)");
 
   // 쿠키 삭제
   res.clearCookie("connect.sid");
@@ -94,17 +90,18 @@ exports.user_logout = function (req, res) {
 
 
 // 회원 정보 조회
-// [get] /user/:no
+// [get] /users/:user_no
 exports.user_detail = async function (req, res) { 
 
-  const userNo = req.params.no;
+  const userNo = req.params.user_no;
 
   // pk로 사용자 정보 조회
-  const user = await User.findByPk(userNo);
+  const user = await Users.findByPk(userNo);
 
   if (user === null) {
     console.log("사용자를 찾을 수 없습니다.");
   } else {
+    user.user_pw = ""; // 사용자 패스워드는 가져오지 않음
     console.log(user);
     res.send(user);
   }
@@ -112,10 +109,10 @@ exports.user_detail = async function (req, res) {
 
 
 // 회원 정보 수정
-// [put] /user/:no
-exports.user_update = function (req, res, next) { 
+// [put] /users/:user_no
+exports.user_update = async function (req, res) { 
 
-  const userNo = req.params.no;
+  const userNo = req.params.user_no;
 
   // User
   const user = {
@@ -125,18 +122,18 @@ exports.user_update = function (req, res, next) {
     user_name: req.body.userName,
     user_phone: req.body.userPhone ? req.body.userPhone : null,
     user_profile_url: req.body.userProfileUrl ? req.body.userProfileUrl : null,
-    class_no: req.body.classNo ? req.body.classNo : null,
-    preschool_no: req.body.preschoolNo ? req.body.preschoolNo : null,
+    group_no: req.body.groupNo ? req.body.groupNo : null,
+    center_no: req.body.centerNo ? req.body.centerNo : null,
   }
   
-  User.update(user, { where: { user_no: userNo }, individualHooks: true })
+  Users.update(user, { where: { user_no: userNo }, individualHooks: true })
     .then(result => {
       if (result[0] === 1) { // 수정 완료
         console.log("회원 수정 완료");
-        res.redirect("/user/logout"); // 재로그인
+        res.redirect("/users/logout"); // 재로그인
       } else { // 수정 실패
         res.send({
-          message: "회원을 찾을 수 없거나 데이터가 데이터가 비어있음"
+          message: "회원을 찾을 수 없거나 데이터가 비어있음"
         });
       }
     })
@@ -149,16 +146,16 @@ exports.user_update = function (req, res, next) {
 
 
 // 회원 정보 삭제
-// [delete] /user/:no
-exports.user_remove = function (req, res, next) {
+// [delete] /users/:user_no
+exports.user_remove = async function (req, res) {
 
-  const userNo = req.params.no;
+  const userNo = req.params.user_no;
 
-  User.destroy({ where: { user_no: userNo } })
+  await Users.destroy({ where: { user_no: userNo } })
     .then(result => {
       if (result == 1) { // 삭제 완료
         console.log("회원 탈퇴 완료");
-        res.redirect("/user/logout");
+        res.redirect("/users/logout");
       } else { // 삭제 실패
         res.send({
           message: "해당 회원을 찾을 수 없습니다."
