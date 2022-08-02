@@ -1,7 +1,8 @@
 const express = require("express");
+const path = require("path");
 const router = express.Router();
 
-const userController = require("../controllers/user");
+const userController = require(path.join(__dirname, "..", "controllers", "user"));
 
 // 회원가입
 router.post("/register", userController.user_regist);
@@ -14,12 +15,12 @@ router.post("/login", userController.user_login_post);
 router.get("/logout", userController.user_logout);
 
 // 회원 정보 조회
-router.get("/:no", userController.user_detail);
+router.get("/:user_no", userController.user_detail);
 
 // 회원 정보 수정
-router.put("/:no", userController.user_update);
+router.put("/:user_no", userController.user_update);
 
 // 회원 탈퇴
-router.delete("/:no", userController.user_remove);
+router.delete("/:user_no", userController.user_remove);
 
 module.exports = router;
