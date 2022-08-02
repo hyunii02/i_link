@@ -9,5 +9,6 @@ router.get("/", (req, res) => {
 router.use("/users", require(path.join(__dirname, "users")));
 router.use("/centers", require(path.join(__dirname, "centers")));
 router.use("/groups", require(path.join(__dirname, "groups")));
+router.use("/memos", require(path.join(__dirname, "memos")));
 
 module.exports = router;
