@@ -30,9 +30,15 @@ export default function Login() {
     const errors = {};
     if (target.name === 'id') {
       errors.id = '아이디를 입력해주세요.';
+      if (target.value.length > 1) {
+        errors.id = '';
+      }
     }
     if (target.name === 'password') {
       errors.password = '비밀번호를 입력해주세요';
+      if (target.value.length > 1) {
+        errors.password = '';
+      }
     }
     return errors;
   };
@@ -42,12 +48,9 @@ export default function Login() {
     setFormErrors(validate(formValues));
     setIsSubmit(true);
     const data = new FormData(event.currentTarget);
-    // console.log({
-    //   id: data.get('id'),
-    //   password: data.get('password'),
-    // });
   };
 
+  //로그인 form 입력 시
   const handleChange = event => {
     console.log(event.target);
     const { name, value } = event.target;
@@ -134,10 +137,10 @@ export default function Login() {
             >
               로그인
             </Button>
-            <Grid container>
+            <Grid container justifyContent="flex-end">
               <Grid item>
                 {/* 회원가입 페이지로 연결 */}
-                <Link href="#" variant="body2">
+                <Link href="http://localhost:3000/user/signup" variant="body2">
                   회원가입
                 </Link>
               </Grid>

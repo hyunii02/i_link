@@ -36,24 +36,39 @@ export default function Update() {
     const errors = {};
     if (target.name === 'password') {
       errors.password = '비밀번호를 입력해주세요';
+      if (target.value.length > 1) {
+        errors.password = '';
+      }
     }
     if (target.name === 'new_password') {
       errors.new_password = '새로운 비밀번호를 입력해주세요';
       if (target.value.length < 6) {
         errors.new_password = '새로운 비밀번호 6자리 이상 입력해주세요';
       }
+      else {
+        errors.new_password = '';
+      }
     }
     if (target.name === 'new_check_password') {
       errors.new_check_password = '새로운 비밀번호를 다시 입력해주세요';
-      if (target.value !== formValues.password) {
+      if (target.value !== formValues.new_password) {
         errors.new_check_password = '새로운 비밀번호가 일치하지 않습니다';
+      }
+      else {
+        errors.new_check_password = '';
       }
     }
     if (target.name === 'new_username') {
       errors.new_username = '이름을 입력해주세요';
+      if (target.value.length > 1) {
+        errors.new_username = '';
+      }
     }
     if (target.name === 'new_phone_number') {
       errors.new_phone_number = '휴대폰 번호를 입력해주세요';
+      if (target.value.length > 1) {
+        errors.new_phone_number = '';
+      }
     }
     return errors;
   };
@@ -63,13 +78,6 @@ export default function Update() {
     setFormErrors(passwordCheck());
     setIsSubmit(true);
     const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    //   new_password: data.get('new_password'),
-    //   username: data.get('new_username'),
-    //   new_phone_number: data.get('new_phone_number'),
-    // });
   };
 
   const handleChange = event => {
@@ -124,24 +132,24 @@ export default function Update() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              {/* 아이디창 => 기존의 아이디 값이 입력되어있어야한다! 어떻게 하지??? */}
+              {/* 아이디창 */}
               <Grid item xs={12} sm={12}>
                 <TextField
                   required
                   fullWidth
-                  autoComplete="id"
+                  autoComplete="id" // 기존 아이디 입력 필요 => 아이디는 수정 못하게?
                   name="id"
                   id="id"
                   label="아이디"
                   autoFocus
                 />
               </Grid>
-              {/* 기존 비밀번호 입력창 => 기존의 비밀번호 값이랑 일치여부 확인해야함! 어떻게 하지???*/}
+              {/* 기존 비밀번호 입력창 */}
               <Grid item xs={12} sm={12}>
                 <TextField
                   required
                   fullWidth
-                  name="password"
+                  name="password" //기존의 비밀번호와 일치여부 확인 필요
                   label="현재 비밀번호"
                   type="password"
                   id="password"
