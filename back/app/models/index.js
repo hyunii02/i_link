@@ -14,8 +14,8 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     max: dbConfig.pool.max,
     min: dbConfig.pool.min,
     acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle
-  }
+    idle: dbConfig.pool.idle,
+  },
 });
 
 const db = {};
@@ -28,6 +28,6 @@ db.sequelize = sequelize;
 db.users = models.users;
 db.centers = models.centers;
 db.groups = models.groups;
-
+db.memos = models.memos;
 
 module.exports = db;
