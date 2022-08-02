@@ -16,14 +16,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import NativeSelect from '@mui/material/NativeSelect';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import FormHelperText from '@mui/material/FormHelperText';
+
 
 // Select components
 const BasicSelectCheck = () => {
+  const [value, setValue] = useState(10);
   const [position, setPosition] = React.useState('');
 
   const selectChange = event => {
@@ -32,15 +31,14 @@ const BasicSelectCheck = () => {
 
   return (
     <FormControl fullWidth>
-      <InputLabel id="label">Please check your position!</InputLabel>
       <Select
-        defaultValue={10}
-        value={position}
+        value={value}
         onChange={selectChange}
-        displayEmpty
         inputProps={{ 'aria-label': 'Without label' }}
       >
-        <MenuItem value={10}>부모님</MenuItem>
+        <MenuItem value={10} style={{ selected: 'true' }}>
+          부모님
+        </MenuItem>
         <MenuItem value={20}>원장님</MenuItem>
         <MenuItem value={30}>선생님</MenuItem>
       </Select>
@@ -51,11 +49,6 @@ const BasicSelectCheck = () => {
 const theme = createTheme();
 
 export default function SignUp() {
-  const [radioState, SetRadioState] = useState(0);
-  const handleRadio = data => {
-    SetRadioState(data);
-  };
-
   // validation
   const initialValues = {
     id: '',
@@ -64,20 +57,28 @@ export default function SignUp() {
     username: '',
     phone_number: '',
   };
+
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
 
+  //에러 메시지
   const validate = target => {
     console.log(target.name, target.value);
     const errors = {};
     if (target.name === 'id') {
       errors.id = '아이디를 입력해주세요.';
+      if (target.value.length > 1) {
+        errors.id = '';
+      }
     }
     if (target.name === 'password') {
       errors.password = '비밀번호를 입력해주세요';
       if (target.value.length < 6) {
         errors.password = '비밀번호 6자리 이상 입력해주세요';
+      }
+      else {
+        errors.password = '';
       }
     }
     if (target.name === 'check_password') {
@@ -85,30 +86,34 @@ export default function SignUp() {
       if (target.value !== formValues.password) {
         errors.check_password = '비밀번호가 일치하지 않습니다';
       }
+      else {
+        errors.check_password = '';
+      }
     }
     if (target.name === 'phone_number') {
       errors.phone_number = '휴대폰 번호를 입력해주세요';
+      if (target.value.length > 1) {
+        errors.phone_number = '';
+      }
     }
     if (target.name === 'username') {
       errors.username = '이름을 입력해주세요';
+      if (target.value.length > 1) {
+        errors.username = '';
+      }
     }
     return errors;
   };
 
+  //회원가입 버튼 클릭 시
   const handleSubmit = event => {
     event.preventDefault();
     setFormErrors(passwordCheck());
     setIsSubmit(true);
     const data = new FormData(event.currentTarget);
-    // console.log({
-    //   id: data.get('id'),
-    //   password: data.get('password'),
-    //   username: data.get('username'),
-    //   phone_number: data.get('phone_number'),
-    //   type: radioState,
-    // });
   };
 
+  //회원가입 form 입력 시
   const handleChange = event => {
     console.log(event.target);
     const { name, value } = event.target;
@@ -116,6 +121,7 @@ export default function SignUp() {
     console.log(event.target);
     setFormErrors(validate(event.target));
   };
+
   //submit 후 비밀번호 일치여부 확인 메시지
   const passwordCheck = () => {
     const errors = {};
@@ -160,10 +166,11 @@ export default function SignUp() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              {/* 아이디 입력창*/}
+              {/* 부모님, 원장님, 선생님 선택창 */}
               <Grid item xs={12} sm={12}>
                 <BasicSelectCheck></BasicSelectCheck>
               </Grid>
+              {/* 아이디 입력창*/}
               <Grid item xs={12} sm={12}>
                 <TextField
                   required
@@ -253,7 +260,7 @@ export default function SignUp() {
             <Grid container justifyContent="flex-end">
               {/* 로그인 페이지로 연결 */}
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="http://localhost:3000/" variant="body2">
                   아이디가 있으신가요? 로그인하기
                 </Link>
               </Grid>
