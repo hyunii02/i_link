@@ -13,7 +13,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const LayOut = (props) => {
+const LayOut = props => {
   return (
     <Box style={{ background: 'rgba(0, 0, 0, 0.05)' }}>
       <Header></Header>
