@@ -1,13 +1,13 @@
 // 원장페이지>반관리>반 리스트 출력 컴포넌트
 // create by 김국진
-import { useState } from 'react';
+import { useState, React } from 'react';
 import { Box, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import GroupDetail from '../GroupDetail';
 
-const GroupListItem = (props) => {
+const GroupListItem = props => {
   // 반 상세 보기 컴포넌트 상태 관리
   const [childView, setChildView] = useState(false);
 
@@ -16,7 +16,7 @@ const GroupListItem = (props) => {
 
   // 리스트 버튼 클릭 핸들러 => 반 디테일 컴포넌트 표시
   const listClickedHandler = () => {
-    setChildView((childView) => !childView);
+    setChildView(childView => !childView);
   };
 
   // 삭제 버튼 클릭 핸들러

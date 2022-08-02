@@ -1,10 +1,10 @@
-import React from 'react';
-import { Box } from '@mui/material';
-import RegistMemberList from '../RegistMemberList';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import React from "react";
+import { Box } from "@mui/material";
+import RegistMemberList from "../RegistKidsList";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 
-function RegistMember() {
+function RegistKids() {
   return (
     <div>
       <Box sx={{ p: 1, maxWidth: 100 }}>가입승인대기</Box>
@@ -22,4 +22,4 @@ function RegistMember() {
   );
 }
 
-export default RegistMember;
+export default RegistKids;
