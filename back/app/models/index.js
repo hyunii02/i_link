@@ -1,4 +1,7 @@
-const dbConfig = require("../config/db");
+const path = require("path");
+
+const dbConfig = require(path.join(__dirname, "..", "config", "db"));
+const initModels = require(path.join(__dirname, "init-models"));
 
 const Sequelize = require("sequelize");
 
@@ -17,11 +20,14 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 
 const db = {};
 
+const models = initModels(sequelize);
+
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.users = require("./user.js")(sequelize, Sequelize);
-db.preschool = require("./preschool")(sequelize, Sequelize);
-db.class = require("./class")(sequelize, Sequelize);
+db.users = models.users;
+db.centers = models.centers;
+db.groups = models.groups;
+
 
 module.exports = db;

@@ -1,19 +1,20 @@
 const express = require("express");
+const path = require("path");
 const cors = require("cors");
 const PORT = process.env.PORT || 8000;
 
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 
-const db = require("./models");
+// const db = require(path.join(__dirname, "models"));
 
 // Routes
-const router = require("./routes");
+const router = require(path.join(__dirname, "/routes"));
 
 const app = express();
 
 app.use(cors({
-  origin: ["http://localhost:8000"],
+  origin: ["http://localhost:3000"],
   methods: ["*"],
   credentials: true
 }));
@@ -31,7 +32,8 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-db.sequelize.sync();
+// 테이블 생성 or 수정 필요 시에만 주석 해제 후 실행
+// db.sequelize.sync({ force: true }); // force: 테이블 컬럼 수정
 
 app.use("/", router);
 
