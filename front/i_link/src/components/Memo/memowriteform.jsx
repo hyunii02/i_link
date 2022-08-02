@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-export default function WriteForm() {           //title과 content를 보여준다.
+export default function MemoWriteForm() {           //title과 content를 보여준다.
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -21,11 +21,11 @@ export default function WriteForm() {           //title과 content를 보여준�
     <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { mt: 5 },  // 텍스트필드마다 mt 5
+        '& .MuiTextField-root': { mt: 3 },  // 텍스트필드마다 mt 3
 
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'end',
       }}
       onSubmit={handleSubmit}
       noValidate
@@ -50,7 +50,7 @@ export default function WriteForm() {           //title과 content를 보여준�
           rows={10}
         />
       </div>
-      <Button sx={{ mt: 5 }} type="submit" variant="contained" color="warning">
+      <Button sx={{ mt: 5,mr:3 }} type="submit" variant="contained" color="warning">
         글 작성
       </Button>
     </Box>
