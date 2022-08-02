@@ -33,7 +33,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // 테이블 생성 or 수정 필요 시에만 주석 해제 후 실행
-// db.sequelize.sync({ force: true }); // force: 테이블 컬럼 수정
+// db.sequelize.sync({ force: true }); // force: 테이블 컬럼 수정 
 
 app.use("/", router);
 
