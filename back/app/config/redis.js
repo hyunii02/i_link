@@ -3,15 +3,22 @@ const redis = require("redis");
 require("dotenv").config();
 
 // redis 연결
-const redisClient = redis.createClient(process.env.REDIS_PORT, process.env.DB_HOST);
+const url = `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
+const redisClient = redis.createClient(
+  {
+    url,
+    password: process.env.REDIS_PASS
+  }
+);
 
 (async () => {
   await redisClient.connect();
 })();
 
-redisClient.on("connect", () => {
-  console.log("Redis Client 연결됨");
+redisClient.on("ready", () => {
+  console.log("Redis Client Ready");
 });
+
 redisClient.on("error", (err) => {
   console.log("Redis Client Error", err)
 });
