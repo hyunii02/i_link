@@ -59,3 +59,10 @@ process.on("SIGINT", () => {
     process.exit(0);
   })
 });
+
+process.on("uncaughtException", function(err){
+  console.log("uncaughtException : \n", err);
+  res.status(500).send({
+        message: err.message || "에러 발생"
+      });
+});
