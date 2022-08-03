@@ -62,14 +62,8 @@ process.on("SIGINT", () => {
 
 process.on("uncaughtException", function(err){
   console.log("uncaughtException : \n", err);
-  res.status(500).send({
-        message: err.message || "에러 발생"
-      });
 });
 
 process.on('unhandledRejection', (reason, promise) => {
     console.log("unhandledRejection : \n", reason);
-  res.status(500).send({
-        message: reason || "Rejection 발생"
-      });
 });
