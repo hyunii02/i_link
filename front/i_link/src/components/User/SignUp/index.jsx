@@ -248,7 +248,7 @@ export default function SignUp() {
             <Grid container justifyContent="flex-end">
               {/* 로그인 페이지로 연결 */}
               <Grid item>
-                <Link href="http://localhost:3000/" variant="body2">
+                <Link href="/" variant="body2">
                   아이디가 있으신가요? 로그인하기
                 </Link>
               </Grid>
