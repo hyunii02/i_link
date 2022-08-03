@@ -6,6 +6,17 @@ const Users = db.users;
 // 비밀번호 암호화
 const bcrypt = require("bcrypt");
 
+// JWT 토큰
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
+const JWT_ACCESS_TIME = process.env.JWT_ACCESS_TIME;
+const JWT_REFRESH_TIME = process.env.JWT_REFRESH_TIME;
+
+// redis
+const redisClient = require(path.join(__dirname, "..", "config", "redis"));
+
 // 회원가입
 // [post] /users/register
 exports.user_regist = function (req, res) {
@@ -59,25 +70,76 @@ exports.user_login_post = async function (req, res) {
     const password_valid = await bcrypt.compare(userPw, user.user_pw);
 
     if (password_valid) { // 로그인 성공
+
+      user.user_pw = "";
+      const access_token = jwt.sign({ userNo: user.user_no }, JWT_ACCESS_SECRET, { expiresIn: JWT_ACCESS_TIME });
+      const refresh_token = GenerateRefreshToken(user.user_no);
+
       req.session.logined = true; // 로그인 상태
       req.session.userNo = user.user_no; // 로그인 유저
 
       console.log("로그인 유저 번호: " + req.session.userNo);
-      res.redirect("/");
+      return res.json({
+        logined: true,
+        message: "로그인 성공",
+        data: { user, access_token, refresh_token }
+      });
+      
+
     }
     else { // 로그인 실패
-      res.send({ message: "비밀번호 오류" });
+      res.json({ message: "비밀번호 오류" }); 
     }
   }
   else { // 아이디가 없는 경우
-    res.send({ message: "존재하지 않는 사용자" });
+    res.json({ message: "아이디 없음" });
   }
 }
 
 
+exports.verify_token = function (req, res) {
+  return res.json({ logined: true, message: "로그인 되어 있음" });
+}
+
+exports.refresh_token = function (req, res) {
+  const user = req.body.user;
+  const access_token = jwt.sign({ userNo: user.userNo, }, JWT_ACCESS_SECRET, { expiresIn: JWT_ACCESS_TIME });
+  const refresh_token = GenerateRefreshToken(user.userNo);
+
+  return res.json({
+    logined: true,
+    message: "로그인 성공",
+    data: { user, access_token, refresh_token }
+  });
+      
+}
+
+function GenerateRefreshToken(userNo) {
+  const refresh_token = jwt.sign({ userNo: userNo,}, JWT_REFRESH_SECRET, { expiresIn: JWT_REFRESH_TIME });
+      
+  redisClient.get(userNo.toString(), (err, data) => {
+    if (err) throw err;
+    redisClient.set(userNo, JSON.stringify({ token: refresh_token }));
+  });
+      // let storedRefreshToken = refreshTokens.find(x => x.userNo === userNo);
+      // if (storedRefreshToken === undefined) {
+      //   // 토큰 추가
+      //   refreshTokens.push({
+      //     usrNo: userNo,
+      //     token: refresh_token
+      //   });
+      // } else {
+      //   // 토큰 업데이트
+      //   refreshTokens[refreshTokens.findIndex(x => x.userNo === userNo)].token = refresh_token;
+      // }
+  return refresh_token;
+}
+
+
+
 // 로그아웃
 // [get] /users/logout
-exports.user_logout = function (req, res) { 
+exports.user_logout = async function (req, res) { 
   console.log("[get] /users/logout (로그아웃)");
 
   // 쿠키 삭제
@@ -85,7 +147,17 @@ exports.user_logout = function (req, res) {
 
   // 세션 종료
   req.session.destroy();
-  res.redirect("/");
+
+  const userNo = req.body.userNo;
+
+  await redisClient.del(userNo.toString())
+    .then(() => {
+      console.log("토큰 삭제");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return res.json({ logined: false, message: "로그아웃" });
 };
 
 
