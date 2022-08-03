@@ -15,7 +15,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { postApiData, urls } from "../../../api/axios";
+//import { postApiData, urls } from "../../../api/axios";
 
 const theme = createTheme();
 
@@ -53,7 +53,7 @@ export default function Login() {
 
   // API서버에 로그인 폼을 전달하는 함수
   const handleLogin = (id, password) => {
-    const request = postApiData(urls.fetchLogin);
+    //const request = postApiData(urls.fetchLogin);
     //console.log(request);
   };
 
@@ -81,12 +81,12 @@ export default function Login() {
         >
           {/* 로고 이미지 */}
           <Avatar
-            sx={{ width: 60, height: 60 }}
+            sx={{ width: 300, height: 300 }}
             alt="Academy"
             src="/images/login.png"
           ></Avatar>
-          <Typography component="h1" variant="h5">
-            로그인
+          <Typography component="h1" variant="h3">
+            아이링크
           </Typography>
           {/* 로그인 form */}
           <Box
