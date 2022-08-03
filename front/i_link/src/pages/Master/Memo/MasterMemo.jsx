@@ -5,7 +5,7 @@ import CreateMemoForm from '../../../components/Memo/creatememoform';
 
 
 const MasterMemo = () => {
-  return <div><CreateMemoForm/></div>;
+  return <div><Album/></div>;
 };
 
 export default MasterMemo;

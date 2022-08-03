@@ -1,4 +1,5 @@
 //2022 08 02 배지우
+// +버튼 있는 메모장 한개의 컴포넌트
 
 import * as React from "react";
 import Card from "@mui/material/Card";
@@ -12,8 +13,11 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import MemoWriteForm from "./memowriteform";
+import CreateMemoForm from "./creatememoform";
 
-export default function CreateMemo() {
+export default function CreateMemo(props) {
+  const {addMemo,idCount} = props;
+  
   const style = {
     // 모달창 스타일 지정
     position: "absolute",
@@ -57,9 +61,9 @@ export default function CreateMemo() {
               aria-describedby="modal-modal-description"
             >
               <Box sx={style}>
-                <MemoWriteForm />
+                <CreateMemoForm idCount={idCount}addMemo={addMemo}/>
                 <div>
-                  <Button sx={{}} onClick={handleClose}>
+                  <Button onClick={handleClose}>
                     close
                   </Button>
                 </div>
