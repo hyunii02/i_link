@@ -10,7 +10,7 @@ const { nextTick } = require('process');
 // const db = require(path.join(__dirname, "models"));
 
 // Routes
-const router = require(path.join(__dirname, "routes"));
+const router = require(path.join(__dirname, "/routes"));
 
 const app = express();
 
