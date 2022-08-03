@@ -5,7 +5,6 @@ const PORT = process.env.PORT || 8000;
 
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const { nextTick } = require('process');
 
 // const db = require(path.join(__dirname, "models"));
 

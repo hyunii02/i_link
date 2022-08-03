@@ -17,6 +17,7 @@ const JWT_REFRESH_TIME = process.env.JWT_REFRESH_TIME;
 // redis
 const redisClient = require(path.join(__dirname, "..", "config", "redis"));
 
+
 // 회원가입
 // [post] /users/register
 exports.user_regist = function (req, res) {
@@ -76,10 +77,14 @@ exports.user_login_post = async function (req, res) {
       const refresh_token = GenerateRefreshToken(user.user_no);
 
       req.session.logined = true; // 로그인 상태
-      req.session.userNo = user.user_no; // 로그인 유저
+      req.session.user = {
+        userNo: user.user_no,
+        userName: user.user_name,
+        userType: user.user_type,
+      }
 
-      console.log("로그인 유저 번호: " + req.session.userNo);
-      return res.json({
+      console.log("로그인 유저 번호: " + req.session.user.userNo);
+      return res.status(200).json({
         logined: true,
         message: "로그인 성공",
         data: { user, access_token, refresh_token }
@@ -88,11 +93,11 @@ exports.user_login_post = async function (req, res) {
 
     }
     else { // 로그인 실패
-      res.json({ message: "비밀번호 오류" }); 
+      res.status(401).json({ message: "비밀번호 오류" }); 
     }
   }
   else { // 아이디가 없는 경우
-    res.json({ message: "아이디 없음" });
+    res.status(401).json({ message: "아이디 없음" });
   }
 }
 
@@ -100,6 +105,7 @@ exports.user_login_post = async function (req, res) {
 exports.verify_token = function (req, res) {
   return res.json({ logined: true, message: "로그인 되어 있음" });
 }
+
 
 exports.refresh_token = function (req, res) {
   const user = req.body.user;
@@ -114,6 +120,7 @@ exports.refresh_token = function (req, res) {
       
 }
 
+
 function GenerateRefreshToken(userNo) {
   const refresh_token = jwt.sign({ userNo: userNo,}, JWT_REFRESH_SECRET, { expiresIn: JWT_REFRESH_TIME });
       
@@ -121,20 +128,9 @@ function GenerateRefreshToken(userNo) {
     if (err) throw err;
     redisClient.set(userNo, JSON.stringify({ token: refresh_token }));
   });
-      // let storedRefreshToken = refreshTokens.find(x => x.userNo === userNo);
-      // if (storedRefreshToken === undefined) {
-      //   // 토큰 추가
-      //   refreshTokens.push({
-      //     usrNo: userNo,
-      //     token: refresh_token
-      //   });
-      // } else {
-      //   // 토큰 업데이트
-      //   refreshTokens[refreshTokens.findIndex(x => x.userNo === userNo)].token = refresh_token;
-      // }
+
   return refresh_token;
 }
-
 
 
 // 로그아웃
