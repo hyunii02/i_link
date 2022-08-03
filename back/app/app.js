@@ -5,13 +5,23 @@ const PORT = process.env.PORT || 8000;
 
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const { nextTick } = require('process');
 
 // const db = require(path.join(__dirname, "models"));
 
 // Routes
-const router = require(path.join(__dirname, "/routes"));
+const router = require(path.join(__dirname, "routes"));
 
 const app = express();
+
+let isDisableKeepAlive = false;
+
+app.use((req, res, next) => {
+  if (isDisableKeepAlive) {
+    res.set("Connection", "close");
+  }
+  next()
+});
 
 app.use(cors({
   origin: ["http://localhost:3000"],
@@ -38,5 +48,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/", router);
 
 app.listen(PORT, () => {
+  process.send("ready");
   console.log(`server is running on PORT ${PORT}`);
+});
+
+process.on("SIGINT", () => {
+  isDisableKeepAlive = true
+  app.close(() => {
+    console.log("Server closed.");
+    process.exit(0);
+  })
 });
