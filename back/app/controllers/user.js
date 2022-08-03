@@ -42,8 +42,9 @@ exports.user_regist = function (req, res) {
       res.send(data);
     })
     .catch(err => {
-      res.status(500).send({
-        message: err.message || "회원가입 실패"
+      res.status(400).json({
+        errormessage: err.message,
+        message: "회원 가입 실패."
       });
     });
 }
@@ -63,7 +64,13 @@ exports.user_login_post = async function (req, res) {
   const userPw = req.body.userPw;
 
   // 입력된 이메일로 사용자 찾기
-  const user = await Users.findOne({ where: { user_email: userEmail } });
+  const user = await Users.findOne({ where: { user_email: userEmail } })
+                      .catch(err => {
+                        res.status(400).json({
+                          errormessage: err.message,
+                          message: "잘못된 요청입니다."
+                        });
+                      });
 
   if (user) { // 아이디가 있는 경우
 
@@ -93,11 +100,11 @@ exports.user_login_post = async function (req, res) {
 
     }
     else { // 로그인 실패
-      res.status(401).json({ message: "비밀번호 오류" }); 
+      res.status(400).json({ message: "비밀번호 오류" }); 
     }
   }
   else { // 아이디가 없는 경우
-    res.status(401).json({ message: "아이디 없음" });
+    res.status(400).json({ message: "아이디 없음" });
   }
 }
 
@@ -164,7 +171,13 @@ exports.user_detail = async function (req, res) {
   const userNo = req.params.user_no;
 
   // pk로 사용자 정보 조회
-  const user = await Users.findByPk(userNo);
+  const user = await Users.findByPk(userNo)
+    .catch(err => {
+    res.status(400).json({
+      errormessage: err.message,
+      message: "잘못된 요청입니다."
+    });
+  });
 
   if (user === null) {
     console.log("사용자를 찾을 수 없습니다.");
@@ -194,7 +207,7 @@ exports.user_update = async function (req, res) {
     center_no: req.body.centerNo ? req.body.centerNo : null,
   }
   
-  Users.update(user, { where: { user_no: userNo }, individualHooks: true })
+  await Users.update(user, { where: { user_no: userNo }, individualHooks: true })
     .then(result => {
       if (result[0] === 1) { // 수정 완료
         console.log("회원 수정 완료");
@@ -206,8 +219,9 @@ exports.user_update = async function (req, res) {
       }
     })
     .catch(err => {
-      res.status(500).send({
-        message: "회원 수정 실패"
+      res.status(400).json({
+        errormessage: err.message,
+        message: "회원 수정 실패."
       });
     });
 };
@@ -231,8 +245,9 @@ exports.user_remove = async function (req, res) {
       }
     })
     .catch(err => {
-      res.status(500).send({
-        message: "회원 탈퇴 실패"
+      res.status(400).json({
+        errormessage: err.message,
+        message: "회원 탈퇴 실패."
       });
     });
 }
