@@ -39,42 +39,6 @@ const detail = [
     src: "/images/avatar/gora.png",
     state: 2,
   },
-  {
-    id: 7,
-    name: "한지우",
-    src: "",
-    state: 0,
-  },
-  {
-    id: 8,
-    name: "둘지우",
-    src: "",
-    state: 0,
-  },
-  {
-    id: 9,
-    name: "셋지우",
-    src: "",
-    state: 0,
-  },
-  {
-    id: 10,
-    name: "넷지우",
-    src: "",
-    state: 0,
-  },
-  {
-    id: 11,
-    name: "다섯지우",
-    src: "",
-    state: 0,
-  },
-  {
-    id: 12,
-    name: "여섯지우",
-    src: "",
-    state: 0,
-  },
 ];
 
 const TeacherManagement = () => {
