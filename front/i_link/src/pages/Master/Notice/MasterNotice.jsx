@@ -1,10 +1,10 @@
 import React from 'react';
-import WriteForm from '../../../components/Notice/writeform';
+import NoticeWriteForm from '../../../components/Notice/noticewriteform';
 
 const MasterNotice = () => {
   return (
     <div>
-      <WriteForm />
+      <NoticeWriteForm />
     </div>
   );
 };
