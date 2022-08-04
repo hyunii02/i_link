@@ -8,13 +8,16 @@ const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 
 
-function verifyToken (req, res) {
+// 토큰 검증
+function verifyToken (req, res, next) {
   try {
-    // Bearer tokenstring
+    // Bearer [access-token]
     const token = req.headers.authorization.split(' ')[1];
     
     const decoded = jwt.verify(token, JWT_ACCESS_SECRET);
-    req.body.userNo = decoded.userNo;
+    req.body.user.userNo = decoded.userNo;
+
+    next();
   } catch (err) {
     return res.status(401).json({
       logined: false,
@@ -25,22 +28,28 @@ function verifyToken (req, res) {
 }
 
 
+// 갱신 토큰 검증
 function verifyRefreshToken (req, res, next) {
   const token = req.body.token;
-
   if (token === null) {
     return res.status(401).json({
       logined: false,
       message: "잘못된 요청"
     }); 
   }
-
+  
   try {
     const decoded = jwt.verify(token, JWT_REFRESH_SECRET);
-    req.body.userNo = decoded.userNo;
-
-    redisClient.get(decoded.userNo, (err, data) => { // integer도 toString()?
-      if (err) throw err;
+    req.body.user.userNo = decoded.userNo;
+    
+    redisClient.get(decoded.userNo.toString(), (err, data) => {
+      if (err) {
+        // throw err;
+        console.log(err.message);
+        return res.status(500).json({
+          message: "DB에서 토큰 가져오기 실패"
+        });
+      }
       if (data === null) {
         return res.status(401).json({
           logined: false,
@@ -53,14 +62,15 @@ function verifyRefreshToken (req, res, next) {
           message: "토큰이 일치하지 않음"
         });
       }
-    })
+    });
 
     next();
+
   } catch (err) {
     return res.status(401).json({
       logined: false,
       message: "세션이 유효하지 않습니다.",
-      data: err
+      data: err.message
     });
   }
 }

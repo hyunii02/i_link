@@ -20,7 +20,7 @@ const redisClient = require(path.join(__dirname, "..", "config", "redis"));
 
 // 회원가입
 // [post] /users/register
-exports.user_regist = function (req, res) {
+exports.user_regist = async function (req, res) {
 
 // *** Content-Type: application/json
 
@@ -36,7 +36,7 @@ exports.user_regist = function (req, res) {
     center_no: req.body.centerNo ? req.body.centerNo : null,
   }
 
-  Users.create(user)
+  await Users.create(user)
     .then(data => {
       console.log("회원가입 완료");
       res.send(data);
@@ -51,12 +51,6 @@ exports.user_regist = function (req, res) {
 
 
 // 로그인
-// [get]  /users/login
-exports.user_login_get = function (req, res) { 
-    res.send("[get] /user/login (로그인 페이지)");
-}
-
-
 // [post] /users/login
 exports.user_login_post = async function (req, res) {
 
@@ -64,7 +58,7 @@ exports.user_login_post = async function (req, res) {
   const userPw = req.body.userPw;
 
   // 입력된 이메일로 사용자 찾기
-  const user = await Users.findOne({ where: { user_email: userEmail } })
+  let user = await Users.findOne({ where: { user_email: userEmail } })
                       .catch(err => {
                         res.status(400).json({
                           errormessage: err.message,
@@ -79,22 +73,28 @@ exports.user_login_post = async function (req, res) {
 
     if (password_valid) { // 로그인 성공
 
-      user.user_pw = "";
-      const access_token = jwt.sign({ userNo: user.user_no }, JWT_ACCESS_SECRET, { expiresIn: JWT_ACCESS_TIME });
-      const refresh_token = GenerateRefreshToken(user.user_no);
-
-      req.session.logined = true; // 로그인 상태
-      req.session.user = {
+      // front에 전달할 사용자 객체에 필요한 데이터만 적재
+      user = {
         userNo: user.user_no,
         userName: user.user_name,
         userType: user.user_type,
       }
 
-      console.log("로그인 유저 번호: " + req.session.user.userNo);
+      const access_token = jwt.sign({ userNo: user.userNo }, JWT_ACCESS_SECRET, { expiresIn: JWT_ACCESS_TIME });
+      const refresh_token = GenerateRefreshToken(user.userNo);
+      
+      // req.session.logined = true; // 로그인 상태
+      // req.session.user = user;
+
+      // 헤더에 jwt 토큰 전송
+      res.setHeader("Authorization", "Bearer " + access_token);
+      // redis에 갱신 토큰 저장
+      redisClient.set(user.userNo.toString(), JSON.stringify({ token: refresh_token }));
+
       return res.status(200).json({
         logined: true,
         message: "로그인 성공",
-        data: { user, access_token, refresh_token }
+        data: { user, token: { access_token, refresh_token } },
       });
       
 
@@ -109,33 +109,41 @@ exports.user_login_post = async function (req, res) {
 }
 
 
+// 토큰 검증(test) // TODO: 경로 설정 고민
+// [get]  /users
 exports.verify_token = function (req, res) {
+  // *** front에서 Header에 입력할 값 ***
+  // Authorization: Bearer [access token] 
   return res.json({ logined: true, message: "로그인 되어 있음" });
 }
 
 
+// 토큰 갱신
+// [post] /users/token
 exports.refresh_token = function (req, res) {
+
   const user = req.body.user;
+  console.log(user);
   const access_token = jwt.sign({ userNo: user.userNo, }, JWT_ACCESS_SECRET, { expiresIn: JWT_ACCESS_TIME });
   const refresh_token = GenerateRefreshToken(user.userNo);
 
-  return res.json({
+  return res.status(200).json({
     logined: true,
     message: "로그인 성공",
-    data: { user, access_token, refresh_token }
+    data: { user, token: { access_token, refresh_token } },
   });
-      
 }
 
 
+// 갱신 토큰 발급
 function GenerateRefreshToken(userNo) {
   const refresh_token = jwt.sign({ userNo: userNo,}, JWT_REFRESH_SECRET, { expiresIn: JWT_REFRESH_TIME });
       
   redisClient.get(userNo.toString(), (err, data) => {
     if (err) throw err;
-    redisClient.set(userNo, JSON.stringify({ token: refresh_token }));
+    console.log("갱신 토큰 발급 완료");
+    redisClient.set(userNo.toString(), JSON.stringify({ token: refresh_token }));
   });
-
   return refresh_token;
 }
 
@@ -146,12 +154,12 @@ exports.user_logout = async function (req, res) {
   console.log("[get] /users/logout (로그아웃)");
 
   // 쿠키 삭제
-  res.clearCookie("connect.sid");
+  // res.clearCookie("connect.sid");
 
   // 세션 종료
-  req.session.destroy();
+  // req.session.destroy();
 
-  const userNo = req.body.userNo;
+  const userNo = req.body.user.userNo;
 
   await redisClient.del(userNo.toString())
     .then(() => {

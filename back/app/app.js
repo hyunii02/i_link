@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 8000;
 
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const fileStore = require("session-file-store")(session);
 
 // const db = require(path.join(__dirname, "models"));
 
@@ -35,7 +36,9 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     expires: 60 * 60 * 24,
+    httpOnly: true,
   },
+  store: new fileStore()
 }));
 
 app.use(express.json());
