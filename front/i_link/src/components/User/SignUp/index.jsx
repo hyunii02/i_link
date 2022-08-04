@@ -94,7 +94,6 @@ export default function SignUp() {
   };
   // 드롭다운 값 변경
   const handleSelect = (val) => {
-    alert(val);
     setFormValues({ ...formValues, type: val });
   };
 
