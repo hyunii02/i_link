@@ -66,7 +66,16 @@ app.use("/", router);
 //   console.log(`server is running on PORT ${PORT}`);
 // });
 http.createServer(app).listen(PORT);
-https.createServer(credentials, app).listen(8001);
+https.createServer(credentials, app).listen(8443);
+app.use(function (req, res, next) {
+  if (req.secure) {
+    // request was via https, so do no special handling
+    next();
+  } else {
+    // request was via http, so redirect to https
+    res.redirect("https://" + req.headers.host + req.url);
+  }
+});
 
 process.on("SIGINT", () => {
   isDisableKeepAlive = true;
