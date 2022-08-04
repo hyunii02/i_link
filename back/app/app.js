@@ -8,6 +8,15 @@ const session = require("express-session");
 
 // const db = require(path.join(__dirname, "models"));
 
+// https 적용 세팅
+const https = require("https");
+const fs = require("fs");
+
+var privateKey = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/privkey.pem");
+var certificate = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/cert.pem");
+var ca = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/fullchain.pem");
+const credentials = { key: privateKey, cert: certificate, ca: ca };
+
 // Routes
 const router = require(path.join(__dirname, "routes"));
 
@@ -25,7 +34,7 @@ app.use((req, res, next) => {
 app.use(
   cors({
     origin: "*",
-    methods: ["*"],
+    methods: "*",
     credentials: true,
   }),
 );
@@ -57,7 +66,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use("/", router);
 
-app.listen(PORT, () => {
+https.createServer(credentials, app).listen(PORT, () => {
   process.send("ready");
   console.log(`server is running on PORT ${PORT}`);
 });
