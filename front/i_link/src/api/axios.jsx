@@ -1,6 +1,6 @@
 // 2022.08.03 강민재 구조 수정
 
-const baseURL = "http://i7e102.p.ssafy.io:8000";
+const baseURL = "https://i7e102.p.ssafy.io:8000";
 
 const urls = {
   fetchLogin: "/users/login",
