@@ -1,6 +1,7 @@
 // 2022.07.27 배지우 //
 // 2022.07.29 안정현 validation //
 // 2022.08.01 안정현 select components //
+// 2022.08.04 김국진 로고 변경, 컴포넌트 사이즈 수정, input box 배경색 하얀색으로 변경 //
 
 import React from "react";
 import { useState } from "react";
@@ -26,8 +27,8 @@ import Select from "@mui/material/Select";
 const BasicSelectCheck = ({ handleSelect }) => {
   const [value, setValue] = useState("3");
   const selectChange = (event) => {
-    setValue(event.target.value);
-    handleSelect(value);
+    setValue((value) => event.target.value);
+    handleSelect(event.target.value);
   };
 
   return (
@@ -35,6 +36,7 @@ const BasicSelectCheck = ({ handleSelect }) => {
       <Select
         value={value}
         onChange={selectChange}
+        sx={{ background: "white" }}
         inputProps={{ "aria-label": "Without label" }}
       >
         <MenuItem value="3">부모님</MenuItem>
@@ -92,6 +94,7 @@ export default function SignUp() {
   };
   // 드롭다운 값 변경
   const handleSelect = (val) => {
+    alert(val);
     setFormValues({ ...formValues, type: val });
   };
 
@@ -110,7 +113,7 @@ export default function SignUp() {
       try {
         const response = await axios.post(
           baseURL + urls.fetchUsersRegister,
-          body
+          body,
         );
         navigate("/");
       } catch (err) {}
@@ -137,9 +140,9 @@ export default function SignUp() {
         >
           {/* 로고 이미지 */}
           <Avatar
-            sx={{ width: 60, height: 60 }}
+            sx={{ width: 300, height: 300 }}
             alt="Academy"
-            src="/images/login.png"
+            src="/images/logo.png"
           ></Avatar>
           <Typography component="h1" variant="h5">
             회원가입
@@ -170,6 +173,7 @@ export default function SignUp() {
                   autoFocus
                   value={formValues.email}
                   onChange={handleChange}
+                  sx={{ background: "white" }}
                 />
                 <p>{formErrors.email}</p>
               </Grid>
@@ -185,6 +189,7 @@ export default function SignUp() {
                   autoComplete="new-password"
                   value={formValues.password}
                   onChange={handleChange}
+                  sx={{ background: "white" }}
                 />
                 <p>{formErrors.password}</p>
               </Grid>
@@ -200,6 +205,7 @@ export default function SignUp() {
                   autoComplete="check_password"
                   value={formValues.check_password}
                   onChange={handleChange}
+                  sx={{ background: "white" }}
                 />
                 <p>{formErrors.check_password}</p>
               </Grid>
@@ -214,6 +220,7 @@ export default function SignUp() {
                   autoComplete="username"
                   value={formValues.username}
                   onChange={handleChange}
+                  sx={{ background: "white" }}
                 />
                 <p>{formErrors.username}</p>
               </Grid>
@@ -228,6 +235,7 @@ export default function SignUp() {
                   autoComplete="phone_number"
                   value={formValues.phone_number}
                   onChange={handleChange}
+                  sx={{ background: "white" }}
                 />
                 <p>{formErrors.phone_number}</p>
               </Grid>

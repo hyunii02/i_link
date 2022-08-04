@@ -15,15 +15,19 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const LayoutWithoutHeader = (props) => {
   return (
-    <Box style={{ background: colorPalette.BACKGROUND_COLOR }}>
-      <Header></Header>
+    <Box
+      sx={{
+        background: colorPalette.BACKGROUND_COLOR,
+        height: "100%",
+        minHeight: "785px",
+      }}
+    >
       <Container maxwidth="fluid" style={{ marginTop: 10 }}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <Box
               style={{
                 width: "100%",
-                height: 800,
               }}
             >
               <Outlet />

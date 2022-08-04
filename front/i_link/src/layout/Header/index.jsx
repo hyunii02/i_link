@@ -1,5 +1,7 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
+// Header Layout
+// 2022.08.04 김국진 헤더 레이아웃 NavBar Link 작업
+import { useEffect, useState, useContext } from "react";
+import { sidebar } from "../../constants/constants";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -11,15 +13,17 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-import { sidebar } from "../../constants/constants";
+import { Link } from "react-router-dom";
+import { UserContext } from "../../context/user";
 
-const pages = ['원생관리','식단간식'];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Header = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [navBar, setNavBar] = useState([]);
+
+  const { userType } = useContext(UserContext);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -36,35 +40,32 @@ const Header = () => {
     setAnchorElUser(null);
   };
 
+  const logoClickHandler = () => {
+    alert("wef");
+  };
+
+  // 페이지 렌더링 시 회원 타입에 따라 다른 NavBar를 보여주는 동작
+  useEffect(() => {
+    // NavBar 표시
+    setNavBar((navBar) => sidebar[parseInt(userType) - 1]);
+  }, []);
+
   return (
     <Box>
       {/* 헤더색 투명하게 */}
-      <Box position="static" style={{ background: "rgba(52, 52, 52, 0)" }}> 
+      <Box position="static" style={{ background: "rgba(52, 52, 52, 0)" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
+            {/* LOGO IMAGE */}
             <Avatar
-              sx={{ width: 100, height: 100 }}
+              sx={{ width: 100, height: 100, cursor: "pointer" }}
               alt="Academy"
               src="/images/logo.png"
+              onClick={logoClickHandler}
             ></Avatar>
-            {/* <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: 'HSSaemaul-Regular',
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              아이링크
-            </Typography> */}
+
+            {/* 여기 파트는 화면 사이즈 줄었을 때 NavBar 드롭다운으로 나타내게하는 컴포넌트 기능. 일단은 사용안할것같아 주석처리만 */}
+            {/*
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
@@ -95,32 +96,15 @@ const Header = () => {
                   background: "black",
                 }}
               >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
+                {navBar.map((page) => (
+                  <MenuItem key={page.id} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page.name}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
             </Box>
-            {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href=""
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              i-link
-            </Typography>
+            */}
+            {/* NavBar 구현 박스 */}
             <Box
               style={{
                 display: "flex",
@@ -130,22 +114,30 @@ const Header = () => {
               }}
               sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
             >
-              {pages.map((page) => (
+              {/* 회원 타입에 맞는 NavBar 디스플레이 Part */}
+              {navBar.map((page) => (
                 <Button
-                  key={page}
+                  key={page.id}
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block", mr: 4 }}
+                  sx={{ my: 2, color: "black", display: "block", mr: 4 }}
                   size="small"
                 >
-                  <Typography
-                    id="font_test"
-                    variant="h5"
-                    textDecoration="none"
-                    noWrap
-                    href=""
-                    color="black"                  >
-                    {page}
-                  </Typography>
+                  <Link
+                    href="#"
+                    to={page.path}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Typography
+                      id="font_test"
+                      variant="h5"
+                      textDecoration="none"
+                      noWrap
+                      href="/teacher/management"
+                      color="rgba(0, 0, 0, 0.5)"
+                    >
+                      {page.name}
+                    </Typography>
+                  </Link>
                 </Button>
               ))}
             </Box>
