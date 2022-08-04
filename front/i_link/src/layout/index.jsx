@@ -2,7 +2,6 @@ import * as React from "react";
 import { Box, Container, Grid, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Header from "./Header";
-import SideBar from "./Sidebar";
 import { Outlet } from "react-router-dom";
 import { colorPalette } from "../constants/constants";
 

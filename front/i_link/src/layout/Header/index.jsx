@@ -15,6 +15,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/user";
+import Logout from "../../components/User/Logout";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -171,6 +172,7 @@ const Header = () => {
                 ))}
               </Menu>
             </Box>
+            <Logout />
           </Toolbar>
         </Container>
       </Box>
