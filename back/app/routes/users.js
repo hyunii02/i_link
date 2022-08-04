@@ -16,7 +16,7 @@ router.post("/token", auth.verifyRefreshToken, userController.refresh_token);
  * paths:
  *  /users/register:
  *    post:
- *      summary: "유저 회원가입"
+ *      summary: "회원가입"
  *      description: "post 방식으로 회원 가입"
  *      tags: [Users]
  *      requestBody:
@@ -80,7 +80,7 @@ router.get("/login", userController.user_login_get); // test용
  * paths:
  *  /users/login:
  *    post:
- *      summary: "유저 로그인"
+ *      summary: "로그인"
  *      description: "post 방식으로 로그인"
  *      tags: [Users]
  *      requestBody:
@@ -139,7 +139,7 @@ router.post("/login", userController.user_login_post);
  * paths:
  *  /users/logout:
  *    get:
- *      summary: "유저 로그아웃"
+ *      summary: "로그아웃"
  *      description: "get 방식으로 로그아웃"
  *      tags: [Users]
  *      responses:
@@ -229,7 +229,7 @@ router.get("/:user_no", userController.user_detail);
  * paths:
  *  /users/{user_no}:
  *    put:
- *      summary: "유저 회원 정보 수정"
+ *      summary: "회원 정보 수정"
  *      description: "put 방식으로 회원 정보 수정"
  *      tags: [Users]
  *      parameters:
@@ -240,7 +240,7 @@ router.get("/:user_no", userController.user_detail);
  *          schema:
  *            type: integer
  *      requestBody:
- *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (유저 회원가입)
+ *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (회원 수정)
  *          required: true
  *          content:
  *            application/x-www-form-urlencoded:
