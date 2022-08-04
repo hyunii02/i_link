@@ -1,32 +1,67 @@
+// 원생관리에 쓸 프로필
+// create by 김국진
+import { useState } from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box, Grid, IconButton, Badge } from "@mui/material";
-import TouchAppIcon from "@mui/icons-material/TouchApp";
-import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStation";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import { styled } from "@mui/material/styles";
 
+// 알림 뱃지 스타일링
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
-    right: -3,
-    top: 13,
+    right: 10,
+    top: 10,
     border: `2px solid ${theme.palette.background.paper}`,
     padding: "0 4px",
+    width: 30,
+    height: 30,
+    cursor: "pointer",
   },
 }));
 
 const Member = (props) => {
+  // page에서 가져온 원생 정보
   const { student } = props;
+  const [studentState, setStudentState] = useState(student);
+  // 버튼에 넣어줘야 할 텍스트
+  const buttonText = ["등원완료", "하원완료", "설문완료"];
+
+  // 버튼 클릭 이벤트 핸들러. 버튼 클릭에 따라 원생의 상태 변경
+  const buttonClickHandler = (e) => {
+    // 불변성유지
+    setStudentState({
+      ...studentState,
+      // 버튼의 value값 읽어와 state 저장
+      state: e.currentTarget.value,
+    });
+  };
+
+  // 우측 상단 뱃지 클릭 이벤트 핸들러
+  const badgeClickHandler = (e) => {
+    // 뱃지를 클릭했는지 유효성 검사
+    if (e.target === e.currentTarget.children[1]) {
+      alert(`${student.name}의 특이사항`);
+    }
+  };
 
   return (
-    <StyledBadge color="secondary" badgeContent="3">
+    /* 프로필 사진 특이사항 뱃지 */
+    <StyledBadge
+      color="secondary"
+      badgeContent="3"
+      onClick={badgeClickHandler}
+      invisible={false}
+      value="se"
+      className="badge"
+    >
+      {/* Card 메인 폼 */}
       <Card sx={{ maxWidth: 345 }}>
+        {/* Card 사진 이미지 파트 */}
         <CardMedia component="img" height="150" src={student.src} />
+        {/* Card 이름 파트 */}
         <CardContent
           style={{
             display: "flex",
@@ -37,6 +72,7 @@ const Member = (props) => {
         >
           <Typography variant="h5">{student.name}</Typography>
         </CardContent>
+        {/* Card 버튼 파트 */}
         <Box
           style={{
             display: "flex",
@@ -46,39 +82,22 @@ const Member = (props) => {
           }}
         >
           <Grid container style={{ marginLeft: "2px" }}>
-            <Grid item xs={4}>
-              {student.state === 1 ? (
-                <Button variant="contained" size="small">
-                  등원완료
+            {buttonText.map((text, index) => (
+              <Grid item xs={4} key={index}>
+                <Button
+                  variant={
+                    parseInt(studentState.state) === index + 1
+                      ? "contained"
+                      : "outlined"
+                  }
+                  value={index + 1}
+                  size="small"
+                  onClick={buttonClickHandler}
+                >
+                  <Typography variant="body2">{text}</Typography>
                 </Button>
-              ) : (
-                <Button variant="outlined" size="small">
-                  등원완료
-                </Button>
-              )}
-            </Grid>
-            <Grid item xs={4}>
-              {student.state === 2 ? (
-                <Button variant="contained" size="small">
-                  하원완료
-                </Button>
-              ) : (
-                <Button variant="outlined" size="small">
-                  하원완료
-                </Button>
-              )}
-            </Grid>
-            <Grid item xs={4}>
-              {student.state === 3 ? (
-                <Button variant="contained" size="small">
-                  설문완료
-                </Button>
-              ) : (
-                <Button variant="outlined" size="small">
-                  설문완료
-                </Button>
-              )}
-            </Grid>
+              </Grid>
+            ))}
           </Grid>
         </Box>
       </Card>

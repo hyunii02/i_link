@@ -21,6 +21,7 @@ import ParentsHome from './pages/Parents/Home/ParentsHome';
 import ParentsNotice from './pages/Parents/Notice/ParentsNotice';
 import ParentsQuiz from './pages/Parents/Quiz/ParentsQuiz';
 import ParentsRegistKid from './pages/Parents/RegistKid/ParentsRegistKid';
+import ParentsRepo from "./pages/Parents/Repo/ParentsRepo";
 import TeacherDiet from './pages/Teacher/Diet/TeacherDiet';
 import TeacherManagement from './pages/Teacher/Management/TeacherManagement';
 import TeacherDetail from './pages/Teacher/Detail/TeacherDetail';
@@ -28,7 +29,7 @@ import TeacherMemo from './pages/Teacher/Memo/TeacherMemo';
 import TeacherNotice from './pages/Teacher/Notice/TeacherNotice';
 import TeacherQuiz from './pages/Teacher/Quiz/TeacherQuiz';
 import Error from './pages/Error/Error';
-import LayoutWithoutSidebar from './layout/WithoutSidebar';
+import LayoutWithoutHeader from './layout/WithoutHeader';
 import { UserProvider } from './context/user';
 
 const App = () => {
@@ -36,7 +37,7 @@ const App = () => {
     <UserProvider>
       <Routes>
         {/* 사이드바 없는 화면(로그인, 회원가입, 회원정보수정) */}
-        <Route element={<LayoutWithoutSidebar />}>
+        <Route element={<LayoutWithoutHeader />}>
           <Route path="/" element={<UserLogin />} />
           <Route path="/user/signup" element={<UserSignUp />} />
           <Route path="/user/update" element={<UserUpdate />} />
@@ -56,6 +57,7 @@ const App = () => {
           <Route path="/parents/notice" element={<ParentsNotice />} />
           <Route path="/parents/quiz" element={<ParentsQuiz />} />
           <Route path="/parents/registkid" element={<ParentsRegistKid />} />
+          <Route path="/parents/repo" element={<ParentsRepo />} />
           {/* 선생님 */}
           <Route path="/teacher/detail" element={<TeacherDetail />} />
           <Route path="/teacher/diet" element={<TeacherDiet />} />
