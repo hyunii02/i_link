@@ -32,7 +32,32 @@ exports.kid_regist = async function (req, res) {
 };
 
 // 자녀 유치원 등록
-exports.kid_center_regist = function (req, res) {};
+// [put] /kids/register
+exports.kid_center_regist = async function (req, res) {
+  const kidNo = req.body.kidNo;
+
+  // 검색해서 나온 유치원 번호
+  const centerNo = req.body.centerNo;
+
+  await Kids.update({ center_no: centerNo }, { where: { kid_no: kidNo } })
+    .then((result) => {
+      if (result[0] === 1) {
+        // 유치원 등록 완료
+        res.status(200).json({ message: "유치원 등록 완료, 승인 대기 상태" });
+        // 승인 구분: 원생의 유치원은 등록되어 있으나 반이 등록되어 있지 않다면 승인 대기 상태임.
+      } else {
+        // 유치원 등록 실패
+        res.status(400).json({
+          message: "요청 오류 발생",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: "유치원 등록 실패",
+      });
+    });
+};
 
 // 반별 원생 목록 조회
 exports.kid_class_list = function (req, res) {};
