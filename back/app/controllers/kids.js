@@ -80,7 +80,25 @@ exports.kid_class_list = async function (req, res) {
 };
 
 // 원생 조회
-exports.kid_detail = function (req, res) {};
+// [get] /kids/:kidNo
+exports.kid_detail = async function (req, res) {
+  const kidNo = req.params.kidNo;
+  const kid = await Kids.findByPk(kidNo).catch((err) => {
+    res.status(400).json({
+      errormessage: err.message,
+      message: "잘못된 요청입니다.",
+    });
+  });
+
+  if (kid === null) {
+    res.status(400).json({
+      message: "사용자를 찾을 수 없습니다.",
+    });
+  } else {
+    // 검색 성공
+    res.status(200).json(kid);
+  }
+};
 
 // 원생 수정
 exports.kid_update = function (req, res) {};
