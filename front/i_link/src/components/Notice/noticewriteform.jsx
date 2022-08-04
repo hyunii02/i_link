@@ -1,38 +1,45 @@
 //2022 08 01 배지우작성
 
+import * as React from "react";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import { useState } from "react";
 
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+export default function NoticeWriteForm(props) {
 
-export default function NoticeWriteForm() {           //title과 content를 보여준다.
+
+  const [noticeTitle, setNoticeTitle] = useState("");
+  const [noticeContent, setNoticeContent] = useState("");
+  const { addNotice, idCount } = props;
+  
+  // 정보를 보내는 함수
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    
-    console.log({
-      title: data.get('title'),
-      content: data.get('content'),
-    });
+    const noticeData = {
+      notice_id: idCount,
+      notice_title: noticeTitle,
+      notice_content: noticeContent,
+    };
+    addNotice(noticeData);
   };
 
   return (
     <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { mt: 5 },  // 텍스트필드마다 mt 5
+        "& .MuiTextField-root": { mt: 5 }, // 텍스트필드마다 mt 5
 
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
       }}
-      onSubmit={handleSubmit}
       noValidate
       autoComplete="off"
     >
       <div>
         <TextField
+          onChange={(e) => setNoticeTitle(e.target.value)}
           fullWidth
           label="제목"
           id="title"
@@ -42,6 +49,7 @@ export default function NoticeWriteForm() {           //title과 content를 보�
         />
 
         <TextField
+          onChange={(e) => setNoticeContent(e.target.value)}
           fullWidth
           id="content"
           name="content"
@@ -50,7 +58,13 @@ export default function NoticeWriteForm() {           //title과 content를 보�
           rows={10}
         />
       </div>
-      <Button sx={{ mt: 5 }} type="submit" variant="contained" color="warning">
+      <Button
+        onClick={handleSubmit}
+        sx={{ mt: 5 }}
+        type="submit"
+        variant="contained"
+        color="warning"
+      >
         글 작성
       </Button>
     </Box>

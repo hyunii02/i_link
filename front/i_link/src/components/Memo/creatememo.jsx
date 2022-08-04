@@ -1,5 +1,6 @@
 //2022 08 02 배지우
 // +버튼 있는 메모장 한개의 컴포넌트
+// index -> creatememo -> creatememoform -> addmemocomponent
 
 import * as React from "react";
 import Card from "@mui/material/Card";
@@ -12,7 +13,6 @@ import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
-import MemoWriteForm from "./memowriteform";
 import CreateMemoForm from "./creatememoform";
 
 export default function CreateMemo(props) {
@@ -31,7 +31,8 @@ export default function CreateMemo(props) {
     boxShadow: 24,
     p: 4,
   };
-  const [open, setOpen] = useState(false); //모달창 열고닫기 관리
+  //모달창 열고닫기 관리
+  const [open, setOpen] = useState(false); 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
