@@ -1,4 +1,5 @@
 // 모달창을 열었을때, 메모 작성 폼
+// index -> creatememo -> creatememoform -> addmemocomponent 
 
 import React from "react";
 import { useState } from "react";
@@ -16,6 +17,7 @@ const CreateMemoForm = (props) => {
   const [contentList, setContentList] = useState([]);
   const { addMemo, idCount } = props;
 
+  // 엔터누를때마다 값을 하나씩 저장.
   const keyDownHandler = (e) => {
   
 
