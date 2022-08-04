@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 import Header from "./Header";
 import SideBar from "./Sidebar";
 import { Outlet } from "react-router-dom";
+import { colorPalette } from "../constants/constants";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -15,13 +16,12 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const LayOut = (props) => {
   return (
-    <Box style={{ background: "#f1d2d2", height: "fit-content" }}>
+    <Box style={{ background: colorPalette.BACKGROUND_COLOR, height: "fit-content" }}>
       <Header></Header>
       <Container maxwidth="fluid" style={{ marginTop: 10 }}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <Box
-              sx
               style={{
                 width: "100%",
               }}
