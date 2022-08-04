@@ -1,7 +1,14 @@
-import React from 'react';
+import React from "react";
+import CalendarMonthMove from "../../../components/Calendar/MonthMove";
+import CalendarMonth from "../../../components/Calendar/Month";
 
 const TeacherDiet = () => {
-  return <div>TeacherDiet</div>;
+  return (
+    <div>
+      <CalendarMonthMove />
+      <CalendarMonth />
+    </div>
+  );
 };
 
 export default TeacherDiet;

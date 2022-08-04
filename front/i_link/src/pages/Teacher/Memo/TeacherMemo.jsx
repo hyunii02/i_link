@@ -1,7 +1,8 @@
 import React from 'react';
+import Album from '../../../components/Memo';
 
 const TeacherMemo = () => {
-  return <div>TeacherMemo</div>;
+  return <div><Album/></div>;
 };
 
 export default TeacherMemo;

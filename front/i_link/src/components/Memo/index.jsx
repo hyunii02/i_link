@@ -15,13 +15,22 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import { createTheme, keyframes, ThemeProvider } from "@mui/material/styles";
 import CreateMemo from "./creatememo";
+import Box from "@mui/material/Box";
 
 const card = [
   //더미데이터
-  { cards_id: 1, cards_title: "8/1", cards_content: ["방가방가"] },
-  { cards_id: 2, cards_title: "7/30", cards_content: ["포켓몬"] },
-  { cards_id: 3, cards_title: "7/20", cards_content: ["안녕"] },
-  { cards_id: 4, cards_title: "7/15", cards_content: ["반가워"] },
+  { cards_id: 1, cards_title: "8/1", cards_content: ["손수건", "실로폰"] },
+  {
+    cards_id: 2,
+    cards_title: "7/30",
+    cards_content: ["찰흙", "마스크", "노트북"],
+  },
+  { cards_id: 3, cards_title: "7/29", cards_content: ["실내화", "색연필"] },
+  {
+    cards_id: 4,
+    cards_title: "7/28",
+    cards_content: ["체온계", "가방", "연필"],
+  },
 ];
 let idCount = 5; //id 값 지정
 const theme = createTheme();
@@ -47,21 +56,43 @@ export default function Album() {
             {cards.map((card) => (
               <Grid item key={card.cards_id} xs={12} sm={6} md={4}>
                 <Card
-                  sx={{ height: 300, display: "flex", flexDirection: "column" }}
+                  sx={{ height: 240, display: "flex", flexDirection: "column" }}
                 >
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography
+                      sx={{ background: "#F2FADC", mb: 4 }}
+                      gutterBottom
+                      variant="h5"
+                      component="h2"
+                    >
                       {card.cards_title}
                     </Typography>
-                    {card.cards_content.map((card,key)=>(
-                      <Typography  key={key}>{card}</Typography>
+                    {card.cards_content.map((card, key) => (
+                      <Typography key={key}>🏳️‍🌈 {card}</Typography>
                     ))}
-                    
                   </CardContent>
-                  <CardActions>
-                    <Button size="small">View</Button>
-                    <Button size="small">Edit</Button>
-                  </CardActions>
+                  <Box sx={{ display: "flex", justifyContent: "end" }}>
+                    <Button
+                      sx={{
+                        background: "#FCD9C7",
+                        width: 20,
+                        height: 20,
+                        color: "#591E59",
+                      }}
+                    >
+                      수정
+                    </Button>
+                    <Button
+                      sx={{
+                        background: "#C5EDFD",
+                        width: 20,
+                        height: 20,
+                        color: "#591E59",
+                      }}
+                    >
+                      삭제
+                    </Button>
+                  </Box>
                 </Card>
               </Grid>
             ))}
