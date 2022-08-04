@@ -60,7 +60,24 @@ exports.kid_center_regist = async function (req, res) {
 };
 
 // 반별 원생 목록 조회
-exports.kid_class_list = function (req, res) {};
+// [get]  /kids/list/:groupNo
+exports.kid_class_list = async function (req, res) {
+  const groupNo = req.params.groupNo;
+
+  await Kids.findAll({
+    attributes: ["kid_no", "kid_name", "kid_profile_url"], // 가져올 데이터 컬럼
+    where: { group_no: groupNo },
+    raw: true,
+  })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "목록 조회 과정에 문제 발생",
+      });
+    });
+};
 
 // 원생 조회
 exports.kid_detail = function (req, res) {};
