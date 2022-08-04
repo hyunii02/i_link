@@ -101,7 +101,36 @@ exports.kid_detail = async function (req, res) {
 };
 
 // 원생 수정
-exports.kid_update = function (req, res) {};
+// [put]  /kids/:kidNo
+exports.kid_update = async function (req, res) {
+  const kidNo = req.params.kidNo;
+
+  // 원생
+  const kid = {
+    kid_birth: req.body.kidBirth,
+    kid_gender: req.body.kidGender,
+    kid_profile_url: req.body.kidProfileUrl ? req.body.kidProfileUrl : null,
+  };
+
+  await Kids.update(kid, { where: { kid_no: kidNo } })
+    .then((result) => {
+      if (result[0] === 1) {
+        res.status(200).json({
+          message: "정보 수정 완료",
+        });
+      } else {
+        // 수정 실패
+        res.status(400).json({
+          message: "요청 실패",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: "정보 수정 실패",
+      });
+    });
+};
 
 // 원생 삭제
 exports.kid_remove = function (req, res) {};
