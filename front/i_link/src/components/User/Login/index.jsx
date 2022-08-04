@@ -119,13 +119,19 @@ export default function Login() {
         <CssBaseline />
         <Box
           sx={{
+            marginTop: "100px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
           {/* 로고 이미지 */}
-          <Typography id="font_test" component="h6" variant="h6">
+          <Typography
+            id="font_test"
+            component="h6"
+            variant="h4"
+            sx={{ color: "rgba(0, 0, 0, 0.6)" }}
+          >
             원과 가정을 잇다
           </Typography>
           <Avatar
@@ -153,6 +159,7 @@ export default function Login() {
                   autoFocus
                   value={formValues.email}
                   onChange={handleChange}
+                  sx={{ background: "white" }}
                 />
                 <p>{formErrors.email}</p>
               </Grid>
@@ -168,6 +175,7 @@ export default function Login() {
                   autoComplete="current-password"
                   value={formValues.password}
                   onChange={handleChange}
+                  sx={{ background: "white" }}
                 />
                 <p>{formErrors.password}</p>
               </Grid>
@@ -181,7 +189,10 @@ export default function Login() {
               sx={{ mt: 3, mb: 2 }}
               onChange={handleChange}
             >
-              로그인
+              {/* 로고 이미지 */}
+              <Typography id="font_test" component="h6" variant="h6">
+                로그인
+              </Typography>
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>

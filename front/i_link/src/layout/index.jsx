@@ -16,7 +16,13 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const LayOut = (props) => {
   return (
-    <Box style={{ background: colorPalette.BACKGROUND_COLOR, height: "fit-content" }}>
+    <Box
+      style={{
+        background: colorPalette.BACKGROUND_COLOR,
+        height: "fit-content",
+        minHeight: "785px",
+      }}
+    >
       <Header></Header>
       <Container maxwidth="fluid" style={{ marginTop: 10 }}>
         <Grid container spacing={1}>
