@@ -14,11 +14,15 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import CreateMemoForm from "./creatememoform";
+import { borderColor } from "@mui/system";
 
 export default function CreateMemo(props) {
   const {addMemo,idCount} = props;
   
   const style = {
+    display:"flex",
+    flexDirection:"column",
+    justifyContent:"space-between",
     // 모달창 스타일 지정
     position: "absolute",
     top: "60%",
@@ -26,8 +30,8 @@ export default function CreateMemo(props) {
     transform: "translate(-50%, -50%)",
     width: 400,
     height: 500,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
+    bgcolor: "#F8FAD7",
+    border: "5px solid #FCE6D4",
     boxShadow: 24,
     p: 4,
   };
@@ -39,10 +43,10 @@ export default function CreateMemo(props) {
     <Grid item={true} xs={12} sm={6} md={4}>
       <Card
         sx={{
-          height: 300,
+          height: 240,
           display: "flex",
           flexDirection: "column",
-          background: "yellow",
+          background: "#F1FAB7",
         }}
       >
         <Box
@@ -51,9 +55,12 @@ export default function CreateMemo(props) {
             justifyContent: "center",
             alignItems: "center",
             height: 300,
+            border : 2 ,
+            color : "#FCCACA",
+            
           }}
         >
-          <Fab color="secondary" aria-label="add">
+          <Fab sx={{background:"#FBF6F6"}} aria-label="add">
             <AddIcon onClick={handleOpen}></AddIcon>
             <Modal
               open={open}
