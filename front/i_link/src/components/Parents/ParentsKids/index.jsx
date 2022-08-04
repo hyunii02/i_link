@@ -2,8 +2,8 @@
 
 import React from "react";
 import { useState, useEffect } from "react";
-
 import axios from "axios";
+import { colorPalette } from "../../../constants/constants";
 
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -17,6 +17,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+
+import BoyIcon from '@mui/icons-material/Boy';
 
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
@@ -43,7 +45,7 @@ const Uploader = () => {
       }));
     }
   };
-
+/////////// 수정 필요 ///////////////////
   //이미지 서버로 보내기
   const sendImageToServer = async () => {
     if (image.image_file) {
@@ -66,9 +68,10 @@ const Uploader = () => {
       URL.revokeObjectURL(image.preview_URL);
     };
   }, []);
-
+///////////////////////////////////////
   return (
     <Box
+      
       style={{
         display: "flex",
         justifyContent: "center",
@@ -86,30 +89,16 @@ const Uploader = () => {
         style={{ display: "none" }}
       />
       {/* 이미지 창 */}
-      <Box>
+      <Box borderRadius="50%" onClick={() => inputRef.click()}>
         <img
           style={{
+            borderRadius: "50%",
             height: "200px",
             width: "200px",
           }}
           src={image.preview_URL}
         />
       </Box>
-      {/* 업로드 버튼(AddIcon => 더하기 버튼 모양으로 변경) */}
-      <Grid container justifyContent="flex-end">
-        <Fab
-          color="primary"
-          aria-label="add"
-          variant="contained"
-          onClick={() => inputRef.click()}
-          justifyContent="flex-end"
-        >
-          <AddIcon />
-        </Fab>
-        <Button color="success" onClick={sendImageToServer}>
-          Upload
-        </Button>
-      </Grid>
     </Box>
   );
 };
@@ -124,7 +113,7 @@ const ColorToggleButton = () => {
 
   return (
     <ToggleButtonGroup
-      color="primary"
+      color="warning"
       value={alignment}
       exclusive
       onChange={handleChange}
@@ -133,12 +122,14 @@ const ColorToggleButton = () => {
         justifyContent: "center",
         alignItems: "center",
       }}
-      size="large"
+      fullWidth
+      sx={{ background: "white" }}
+
     >
-      <ToggleButton value="male" color="warning">
+      <ToggleButton value="male" id="font_test" startIcon= {<BoyIcon/>}>
         남자
       </ToggleButton>
-      <ToggleButton value="female">여자</ToggleButton>
+      <ToggleButton value="female" id="font_test" startIcon= {<BoyIcon/>}>여자</ToggleButton>
     </ToggleButtonGroup>
   );
 };
@@ -153,31 +144,26 @@ export default function ParentsKids() {
   const [isSubmit, setIsSubmit] = useState(false);
 
   // 에러메시지(아이 이름 미입력시)
-  const validate = (target) => {
-    console.log(target.name, target.value);
+  const validate = () => {
     const errors = {};
-    if (target.name === "kidsname") {
-      errors.kidsname = "이름을 입력해주세요.";
-      if (target.value.length > 1) {
-        errors.kidsname = "";
-      }
+    if (!formValues.kidsname) {
+      errors.kidsname = "아이의 이름을 입력해주세요.";
     }
     return errors;
   };
-  // 아이 등록 form 제출
-  const handleSubmit = (event) => {
+  // 아이 등록 버튼 클릭 시
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    //////////////////////////////////////////////
+    // 유효성 검사 통과 시 axios 실행 해야함... ㅎㅎ
     setFormErrors(validate(formValues));
     setIsSubmit(true);
   };
 
   //아이 등록 form 입력 시
   const handleChange = (event) => {
-    console.log(event.target);
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
-    console.log(event.target);
-    setFormErrors(validate(event.target));
   };
 
   useEffect(() => {
@@ -203,10 +189,10 @@ export default function ParentsKids() {
           <Avatar
             sx={{ width: 60, height: 60 }}
             alt="Academy"
-            src="/images/login.png"
+            src="/images/logo.png"
           ></Avatar>
           {/* 아이등록 title */}
-          <Typography component="h1" variant="h5">
+          <Typography id="font_test" component="h1" variant="h4">
             아이등록
           </Typography>
           {/* 아이등록 form */}
@@ -233,12 +219,13 @@ export default function ParentsKids() {
                   autoFocus
                   value={formValues.kidsname}
                   onChange={handleChange}
+                  sx={{ background: "white" }}
                 />
-                <p>{formErrors.kidsname}</p>
+                <p id="font_size_test" align="center">{formErrors.kidsname}</p>
               </Grid>
               {/* 아이 생년월일 입력창 */}
               <Grid item xs={12} sm={12}>
-                <p>아이의 생년월일을 입력해주세요</p>
+                <p id="font_test" align="center">아이의 생년월일을 입력해주세요</p>
                 <TextField
                   required
                   fullWidth
@@ -248,21 +235,24 @@ export default function ParentsKids() {
                   name="date"
                   autoFocus
                   type="date"
+                  sx={{ background: "white" }}
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
-                <p>아이의 성별을 선택해주세요</p>
+                <p id="font_test" align="center">아이의 성별을 선택해주세요</p>
                 <ColorToggleButton></ColorToggleButton>
               </Grid>
             </Grid>
             {/* 아이등록 버튼 */}
             <Button
+              id="font_test"
               type="submit"
               fullWidth
               variant="contained"
-              color="warning"
-              sx={{ mt: 3, mb: 2 }}
+              style={{ background:colorPalette.BUTTON_COLOR }}
+              sx={{ mt: 5, mb: 5 }}
               onChange={handleSubmit}
+              size="large"
             >
               아이등록
             </Button>
