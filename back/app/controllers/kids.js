@@ -127,10 +127,34 @@ exports.kid_update = async function (req, res) {
     })
     .catch((err) => {
       res.status(500).json({
+        errormessage: err.message,
         message: "정보 수정 실패",
       });
     });
 };
 
 // 원생 삭제
-exports.kid_remove = function (req, res) {};
+// [delete] /kids/:kidNo
+exports.kid_remove = async function (req, res) {
+  const kidNo = req.params.kidNo;
+  await Kids.destroy({ where: { kid_no: kidNo } })
+    .then((result) => {
+      if (result == 1) {
+        // 삭제 완료
+        res.status(200).json({
+          message: "삭제 완료",
+        });
+      } else {
+        // 삭제 실패
+        res.status(400).json({
+          message: "요청 실패",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        errormessage: err.message,
+        message: "삭제 실패",
+      });
+    });
+};
