@@ -8,14 +8,16 @@ import Button from "@mui/material/Button";
 // index -> creatememo -> creatememoform -> addmemocomponent
 
 const AddMemoContent = (props) => {
-  const {content} = props;
-  
+  const { content } = props;
+
   return (
-    <Box sx={{ display: "flex" }}>
-      <Typography variant="button" display="block" gutterBottom>
-        * {content.content}
-      </Typography>
-      <Button variant="outlined">삭제</Button>
+    <Box >
+      
+      <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"center"}} variant="button" display="flex"  >
+        🏳️‍🌈 {content.content}
+        <Button sx={{ color:"red"}}>삭제</Button>
+      </Box>
+
     </Box>
   );
 };

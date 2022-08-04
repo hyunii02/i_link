@@ -1,5 +1,5 @@
 // 모달창을 열었을때, 메모 작성 폼
-// index -> creatememo -> creatememoform -> addmemocomponent 
+// index -> creatememo -> creatememoform -> addmemocomponent
 
 import React from "react";
 import { useState } from "react";
@@ -19,27 +19,20 @@ const CreateMemoForm = (props) => {
 
   // 엔터누를때마다 값을 하나씩 저장.
   const keyDownHandler = (e) => {
-  
-
     if (e.key === "Enter") {
-      
       const content = {
         id: id_index++,
 
         content: memoContent,
       };
       setContentList([...contentList, content]);
-      
     }
   };
 
   const buttonClickHandler = (e) => {
-    
     const subData = [];
-    contentList.map((content) => (
-      subData.push(content.content)
-    ))
-    
+    contentList.map((content) => subData.push(content.content));
+
     e.preventDefault();
     const newData = {
       cards_id: idCount,
@@ -52,29 +45,36 @@ const CreateMemoForm = (props) => {
 
   return (
     <div>
-      <Box
+      <Box 
         sx={{
-          "& .MuiTextField-root": { mt: 3 }, // 텍스트필드마다 mt 3
-
+          "& .MuiTextField-root": { mt: 2 }, // 텍스트필드마다 mt 3
+          height : 300,
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
+          
         }}
       >
         <TextField
+          sx={{
+            background : "#F2EFDA"
+          }}
           value={memoTitle}
           type="text"
-          placeholder="제목"
+          placeholder="제목을 입력하세요"
           onChange={(e) => setMemoTitle(e.target.value)}
         ></TextField>
 
         <TextField
+          sx={{
+            background : "#F2EFDA"
+          }}
           value={memoContent}
           type="text"
           placeholder="내용"
           onChange={(e) => setmemoContent(e.target.value)}
           onKeyDown={keyDownHandler}
         ></TextField>
+
         <br />
         <Box>
           {contentList.map((content) => (
@@ -82,10 +82,13 @@ const CreateMemoForm = (props) => {
           ))}
         </Box>
         <Button
-          sx={{ mt: 5, mr: 3 }}
+          sx={{  background: "#FCE99A",
+          fontSize:15,
+          fontWeight:700,
+        color:"black" }}
+          
           type="submit"
           variant="contained"
-          color="warning"
           onClick={buttonClickHandler}
         >
           메모추가
