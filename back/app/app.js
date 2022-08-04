@@ -20,14 +20,16 @@ app.use((req, res, next) => {
   if (isDisableKeepAlive) {
     res.set("Connection", "close");
   }
-  next()
+  next();
 });
 
-app.use(cors({
-  origin: ["http://localhost:3000"],
-  methods: ["*"],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["*"],
+    credentials: true,
+  }),
+);
 
 app.use(cookieParser());
 app.use(session({
@@ -44,6 +46,12 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Swagger Config 파일과 연결
+
+const { swaggerUi, specs } = require("./config/swagger");
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+
 // 테이블 생성 or 수정 필요 시에만 주석 해제 후 실행
 // db.sequelize.sync({ force: true }); // force: 테이블 컬럼 수정
 
@@ -55,9 +63,9 @@ app.listen(PORT, () => {
 });
 
 process.on("SIGINT", () => {
-  isDisableKeepAlive = true
+  isDisableKeepAlive = true;
   app.close(() => {
     console.log("Server closed.");
     process.exit(0);
-  })
+  });
 });
