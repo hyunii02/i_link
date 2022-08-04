@@ -21,8 +21,6 @@
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.19",
     "redis": "^4.2.0",
-    "redis-cli": "^1.4.0",
-    "redis-server": "^1.2.2",
     "sequelize": "^6.21.3",
     "session-file-store": "^1.5.0"
   }
