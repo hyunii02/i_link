@@ -13,7 +13,7 @@ const { nextTick } = require("process");
 const http = require("http");
 const https = require("https");
 const fs = require("fs");
- 
+
 var privateKey = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/privkey.pem");
 var certificate = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/cert.pem");
 var ca = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/fullchain.pem");
