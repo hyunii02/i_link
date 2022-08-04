@@ -21,6 +21,7 @@ import ParentsHome from './pages/Parents/Home/ParentsHome';
 import ParentsNotice from './pages/Parents/Notice/ParentsNotice';
 import ParentsQuiz from './pages/Parents/Quiz/ParentsQuiz';
 import ParentsRegistKid from './pages/Parents/RegistKid/ParentsRegistKid';
+import ParentsRepo from "./pages/Parents/Repo/ParentsRepo";
 import TeacherDiet from './pages/Teacher/Diet/TeacherDiet';
 import TeacherManagement from './pages/Teacher/Management/TeacherManagement';
 import TeacherDetail from './pages/Teacher/Detail/TeacherDetail';
@@ -56,6 +57,7 @@ const App = () => {
           <Route path="/parents/notice" element={<ParentsNotice />} />
           <Route path="/parents/quiz" element={<ParentsQuiz />} />
           <Route path="/parents/registkid" element={<ParentsRegistKid />} />
+          <Route path="/parents/repo" element={<ParentsRepo />} />
           {/* 선생님 */}
           <Route path="/teacher/detail" element={<TeacherDetail />} />
           <Route path="/teacher/diet" element={<TeacherDiet />} />
