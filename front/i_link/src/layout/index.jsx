@@ -19,7 +19,7 @@ const LayOut = (props) => {
       style={{
         background: colorPalette.BACKGROUND_COLOR,
         height: "fit-content",
-        minHeight: "785px",
+        minHeight: "100vh",
       }}
     >
       <Header></Header>
