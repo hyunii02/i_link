@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Box, Grid } from "@mui/material";
-import Member from "../../../components/Member/";
+import MemberStudent from "../../../components/Member/Student";
 
-const detail = [
+const memberStudent = [
   {
     id: 1,
     name: "김국진",
@@ -114,14 +114,14 @@ const detail = [
 ];
 
 const TeacherManagement = () => {
-  const [student, setStudent] = useState(detail);
+  const [student, setStudent] = useState(memberStudent);
 
   return (
     <Box>
       <Grid container style={{ display: "flex" }} spacing={0.5}>
         {student.map((stu) => (
           <Grid item xs={3} key={stu.id} style={{ marginBottom: "10px" }}>
-            <Member key={stu.id} student={stu} />
+            <MemberStudent key={stu.id} student={stu} />
           </Grid>
         ))}
       </Grid>
