@@ -6,3 +6,6 @@
 
 # Ignore sessions
 /sessions
+
+# Ignore pem
+/pem

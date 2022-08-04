@@ -35,4 +35,6 @@ router.use("/groups", require(path.join(__dirname, "groups")));
  */
 router.use("/memos", require(path.join(__dirname, "memos")));
 
+router.use("/kids", require(path.join(__dirname, "kids")));
+
 module.exports = router;
