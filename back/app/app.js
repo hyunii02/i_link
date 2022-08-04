@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 8000;
 
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const fileStore = require("session-file-store")(session);
 
 // const db = require(path.join(__dirname, "models"));
 
@@ -31,16 +32,16 @@ app.use(
 );
 
 app.use(cookieParser());
-app.use(
-  session({
-    secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      expires: 60 * 60 * 24,
-    },
-  }),
-);
+app.use(session({
+  secret: "keyboard cat",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    expires: 60 * 60 * 24,
+    httpOnly: true,
+  },
+  store: new fileStore()
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

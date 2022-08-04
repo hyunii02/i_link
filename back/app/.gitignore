@@ -3,3 +3,6 @@
 
 # The file environment variables
 .env
+
+# Ignore sessions
+/sessions
