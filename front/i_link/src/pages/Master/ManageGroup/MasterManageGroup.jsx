@@ -20,9 +20,10 @@ const MasterManageGroup = () => {
   }, []);
 */
   return (
-    <Box style={{ borderRadius: "20px", background: "white" }}>
+    <Box>
       <GroupManagement />
       <Box style={{ width: "100%", marginTop: "10px", marginBottom: "10px" }} />
+      <RegistKids />
     </Box>
   );
 };
