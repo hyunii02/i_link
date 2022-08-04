@@ -69,10 +69,10 @@ app.use("/", router);
 http
   .createServer(function (req, res) {
     res.writeHead(301, {
-      Location: "https://" + req.headers["host"].replace(http_port, https_port) + req.url,
+      Location: "https://" + req.headers["host"].replace(PORT, PORT_HTTPS) + req.url,
     });
     console.log("http request, will go to >> ");
-    console.log("https://" + req.headers["host"].replace(http_port, https_port) + req.url);
+    console.log("https://" + req.headers["host"].replace(PORT, PORT_HTTPS) + req.url);
     res.end();
   })
   .listen(PORT);
