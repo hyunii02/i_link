@@ -17,7 +17,7 @@ const fs = require("fs");
 
 var privateKey = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/privkey.pem");
 var certificate = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/cert.pem");
-var ca = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/fullchain.pem");
+var ca = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/chain.pem");
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
 // Routes
