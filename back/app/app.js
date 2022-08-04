@@ -2,7 +2,6 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const PORT = process.env.PORT || 8000;
-const PORT_HTTPS = process.env.PORT_HTTPS || 8443;
 
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
@@ -10,14 +9,13 @@ const { nextTick } = require("process");
 
 // const db = require(path.join(__dirname, "models"));
 
-// ssl 적용 세팅
-const http = require("http");
+// https 적용 세팅
 const https = require("https");
 const fs = require("fs");
 
 var privateKey = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/privkey.pem");
 var certificate = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/cert.pem");
-var ca = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/chain.pem");
+var ca = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/fullchain.pem");
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
 // Routes
@@ -66,17 +64,7 @@ app.use("/", router);
 //   process.send("ready");
 //   console.log(`server is running on PORT ${PORT}`);
 // });
-http
-  .createServer(function (req, res) {
-    res.writeHead(301, {
-      Location: "https://" + req.headers["host"].replace(PORT, PORT_HTTPS) + req.url,
-    });
-    console.log("http request, will go to >> ");
-    console.log("https://" + req.headers["host"].replace(PORT, PORT_HTTPS) + req.url);
-    res.end();
-  })
-  .listen(PORT);
-https.createServer(credentials, app).listen(PORT_HTTPS);
+https.createServer(credentials, app).listen(PORT);
 
 process.on("SIGINT", () => {
   isDisableKeepAlive = true;
