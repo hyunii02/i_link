@@ -5,9 +5,19 @@ const PORT = process.env.PORT || 8000;
 
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const { nextTick } = require('process');
+const { nextTick } = require("process");
 
 // const db = require(path.join(__dirname, "models"));
+
+// ssl 적용 세팅
+const http = require("http");
+const https = require("https");
+const fs = require("fs");
+
+var privateKey = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/privkey.pem");
+var certificate = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/cert.pem");
+var ca = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/fullchain.pem");
+const credentials = { key: privateKey, cert: certificate, ca: ca };
 
 // Routes
 const router = require(path.join(__dirname, "/routes"));
@@ -23,21 +33,25 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors({
-  origin: ["http://localhost:3000"],
-  methods: ["*"],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "*",
+    methods: "*",
+    credentials: true,
+  }),
+);
 
 app.use(cookieParser());
-app.use(session({
-  secret: "keyboard cat",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    expires: 60 * 60 * 24,
-  },
-}));
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      expires: 60 * 60 * 24,
+    },
+  }),
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -47,23 +61,25 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/", router);
 
-app.listen(PORT, () => {
-  process.send("ready");
-  console.log(`server is running on PORT ${PORT}`);
-});
+// app.listen(PORT, () => {
+//   process.send("ready");
+//   console.log(`server is running on PORT ${PORT}`);
+// });
+http.createServer(app).listen(PORT);
+https.createServer(credentials, app).listen(443);
 
 process.on("SIGINT", () => {
-  isDisableKeepAlive = true
+  isDisableKeepAlive = true;
   app.close(() => {
     console.log("Server closed.");
     process.exit(0);
-  })
+  });
 });
 
-process.on("uncaughtException", function(err){
+process.on("uncaughtException", function (err) {
   console.log("uncaughtException : \n", err);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
-    console.log("unhandledRejection : \n", reason);
+process.on("unhandledRejection", (reason, promise) => {
+  console.log("unhandledRejection : \n", reason);
 });
