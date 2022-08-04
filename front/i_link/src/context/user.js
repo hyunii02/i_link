@@ -4,14 +4,19 @@ import { createContext, useState, useEffect } from 'react';
 const UserContext = createContext(null);
 
 const UserProvider = ({children}) => {
-  const [userName, setUserName] = useState('');
-  const [userType, setUserType] = useState('');
-  const [isLogin, setIsLogin] = useState(false);
+  // 세션에 저장된 데이터가 있다면 가져옴 
+  const [userName, setUserName] = useState(()=>sessionStorage.getItem('userName'))
 
-  useEffect(() => {
-    // 로그인시 isLogin을 변경하고 여기에서 세션 스토리지 작업 진행
-  }, [isLogin])
+  const [userType, setUserType] = useState(()=>sessionStorage.getItem('userType'))
 
+  // 값이 변경되면 세션에 적용
+  useEffect(()=>{
+    sessionStorage.setItem('userName',userName)
+  },[userName])
+
+  useEffect(()=>{
+    sessionStorage.setItem('userType',userType)
+  },[userType])
 
   const value = {
   userName, userType, setUserName, setUserType
