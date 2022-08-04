@@ -2,13 +2,14 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const PORT = process.env.PORT || 8000;
+const PORT_HTTPS = process.env.PORT_HTTPS || 8443;
 
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const { nextTick } = require("process");
 
 // const db = require(path.join(__dirname, "models"));
- 
+
 // ssl 적용 세팅
 const http = require("http");
 const https = require("https");
@@ -65,17 +66,17 @@ app.use("/", router);
 //   process.send("ready");
 //   console.log(`server is running on PORT ${PORT}`);
 // });
-http.createServer(app).listen(PORT);
-https.createServer(credentials, app).listen(8443);
-app.use(function (req, res, next) {
-  if (req.secure) {
-    // request was via https, so do no special handling
-    next();
-  } else {
-    // request was via http, so redirect to https
-    res.redirect("https://" + req.headers.host + req.url);
-  }
-});
+http
+  .createServer(function (req, res) {
+    res.writeHead(301, {
+      Location: "https://" + req.headers["host"].replace(http_port, https_port) + req.url,
+    });
+    console.log("http request, will go to >> ");
+    console.log("https://" + req.headers["host"].replace(http_port, https_port) + req.url);
+    res.end();
+  })
+  .listen(PORT);
+https.createServer(credentials, app).listen(PORT_HTTPS);
 
 process.on("SIGINT", () => {
   isDisableKeepAlive = true;
