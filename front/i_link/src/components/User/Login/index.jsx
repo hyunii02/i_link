@@ -66,8 +66,8 @@ export default function Login() {
     };
     try {
       const response = await axios.post(baseURL + urls.fetchLogin, body);
-      const resUserType = response.data.data.user.user_type;
-      const resUserName = response.data.data.user.user_name;
+      const resUserType = response.data.data.user.userType;
+      const resUserName = response.data.data.user.userName;
       // 로그인 성공 시 유저 정보 세션에 저장
       setUserName(resUserName);
       setUserType(resUserType);
