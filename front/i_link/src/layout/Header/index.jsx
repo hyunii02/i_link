@@ -16,10 +16,12 @@ import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/user";
 import Logout from "../../components/User/Logout";
+import { useNavigate } from "react-router-dom";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Header = () => {
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [navBar, setNavBar] = useState([]);
@@ -42,7 +44,13 @@ const Header = () => {
   };
 
   const logoClickHandler = () => {
-    alert("wef");
+    if (parseInt(userType) === 1) {
+      navigate("/master/managemember");
+    } else if (parseInt(userType) === 2) {
+      navigate("/teacher/management");
+    } else if (parseInt(userType) === 3) {
+      navigate("/parents/home");
+    }
   };
 
   // 페이지 렌더링 시 회원 타입에 따라 다른 NavBar를 보여주는 동작

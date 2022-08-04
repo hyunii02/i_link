@@ -19,7 +19,7 @@ const LayoutWithoutHeader = (props) => {
       sx={{
         background: colorPalette.BACKGROUND_COLOR,
         height: "100%",
-        minHeight: "785px",
+        minHeight: "100vh",
       }}
     >
       <Container maxwidth="fluid" style={{ marginTop: 10 }}>
