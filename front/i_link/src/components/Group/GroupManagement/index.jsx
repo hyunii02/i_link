@@ -1,47 +1,70 @@
 // 원장>반관리>반관리 컴포넌트
 // create by 김국진
-import { useState } from 'react';
-import GroupListItem from '../GroupListItem/';
-import GroupInsert from '../GroupInsert/';
-import Button from '@mui/material/Button';
-import { Box, Grid } from '@mui/material';
-import * as React from 'react';
-import ListSubheader from '@mui/material/ListSubheader';
-import List from '@mui/material/List';
-import ListItemText from '@mui/material/ListItemText';
-import Typography from '@mui/material/Typography';
+import { useState } from "react";
+import GroupListItem from "../GroupListItem/";
+import GroupInsert from "../GroupInsert/";
+import Button from "@mui/material/Button";
+import { Box, Grid } from "@mui/material";
+import * as React from "react";
+import ListSubheader from "@mui/material/ListSubheader";
+import List from "@mui/material/List";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
 
 // 테스트용 데이터
 const subData = [
   {
     id: 1,
-    className: '장미반',
+    className: "장미반",
     studentNum: 20,
     teacherNum: 2,
   },
   {
     id: 2,
-    className: '햇살반',
+    className: "햇살반",
     studentNum: 15,
     teacherNum: 1,
   },
   {
     id: 3,
-    className: '양념반',
+    className: "양념반",
     studentNum: 15,
     teacherNum: 2,
   },
   {
     id: 4,
-    className: '후라이드반',
+    className: "후라이드반",
     studentNum: 16,
     teacherNum: 2,
   },
   {
     id: 5,
-    className: '배지우반',
+    className: "배지우반",
     studentNum: 10,
     teacherNum: 1,
+  },
+];
+
+const headerList = [
+  {
+    id: 1,
+    text: "반 이름",
+    length: 4,
+  },
+  {
+    id: 2,
+    text: "반 인원",
+    length: 4,
+  },
+  {
+    id: 3,
+    text: "교사 수",
+    length: 3,
+  },
+  {
+    id: 4,
+    text: "반 삭제",
+    length: 1,
   },
 ];
 
@@ -82,72 +105,66 @@ const GroupManagement = () => {
 
   return (
     /* 화면 크게 감싸주는 Part */
-    <Box style={{ textAlign: 'left' }}>
-      <Box style={{ textAlign: 'right', marginBottom: '1%' }}>
-        {/* 반 추가하기 그리드 시작*/}
-        <Button
-          variant="outlined"
-          onClick={insertClicked}
-          size="large"
-          style={{ marginRight: '5%', marginTop: '2%' }}
-        >
-          반 추가하기
-        </Button>
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: "10px",
+        }}
+      >
+        <Box>
+          <Typography
+            variant="h5"
+            id="font_test"
+            sx={{ color: "rgba(0, 0, 0, 0.7)" }}
+          ></Typography>
+        </Box>
+        <Box>
+          {/* 반 추가하기 버튼*/}
+          <Button variant="outlined" onClick={insertClicked} size="large">
+            반 추가하기
+          </Button>
+        </Box>
       </Box>
-      {/* 반 추가하기 그리드 종료*/}
       {/* 반 정보 그리드 시작 */}
       <List
-        sx={{ width: '100%', maxWidth: '100%', bgcolor: 'rgba(0, 0, 0, 0.05)' }}
-        component="nav"
-        aria-labelledby="nested-list-subheader"
-        subheader={
-          /* 테이블 헤더 part */
-          <ListSubheader
-            component="div"
-            id="nested-list-subheader"
-            style={{ background: 'rgba(0, 0, 0, 0.2)' }}
-          >
-            <Grid container>
-              <Grid item xs={4}>
-                <ListItemText
-                  primary={
-                    <Typography variant="h6" style={{ color: '#000000' }}>
-                      반 이름
-                    </Typography>
-                  }
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <ListItemText
-                  primary={
-                    <Typography variant="h6" style={{ color: '#000000' }}>
-                      반 인원
-                    </Typography>
-                  }
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <ListItemText
-                  primary={
-                    <Typography variant="h6" style={{ color: '#000000' }}>
-                      교사 수
-                    </Typography>
-                  }
-                />
-              </Grid>
-              <Grid item xs={1}>
-                <ListItemText
-                  primary={
-                    <Typography variant="h6" style={{ color: '#000000' }}>
-                      반 삭제
-                    </Typography>
-                  }
-                />
-              </Grid>
-            </Grid>
-          </ListSubheader>
-        }
+        sx={{
+          bgcolor: "#FAF1DA",
+          border: "2px solid #ffe2e2",
+          borderRadius: "20px",
+        }}
       >
+        <Grid
+          container
+          sx={{
+            height: "50px",
+            background: "#ffe2e2",
+            borderTopLeftRadius: "20px",
+            borderTopRightRadius: "20px",
+            marginTop: "-10px",
+          }}
+        >
+          {headerList.map((list) => (
+            <Grid
+              item
+              xs={list.length}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+              }}
+              key={list.id}
+            >
+              <ListItemText>
+                <Typography variant="h6" style={{ color: "#000000" }}>
+                  {list.text}
+                </Typography>
+              </ListItemText>
+            </Grid>
+          ))}
+        </Grid>
         {/* state값에 맞게 반 등록 컴포넌트를 on/off */}
         {insertFlag && (
           <GroupInsert
@@ -155,7 +172,6 @@ const GroupManagement = () => {
             cancelClicked={insertComponentToggle}
           />
         )}
-
         {/* 반의 객체 갯수만큼 반 리스트 컴포넌트를 화면에 렌더링 */}
         {classData.map((sub) => (
           <GroupListItem

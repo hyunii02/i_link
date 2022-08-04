@@ -6,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Box, Grid, IconButton, Badge } from "@mui/material";
+import { Box, Grid, IconButton, Badge, Avatar } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 // 알림 뱃지 스타일링
@@ -22,7 +22,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const Member = (props) => {
+const MemberStudent = (props) => {
   // page에서 가져온 원생 정보
   const { student } = props;
   const [studentState, setStudentState] = useState(student);
@@ -58,9 +58,37 @@ const Member = (props) => {
       className="badge"
     >
       {/* Card 메인 폼 */}
-      <Card sx={{ maxWidth: 345 }}>
+      <Card
+        sx={{
+          maxWidth: 400,
+          width: "100%",
+          border: "10px solid #fae2e2",
+          background: "#FAF1DA",
+          /* FAE6D7 */
+        }}
+      >
+        <CardMedia
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          {
+            <Avatar
+              src={student.src}
+              sx={{
+                width: 112,
+                height: 112,
+                border: "3px solid #ffe2e2",
+                marginTop: "10px",
+              }}
+            />
+          }
+        </CardMedia>
         {/* Card 사진 이미지 파트 */}
-        <CardMedia component="img" height="150" src={student.src} />
+        {/*<CardMedia component="img" height="150" src={student.src} />*/}
         {/* Card 이름 파트 */}
         <CardContent
           style={{
@@ -70,7 +98,9 @@ const Member = (props) => {
             height: "10px",
           }}
         >
-          <Typography variant="h5">{student.name}</Typography>
+          <Typography id="font_test" variant="h5">
+            {student.name}
+          </Typography>
         </CardContent>
         {/* Card 버튼 파트 */}
         <Box
@@ -92,6 +122,7 @@ const Member = (props) => {
                   }
                   value={index + 1}
                   size="small"
+                  color="warning"
                   onClick={buttonClickHandler}
                 >
                   <Typography variant="body2">{text}</Typography>
@@ -105,4 +136,4 @@ const Member = (props) => {
   );
 };
 
-export default Member;
+export default MemberStudent;
