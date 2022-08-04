@@ -14,7 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { sidebar } from "../../constants/constants";
 
-const pages = ['1','2'];
+const pages = ['원생관리','식단간식'];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Header = () => {
@@ -38,27 +38,33 @@ const Header = () => {
 
   return (
     <Box>
-      <Box position="static" style={{ background: "#f1d2d2" }}>
+      {/* 헤더색 투명하게 */}
+      <Box position="static" style={{ background: "rgba(52, 52, 52, 0)" }}> 
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-            <Typography
+            <Avatar
+              sx={{ width: 100, height: 100 }}
+              alt="Academy"
+              src="/images/logo.png"
+            ></Avatar>
+            {/* <Typography
               variant="h6"
               noWrap
               component="a"
               href="/"
               sx={{
+                
                 mr: 2,
                 display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
+                fontFamily: 'HSSaemaul-Regular',
                 fontWeight: 700,
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
               }}
             >
-              LOGO
-            </Typography>
+              아이링크
+            </Typography> */}
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
@@ -96,7 +102,7 @@ const Header = () => {
                 ))}
               </Menu>
             </Box>
-            <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+            {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
             <Typography
               variant="h5"
               noWrap
@@ -113,7 +119,7 @@ const Header = () => {
                 textDecoration: "none",
               }}
             >
-              LOGO
+              i-link
             </Typography>
             <Box
               style={{
@@ -129,14 +135,15 @@ const Header = () => {
                   key={page}
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: "white", display: "block", mr: 4 }}
+                  size="small"
                 >
                   <Typography
+                    id="font_test"
                     variant="h5"
                     textDecoration="none"
                     noWrap
                     href=""
-                    color="white"
-                  >
+                    color="black"                  >
                     {page}
                   </Typography>
                 </Button>

@@ -19,6 +19,8 @@ import { urls, baseURL } from "../../../api/axios";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import { colorPalette } from "../../../constants/constants";
+
 const theme = createTheme();
 
 export default function Login() {
@@ -108,21 +110,20 @@ export default function Login() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
           {/* 로고 이미지 */}
-          <Avatar
-            sx={{ width: 300, height: 300 }}
-            alt="Academy"
-            src="/images/login.png"
-          ></Avatar>
-          <Typography component="h1" variant="h3">
-            아이링크
+          <Typography id="font_test" component="h6" variant="h6">
+            원과 가정을 잇다
           </Typography>
+          <Avatar
+            sx={{ width: 250, height: 250 }}
+            alt="Academy"
+            src="/images/logo.png"
+          ></Avatar>
           {/* 로그인 form */}
           <Box
             component="form"
@@ -132,7 +133,7 @@ export default function Login() {
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12}>
-                {/* 이메일 입력창 */}
+                {/* 이메일 입력창 */} 
                 <TextField
                   required
                   fullWidth
@@ -167,7 +168,8 @@ export default function Login() {
               type="submit"
               fullWidth
               variant="contained"
-              color="warning"
+              style={{ background:colorPalette.BUTTON_COLOR }}
+
               sx={{ mt: 3, mb: 2 }}
               onChange={handleChange}
             >

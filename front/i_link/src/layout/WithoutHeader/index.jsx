@@ -3,6 +3,7 @@ import { Box, Container, Grid, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Header from "../Header";
 import { Outlet } from "react-router-dom";
+import { colorPalette } from "../../constants/constants";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -12,9 +13,9 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const LayoutWithoutSidebar = (props) => {
+const LayoutWithoutHeader = (props) => {
   return (
-    <Box style={{ background: "#f1d2d2" }}>
+    <Box style={{ background: colorPalette.BACKGROUND_COLOR }}>
       <Header></Header>
       <Container maxwidth="fluid" style={{ marginTop: 10 }}>
         <Grid container spacing={1}>
@@ -34,4 +35,4 @@ const LayoutWithoutSidebar = (props) => {
   );
 };
 
-export default LayoutWithoutSidebar;
+export default LayoutWithoutHeader;
