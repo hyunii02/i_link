@@ -4,6 +4,9 @@
 
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
 
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -15,11 +18,10 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { urls, baseURL } from "../../../api/axios";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
+import { urls, baseURL } from "../../../api/axios";
 import { colorPalette } from "../../../constants/constants";
+import { UserContext } from "../../../context/user";
 
 const theme = createTheme();
 
@@ -29,6 +31,7 @@ export default function Login() {
   const initialValues = { email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
+  const { setUserName, setUserType } = useContext(UserContext);
 
   // 에러메시지
   const validate = () => {
@@ -63,9 +66,15 @@ export default function Login() {
     };
     try {
       const response = await axios.post(baseURL + urls.fetchLogin, body);
-      // 로그인 성공 시
+      const resUserType = response.data.data.user.user_type;
+      const resUserName = response.data.data.user.user_name;
+      // 로그인 성공 시 유저 정보 세션에 저장
+      setUserName(resUserName);
+      setUserType(resUserType);
+
+      // 로그인 성공 시 대응되는 페이지로 네비게이트
       if (response.data.message === "로그인 성공") {
-        switch (response.data.data.user.user_type) {
+        switch (resUserType) {
           case 1:
             navigate("/master/managemember");
             break;
@@ -133,7 +142,7 @@ export default function Login() {
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12}>
-                {/* 이메일 입력창 */} 
+                {/* 이메일 입력창 */}
                 <TextField
                   required
                   fullWidth
@@ -168,8 +177,7 @@ export default function Login() {
               type="submit"
               fullWidth
               variant="contained"
-              style={{ background:colorPalette.BUTTON_COLOR }}
-
+              style={{ background: colorPalette.BUTTON_COLOR }}
               sx={{ mt: 3, mb: 2 }}
               onChange={handleChange}
             >
