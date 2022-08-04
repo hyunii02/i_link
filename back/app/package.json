@@ -23,6 +23,8 @@
     "redis": "^4.2.0",
     "redis-cli": "^2.1.2",
     "redis-server": "^1.2.2",
-    "sequelize": "^6.21.3"
+    "sequelize": "^6.21.3",
+    "swagger-jsdoc": "^6.2.3",
+    "swagger-ui-express": "^4.5.0"
   }
 }
