@@ -7,38 +7,46 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
+import { useState } from 'react';
+import NoticeWriteForm from './noticewriteform';
 
-function createData(id, title, user, createdate, look) {
-  return { id, title, user, createdate, look };
-}
 
-const rows = [
-  createData('1', '안녕하세요', '배지우', 24, 4),
-  createData('2', '안녕하세요2', '배지우', 37, 35),
-  createData('3', '안녕하세요3', '배지우', 24, 26234),
-  createData('4', '안녕하세요4', '배지우', 67, 433),
-  createData('5', '안녕하세요5', '배지우', 49, 6454),
-  createData('6', '안녕하세요6', '배지우', 49, 23),
+const notice = [
+  //더미데이터
+  { notice_id: 4, notice_title: "8/1", notice_date: "방가방가",notice_user : "배지우",notice_count :"2"},
+  { notice_id: 3, notice_title: "7/30", notice_date: "포켓몬",notice_user :"배지우",notice_count :"2"},
+  { notice_id: 2, notice_title: "7/20", notice_date: "안녕",notice_user :"배지우" ,notice_count :"2"},
+  { notice_id: 1, notice_title: "7/15", notice_date: "반가워",notice_user : "배지우",notice_count :"2"},
 ];
 
- // 글작성 버튼 
+ // 글작성 버튼 만들려다맘
 const WriteButton =() => { 
   return(
   <div>
-    <Button className="writebutton" 
+    <Button 
+  
     style={{background:'red',
     margin : "10px"}}>글작성</Button>
   </div>)
 }
 
-
+let idCount = 5; //id 값 지정
 
 export default function Notice() {
+
+  const [notices, setNotices] = useState(notice);
+
+  const addNotice = (notice) => {
+    notice.cards_id = idCount++;
+    setNotices([notice, ...notices]);
+    console.log(notice);
+  };
+
     const date= new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    
+
   return (
     <div className="Notice-page" >
       <h2>공지사항</h2>
@@ -46,7 +54,7 @@ export default function Notice() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>번호</TableCell>
+              <TableCell>-번호-</TableCell>
               <TableCell align='left'>제목</TableCell>
               <TableCell align="left">작성인</TableCell>
               <TableCell align="left">작성일</TableCell>
@@ -54,24 +62,25 @@ export default function Notice() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {notices.map((notice) => (
               <TableRow
-                key={row.id}
+                key={notice.notice_id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.id}
+                  {notice.notice_id}
                 </TableCell>
-                <TableCell align="left">{row.title}</TableCell>
-                <TableCell align="left">{row.user}</TableCell>
+                <TableCell align="left">{notice.notice_title}</TableCell>
+                <TableCell align="left">{notice.notice_user}</TableCell>
                 <TableCell align="left">{year}년{month}월{day}일</TableCell>
-                <TableCell align="left">{row.look}</TableCell>
+                <TableCell align="left">{notice.notice_count}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>   
       </TableContainer>
       <WriteButton/>
+      <NoticeWriteForm idCount={idCount} addNotice={addNotice}/>
     </div>
     
     
