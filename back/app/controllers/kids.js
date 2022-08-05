@@ -19,14 +19,14 @@ exports.kid_regist = async function (req, res) {
 
   await Kids.create(kid)
     .then((data) => {
-      console.log("자녀 등록 완료", data.dataValues);
+      console.log("아이 등록 완료", data.dataValues);
       res.status(200).json({
-        message: "자녀 등록 완료",
+        message: "아이 등록 완료",
       });
     })
     .catch((err) => {
       res.status(500).json({
-        message: err.message || "자녀 등록 실패",
+        message: err.message || "아이 등록 실패",
       });
     });
 };
@@ -142,7 +142,7 @@ exports.kid_remove = async function (req, res) {
       if (result == 1) {
         // 삭제 완료
         res.status(200).json({
-          message: "삭제 완료",
+          message: "아이 정보 삭제 완료",
         });
       } else {
         // 삭제 실패
