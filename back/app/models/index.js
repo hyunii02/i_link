@@ -29,5 +29,7 @@ db.users = models.users;
 db.centers = models.centers;
 db.groups = models.groups;
 db.memos = models.memos;
+db.kids = models.kids;
+db.meals = models.meals;
 
 module.exports = db;
