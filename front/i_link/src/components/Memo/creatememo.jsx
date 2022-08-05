@@ -69,9 +69,9 @@ export default function CreateMemo(props) {
               aria-describedby="modal-modal-description"
             >
               <Box sx={style}>
-                <CreateMemoForm idCount={idCount}addMemo={addMemo}/>
+                <CreateMemoForm  handleClose={handleClose} idCount={idCount}addMemo={addMemo}/>
                 <div>
-                  <Button onClick={handleClose}>
+                  <Button sx={{ml:30}}onClick={handleClose}>
                     close
                   </Button>
                 </div>
