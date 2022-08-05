@@ -1,10 +1,18 @@
+// 2022.08.05 김국진
+// 1일치 달력 컴포넌트
+
 import { Box, Grid, Card, Typography } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import IconButton from "@mui/material/IconButton";
+import { useContext } from "react";
+import { UserContext } from "../../../context/user";
 
 const CalendarDay = (props) => {
   const { day, index } = props;
+
+  // 편집 권한 체크를 위한 Context 호출
+  const { userType } = useContext(UserContext);
 
   // 배열에 값이 들어있는지 체크용
   function isEmptyArr(arr) {
@@ -53,21 +61,25 @@ const CalendarDay = (props) => {
           marginTop: "10px",
         }}
       >
-        {day.day !== 0 && index % 6 !== 0 && isEmptyArr(day.meal) && (
-          <IconButton>
-            <AddCircleOutlineIcon fontSize="large" />
-          </IconButton>
-        )}
+        {userType !== 3 &&
+          day.day !== 0 &&
+          index % 6 !== 0 &&
+          isEmptyArr(day.meal) && (
+            <IconButton>
+              <AddCircleOutlineIcon fontSize="large" />
+            </IconButton>
+          )}
         {day.meal.map((meal) => (
           <Typography variant="body2">{meal}</Typography>
         ))}
-        {isEmptyArr(day.meal) || (
-          <Box sx={{ textAlign: "right" }}>
-            <IconButton>
-              <RemoveCircleOutlineIcon fontSize="small" />
-            </IconButton>
-          </Box>
-        )}
+        {isEmptyArr(day.meal) ||
+          (userType !== 3 && (
+            <Box sx={{ textAlign: "right" }}>
+              <IconButton>
+                <RemoveCircleOutlineIcon fontSize="small" />
+              </IconButton>
+            </Box>
+          ))}
       </Box>
     </Box>
   );

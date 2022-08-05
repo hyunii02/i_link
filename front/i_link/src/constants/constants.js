@@ -34,7 +34,7 @@ const TEACHER = [
 const PARENTS = [
     { id: 1, name: "아이보기", path: "/parents/home", },
     { id: 2, name: "공지사항", path: "/parents/notice", },
-    { id: 3, name: "특이사항", path: "/parents/report", },
+    { id: 3, name: "특이사항", path: "/parents/repo", },
     { id: 4, name: "식단간식", path: "/parents/diet", },
     { id: 5, name: "키즈퀴즈", path: "/parents/quiz", },
     { id: 6, name: "활동사진", path: "", },
