@@ -2,37 +2,40 @@ const express = require("express");
 const path = require("path");
 const router = express.Router();
 
-const memosController = require(path.join(__dirname, "..", "controllers", "memos"));
+const mealsController = require(path.join(__dirname, "..", "controllers", "meals"));
 
 /**
  * @swagger
  * paths:
- *  /memos/register:
+ *  /meals/register:
  *    post:
- *      summary: "알림장 등록"
- *      description: "post 방식으로 알림장 등록"
- *      tags: [Memos]
+ *      summary: "식단 등록"
+ *      description: "post 방식으로 식단 등록"
+ *      tags: [Meals]
  *      requestBody:
- *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (알림장 등록)
+ *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (식단 등록)
  *          required: true
  *          content:
  *            application/x-www-form-urlencoded:
  *              schema:
  *                type: object
  *                properties:
- *                  groupNo:
+ *                  centerNo:
  *                    type: string
- *                    description: "반 번호"
- *                  memoContent:
+ *                    description: "유치원 번호"
+ *                  mealType:
  *                    type: string
- *                    description: "알림장 내용"
- *                  memoDate:
+ *                    description: "식단 타입"
+ *                  mealContent:
+ *                    type: string
+ *                    description: "식단 내용"
+ *                  mealDate:
  *                    type: string
  *                    format: date
- *                    description: "알림장 날짜"
+ *                    description: "식단 날짜"
  *      responses:
  *        "200":
- *          description: 알림장 등록 성공
+ *          description: 식단 등록 성공
  *          content:
  *            application/json:
  *              schema:
@@ -41,10 +44,10 @@ const memosController = require(path.join(__dirname, "..", "controllers", "memos
  *                    message:
  *                      type: string
  *                      example:
- *                          "알림장 등록 완료"
+ *                          "식단 등록 완료"
  *
  *        "500":
- *          description: 알림장 등록 실패
+ *          description: 식단 등록 실패
  *          content:
  *            application/json:
  *              schema:
@@ -53,36 +56,43 @@ const memosController = require(path.join(__dirname, "..", "controllers", "memos
  *                    message:
  *                      type: string
  *                      example:
- *                          "알림장 등록 실패"
+ *                          "식단 등록 실패"
  */
-router.post("/register", memosController.memo_regist);
+router.post("/register", mealsController.meal_regist);
 
 /**
  * @swagger
  * paths:
- *  /memos/list/{groupNo}:
+ *  /meals/list/{centerNo}/{mealDate}:
  *    get:
- *      summary: "알림장 목록 조회"
- *      description: "get 방식으로 알림장 목록 조회"
- *      tags: [Memos]
+ *      summary: "식단 목록 조회"
+ *      description: "get 방식으로 식단 목록 조회"
+ *      tags: [Meals]
  *      parameters:
  *        - in: path
- *          name: groupNo
+ *          name: centerNo
  *          required: true
- *          description: 반 번호
+ *          description: 유치원 번호
  *          schema:
  *            type: integer
+ *        - in: path
+ *          name: mealDate
+ *          required: true
+ *          description: 식단 날짜
+ *          schema:
+ *            type: string
+ *            format: date
  *      responses:
  *        "200":
- *          description: 알림장 목록 조회 성공
+ *          description: 식단 목록 조회 성공
  *          content:
  *            application/json:
  *              schema:
  *                type: object
  *                example:
- *                    [{"알림장1": "알림장 정보1"},{"알림장2": "알림장 정보2"}]
+ *                    [{"식단1": "식단 정보1"},{"식단2": "식단 정보2"}]
  *        "500":
- *          description: 알림장 조회 실패
+ *          description: 식단 조회 실패
  *          content:
  *            application/json:
  *              schema:
@@ -93,45 +103,48 @@ router.post("/register", memosController.memo_regist);
  *                      example:
  *                          "목록 조회 과정에 문제 발생"
  */
-router.get("/list/:groupNo", memosController.memo_list);
+router.get("/list/:centerNo/:mealDate", mealsController.meal_list);
 
 /**
  * @swagger
  * paths:
- *  /memos/{memoNo}:
+ *  /meals/{mealNo}:
  *    get:
- *      summary: "알림장 정보 조회"
- *      description: "get 방식으로 알림장 정보 조회"
- *      tags: [Memos]
+ *      summary: "식단 정보 조회"
+ *      description: "get 방식으로 식단 정보 조회"
+ *      tags: [Meals]
  *      parameters:
  *        - in: path
- *          name: memoNo
+ *          name: mealNo
  *          required: true
- *          description: 알림장 번호
+ *          description: 식단 번호
  *          schema:
  *            type: integer
  *      responses:
  *        "200":
- *          description: 알림장 정보 조회 성공
+ *          description: 식단 정보 조회 성공
  *          content:
  *            application/json:
  *              schema:
  *                type: object
  *                properties:
- *                  memo_no:
+ *                  mealNo:
  *                    type: integer
  *                    example: 4
- *                  group_no:
+ *                  centerNo:
  *                    type: integer
  *                    example: 1
- *                  memo_content:
+ *                  mealType:
+ *                    type: string
+ *                    example: "M"
+ *                  mealContent:
  *                    type: string
  *                    example: "크레파스"
- *                  memo_date:
+ *                  mealDate:
  *                    type: string
  *                    example: "2022-08-03"
  *        "500":
- *          description: 알림장 정보 조회 실패
+ *          description: 식단 정보 조회 실패
  *          content:
  *            application/json:
  *              schema:
@@ -142,37 +155,44 @@ router.get("/list/:groupNo", memosController.memo_list);
  *                      example:
  *                          "해당 정보를 찾을 수 없습니다."
  */
-router.get("/:memoNo", memosController.memo_detail);
+router.get("/:mealNo", mealsController.meal_detail);
 
 /**
  * @swagger
  * paths:
- *  /memos/{memoNo}:
+ *  /meals/{mealNo}:
  *    put:
- *      summary: "알림장 정보 수정"
- *      description: "put 방식으로 알림장 정보 수정"
- *      tags: [Memos]
+ *      summary: "식단 정보 수정"
+ *      description: "put 방식으로 식단 정보 수정"
+ *      tags: [Meals]
  *      parameters:
  *        - in: path
- *          name: memoNo
+ *          name: mealNo
  *          required: true
- *          description: 알림장 번호
+ *          description: 식단 번호
  *          schema:
  *            type: integer
  *      requestBody:
- *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. ( 알림장 정보 수정)
+ *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. ( 식단 정보 수정)
  *          required: true
  *          content:
  *            application/x-www-form-urlencoded:
  *              schema:
  *                type: object
  *                properties:
- *                  memoContent:
+ *                  mealType:
  *                    type: string
- *                    description: "알림장 내용"
+ *                    description: "식단 타입"
+ *                  mealContent:
+ *                    type: string
+ *                    description: "식단 내용"
+ *                  mealDate:
+ *                    type: string
+ *                    format: date
+ *                    description: "식단 날짜"
  *      responses:
  *        "200":
- *          description: 알림장 수정 성공
+ *          description: 식단 수정 성공
  *          content:
  *            application/json:
  *              schema:
@@ -181,10 +201,10 @@ router.get("/:memoNo", memosController.memo_detail);
  *                    message:
  *                      type: string
  *                      example:
- *                          "알림장 수정 완료"
+ *                          "식단 수정 완료"
  *
  *        "500":
- *          description: 알림장 수정 실패
+ *          description: 식단 수정 실패
  *          content:
  *            application/json:
  *              schema:
@@ -193,28 +213,28 @@ router.get("/:memoNo", memosController.memo_detail);
  *                    message:
  *                      type: string
  *                      example:
- *                          "알림장 수정 실패"
+ *                          "식단 수정 실패"
  */
-router.put("/:memoNo", memosController.memo_update);
+router.put("/:mealNo", mealsController.meal_update);
 
 /**
  * @swagger
  * paths:
- *  /memos/{memoNo}:
+ *  /meals/{mealNo}:
  *    delete:
- *      summary: "알림장 삭제"
- *      description: "delete 방식으로 알림장 삭제"
- *      tags: [Memos]
+ *      summary: "식단 삭제"
+ *      description: "delete 방식으로 식단 삭제"
+ *      tags: [Meals]
  *      parameters:
  *        - in: path
- *          name: memoNo
+ *          name: mealNo
  *          required: true
- *          description: 알림장 번호
+ *          description: 식단 번호
  *          schema:
  *            type: integer
  *      responses:
  *        "200":
- *          description: 알림장 삭제 성공
+ *          description: 식단 삭제 성공
  *          content:
  *            application/json:
  *              schema:
@@ -223,10 +243,10 @@ router.put("/:memoNo", memosController.memo_update);
  *                    message:
  *                      type: string
  *                      example:
- *                          "알림장 삭제 완료"
+ *                          "식단 삭제 완료"
  *
  *        "500":
- *          description: 알림장 삭제 실패
+ *          description: 식단 삭제 실패
  *          content:
  *            application/json:
  *              schema:
@@ -235,8 +255,8 @@ router.put("/:memoNo", memosController.memo_update);
  *                    message:
  *                      type: string
  *                      example:
- *                          "알림장 삭제 실패"
+ *                          "식단 삭제 실패"
  */
-router.delete("/:memoNo", memosController.memo_remove);
+router.delete("/:mealNo", mealsController.meal_remove);
 
 module.exports = router;
