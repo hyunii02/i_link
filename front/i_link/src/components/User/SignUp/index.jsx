@@ -57,7 +57,7 @@ export default function SignUp() {
   const navigate = useNavigate();
   // validation
   const initialValues = {
-    type: "",
+    type: "3",
     email: "",
     password: "",
     check_password: "",
