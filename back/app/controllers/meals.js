@@ -65,19 +65,23 @@ exports.meal_list = async function (req, res) {
 // [get]  /meals/:mealNo
 exports.meal_detail = async function (req, res) {
   const mealNo = req.params.mealNo;
-  const meal = await Meals.findByPk(mealNo);
 
-  if (meal === null) {
-    // 데이터 없음
-    console.log("해당 정보를 찾을 수 없습니다.");
-    res.status(500).json({
-      message: err.message || "목록 조회 과정에 문제 발생",
+  await Meals.findByPk(mealNo)
+    .then((data) => {
+      if (data === null) {
+        res.status(500).json({
+          message: "해당 정보를 찾을 수 없습니다.",
+        });
+      } else {
+        console.log(data);
+        res.status(200).json(data);
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "목록 조회 과정에 문제 발생",
+      });
     });
-  } else {
-    // 검색 성공
-    console.log(meal);
-    res.status(200).json(meal);
-  }
 };
 
 // 식단 정보 수정
