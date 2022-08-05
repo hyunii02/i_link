@@ -9,6 +9,7 @@ import {
   Select,
   MenuItem,
   Card,
+  Typography,
 } from "@mui/material";
 
 // 반정보 더미 데이터
@@ -33,9 +34,11 @@ const GroupSelect = ({ groups }) => {
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 80 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">반</InputLabel>
+        <InputLabel id="demo-simple-select-label">
+          <Typography id="font_test">반</Typography>
+        </InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
@@ -45,7 +48,9 @@ const GroupSelect = ({ groups }) => {
         >
           {groups.map((group, idx) => (
             <MenuItem value={group.name} key={idx}>
-              {group.name}
+              <Typography id="font_test" color="rgba(0, 0, 0, 0.6)">
+                {group.name}
+              </Typography>
             </MenuItem>
           ))}
         </Select>
@@ -55,29 +60,29 @@ const GroupSelect = ({ groups }) => {
 };
 
 const RegistKidsList = ({ kid }) => (
-  <Card variant="outlined">
+  <Card variant="outlined" sx={{ borderRadius: "5px" }}>
     <Grid
       container
       spacing={2}
       sx={{
         bgcolor: "background.paper",
         boxShadow: 1,
-        borderRadius: 2,
-        p: 2,
-        minWidth: 300,
         display: "flex",
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
+        paddingTop: "5px",
+        paddingBottom: "5px",
       }}
     >
-      <Grid item xs={6}>
-        <Box>{kid.name}</Box>
+      <Grid item xs={1}></Grid>
+      <Grid item xs={4}>
+        <Typography id="font_test" color="rgba(0, 0, 0, 0.6)">
+          {kid.name}
+        </Typography>
       </Grid>
-      <Grid item xs={6}>
-        <Box sx={{ mb: 1.5 }} color="text.secondary" align="justify">
-          <GroupSelect groups={groups}></GroupSelect>
-        </Box>
+      <Grid item xs={7}>
+        <GroupSelect groups={groups}></GroupSelect>
       </Grid>
     </Grid>
   </Card>

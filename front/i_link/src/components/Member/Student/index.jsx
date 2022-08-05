@@ -12,8 +12,8 @@ import { styled } from "@mui/material/styles";
 // 알림 뱃지 스타일링
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
-    right: 10,
-    top: 10,
+    right: 25,
+    top: 25,
     border: `2px solid ${theme.palette.background.paper}`,
     padding: "0 4px",
     width: 30,
@@ -48,20 +48,17 @@ const MemberStudent = (props) => {
   };
 
   return (
-    /* 프로필 사진 특이사항 뱃지 */
     <StyledBadge
       color="secondary"
-      badgeContent="3"
+      badgeContent={<Typography>{1}</Typography>}
       onClick={badgeClickHandler}
       invisible={false}
       value="se"
       className="badge"
     >
-      {/* Card 메인 폼 */}
       <Card
         sx={{
           maxWidth: 400,
-          width: "100%",
           border: "10px solid #fae2e2",
           background: "#FAF1DA",
           /* FAE6D7 */

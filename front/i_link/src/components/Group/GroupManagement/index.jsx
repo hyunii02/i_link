@@ -122,8 +122,13 @@ const GroupManagement = () => {
         </Box>
         <Box>
           {/* 반 추가하기 버튼*/}
-          <Button variant="outlined" onClick={insertClicked} size="large">
-            반 추가하기
+          <Button
+            variant="outlined"
+            color="warning"
+            onClick={insertClicked}
+            size="large"
+          >
+            <Typography id="font_test">추가</Typography>
           </Button>
         </Box>
       </Box>
@@ -158,7 +163,11 @@ const GroupManagement = () => {
               key={list.id}
             >
               <ListItemText>
-                <Typography variant="h6" style={{ color: "#000000" }}>
+                <Typography
+                  variant="h6"
+                  id="font_test"
+                  style={{ color: "rgba(0, 0, 0, 0.7)" }}
+                >
                   {list.text}
                 </Typography>
               </ListItemText>
