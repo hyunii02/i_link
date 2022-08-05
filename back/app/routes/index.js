@@ -41,5 +41,12 @@ router.use("/memos", require(path.join(__dirname, "memos")));
  *    description: 원생(자녀) CRUD
  */
 router.use("/kids", require(path.join(__dirname, "kids")));
+/**
+ * @swagger
+ * tags:
+ *    name: Meals
+ *    description: 식단 CRUD
+ */
+router.use("/meals", require(path.join(__dirname, "meals")));
 
 module.exports = router;
