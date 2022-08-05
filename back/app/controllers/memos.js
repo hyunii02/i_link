@@ -28,9 +28,9 @@ exports.memo_regist = async function (req, res) {
 };
 
 // 알림장 목록 조회
-// [get]  /memos/list/:group_no
+// [get]  /memos/list/:groupNo
 exports.memo_list = async function (req, res) {
-  const groupNo = req.params.group_no;
+  const groupNo = req.params.groupNo;
 
   await Memos.findAll({ where: { group_no: groupNo } })
     .then((data) => {
@@ -44,9 +44,9 @@ exports.memo_list = async function (req, res) {
 };
 
 // 알림장 상세 조회
-// [get]  /memos/:memo_no
+// [get]  /memos/:memoNo
 exports.memo_detail = async function (req, res) {
-  const memoNo = req.params.memo_no;
+  const memoNo = req.params.memoNo;
   const memo = await Memos.findByPk(memoNo);
 
   if (memo === null) {
@@ -63,9 +63,9 @@ exports.memo_detail = async function (req, res) {
 };
 
 // 알림장 정보 수정
-// [put]  /memos/:memo_no
+// [put]  /memos/:memoNo
 exports.memo_update = async function (req, res) {
-  const memoNo = req.params.memo_no;
+  const memoNo = req.params.memoNo;
 
   // 알림장
   const memo = {
@@ -93,9 +93,9 @@ exports.memo_update = async function (req, res) {
 };
 
 // 알림장 정보 삭제
-// [delete] /memos/:memo_no
+// [delete] /memos/:memoNo
 exports.memo_remove = async function (req, res) {
-  const memoNo = req.params.memo_no;
+  const memoNo = req.params.memoNo;
 
   await Memos.destroy({ where: { memo_no: memoNo } })
     .then((result) => {

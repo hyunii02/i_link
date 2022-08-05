@@ -43,7 +43,7 @@ const memosController = require(path.join(__dirname, "..", "controllers", "memos
  *                      example:
  *                          "알림장 등록 완료"
  *
- *        "400":
+ *        "500":
  *          description: 알림장 등록 실패
  *          content:
  *            application/json:
@@ -60,14 +60,14 @@ router.post("/register", memosController.memo_regist);
 /**
  * @swagger
  * paths:
- *  /memos/list/{group_no}:
+ *  /memos/list/{groupNo}:
  *    get:
  *      summary: "알림장 목록 조회"
  *      description: "get 방식으로 알림장 목록 조회"
  *      tags: [Memos]
  *      parameters:
  *        - in: path
- *          name: group_no
+ *          name: groupNo
  *          required: true
  *          description: 반 번호
  *          schema:
@@ -81,7 +81,7 @@ router.post("/register", memosController.memo_regist);
  *                type: object
  *                example:
  *                    [{"알림장1": "알림장 정보1"},{"알림장2": "알림장 정보2"}]
- *        "400":
+ *        "500":
  *          description: 알림장 조회 실패
  *          content:
  *            application/json:
@@ -93,19 +93,19 @@ router.post("/register", memosController.memo_regist);
  *                      example:
  *                          "목록 조회 과정에 문제 발생"
  */
-router.get("/list/:group_no", memosController.memo_list);
+router.get("/list/:groupNo", memosController.memo_list);
 
 /**
  * @swagger
  * paths:
- *  /memos/{memo_no}:
+ *  /memos/{memoNo}:
  *    get:
  *      summary: "알림장 정보 조회"
  *      description: "get 방식으로 알림장 정보 조회"
  *      tags: [Memos]
  *      parameters:
  *        - in: path
- *          name: memo_no
+ *          name: memoNo
  *          required: true
  *          description: 알림장 번호
  *          schema:
@@ -130,7 +130,7 @@ router.get("/list/:group_no", memosController.memo_list);
  *                  memo_date:
  *                    type: string
  *                    example: "2022-08-03"
- *        "400":
+ *        "500":
  *          description: 알림장 정보 조회 실패
  *          content:
  *            application/json:
@@ -142,19 +142,19 @@ router.get("/list/:group_no", memosController.memo_list);
  *                      example:
  *                          "해당 정보를 찾을 수 없습니다."
  */
-router.get("/:memo_no", memosController.memo_detail);
+router.get("/:memoNo", memosController.memo_detail);
 
 /**
  * @swagger
  * paths:
- *  /memos/{memo_no}:
+ *  /memos/{memoNo}:
  *    put:
  *      summary: "알림장 정보 수정"
  *      description: "put 방식으로 알림장 정보 수정"
  *      tags: [Memos]
  *      parameters:
  *        - in: path
- *          name: memo_no
+ *          name: memoNo
  *          required: true
  *          description: 알림장 번호
  *          schema:
@@ -183,7 +183,7 @@ router.get("/:memo_no", memosController.memo_detail);
  *                      example:
  *                          "알림장 수정 완료"
  *
- *        "400":
+ *        "500":
  *          description: 알림장 수정 실패
  *          content:
  *            application/json:
@@ -195,19 +195,19 @@ router.get("/:memo_no", memosController.memo_detail);
  *                      example:
  *                          "알림장 수정 실패"
  */
-router.put("/:memo_no", memosController.memo_update);
+router.put("/:memoNo", memosController.memo_update);
 
 /**
  * @swagger
  * paths:
- *  /memos/{memo_no}:
+ *  /memos/{memoNo}:
  *    delete:
  *      summary: "알림장 삭제"
  *      description: "delete 방식으로 알림장 삭제"
  *      tags: [Memos]
  *      parameters:
  *        - in: path
- *          name: memo_no
+ *          name: memoNo
  *          required: true
  *          description: 알림장 번호
  *          schema:
@@ -225,7 +225,7 @@ router.put("/:memo_no", memosController.memo_update);
  *                      example:
  *                          "알림장 삭제 완료"
  *
- *        "400":
+ *        "500":
  *          description: 알림장 삭제 실패
  *          content:
  *            application/json:
@@ -237,6 +237,6 @@ router.put("/:memo_no", memosController.memo_update);
  *                      example:
  *                          "알림장 삭제 실패"
  */
-router.delete("/:memo_no", memosController.memo_remove);
+router.delete("/:memoNo", memosController.memo_remove);
 
 module.exports = router;
