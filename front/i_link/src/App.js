@@ -6,10 +6,10 @@ import './App.css';
 import UserLogin from './pages/User/Login/UserLogin';
 import UserSignUp from './pages/User/SignUp/UserSignUp';
 import UserUpdate from './pages/User/Update/UserUpdate';
-import KioskAward from './pages/Kiosk/Award/KioskAward';
 import KioskMain from './pages/Kiosk/Main/KioskMain';
 import KioskQuiz from './pages/Kiosk/Quiz/KioskQuiz';
-import KioskVote from './pages/Kiosk/Vote/KioskVote';
+import KioskSurvey from './pages/Kiosk/Survey/KioskVote';
+import KioskStamp from './pages/Kiosk/Stamp/KioskAward';
 import MasterDiet from './pages/Master/Diet/MasterDiet';
 import MasterManageGroup from './pages/Master/ManageGroup/MasterManageGroup';
 import MasterManageMember from './pages/Master/ManageMember/MasterManageMember';
@@ -28,6 +28,7 @@ import TeacherDetail from './pages/Teacher/Detail/TeacherDetail';
 import TeacherMemo from './pages/Teacher/Memo/TeacherMemo';
 import TeacherNotice from './pages/Teacher/Notice/TeacherNotice';
 import TeacherQuiz from './pages/Teacher/Quiz/TeacherQuiz';
+import KioskLayout from './layout/KioskLayout';
 import Error from './pages/Error/Error';
 import LayoutWithoutHeader from './layout/WithoutHeader';
 import { UserProvider } from './context/user';
@@ -36,6 +37,13 @@ const App = () => {
   return (
     <UserProvider>
       <Routes>
+        {/* 키오스크 */}
+        <Route element={<KioskLayout />}>
+          <Route path="/kiosk" element={<KioskMain />} />
+          <Route path="/kiosk/stamp" element={<KioskStamp />} />
+          <Route path="/kiosk/quiz" element={<KioskQuiz />} />
+          <Route path="/kiosk/survey" element={<KioskSurvey />} />  
+        </Route>
         {/* 사이드바 없는 화면(로그인, 회원가입, 회원정보수정) */}
         <Route element={<LayoutWithoutHeader />}>
           <Route path="/" element={<UserLogin />} />
@@ -68,10 +76,6 @@ const App = () => {
         </Route>
         {/* 헤더, 사이드바 없는 화면 */}
         <Route path="*" element={<Error />} />
-        <Route path="/kiosk/award" element={<KioskAward />} />
-        <Route path="/kiosk/main" element={<KioskMain />} />
-        <Route path="/kiosk/quiz" element={<KioskQuiz />} />
-        <Route path="/kiosk/vote" element={<KioskVote />} />
       </Routes>
     </UserProvider>
   );
