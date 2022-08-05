@@ -47,19 +47,22 @@ exports.memo_list = async function (req, res) {
 // [get]  /memos/:memoNo
 exports.memo_detail = async function (req, res) {
   const memoNo = req.params.memoNo;
-  const memo = await Memos.findByPk(memoNo);
-
-  if (memo === null) {
-    // 데이터 없음
-    console.log("해당 정보를 찾을 수 없습니다.");
-    res.status(500).json({
-      message: err.message || "목록 조회 과정에 문제 발생",
+  await Memos.findByPk(memoNo)
+    .then((data) => {
+      if (data === null) {
+        res.status(500).json({
+          message: "해당 정보를 찾을 수 없습니다.",
+        });
+      } else {
+        console.log(data);
+        res.status(200).json(data);
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "목록 조회 과정에 문제 발생",
+      });
     });
-  } else {
-    // 검색 성공
-    console.log(memo);
-    res.status(200).json(memo);
-  }
 };
 
 // 알림장 정보 수정
