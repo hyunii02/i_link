@@ -13,14 +13,14 @@ const https = require("https");
 const fs = require("fs");
 
 // Local 용
-var privateKey = fs.readFileSync("pem/privkey.pem");
-var certificate = fs.readFileSync("pem/cert.pem");
-var ca = fs.readFileSync("pem/fullchain.pem");
+// var privateKey = fs.readFileSync("pem/privkey.pem");
+// var certificate = fs.readFileSync("pem/cert.pem");
+// var ca = fs.readFileSync("pem/fullchain.pem");
 
 // Service 용
-// var privateKey = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/privkey.pem");
-// var certificate = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/cert.pem");
-// var ca = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/fullchain.pem");
+var privateKey = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/privkey.pem");
+var certificate = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/cert.pem");
+var ca = fs.readFileSync("/etc/letsencrypt/live/i7e102.p.ssafy.io/fullchain.pem");
 
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
