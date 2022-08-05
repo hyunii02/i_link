@@ -1,6 +1,6 @@
 // 2022.07.27 배지우 //
 // 2022.07.29 안정현 validation //
-// 2022.08.02 강민재
+// 2022.08.02 강민재 axios, validation //
 
 import React from "react";
 import { useState } from "react";
@@ -22,6 +22,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { urls, baseURL } from "../../../api/axios";
 import { colorPalette } from "../../../constants/constants";
 import { UserContext } from "../../../context/user";
+
 
 const theme = createTheme();
 
@@ -119,7 +120,7 @@ export default function Login() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: "100px",
+            marginTop: "80px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -189,7 +190,6 @@ export default function Login() {
               sx={{ mt: 3, mb: 2 }}
               onChange={handleChange}
             >
-              {/* 로고 이미지 */}
               <Typography id="font_test" component="h6" variant="h6">
                 로그인
               </Typography>
@@ -197,7 +197,7 @@ export default function Login() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 {/* 회원가입 페이지로 연결 */}
-                <Link href="/user/signup" variant="body2">
+                <Link href="/user/signup" variant="body2" id="font_test" style={{ color: "#808080", textDecoration:"none" }} >
                   회원가입
                 </Link>
               </Grid>
