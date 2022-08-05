@@ -1,10 +1,10 @@
 import React from "react";
 import { Box } from "@mui/material";
-import RegistMemberList from "../RegistKidsList";
+import RegistMemberLists from "../RegistKidsLists";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 
-function RegistKids() {
+const RegistKids = () => {
   return (
     <div>
       <Box sx={{ p: 1, maxWidth: 100 }}>가입승인대기</Box>
@@ -17,9 +17,9 @@ function RegistKids() {
           <Button>Two</Button>
         </ButtonGroup>
       </Box>
-      <RegistMemberList></RegistMemberList>
+      <RegistMemberLists></RegistMemberLists>
     </div>
   );
-}
+};
 
 export default RegistKids;
