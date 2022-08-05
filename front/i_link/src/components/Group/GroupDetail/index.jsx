@@ -112,7 +112,13 @@ const GroupDetail = () => {
                     alignItems: "center",
                   }}
                 >
-                  <Typography variant="body2">{stu.name}</Typography>
+                  <Typography
+                    variant="body2"
+                    id="font_test"
+                    color="rgba(0, 0, 0, 0.4)"
+                  >
+                    {stu.name}
+                  </Typography>
                 </Grid>
               </Grid>
             </ListItemButton>
