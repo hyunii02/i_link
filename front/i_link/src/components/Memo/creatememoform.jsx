@@ -13,12 +13,13 @@ let id_index = 1;
 // 2022 08 03 김국진
 const CreateMemoForm = (props) => {
   const [memoTitle, setMemoTitle] = useState("");
-  const [memoContent, setmemoContent] = useState("");
+  const [memoContent, setMemoContent] = useState("");
   const [contentList, setContentList] = useState([]);
-  const { addMemo, idCount } = props;
+  const { addMemo, idCount, handleClose } = props;
 
   // 엔터누를때마다 값을 하나씩 저장.
   const keyDownHandler = (e) => {
+    
     if (e.key === "Enter") {
       const content = {
         id: id_index++,
@@ -26,6 +27,8 @@ const CreateMemoForm = (props) => {
         content: memoContent,
       };
       setContentList([...contentList, content]);
+      
+      
     }
   };
 
@@ -41,22 +44,25 @@ const CreateMemoForm = (props) => {
     };
     console.log(subData);
     addMemo(newData);
+    handleClose();
+    
   };
+
+
 
   return (
     <div>
-      <Box 
+      <Box
         sx={{
           "& .MuiTextField-root": { mt: 2 }, // 텍스트필드마다 mt 3
-          height : 300,
+          height: 300,
           display: "flex",
           flexDirection: "column",
-          
         }}
       >
         <TextField
           sx={{
-            background : "#F2EFDA"
+            background: "#F2EFDA",
           }}
           value={memoTitle}
           type="text"
@@ -66,12 +72,12 @@ const CreateMemoForm = (props) => {
 
         <TextField
           sx={{
-            background : "#F2EFDA"
+            background: "#F2EFDA",
           }}
           value={memoContent}
           type="text"
           placeholder="내용"
-          onChange={(e) => setmemoContent(e.target.value)}
+          onChange={(e) => setMemoContent(e.target.value)}
           onKeyDown={keyDownHandler}
         ></TextField>
 
@@ -82,11 +88,12 @@ const CreateMemoForm = (props) => {
           ))}
         </Box>
         <Button
-          sx={{  background: "#FCE99A",
-          fontSize:15,
-          fontWeight:700,
-        color:"black" }}
-          
+          sx={{
+            background: "#FCE99A",
+            fontSize: 15,
+            fontWeight: 700,
+            color: "black",
+          }}
           type="submit"
           variant="contained"
           onClick={buttonClickHandler}

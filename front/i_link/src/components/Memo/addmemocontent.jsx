@@ -1,6 +1,6 @@
 import { Box } from "@mui/system";
 import * as React from "react";
-import { useState } from "react";
+import { useState ,useRef} from "react";
 import { TextField, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 
@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 
 const AddMemoContent = (props) => {
   const { content } = props;
+
 
   return (
     <Box >

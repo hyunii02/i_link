@@ -7,12 +7,10 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 
 export default function NoticeWriteForm(props) {
-
-
   const [noticeTitle, setNoticeTitle] = useState("");
   const [noticeContent, setNoticeContent] = useState("");
   const { addNotice, idCount } = props;
-  
+
   // 정보를 보내는 함수
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,7 +27,7 @@ export default function NoticeWriteForm(props) {
       component="form"
       sx={{
         "& .MuiTextField-root": { mt: 5 }, // 텍스트필드마다 mt 5
-
+        
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -37,27 +35,31 @@ export default function NoticeWriteForm(props) {
       noValidate
       autoComplete="off"
     >
-      <div>
-        <TextField
-          onChange={(e) => setNoticeTitle(e.target.value)}
-          fullWidth
-          label="제목"
-          id="title"
-          name="title"
-          multiline
-          maxRows={4}
-        />
+      <Box>
+        <h1>공지사항</h1>
+      </Box>
+      <TextField
+        sx={{background :"white"}}
+        onChange={(e) => setNoticeTitle(e.target.value)}
+        fullWidth
+        label="제목을 작성하세요"
+        id="title"
+        name="title"
+        multiline
+        maxRows={4}
+      />
 
-        <TextField
-          onChange={(e) => setNoticeContent(e.target.value)}
-          fullWidth
-          id="content"
-          name="content"
-          label="내용"
-          multiline
-          rows={10}
-        />
-      </div>
+      <TextField
+        sx={{background :"white"}}
+        onChange={(e) => setNoticeContent(e.target.value)}
+        fullWidth
+        id="content"
+        name="content"
+        label="내용을 작성하세요"
+        multiline
+        rows={10}
+      />
+
       <Button
         onClick={handleSubmit}
         sx={{ mt: 5 }}

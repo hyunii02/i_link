@@ -118,7 +118,7 @@ const TeacherManagement = () => {
 
   return (
     <Box>
-      <Grid container style={{ display: "flex" }} spacing={0.5}>
+      <Grid container spacing={0.5}>
         {student.map((stu) => (
           <Grid item xs={3} key={stu.id} style={{ marginBottom: "10px" }}>
             <MemberStudent key={stu.id} student={stu} />

@@ -1,14 +1,16 @@
-// 07/27 강민재
-// 승인 요청한 목록을 띄워주는 컴포넌트
+// 2022.08.02 강민재
+// 반복되는 카드 내용 컴포넌트
 import React from "react";
-import Card from "@mui/material/Card";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Card,
+  Typography,
+} from "@mui/material";
 
 // 반정보 더미 데이터
 const groups = [
@@ -22,38 +24,6 @@ const groups = [
   },
 ];
 
-//
-const card = (data) => (
-  <React.Fragment>
-    <Grid
-      container
-      spacing={2}
-      sx={{
-        bgcolor: "background.paper",
-        boxShadow: 1,
-        borderRadius: 2,
-        p: 2,
-        minWidth: 300,
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Grid item xs={6}>
-        <Typography variant="h5" component="div">
-          {data.name}
-        </Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary" align="justify">
-          <GroupSelect groups={groups}></GroupSelect>
-        </Typography>
-      </Grid>
-    </Grid>
-  </React.Fragment>
-);
-
 // 반 선택 드롭다운 컴포넌트
 const GroupSelect = ({ groups }) => {
   // selected는 선택한 반이 저장되는 상태
@@ -64,9 +34,11 @@ const GroupSelect = ({ groups }) => {
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 80 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">반</InputLabel>
+        <InputLabel id="demo-simple-select-label">
+          <Typography id="font_test">반</Typography>
+        </InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
@@ -74,8 +46,12 @@ const GroupSelect = ({ groups }) => {
           label="selected"
           onChange={handleChange}
         >
-          {groups.map((group) => (
-            <MenuItem value={group.name}>{group.name}</MenuItem>
+          {groups.map((group, idx) => (
+            <MenuItem value={group.name} key={idx}>
+              <Typography id="font_test" color="rgba(0, 0, 0, 0.6)">
+                {group.name}
+              </Typography>
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
@@ -83,51 +59,33 @@ const GroupSelect = ({ groups }) => {
   );
 };
 
-// 신청자 목록 더미 데이터
-const RegistKidsList = () => {
-  const members = [
-    {
-      id: 1,
-      name: "김국진",
-      group: "자바반",
-    },
-    {
-      id: 2,
-      name: "강민재",
-      group: "파이썬반",
-    },
-    {
-      id: 2,
-      name: "강민재",
-      group: "파이썬반",
-    },
-    {
-      id: 2,
-      name: "강민재",
-      group: "파이썬반",
-    },
-    {
-      id: 2,
-      name: "강민재",
-      group: "파이썬반",
-    },
-    {
-      id: 2,
-      name: "강민재",
-      group: "파이썬반",
-    },
-  ];
-  return (
-    <div>
-      <Grid container spacing={2}>
-        {members.map((data) => (
-          <Grid item xs={4}>
-            <Card variant="outlined">{card(data)}</Card>
-          </Grid>
-        ))}
+const RegistKidsList = ({ kid }) => (
+  <Card variant="outlined" sx={{ borderRadius: "5px" }}>
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        bgcolor: "background.paper",
+        boxShadow: 1,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingTop: "5px",
+        paddingBottom: "5px",
+      }}
+    >
+      <Grid item xs={1}></Grid>
+      <Grid item xs={4}>
+        <Typography id="font_test" color="rgba(0, 0, 0, 0.6)">
+          {kid.name}
+        </Typography>
       </Grid>
-    </div>
-  );
-};
+      <Grid item xs={7}>
+        <GroupSelect groups={groups}></GroupSelect>
+      </Grid>
+    </Grid>
+  </Card>
+);
 
 export default RegistKidsList;

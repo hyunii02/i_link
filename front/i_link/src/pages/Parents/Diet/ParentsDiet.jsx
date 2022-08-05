@@ -1,7 +1,14 @@
-import React from 'react';
+import React from "react";
+import CalendarMonthMove from "../../../components/Calendar/MonthMove";
+import CalendarMonth from "../../../components/Calendar/Month";
 
 const ParentsDiet = () => {
-  return <div>ParentsDiet</div>;
+  return (
+    <div>
+      <CalendarMonthMove />
+      <CalendarMonth />
+    </div>
+  );
 };
 
 export default ParentsDiet;

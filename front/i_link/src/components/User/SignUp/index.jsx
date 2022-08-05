@@ -1,13 +1,13 @@
 // 2022.07.27 배지우 //
 // 2022.07.29 안정현 validation //
 // 2022.08.01 안정현 select components //
+// 2022.08.03 강민재, 안정현 axios, validation //
 // 2022.08.04 김국진 로고 변경, 컴포넌트 사이즈 수정, input box 배경색 하얀색으로 변경 //
 
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { urls, baseURL } from "../../../api/axios";
 
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -22,6 +22,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+
+import { urls, baseURL } from "../../../api/axios";
+import { colorPalette } from "../../../constants/constants";
+
 
 // Select components
 const BasicSelectCheck = ({ handleSelect }) => {
@@ -39,7 +43,7 @@ const BasicSelectCheck = ({ handleSelect }) => {
         sx={{ background: "white" }}
         inputProps={{ "aria-label": "Without label" }}
       >
-        <MenuItem value="3">부모님</MenuItem>
+        <MenuItem value="3" >부모님</MenuItem>
         <MenuItem value="1">원장님</MenuItem>
         <MenuItem value="2">선생님</MenuItem>
       </Select>
@@ -53,7 +57,7 @@ export default function SignUp() {
   const navigate = useNavigate();
   // validation
   const initialValues = {
-    type: "",
+    type: "3",
     email: "",
     password: "",
     check_password: "",
@@ -85,7 +89,6 @@ export default function SignUp() {
     if (!formValues.phone_number) {
       errors.phone_number = "전화번호를 입력해주세요.";
     }
-
     setFormErrors(errors);
     if (!(errors.email + errors.password)) {
       return true;
@@ -131,7 +134,7 @@ export default function SignUp() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            mb: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -139,11 +142,16 @@ export default function SignUp() {
         >
           {/* 로고 이미지 */}
           <Avatar
-            sx={{ width: 300, height: 300 }}
+            sx={{ width: 250, height: 250 }}
             alt="Academy"
             src="/images/logo.png"
           ></Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography 
+            component="h1"
+            variant="h5"
+            id="font_test"
+            sx={{ color: "rgba(0, 0, 0, 0.6)" }}
+          >
             회원가입
           </Typography>
           {/* 회원가입 form */}
@@ -151,7 +159,7 @@ export default function SignUp() {
             component="form"
             noValidate
             onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
+            sx={{ mt: 5 }}
           >
             <Grid container spacing={2}>
               {/* 부모님, 원장님, 선생님 선택창 */}
@@ -172,7 +180,7 @@ export default function SignUp() {
                   autoFocus
                   value={formValues.email}
                   onChange={handleChange}
-                  sx={{ background: "white" }}
+                  sx={{ background: "white", mt:2.2 }}
                 />
                 <p>{formErrors.email}</p>
               </Grid>
@@ -244,18 +252,23 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              color="warning"
-              size="string"
-              height="512px"
+              style={{ background: colorPalette.BUTTON_COLOR }}
               sx={{ mt: 3, mb: 2 }}
               onChange={handleChange}
             >
-              회원가입
+              <Typography id="font_test" component="h6" variant="h6">
+                회원가입
+              </Typography>
             </Button>
             <Grid container justifyContent="flex-end">
               {/* 로그인 페이지로 연결 */}
               <Grid item>
-                <Link href="/" variant="body2">
+                <Link 
+                  href="/"
+                  variant="body2" 
+                  id="font_test" 
+                  style={{ color: "#808080", textDecoration:"none" }}
+                >
                   아이디가 있으신가요? 로그인하기
                 </Link>
               </Grid>
