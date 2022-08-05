@@ -3,7 +3,7 @@
 // index -> creatememo -> creatememoform -> addmemocomponent
 
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -32,18 +32,27 @@ const card = [
     cards_content: ["체온계", "가방", "연필"],
   },
 ];
-let idCount = 5; //id 값 지정
+
 const theme = createTheme();
 
 export default function Album() {
   const [cards, setCards] = useState(card);
+  const idCount = useRef(5); // id값지정
 
   const addMemo = (card) => {
-    card.cards_id = idCount++;
+    card.cards_id = idCount.current
     setCards([card, ...cards]);
     console.log(card);
+    idCount.current+=1;
   };
 
+  //삭제 함수
+  
+  const onRemove = (id) => {
+    console.log(id);
+    setCards(card.filter((card) => card.cards_id !== id));
+  
+  };
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -72,17 +81,8 @@ export default function Album() {
                     ))}
                   </CardContent>
                   <Box sx={{ display: "flex", justifyContent: "end" }}>
-                    <Button
-                      sx={{
-                        background: "#FCD9C7",
-                        width: 20,
-                        height: 20,
-                        color: "#591E59",
-                      }}
-                    >
-                      수정
-                    </Button>
-                    <Button
+                    
+                    <Button onClick={() => onRemove(card.cards_id)}
                       sx={{
                         background: "#C5EDFD",
                         width: 20,

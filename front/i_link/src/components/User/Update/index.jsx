@@ -1,8 +1,15 @@
 // 2022.07.27 배지우 //
 // 2022.08.01 안정현 validation //
+// 2022.08.05 안정현 디자인 수정 //
+// 기본값 받아오는 거, 뒤로가기 버튼 수정 필요 //
 
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+import { urls, baseURL } from "../../../api/axios";
+import { colorPalette } from "../../../constants/constants";
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -14,94 +21,78 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+
 const theme = createTheme();
 
 export default function Update() {
+  const navigate = useNavigate();
   // validation
   const initialValues = {
-    id: '',
+    email: '',
     password: '',
     new_password: '',
     new_check_password: '',
     new_username: '',
-    phone_number: '',
+    new_phone_number: '',
   };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
-  const [isSubmit, setIsSubmit] = useState(false);
 
   // 에러메시지
-  const validate = target => {
-    console.log(target.name, target.value);
+  const validate = () => {
     const errors = {};
-    if (target.name === 'password') {
-      errors.password = '비밀번호를 입력해주세요';
-      if (target.value.length > 1) {
-        errors.password = '';
-      }
+    // if (!formValues.password) {
+    //   errors.password = "비밀번호를 입력해주세요.";
+    // }
+    if (!formValues.new_password) {
+      errors.new_password = "새로운 비밀번호를 입력해주세요.";
     }
-    if (target.name === 'new_password') {
-      errors.new_password = '새로운 비밀번호를 입력해주세요';
-      if (target.value.length < 6) {
-        errors.new_password = '새로운 비밀번호 6자리 이상 입력해주세요';
-      }
-      else {
-        errors.new_password = '';
-      }
+    if (formValues.new_password.length < 6) {
+      errors.new_password = "6자리 이상 입력해주세요.";
     }
-    if (target.name === 'new_check_password') {
-      errors.new_check_password = '새로운 비밀번호를 다시 입력해주세요';
-      if (target.value !== formValues.new_password) {
-        errors.new_check_password = '새로운 비밀번호가 일치하지 않습니다';
-      }
-      else {
-        errors.new_check_password = '';
-      }
+    if (formValues.password !== formValues.new_check_password) {
+      errors.new_check_password = "비밀번호가 일치하지 않습니다.";
     }
-    if (target.name === 'new_username') {
-      errors.new_username = '이름을 입력해주세요';
-      if (target.value.length > 1) {
-        errors.new_username = '';
-      }
+    if (!formValues.new_username) {
+      errors.new_username = "이름을 입력해주세요.";
     }
-    if (target.name === 'new_phone_number') {
-      errors.new_phone_number = '휴대폰 번호를 입력해주세요';
-      if (target.value.length > 1) {
-        errors.new_phone_number = '';
-      }
+    if (!formValues.new_phone_number) {
+      errors.new_phone_number = "전화번호를 입력해주세요.";
     }
-    return errors;
-  };
+    setFormErrors(errors);
+    if (!errors.password) {
+      return true;
+    }
+    return false;
+  }
 
-  const handleSubmit = event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setFormErrors(passwordCheck());
-    setIsSubmit(true);
-    const data = new FormData(event.currentTarget);
+    // 유효성검사 통과 시 axios 실행
+    // body 확인 필요
+    if (validate()) {
+      const body = {
+        userType: formValues.type,
+        userEmail: formValues.email,
+        userPw: formValues.new_password,
+        userName: formValues.new_username,
+        userPhone: formValues.new_phone_number,
+      };
+      try {
+        const response = await axios.post(
+          baseURL + urls.fetchUsersRegister,
+          body,
+        );
+        navigate("/"); //다시 로그인페이지로 가나? 어디로 가나요???
+      } catch (err) {}
+    }
   };
 
-  const handleChange = event => {
-    console.log(event.target);
+  // 회원정보 수정 form 입력 시
+  const handleChange = (event) => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
-    console.log(event.target);
-    setFormErrors(validate(event.target));
   };
-  //submit 후 새로운 비밀번호 일치여부 확인 메시지
-  const passwordCheck = () => {
-    const errors = {};
-    if (formValues.new_password === formValues.new_check_password)
-      return errors;
-    errors.new_check_password = '새로운 비밀번호가 일치하지 않습니다';
-    return errors;
-  };
-
-  useEffect(() => {
-    console.log(formErrors);
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(formValues);
-    }
-  }, [formErrors]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -109,7 +100,7 @@ export default function Update() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            mb: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -117,11 +108,16 @@ export default function Update() {
         >
           {/* 로고 이미지 */}
           <Avatar
-            sx={{ width: 60, height: 60 }}
+            sx={{ width: 250, height: 250 }}
             alt="Academy"
-            src="/images/login.png"
+            src="/images/logo.png"
           ></Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography 
+            component="h1"
+            variant="h5"
+            id="font_test"
+            sx={{ color: "rgba(0, 0, 0, 0.6)" }}
+          >
             회원정보수정
           </Typography>
           {/* 회원정보수정 form */}
@@ -129,7 +125,7 @@ export default function Update() {
             component="form"
             noValidate
             onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
+            sx={{ mt: 5 }}
           >
             <Grid container spacing={2}>
               {/* 아이디창 */}
@@ -137,15 +133,16 @@ export default function Update() {
                 <TextField
                   required
                   fullWidth
-                  autoComplete="id" // 기존 아이디 입력 필요 => 아이디는 수정 못하게?
-                  name="id"
-                  id="id"
-                  label="아이디"
+                  autoComplete="email" // 기존 이메일 입력 필요 => 이메일은 수정 못하게?
+                  name="email"
+                  id="email"
+                  label="이메일"
                   autoFocus
+                  sx={{ background: "white" }}
                 />
               </Grid>
               {/* 기존 비밀번호 입력창 */}
-              <Grid item xs={12} sm={12}>
+              {/* <Grid item xs={12} sm={12}>
                 <TextField
                   required
                   fullWidth
@@ -156,9 +153,10 @@ export default function Update() {
                   autoComplete="password"
                   value={formValues.password}
                   onChange={handleChange}
+                  sx={{ background: "white" }}
                 />
                 <p>{formErrors.password}</p>
-              </Grid>
+              </Grid> */}
               {/* 새로운 비밀번호 입력창 */}
               <Grid item xs={12}>
                 <TextField
@@ -171,6 +169,7 @@ export default function Update() {
                   autoComplete="new_password"
                   value={formValues.new_password}
                   onChange={handleChange}
+                  sx={{ background: "white", mt:2.2 }}
                 />
                 <p>{formErrors.new_password}</p>
               </Grid>
@@ -186,6 +185,7 @@ export default function Update() {
                   autoComplete="new_check_password"
                   value={formValues.new_check_password}
                   onChange={handleChange}
+                  sx={{ background: "white" }}
                 />
                 <p>{formErrors.new_check_password}</p>
               </Grid>
@@ -199,9 +199,10 @@ export default function Update() {
                   autoComplete="new_username"
                   value={formValues.new_username}
                   onChange={handleChange}
+                  sx={{ background: "white" }}
                 />
+                <p>{formErrors.new_username}</p>
               </Grid>
-              <p>{formErrors.new_username}</p>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -212,22 +213,32 @@ export default function Update() {
                   autoComplete="phone_number"
                   value={formValues.new_phone_number}
                   onChange={handleChange}
+                  sx={{ background: "white" }}
                 />
                 <p>{formErrors.new_phone_number}</p>
               </Grid>
             </Grid>
+            {/* 회원수정 버튼 */}
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              color="warning"
+              style={{ background: colorPalette.BUTTON_COLOR }}
               size="large"
               sx={{ mt: 3, mb: 2 }}
             >
-              회원수정 완료
+              <Typography id="font_test" component="h6" variant="h6">
+                회원수정
+              </Typography>
             </Button>
+            {/* 뒤로가기 버튼 */}
             <Grid container justifyContent="flex-end">
-              <Button>뒤로가기</Button>
+              <Button
+                variant="body2" 
+                id="font_test" 
+                style={{ color: "#808080", textDecoration:"none" }}>
+                  뒤로가기
+                </Button>
             </Grid>
           </Box>
         </Box>

@@ -1,3 +1,6 @@
+// 2022.08.05 김국진
+// 1달치 달력 컴포넌트
+
 import { Box, Grid, Card, Typography } from "@mui/material";
 import { useState } from "react";
 import CalendayWeek from "../Week";
