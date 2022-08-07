@@ -23,7 +23,6 @@ import { urls, baseURL } from "../../../api/axios";
 import { colorPalette } from "../../../constants/constants";
 import { UserContext } from "../../../context/user";
 
-
 const theme = createTheme();
 
 export default function Login() {
@@ -32,7 +31,15 @@ export default function Login() {
   const initialValues = { email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
-  const { setUserName, setUserType } = useContext(UserContext);
+  const {
+    userNo,
+    setUserName,
+    setUserType,
+    setUserNo,
+    setUserPhone,
+    setUserGroup,
+    serUserCenter,
+  } = useContext(UserContext);
 
   // 에러메시지
   const validate = () => {
@@ -69,7 +76,9 @@ export default function Login() {
       const response = await axios.post(baseURL + urls.fetchLogin, body);
       const resUserType = response.data.data.user.userType;
       const resUserName = response.data.data.user.userName;
+      const resUserNo = response.data.data.user.userNo;
       // 로그인 성공 시 유저 정보 세션에 저장
+      setUserNo(resUserNo);
       setUserName(resUserName);
       setUserType(resUserType);
 
@@ -104,6 +113,21 @@ export default function Login() {
           setFormErrors({ email: "회원 정보를 확인해주세요." });
           break;
       }
+    }
+
+    // 로그인 후 회원 정보를 조회하여 세션에 저장
+    try {
+      const infoResponse = await axios.get(
+        baseURL + urls.fetchUsersDetail + userNo
+      );
+      const resUserPhone = infoResponse.data.user_phone;
+      const resUserGroup = infoResponse.data.group_no;
+      const resUserCenter = infoResponse.data.center_no;
+      setUserPhone(resUserPhone);
+      setUserGroup(resUserGroup);
+      serUserCenter(resUserCenter);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -197,7 +221,12 @@ export default function Login() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 {/* 회원가입 페이지로 연결 */}
-                <Link href="/user/signup" variant="body2" id="font_test" style={{ color: "#808080", textDecoration:"none" }} >
+                <Link
+                  href="/user/signup"
+                  variant="body2"
+                  id="font_test"
+                  style={{ color: "#808080", textDecoration: "none" }}
+                >
                   회원가입
                 </Link>
               </Grid>
