@@ -5,7 +5,7 @@ import { Box, Grid, Card, Typography } from "@mui/material";
 import CalendarDay from "../Day";
 
 const CalendayWeek = (props) => {
-  const { week } = props;
+  const { week, dateInfo } = props;
   return (
     <Box
       sx={{
@@ -15,8 +15,8 @@ const CalendayWeek = (props) => {
     >
       <Grid container sx={{ width: "100%" }} spacing={1}>
         {week.map((day, index) => (
-          <Grid item key={day.id} xs="1.7">
-            <CalendarDay day={day} index={index} />
+          <Grid item key={day.id} xs={1.7}>
+            <CalendarDay day={day} index={index} dateInfo={dateInfo} />
           </Grid>
         ))}
       </Grid>

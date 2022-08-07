@@ -6,7 +6,6 @@ const ParentsDiet = () => {
   return (
     <div>
       <CalendarMonthMove />
-      <CalendarMonth />
     </div>
   );
 };

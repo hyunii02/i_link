@@ -1,37 +1,135 @@
 // 2022.08.05 김국진
+// 2022.08.06 김국진 식단 api get 작업
 // 달력 통합 컴포넌트
-
+import { useState, useEffect } from "react";
 import { Box, Grid, Card, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import CalendarMonth from "../Month";
+import {
+  format,
+  subMonths,
+  addMonths,
+  startOfMonth,
+  endOfMonth,
+} from "date-fns";
+import { baseURL } from "../../../api/axios";
+import axios from "axios";
+import { urls } from "../../../api/axios";
 
-// 현재 시간 읽어들이기
 let dateTime = new Date();
 let year = dateTime.getFullYear();
 let month = dateTime.getMonth() + 1;
-let date = dateTime.getDate();
+
+const days = ["일", "월", "화", "수", "목", "금", "토"];
+
+// default 현재 날짜 읽어들이기
+const currentTime = {
+  year: year,
+  month: month,
+};
 
 const CalendarMonthMove = () => {
+  // 현재 달력 상태 관리
+  const [searchDate, setSearchDate] = useState(new Date());
+  // 서버에서 응답받은 달 단위 식단 데이터 상태 관리
+  const [monthMenu, setMonthMenu] = useState([]);
+
+  // 하위 컴포넌트로 보낼 데이터 포매팅
+  const dataSetting = (data) => {
+    const array = [];
+    let idIdx = 1;
+    let dayIdx = 1;
+
+    // 현재 달에서 1일이 되는 인덱스를 가져옴 0:일 1:월 2:화 3:수 4:목 5:금 6:토
+    const startDay = startOfMonth(searchDate).getDay();
+    // 현재 달에서 마지막날짜를 가져옴
+    const endDay = endOfMonth(searchDate).getDate();
+
+    // 주 기준으로 배열 관리
+    for (let i = 0; i < 5; i++) {
+      const week = [];
+      // 하루 기준으로 객체 관리
+      for (let j = 0; j < 7; j++) {
+        const filteredData = data.filter((item) => {
+          return parseInt(item.meal_date.split("-")[2]) === dayIdx;
+        });
+        const obj = {
+          id: idIdx,
+          day: idIdx > startDay ? (dayIdx <= endDay ? dayIdx++ : 0) : 0,
+          meal:
+            filteredData[0] === undefined ? [] : filteredData[0].meal_content,
+        };
+        idIdx++;
+        week.push(obj);
+      }
+      array.push(week);
+    }
+    setMonthMenu(array);
+  };
+
+  // 화면이 렌더링 될 때
+  useEffect(() => {
+    // [API] 현재 달의 급식 목록 get
+    const getDietList = async () => {
+      // 기본 url 이후의 파라미터 설정 format:[유치원코드/급식 읽어들일 년-월-일]
+      const subParams =
+        "1/" +
+        // YYYY-MM-DD 문자열 포맷으로 변경
+        searchDate.getFullYear() +
+        "-" +
+        (parseInt(searchDate.getMonth()) + 1 < 10
+          ? "0" + (parseInt(searchDate.getMonth()) + 1)
+          : parseInt(searchDate.getMonth()) + 1) +
+        "-01";
+      const response = await axios.get(
+        baseURL + urls.fetchMealsList + subParams,
+      );
+      dataSetting(response.data);
+    };
+    getDietList();
+  }, [searchDate]);
+
+  // 이전 달 보기 버튼 클릭 핸들러
+  const prevButtonClickedHandler = () => {
+    setSearchDate(subMonths(searchDate, 1));
+  };
+
+  // 다음 달 보기 버튼 클릭 핸들러
+  const nextButtonClickedHandler = () => {
+    setSearchDate(addMonths(searchDate, 1));
+  };
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "row",
-        marginBottom: "10px",
-      }}
-    >
-      <IconButton>
-        <ArrowBackIosIcon />
-      </IconButton>
-      <Typography variant="h5" color="rgba(0, 0, 0, 0.6)">
-        {year}-{month < 10 ? "0" + month : month}
-      </Typography>
-      <IconButton>
-        <ArrowForwardIosIcon />
-      </IconButton>
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "row",
+          marginBottom: "10px",
+        }}
+      >
+        <IconButton onClick={prevButtonClickedHandler}>
+          <ArrowBackIosIcon />
+        </IconButton>
+        <Typography variant="h5" color="rgba(0, 0, 0, 0.6)">
+          {searchDate.getFullYear()}-
+          {searchDate.getMonth() + 1 < 10
+            ? "0" + (searchDate.getMonth() + 1)
+            : searchDate.getMonth() + 1}
+        </Typography>
+        <IconButton onClick={nextButtonClickedHandler}>
+          <ArrowForwardIosIcon />
+        </IconButton>
+      </Box>
+      <Box>
+        <CalendarMonth
+          monthMenu={monthMenu}
+          dateInfo={searchDate}
+        ></CalendarMonth>
+      </Box>
     </Box>
   );
 };
