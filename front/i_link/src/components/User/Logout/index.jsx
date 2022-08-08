@@ -6,12 +6,28 @@ import { colorPalette } from "../../../constants/constants";
 import { useNavigate } from "react-router-dom";
 
 const Logout = () => {
-  const { setUserName, setUserType } = useContext(UserContext);
+  const {
+    setUserNo,
+    setUserName,
+    setUserType,
+    setUserPhone,
+    setUserCenter,
+    setUserGroup,
+    setAccessToken,
+    setRefreshToken,
+  } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    setUserName("");
-    setUserType("");
+  const handleLogout = async () => {
+    setUserNo(null);
+    setUserName(null);
+    setUserType(null);
+    setUserPhone(null);
+    setUserCenter(null);
+    setUserGroup(null);
+    setAccessToken(null);
+    setRefreshToken(null);
+
     navigate("/");
   };
 
