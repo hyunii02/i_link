@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const router = express.Router();
 
-const centerController = require(path.join(__dirname, "..", "controllers", "center"));
+const centerController = require(path.join(__dirname, "..", "controllers", "centers"));
 
 /**
  * @swagger
@@ -82,7 +82,8 @@ router.post("/register", centerController.center_regist);
  *              schema:
  *                type: object
  *                example:
- *                    [{"유치원1": "유치원정보1"},{"유치원2": "유치원정보2"}]
+ *                    [{ "center_no": 1, "center_name": "단밤 유치원", "center_addr": "부산광역시 남구 대연동", "center_tel": "051-222-1234", "master_no": 29 },
+ *                     { "center_no": 3, "center_name": "꿀밤 유치원", "center_addr": "부산광역시 남구 대연동", "center_tel": "051-111-1234", "master_no": 4 }]
  *        "400":
  *          description: 유치원 목록 조회 실패
  *          content:
@@ -99,14 +100,14 @@ router.get("/list", centerController.center_list);
 
 /**
  * @swagger
- * /centers/{center_no}:
+ * /centers/{centerNo}:
  *  get:
  *    summary: "유치원 정보 조회"
  *    description: "요청 경로에 값을 담아 서버에 보낸다."
  *    tags: [Centers]
  *    parameters:
  *      - in: path
- *        name: center_no
+ *        name: centerNo
  *        required: true
  *        description: 유치원 번호
  *        schema:
@@ -146,19 +147,19 @@ router.get("/list", centerController.center_list);
  *                  example:
  *                      "해당 유치원을 찾을 수 없습니다."
  */
-router.get("/:center_no", centerController.center_detail);
+router.get("/:centerNo", centerController.center_detail);
 
 /**
  * @swagger
  * paths:
- *  /centers/{center_no}:
+ *  /centers/{centerNo}:
  *    put:
  *      summary: "유치원 정보 수정"
  *      description: "put 방식으로 유치원 정보 수정"
  *      tags: [Centers]
  *      parameters:
  *        - in: path
- *          name: center_no
+ *          name: centerNo
  *          required: true
  *          description: 유치원 번호
  *          schema:
@@ -205,19 +206,19 @@ router.get("/:center_no", centerController.center_detail);
  *                      example:
  *                          "유치원 수정 실패"
  */
-router.put("/:center_no", centerController.center_update);
+router.put("/:centerNo", centerController.center_update);
 
 /**
  * @swagger
  * paths:
- *  /centers/{center_no}:
+ *  /centers/{centerNo}:
  *    delete:
  *      summary: "유치원 삭제"
  *      description: "delete 방식으로 유치원 삭제"
  *      tags: [Centers]
  *      parameters:
  *        - in: path
- *          name: center_no
+ *          name: centerNo
  *          required: true
  *          description: 유치원 번호
  *          schema:
@@ -247,6 +248,6 @@ router.put("/:center_no", centerController.center_update);
  *                      example:
  *                          "유치원 삭제 실패"
  */
-router.delete("/:center_no", centerController.center_remove);
+router.delete("/:centerNo", centerController.center_remove);
 
 module.exports = router;
