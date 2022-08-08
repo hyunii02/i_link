@@ -1,5 +1,4 @@
 const path = require("path");
-const { promisify } = require("util");
 
 const db = require(path.join(__dirname, "..", "models"));
 const Users = db.users;
@@ -145,8 +144,12 @@ exports.user_logout = function (req, res) {
   console.log("[get] /users/logout (로그아웃)");
 
   // TODO: 토큰정보 지울때? ?
-  res.removeHeader("set-cookie");
-  res.removeHeader("Authorization");
+  // res.removeHeader("set-cookie");
+  // res.removeHeader("Authorization");
+
+  // 토큰 헤더에 작성했는지 확인 로그
+  const header = req.headers.authorization;
+  console.log(header);
 
   return res.status(200).json({ logined: false, message: "로그아웃" });
 };
