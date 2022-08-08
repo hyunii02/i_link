@@ -60,34 +60,41 @@ const CalendarMonthMove = () => {
           day: idIdx > startDay ? (dayIdx <= endDay ? dayIdx++ : 0) : 0,
           meal:
             filteredData[0] === undefined ? [] : filteredData[0].meal_content,
+          snack:
+            filteredData[0] === undefined ? [] : filteredData[0].snack_content,
         };
         idIdx++;
         week.push(obj);
       }
       array.push(week);
     }
-    setMonthMenu(array);
+    setMonthMenu((monthMenu) => array);
+  };
+
+  const refreshHandler = () => {
+    console.log("refresh 요청");
+    getDietList();
+  };
+
+  const getDietList = () => {
+    const subParams =
+      "1/" +
+      // YYYY-MM-DD 문자열 포맷으로 변경
+      searchDate.getFullYear() +
+      "-" +
+      (parseInt(searchDate.getMonth()) + 1 < 10
+        ? "0" + (parseInt(searchDate.getMonth()) + 1)
+        : parseInt(searchDate.getMonth()) + 1) +
+      "-01";
+
+    // [API] 현재 달의 급식 목록 get
+    axios
+      .get(baseURL + urls.fetchMealsList + subParams)
+      .then((response) => dataSetting(response.data));
   };
 
   // 화면이 렌더링 될 때
   useEffect(() => {
-    // [API] 현재 달의 급식 목록 get
-    const getDietList = async () => {
-      // 기본 url 이후의 파라미터 설정 format:[유치원코드/급식 읽어들일 년-월-일]
-      const subParams =
-        "1/" +
-        // YYYY-MM-DD 문자열 포맷으로 변경
-        searchDate.getFullYear() +
-        "-" +
-        (parseInt(searchDate.getMonth()) + 1 < 10
-          ? "0" + (parseInt(searchDate.getMonth()) + 1)
-          : parseInt(searchDate.getMonth()) + 1) +
-        "-01";
-      const response = await axios.get(
-        baseURL + urls.fetchMealsList + subParams,
-      );
-      dataSetting(response.data);
-    };
     getDietList();
   }, [searchDate]);
 
@@ -128,6 +135,7 @@ const CalendarMonthMove = () => {
         <CalendarMonth
           monthMenu={monthMenu}
           dateInfo={searchDate}
+          refreshHandler={refreshHandler}
         ></CalendarMonth>
       </Box>
     </Box>
