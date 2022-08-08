@@ -37,7 +37,24 @@ exports.member_teacher_remove = async function (req, res) {};
 
 // 승인 대기중인 원생 목록
 // [get]  /members/manage/kids/:centerNo
-exports.member_kid_getList = async function (req, res) {};
+exports.member_kid_getList = async function (req, res) {
+  const centerNo = req.params.centerNo;
+
+  await Kids.findAll({
+    attributes: ["kid_no", "kid_name", "kid_profile_url"], // 가져올 데이터 컬럼
+    where: { group_no: null, center_no: centerNo },
+    raw: true, // dataValues만 가져옴
+  })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err.message,
+        message: "목록 조회 과정에 문제 발생",
+      });
+    });
+};
 
 // 유치원 등록 승인(유치원 반 배정)
 // [put]  /members/manage/kids/:centerNo
