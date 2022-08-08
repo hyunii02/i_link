@@ -23,9 +23,9 @@ const mealsController = require(path.join(__dirname, "..", "controllers", "meals
  *                  centerNo:
  *                    type: string
  *                    description: "유치원 번호"
- *                  mealType:
+ *                  snackContent:
  *                    type: string
- *                    description: "식단 타입"
+ *                    description: "간식 내용"
  *                  mealContent:
  *                    type: string
  *                    description: "식단 내용"
@@ -134,7 +134,7 @@ router.get("/list/:centerNo/:mealDate", mealsController.meal_list);
  *                  centerNo:
  *                    type: integer
  *                    example: 1
- *                  mealType:
+ *                  snackContent:
  *                    type: string
  *                    example: "M"
  *                  mealContent:
@@ -180,9 +180,9 @@ router.get("/:mealNo", mealsController.meal_detail);
  *              schema:
  *                type: object
  *                properties:
- *                  mealType:
+ *                  snackContent:
  *                    type: string
- *                    description: "식단 타입"
+ *                    description: "간식 내용"
  *                  mealContent:
  *                    type: string
  *                    description: "식단 내용"
