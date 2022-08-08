@@ -38,7 +38,9 @@ export default function Login() {
     setUserNo,
     setUserPhone,
     setUserGroup,
-    serUserCenter,
+    setUserCenter,
+    setAccessToken,
+    setRefreshToken,
   } = useContext(UserContext);
 
   // 에러메시지
@@ -77,10 +79,14 @@ export default function Login() {
       const resUserType = response.data.data.user.userType;
       const resUserName = response.data.data.user.userName;
       const resUserNo = response.data.data.user.userNo;
+      const resAccessToken = response.data.data.token.access_token;
+      const resRefreshToken = response.data.data.token.refresh_token;
       // 로그인 성공 시 유저 정보 세션에 저장
       setUserNo(resUserNo);
       setUserName(resUserName);
       setUserType(resUserType);
+      setAccessToken(resAccessToken);
+      setRefreshToken(resRefreshToken);
 
       // 로그인 성공 시 대응되는 페이지로 네비게이트
       if (response.data.message === "로그인 성공") {
@@ -125,7 +131,7 @@ export default function Login() {
       const resUserCenter = infoResponse.data.center_no;
       setUserPhone(resUserPhone);
       setUserGroup(resUserGroup);
-      serUserCenter(resUserCenter);
+      setUserCenter(resUserCenter);
     } catch (err) {
       console.log(err);
     }
