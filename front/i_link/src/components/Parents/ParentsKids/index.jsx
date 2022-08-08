@@ -6,9 +6,11 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { getToday } from "../../../commonFuction";
 
-import { urls, baseURL } from "../../../api/axios";
+import { axios, urls, baseURL } from "../../../api/axios";
+import { useContext } from "react";
+import { UserContext } from "../../../context/user";
 import { colorPalette } from "../../../constants/constants";
 
 import Avatar from "@mui/material/Avatar";
@@ -25,12 +27,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 //이미지 업로드
-const Uploader = () => {
-  const [image, setImage] = useState({
-    image_file: "",
-    preview_URL: "/images/user.png",
-  });
-
+const Uploader = ({ image, setImage }) => {
   let inputRef; //이미지 미리보기를 위해서 Ref를 사용
 
   //이미지 저장
@@ -58,6 +55,7 @@ const Uploader = () => {
     >
       {/* 이미지 삽입 */}
       <input
+        id="kidprofileurl"
         type="file"
         accept="image/*"
         onChange={saveImage}
@@ -70,28 +68,32 @@ const Uploader = () => {
         onClick={() => inputRef.click()}
         alt="kids_picture"
         src={image.preview_URL}
-        sx={{ width: 200, height: 200,
-        '&:hover': {
-          backgroundColor: '#FFFEF4',
-          }}}
-        style={{ cursor:"pointer" }}
+        sx={{
+          width: 200,
+          height: 200,
+          "&:hover": {
+            backgroundColor: "#FFFEF4",
+          },
+        }}
+        style={{ cursor: "pointer" }}
       ></Avatar>
     </Box>
   );
 };
 
 // 남여 성별 체크 버튼
-const ColorToggleButton = () => {
-  const [alignment, setAlignment] = React.useState("male");
-
+const ColorToggleButton = ({ gender, setGender }) => {
   const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
+    console.log(newAlignment);
+    setGender(newAlignment);
   };
 
   return (
     <ToggleButtonGroup
       color="warning"
-      value={alignment}
+      id="kidgender"
+      name="kidgender"
+      value={gender}
       exclusive
       onChange={handleChange}
       style={{
@@ -110,7 +112,8 @@ const ColorToggleButton = () => {
       <ToggleButton value="female" id="font_test">
         <Typography id="font_test" component="h6" variant="h6">
           여자
-        </Typography></ToggleButton>
+        </Typography>
+      </ToggleButton>
     </ToggleButtonGroup>
   );
 };
@@ -119,17 +122,28 @@ const theme = createTheme();
 
 export default function ParentsKids() {
   const navigate = useNavigate();
+  const { userNo } = useContext(UserContext);
   // validation
-  const initialValues = { kidsname: "" };
+  const initialValues = {
+    kidname: "",
+    date: getToday(),
+  };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
+  const [gender, setGender] = useState("male");
+  const [image, setImage] = useState({
+    image_file: "",
+    preview_URL: "/images/user.png",
+  });
 
   // 에러메시지(아이 이름 미입력시)
   const validate = () => {
     const errors = {};
-    if (!formValues.kidsname) {
-      errors.kidsname = "아이의 이름을 입력해주세요.";
+    if (!formValues.kidname) {
+      errors.kidname = "아이의 이름을 입력해주세요.";
+      return false;
     }
+    return true;
   };
   // 아이 등록 버튼 클릭 시
   const handleSubmit = async (event) => {
@@ -138,15 +152,20 @@ export default function ParentsKids() {
     if (validate()) {
       // body에 들어 갈 것 확인하기
       const body = {
-        kidsName: formValues.kidsname,
+        kidName: formValues.kidname,
+        kidBirth: formValues.date,
+        kidGender: gender,
+        kidProfileUrl: image.image_file,
+        userNo: userNo,
       };
-      try {
-        const response = await axios.post(
-          baseURL + urls.fetchUserRegister,
-          body,
-        );
-        navigate("/parents/home"); //아이 등록을 완료하면 home으로 보낸다?
-      } catch (err) {}
+      // try {
+      //   const response = await axios.post(
+      //     baseURL + urls.fetchKidsRegister,
+      //     body
+      //   );
+      //   navigate("/parents/home"); //아이 등록을 완료하면 home으로 보낸다?
+      // } catch (err) {}
+      console.log(body);
     }
   };
 
@@ -182,28 +201,32 @@ export default function ParentsKids() {
             <Grid container spacing={1}>
               {/* 이미지 업로드 */}
               <Grid item xs={12} sm={12}>
-                <Uploader></Uploader>
+                <Uploader image={image} setImage={setImage}></Uploader>
               </Grid>
               {/* 아이 이름 입력창 */}
               <Grid item xs={12} sm={12}>
                 <TextField
                   required
                   fullWidth
-                  id="kidsname"
+                  id="kidname"
                   label="아이 이름"
-                  name="kidsname"
-                  autoComplete="kidsname"
+                  name="kidname"
+                  autoComplete="kidname"
                   autoFocus
-                  value={formValues.kidsname}
+                  value={formValues.kidname}
                   onChange={handleChange}
                   sx={{ background: "white", mt: 4 }}
                 />
               </Grid>
               {/* 아이 이름 미입력 후 아이등록 버튼 클릭시 띄울 에러메시지 */}
-              <p id="font_size_test" align="center">{formErrors.kidsname}</p>
+              <p id="font_size_test" align="center">
+                {formErrors.kidname}
+              </p>
               {/* 아이 생년월일 입력창 */}
               <Grid item xs={12} sm={12}>
-                <p id="font_test" align="center">아이의 생년월일을 입력해주세요</p>
+                <p id="font_test" align="center">
+                  아이의 생년월일을 입력해주세요
+                </p>
                 <TextField
                   required
                   fullWidth
@@ -211,14 +234,21 @@ export default function ParentsKids() {
                   label=""
                   autoComplete="date"
                   name="date"
+                  value={formValues.date}
+                  onChange={handleChange}
                   autoFocus
                   type="date"
                   sx={{ background: "white" }}
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
-                <p id="font_test" align="center">아이의 성별을 선택해주세요</p>
-                <ColorToggleButton></ColorToggleButton>
+                <p id="font_test" align="center">
+                  아이의 성별을 선택해주세요
+                </p>
+                <ColorToggleButton
+                  gender={gender}
+                  setGender={setGender}
+                ></ColorToggleButton>
               </Grid>
               {/* 유치원 등록 만들어야함! */}
               {/* 아이등록 버튼 */}
@@ -228,7 +258,7 @@ export default function ParentsKids() {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  style={{ background:colorPalette.BUTTON_COLOR }}
+                  style={{ background: colorPalette.BUTTON_COLOR }}
                   sx={{ mt: 3, mb: 5 }}
                   onChange={handleChange}
                   size="large"
