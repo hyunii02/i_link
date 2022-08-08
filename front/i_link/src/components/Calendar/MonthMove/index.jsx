@@ -47,32 +47,36 @@ const CalendarMonthMove = () => {
     // 현재 달에서 마지막날짜를 가져옴
     const endDay = endOfMonth(searchDate).getDate();
 
+    console.log(startDay + endDay);
+
     // 주 기준으로 배열 관리
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < (startDay + endDay) / 7; i++) {
       const week = [];
       // 하루 기준으로 객체 관리
       for (let j = 0; j < 7; j++) {
+        const day = idIdx > startDay ? (dayIdx <= endDay ? dayIdx++ : 0) : 0;
         const filteredData = data.filter((item) => {
-          return parseInt(item.meal_date.split("-")[2]) === dayIdx;
+          return parseInt(item.meal_date.split("-")[2]) === day;
         });
         const obj = {
           id: idIdx,
-          day: idIdx > startDay ? (dayIdx <= endDay ? dayIdx++ : 0) : 0,
+          day: day,
           meal:
             filteredData[0] === undefined ? [] : filteredData[0].meal_content,
           snack:
             filteredData[0] === undefined ? [] : filteredData[0].snack_content,
+          meal_no: filteredData[0] === undefined ? 0 : filteredData[0].meal_no,
         };
         idIdx++;
         week.push(obj);
       }
       array.push(week);
     }
+
     setMonthMenu((monthMenu) => array);
   };
 
   const refreshHandler = () => {
-    console.log("refresh 요청");
     getDietList();
   };
 
