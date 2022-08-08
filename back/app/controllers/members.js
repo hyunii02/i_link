@@ -8,7 +8,24 @@ const Op = db.Sequelize.Op; // 검색을 위한 객체
 
 // 승인 대기중인 교사 목록
 // [get]  /members/manage/teacher/:centerNo
-exports.member_teacher_getList = async function (req, res) {};
+exports.member_teacher_getList = async function (req, res) {
+  const centerNo = req.params.centerNo;
+
+  await Users.findAll({
+    attributes: ["user_no", "user_type", "user_name", "user_profile_url"], // 가져올 데이터 컬럼
+    where: { user_type: 2, group_no: null, center_no: centerNo },
+    raw: true, // dataValues만 가져옴
+  })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err.message,
+        message: "목록 조회 과정에 문제 발생",
+      });
+    });
+};
 
 // 유치원 등록 승인(유치원 반 배정)
 // [put]  /members/manage/teacher/:centerNo
