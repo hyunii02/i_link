@@ -70,7 +70,24 @@ exports.member_teacher_approve = async function (req, res) {
 
 // 유치원에서 삭제
 // [put]  /members/remove/teacher
-exports.member_teacher_remove = async function (req, res) {};
+exports.member_teacher_remove = async function (req, res) {
+  const userNo = req.body.userNo;
+
+  await Users.update({ center_no: null, group_no: null }, { where: { user_no: userNo } })
+    .then((result) => {
+      if (result[0] === 1) {
+        res.status(200).json({ message: "유치원 목록에서 제거" });
+      } else {
+        res.status(400).json({ message: "요청 오류 발생" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err.message,
+        message: "삭제 실패",
+      });
+    });
+};
 
 // 승인 대기중인 원생 목록
 // [get]  /members/manage/kids/:centerNo
