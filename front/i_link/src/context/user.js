@@ -11,6 +11,8 @@ const UserProvider = ({children}) => {
   const [userPhone, setUserPhone] = useState(()=>sessionStorage.getItem('userPhone'))
   const [userGroup, setUserGroup] = useState(()=>sessionStorage.getItem('userGroup'))
   const [userCenter, setUserCenter] = useState(()=>sessionStorage.getItem('userCenter'))
+  const [accessToken, setAccessToken] = useState(()=>sessionStorage.getItem('accessToken'))
+  const [refreshToken, setRefreshToken] = useState(()=>sessionStorage.getItem('refreshToken'))
 
   // 값이 변경되면 세션에 적용
   useEffect(()=>{
@@ -37,6 +39,14 @@ const UserProvider = ({children}) => {
     sessionStorage.setItem('userCenter',userCenter)
   },[userCenter])
 
+  useEffect(()=>{
+    sessionStorage.setItem('accessToken',accessToken)
+  },[accessToken])
+
+  useEffect(()=>{
+    sessionStorage.setItem('refreshToken',refreshToken)
+  },[refreshToken])
+
   const value = {
   userNo,
   userName,
@@ -44,12 +54,16 @@ const UserProvider = ({children}) => {
   userPhone,
   userGroup,
   userCenter,
+  accessToken,
+  refreshToken,
   setUserNo,
   setUserName,
   setUserType,
   setUserPhone,
   setUserGroup,
   setUserCenter,
+  setAccessToken,
+  setRefreshToken,
   }
   return (
     <UserContext.Provider value={value}>
