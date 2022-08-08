@@ -38,7 +38,7 @@ const urls = {
   fetchReportsUpdate: "/reports/",
   fetchReportsDelete: "/reports/",
   fetchMealsList: "/meals/list/",
-  fetchMealsRegister: "/meals",
+  fetchMealsRegister: "/meals/register",
   fetchMealsDetail: "/meals/",
   fetchTodaysMeals: "/meals/",
   fetchMealsUpdate: "/meals/",
