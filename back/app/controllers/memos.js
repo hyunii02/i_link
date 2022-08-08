@@ -11,7 +11,7 @@ exports.memo_regist = async function (req, res) {
   // 알림장
   const memo = {
     group_no: req.body.groupNo, // 반별 알림장
-    memo_content: req.body.memoContent,
+    memo_content: req.body.memoContent ? req.body.memoContent : null,
     memo_date: req.body.memoDate,
   };
 
@@ -72,7 +72,7 @@ exports.memo_update = async function (req, res) {
 
   // 알림장
   const memo = {
-    memo_content: req.body.memoContent,
+    memo_content: req.body.memoContent ? req.body.memoContent : null,
   };
 
   await Memos.update(memo, { where: { memo_no: memoNo } })
