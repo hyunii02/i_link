@@ -13,8 +13,8 @@ exports.meal_regist = async function (req, res) {
   // 식단
   const meal = {
     center_no: req.body.centerNo, // 유치원별 식단
-    meal_type: req.body.mealType,
-    meal_content: req.body.mealContent,
+    snack_content: req.body.snackContent ? req.body.snackContent : null,
+    meal_content: req.body.mealContent ? req.body.mealContent : null,
     meal_date: req.body.mealDate,
   };
 
@@ -91,9 +91,8 @@ exports.meal_update = async function (req, res) {
 
   // 식단
   const meal = {
-    meal_type: req.body.mealType,
+    snack_content: req.body.snackContent,
     meal_content: req.body.mealContent,
-    meal_date: req.body.mealDate,
   };
 
   await Meals.update(meal, { where: { meal_no: mealNo } })

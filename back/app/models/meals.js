@@ -17,10 +17,9 @@ module.exports = function(sequelize, DataTypes) {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     },
-    meal_type: {
-      type: DataTypes.STRING(1),
-      allowNull: true,
-      defaultValue: "M"
+    snack_content: {
+      type: DataTypes.STRING(200),
+      allowNull: true
     },
     meal_content: {
       type: DataTypes.STRING(200),
