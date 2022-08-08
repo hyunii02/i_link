@@ -43,7 +43,7 @@ exports.group_list = async function (req, res) {
 
   await Users.findAll({
     group: ["group_no"],
-    attributes: ["group_no", [db.sequelize.fn("COUNT", "group_no"), "teacher Cnt"]],
+    attributes: ["group_no", [db.sequelize.fn("COUNT", "group_no"), "teacher_cnt"]],
     where: { user_type: 2, center_no: centerNo },
     raw: true,
   })
@@ -57,7 +57,7 @@ exports.group_list = async function (req, res) {
 
   await Kids.findAll({
     group: ["group_no"],
-    attributes: ["group_no", [db.sequelize.fn("COUNT", "group_no"), "kids Cnt"]],
+    attributes: ["group_no", [db.sequelize.fn("COUNT", "group_no"), "kid_cnt"]],
     where: { center_no: centerNo },
     raw: true,
   })
