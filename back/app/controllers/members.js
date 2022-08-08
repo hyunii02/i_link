@@ -62,4 +62,30 @@ exports.member_teacherList = async function (req, res) {
 
 // 원생 목록 조회
 // [get]  /members/kids/:centerNo?groupNo=[반번호]
-exports.member_kidsList = async function (req, res) {};
+exports.member_kidsList = async function (req, res) {
+  const centerNo = req.params.centerNo;
+
+  // 만약 반을 선택하면 해당 반 원생 목록만 조회
+  const groupNo = req.query.groupNo ? req.query.groupNo : null;
+  if (groupNo != null) console.log("반 번호: " + groupNo);
+
+  // 검색 조건
+  const condition = groupNo
+    ? [{ center_no: centerNo }, { group_no: groupNo }]
+    : [{ center_no: centerNo }];
+
+  await Kids.findAll({
+    attributes: ["kid_no", "kid_name", "kid_profile_url"], // 가져올 데이터 컬럼
+    where: { [Op.and]: condition },
+    raw: true, // dataValues만 가져옴
+  })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err.message,
+        message: "목록 조회 과정에 문제 발생",
+      });
+    });
+};
