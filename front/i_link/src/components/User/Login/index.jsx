@@ -32,7 +32,6 @@ export default function Login() {
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const {
-    userNo,
     setUserName,
     setUserType,
     setUserNo,
@@ -81,12 +80,18 @@ export default function Login() {
       const resUserNo = response.data.data.user.userNo;
       const resAccessToken = response.data.data.token.access_token;
       const resRefreshToken = response.data.data.token.refresh_token;
+      const resUserPhone = response.data.data.token.user_phone;
+      const resUserCenter = response.data.data.token.user_center;
+      const resUserGroup = response.data.data.token.user_group;
       // 로그인 성공 시 유저 정보 세션에 저장
       setUserNo(resUserNo);
       setUserName(resUserName);
       setUserType(resUserType);
       setAccessToken(resAccessToken);
       setRefreshToken(resRefreshToken);
+      setUserPhone(resUserPhone);
+      setUserCenter(resUserCenter);
+      setUserGroup(resUserGroup);
 
       // 로그인 성공 시 대응되는 페이지로 네비게이트
       if (response.data.message === "로그인 성공") {
@@ -119,21 +124,6 @@ export default function Login() {
           setFormErrors({ email: "회원 정보를 확인해주세요." });
           break;
       }
-    }
-
-    // 로그인 후 회원 정보를 조회하여 세션에 저장
-    try {
-      const infoResponse = await axios.get(
-        baseURL + urls.fetchUsersDetail + userNo
-      );
-      const resUserPhone = infoResponse.data.user_phone;
-      const resUserGroup = infoResponse.data.group_no;
-      const resUserCenter = infoResponse.data.center_no;
-      setUserPhone(resUserPhone);
-      setUserGroup(resUserGroup);
-      setUserCenter(resUserCenter);
-    } catch (err) {
-      console.log(err);
     }
   };
 
