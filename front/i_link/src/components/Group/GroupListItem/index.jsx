@@ -15,7 +15,8 @@ const GroupListItem = (props) => {
   const { classData, deleteClicked } = props;
 
   // 리스트 버튼 클릭 핸들러 => 반 디테일 컴포넌트 표시
-  const listClickedHandler = () => {
+  const listClickedHandler = (e) => {
+    console.log(classData.group_no);
     setChildView((childView) => !childView);
   };
 
@@ -34,7 +35,7 @@ const GroupListItem = (props) => {
         <Grid container>
           <Grid item xs={4}>
             <Typography id="font_test" color="rgba(0, 0, 0, 0.6)">
-              {classData.className}
+              {classData.group_name}
             </Typography>
             {/*<ListItemText primary={classData.className} /> */}
           </Grid>
