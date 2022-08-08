@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const router = express.Router();
 
-const groupController = require(path.join(__dirname, "..", "controllers", "group"));
+const groupController = require(path.join(__dirname, "..", "controllers", "groups"));
 
 /**
  * @swagger
@@ -56,14 +56,14 @@ router.post("/register", groupController.group_regist);
 /**
  * @swagger
  * paths:
- *  /groups/list/{center_no}:
+ *  /groups/list/{centerNo}:
  *    get:
  *      summary: "반 목록 조회"
  *      description: "get 방식으로 반 목록 조회"
  *      tags: [Groups]
  *      parameters:
  *        - in: path
- *          name: center_no
+ *          name: centerNo
  *          required: true
  *          description: 유치원 번호
  *          schema:
@@ -89,19 +89,19 @@ router.post("/register", groupController.group_regist);
  *                      example:
  *                          "목록 조회 과정에 문제 발생"
  */
-router.get("/list/:center_no", groupController.group_list);
+router.get("/list/:centerNo", groupController.group_list);
 
 /**
  * @swagger
  * paths:
- *  /groups/{group_no}:
+ *  /groups/{groupNo}:
  *    get:
  *      summary: "반 정보 조회"
  *      description: "get 방식으로 반 정보 조회"
  *      tags: [Groups]
  *      parameters:
  *        - in: path
- *          name: group_no
+ *          name: groupNo
  *          required: true
  *          description: 반 번호
  *          schema:
@@ -135,19 +135,19 @@ router.get("/list/:center_no", groupController.group_list);
  *                      example:
  *                          "해당 정보를 찾을 수 없습니다."
  */
-router.get("/:group_no", groupController.group_detail);
+router.get("/:groupNo", groupController.group_detail);
 
 /**
  * @swagger
  * paths:
- *  /groups/{group_no}:
+ *  /groups/{groupNo}:
  *    put:
  *      summary: "반 정보 수정"
  *      description: "put 방식으로 반 정보 수정"
  *      tags: [Groups]
  *      parameters:
  *        - in: path
- *          name: group_no
+ *          name: groupNo
  *          required: true
  *          description: 반 번호
  *          schema:
@@ -188,19 +188,19 @@ router.get("/:group_no", groupController.group_detail);
  *                      example:
  *                          "반 수정 실패"
  */
-router.put("/:group_no", groupController.group_update);
+router.put("/:groupNo", groupController.group_update);
 
 /**
  * @swagger
  * paths:
- *  /groups/{group_no}:
+ *  /groups/{groupNo}:
  *    delete:
  *      summary: "반 삭제"
  *      description: "delete 방식으로 반 삭제"
  *      tags: [Groups]
  *      parameters:
  *        - in: path
- *          name: group_no
+ *          name: groupNo
  *          required: true
  *          description: 반 번호
  *          schema:
@@ -230,6 +230,6 @@ router.put("/:group_no", groupController.group_update);
  *                      example:
  *                          "반 삭제 실패"
  */
-router.delete("/:group_no", groupController.group_remove);
+router.delete("/:groupNo", groupController.group_remove);
 
 module.exports = router;
