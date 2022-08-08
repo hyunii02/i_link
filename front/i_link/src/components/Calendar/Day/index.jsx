@@ -28,7 +28,6 @@ let snackIdx = 1; // 식단 추가 시 id
 
 const CalendarDay = (props) => {
   const { day, index, dateInfo, refreshHandler } = props;
-  const [dayData, setDayData] = useState(day);
 
   const fullDateLatter =
     dateInfo.getFullYear() +
@@ -37,7 +36,7 @@ const CalendarDay = (props) => {
       ? "0" + (dateInfo.getMonth() + 1)
       : dateInfo.getMonth + 1) +
     "월" +
-    (dayData.day < 10 ? "0" + dayData.day : dayData.day) +
+    (day.day < 10 ? "0" + day.day : day.day) +
     "일";
 
   const fullDate =
@@ -47,7 +46,7 @@ const CalendarDay = (props) => {
       ? "0" + (dateInfo.getMonth() + 1)
       : dateInfo.getMonth + 1) +
     "- " +
-    (dayData.day < 10 ? "0" + dayData.day : dayData.day) +
+    (day.day < 10 ? "0" + day.day : day.day) +
     "-";
 
   // 모달창 상태관리
@@ -111,6 +110,17 @@ const CalendarDay = (props) => {
     setSnackList(newArray);
   };
 
+  // 식단/간식 제거 버튼 클릭 핸들러
+  const deleteButtonClickHandler = () => {
+    try {
+      axios
+        .delete(baseURL + urls.fetchMealsDelete + day.meal_no)
+        .then((response) => refreshHandler());
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   // 식단 등록 버튼 핸들러..
   // 서버에 POST로 Data 전송
   const insertButtonClickHandler = () => {
@@ -133,7 +143,7 @@ const CalendarDay = (props) => {
       // Data부에 객체를 담아 POST 전송
       axios
         .post(urls.fetchMealsRegister, newObj)
-        .then((response) => console.log(response));
+        .then((response) => refreshHandler());
       handleClose();
       const obj = {
         ...day,
@@ -148,8 +158,7 @@ const CalendarDay = (props) => {
           })
           .join(","),
       };
-      setDayData((dayData) => obj);
-      refreshHandler();
+      //setDayData((day) => obj);
     } catch (e) {
       console.log(e);
     }
@@ -192,7 +201,7 @@ const CalendarDay = (props) => {
           variant="body2"
           color={index % 6 === 0 ? "red" : "rgba(0, 0, 0, 0.4)"}
         >
-          {dayData.day === 0 ? " " : dayData.day}
+          {day.day === 0 ? " " : day.day}
         </Typography>
       </Box>
       <Box
@@ -204,9 +213,9 @@ const CalendarDay = (props) => {
         }}
       >
         {userType !== 3 &&
-          dayData.day !== 0 &&
+          day.day !== 0 &&
           index % 6 !== 0 &&
-          isEmptyArr(dayData.meal) && (
+          isEmptyArr(day.meal) && (
             <Box>
               <Button onClick={handleOpen}>
                 <AddCircleOutlineIcon fontSize="large"></AddCircleOutlineIcon>
@@ -293,12 +302,12 @@ const CalendarDay = (props) => {
         {/* 식단이 문자열 형태로 들어올 시 사용 */}
         <Box sx={{ marginRight: "5px", marginLeft: "10px" }}>
           <Typography id="font_test" variant="body2">
-            {dayData.meal}
+            {day.meal}
           </Typography>
         </Box>
         <Box sx={{ marginTop: "5px" }}>
           <Typography id="font_test" variant="body2">
-            {dayData.snack}
+            {day.snack}
           </Typography>
         </Box>
         {/* 식단이 배열 형태로 들어올 시 사용..
@@ -319,9 +328,9 @@ const CalendarDay = (props) => {
           top: "110px",
         }}
       >
-        {userType !== 3 && !isEmptyArr(dayData.meal) && (
+        {userType !== 3 && !isEmptyArr(day.meal) && (
           <Box sx={{ textAlign: "right" }}>
-            <IconButton>
+            <IconButton onClick={deleteButtonClickHandler}>
               <RemoveCircleOutlineIcon fontSize="small" />
             </IconButton>
           </Box>
