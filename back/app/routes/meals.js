@@ -21,7 +21,7 @@ const mealsController = require(path.join(__dirname, "..", "controllers", "meals
  *                type: object
  *                properties:
  *                  centerNo:
- *                    type: string
+ *                    type: integer
  *                    description: "유치원 번호"
  *                  snackContent:
  *                    type: string
