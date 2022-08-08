@@ -2,6 +2,8 @@ const path = require("path");
 
 const db = require(path.join(__dirname, "..", "models"));
 const Groups = db.groups;
+const Users = db.users;
+const Kids = db.kids;
 
 // 반 등록
 // [post] /groups/register
@@ -38,6 +40,40 @@ exports.group_list = async function (req, res) {
       console.log(err);
       throw err;
     });
+
+  await Users.findAll({
+    group: ["group_no"],
+    attributes: ["group_no", [db.sequelize.fn("COUNT", "group_no"), "teacher Cnt"]],
+    where: { user_type: 2, center_no: centerNo },
+    raw: true,
+  })
+    .then((data) => {
+      teacher = data;
+    })
+    .catch((err) => {
+      console.log(err);
+      throw err;
+    });
+
+  await Kids.findAll({
+    group: ["group_no"],
+    attributes: ["group_no", [db.sequelize.fn("COUNT", "group_no"), "kids Cnt"]],
+    where: { center_no: centerNo },
+    raw: true,
+  })
+    .then((data) => {
+      kids = data;
+    })
+    .catch((err) => {
+      console.log(err);
+      throw err;
+    });
+
+  console.log("반 목록", group);
+  console.log("반별 교사 수", teacher);
+  console.log("반별 원생 수", kids);
+
+  res.status(200).json({ group, teacher, kids });
 };
 
 // 반 상세 조회
