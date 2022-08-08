@@ -11,7 +11,7 @@ import { urls } from "../../../api/axios";
 const date = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const CalendarMonth = (props) => {
-  const { monthMenu, dateInfo } = props;
+  const { monthMenu, dateInfo, refreshHandler } = props;
   return (
     <Box
       sx={{
@@ -64,7 +64,12 @@ const CalendarMonth = (props) => {
         }}
       >
         {monthMenu?.map((week, index) => (
-          <CalendayWeek key={index} week={week} dateInfo={dateInfo} />
+          <CalendayWeek
+            key={index}
+            week={week}
+            dateInfo={dateInfo}
+            refreshHandler={refreshHandler}
+          />
         ))}
       </Grid>
     </Box>
