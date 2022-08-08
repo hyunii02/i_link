@@ -3,10 +3,10 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   .layout {
     box-sizing: border-box;
-    widows: 100vw;
-    height: 100vh;
+    width: 100vw;
+    min-height: 100vh;
     background-color: #4ca761;
-    border: 1.5vw solid #b87c35;
+    border: 1.5vw solid #cda352;
     padding: 1vw;
   }
 `;
