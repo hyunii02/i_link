@@ -95,7 +95,44 @@ exports.member_kid_getList = async function (req, res) {
 
 // 유치원 등록 승인(유치원 반 배정)
 // [put]  /members/manage/kids/:centerNo
-exports.member_kid_approve = async function (req, res) {};
+exports.member_kid_approve = async function (req, res) {
+  const kidsList = req.body.kidsList; // 승인 목록
+  const transaction = await db.sequelize.transaction(); // 트랜잭션
+
+  try {
+    const promises = [];
+    for (let i = 0; i < kidsList.length; i++) {
+      // 쿼리 실행 후 결과 저장
+      promises.push(
+        db.sequelize.query(
+          `UPDATE kids 
+          SET group_no=${kidsList[i].groupNo} 
+          WHERE kid_no=${kidsList[i].kidNo};`,
+          { transaction },
+        ),
+      );
+    }
+
+    await Promise.all(promises)
+      .then(() => {
+        res.status(200).json({ message: "반 배정 완료." });
+      })
+      .catch((err) => {
+        res.status(400).json({
+          error: err.message,
+          message: "반 배정 요청 실패.",
+        });
+      });
+
+    await transaction.commit();
+  } catch {
+    await transaction.rollback();
+    res.status(500).json({
+      error: err.message,
+      message: "반 배정 요청 실패.",
+    });
+  }
+};
 
 // 유치원에서 삭제
 // [put]  /members/remove/kids/
