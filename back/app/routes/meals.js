@@ -186,10 +186,6 @@ router.get("/:mealNo", mealsController.meal_detail);
  *                  mealContent:
  *                    type: string
  *                    description: "식단 내용"
- *                  mealDate:
- *                    type: string
- *                    format: date
- *                    description: "식단 날짜"
  *      responses:
  *        "200":
  *          description: 식단 수정 성공
