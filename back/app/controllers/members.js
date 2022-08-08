@@ -31,6 +31,7 @@ exports.member_teacher_getList = async function (req, res) {
 // [put]  /members/manage/teacher/:centerNo
 exports.member_teacher_approve = async function (req, res) {
   const teacherList = req.body.teacherList; // 승인 목록
+  console.log(teacherList);
   const transaction = await db.sequelize.transaction(); // 트랜잭션
 
   try {
@@ -62,8 +63,7 @@ exports.member_teacher_approve = async function (req, res) {
   } catch {
     await transaction.rollback();
     res.status(500).json({
-      error: err.message,
-      message: "반 배정 요청 실패.",
+      message: "반 배정 실패.",
     });
   }
 };
@@ -76,7 +76,7 @@ exports.member_teacher_remove = async function (req, res) {
   await Users.update({ center_no: null, group_no: null }, { where: { user_no: userNo } })
     .then((result) => {
       if (result[0] === 1) {
-        res.status(200).json({ message: "유치원 목록에서 제거" });
+        res.status(200).json({ message: "유치원 목록에서 제거 완료" });
       } else {
         res.status(400).json({ message: "요청 오류 발생" });
       }
@@ -145,7 +145,6 @@ exports.member_kid_approve = async function (req, res) {
   } catch {
     await transaction.rollback();
     res.status(500).json({
-      error: err.message,
       message: "반 배정 요청 실패.",
     });
   }
@@ -184,7 +183,7 @@ exports.member_teacherList = async function (req, res) {
   // 검색 조건
   const condition = groupNo
     ? [{ user_type: 2 }, { center_no: centerNo }, { group_no: groupNo }]
-    : [{ user_type: 2 }, { center_no: centerNo }];
+    : [{ user_type: 2 }, { center_no: centerNo }, { group_no: { [Op.ne]: null } }];
 
   await Users.findAll({
     attributes: ["user_no", "user_type", "user_name", "user_profile_url"], // 가져올 데이터 컬럼
@@ -214,7 +213,7 @@ exports.member_kidsList = async function (req, res) {
   // 검색 조건
   const condition = groupNo
     ? [{ center_no: centerNo }, { group_no: groupNo }]
-    : [{ center_no: centerNo }];
+    : [{ center_no: centerNo }, { group_no: { [Op.ne]: null } }];
 
   await Kids.findAll({
     attributes: ["kid_no", "kid_name", "kid_profile_url"], // 가져올 데이터 컬럼
