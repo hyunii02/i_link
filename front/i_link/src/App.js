@@ -10,6 +10,7 @@ import KioskMain from './pages/Kiosk/Main/KioskMain';
 import KioskQuiz from './pages/Kiosk/Quiz/KioskQuiz';
 import KioskSurvey from './pages/Kiosk/Survey/KioskVote';
 import KioskStamp from './pages/Kiosk/Stamp/KioskAward';
+import KioskLoginPage from './pages/Kiosk/Login';
 import MasterDiet from './pages/Master/Diet/MasterDiet';
 import MasterManageGroup from './pages/Master/ManageGroup/MasterManageGroup';
 import MasterManageMember from './pages/Master/ManageMember/MasterManageMember';
@@ -39,7 +40,8 @@ const App = () => {
       <Routes>
         {/* 키오스크 */}
         <Route element={<KioskLayout />}>
-          <Route path="/kiosk" element={<KioskMain />} />
+          <Route path="/kiosk" element={<KioskLoginPage />} />
+          <Route path="/kiosk/main" element={<KioskMain />} />
           <Route path="/kiosk/stamp" element={<KioskStamp />} />
           <Route path="/kiosk/quiz" element={<KioskQuiz />} />
           <Route path="/kiosk/survey" element={<KioskSurvey />} />  
