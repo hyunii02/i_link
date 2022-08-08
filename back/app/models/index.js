@@ -31,5 +31,6 @@ db.groups = models.groups;
 db.memos = models.memos;
 db.kids = models.kids;
 db.meals = models.meals;
+db.surveys = models.surveys;
 
 module.exports = db;
