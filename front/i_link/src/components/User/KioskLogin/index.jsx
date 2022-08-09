@@ -57,23 +57,23 @@ export default function KioskLogin() {
     };
     try {
       const response = await axios.post(baseURL + urls.fetchLogin, body);
-      const resUserType = response.data.data.user.userType;
-      const resUserName = response.data.data.user.userName;
-      const resUserNo = response.data.data.user.userNo;
+      const resUserType = response.data.data.user.user_type;
+      const resUserName = response.data.data.user.user_name;
+      const resUserNo = response.data.data.user.user_no;
+      const resUserPhone = response.data.data.user.user_phone;
+      const resUserCenter = response.data.data.user.center_no;
+      const resUserGroup = response.data.data.user.group_no;
       const resAccessToken = response.data.data.token.access_token;
       const resRefreshToken = response.data.data.token.refresh_token;
-      const resUserPhone = response.data.data.token.user_phone;
-      const resUserCenter = response.data.data.token.user_center;
-      const resUserGroup = response.data.data.token.user_group;
       // 로그인 성공 시 유저 정보 세션에 저장
-      sessionStorage.setItem("userType", resUserType);
-      sessionStorage.setItem("userName", resUserName);
-      sessionStorage.setItem("userNo", resUserNo);
-      sessionStorage.setItem("accessToken", resAccessToken);
-      sessionStorage.setItem("refreshToken", resRefreshToken);
-      sessionStorage.setItem("userPhone", resUserPhone);
-      sessionStorage.setItem("userCenter", resUserCenter);
-      sessionStorage.setItem("userGroup", resUserGroup);
+      localStorage.setItem("userType", resUserType);
+      localStorage.setItem("userName", resUserName);
+      localStorage.setItem("userNo", resUserNo);
+      localStorage.setItem("accessToken", resAccessToken);
+      localStorage.setItem("refreshToken", resRefreshToken);
+      localStorage.setItem("userPhone", resUserPhone);
+      localStorage.setItem("userCenter", resUserCenter);
+      localStorage.setItem("userGroup", resUserGroup);
 
       navigate("/kiosk/main");
     } catch (err) {
@@ -112,8 +112,6 @@ export default function KioskLogin() {
           height: "80vh",
         }}
       >
-        <Grid container></Grid>
-
         {/* 로고 이미지 */}
         <Typography
           id="font_test"
@@ -128,7 +126,7 @@ export default function KioskLogin() {
           원과 가정을 잇다
         </Typography>
         <Avatar
-          sx={{ width: "60%", flexGrow: 2 }}
+          sx={{ width: "30vw", height: "30vh", flexGrow: 2 }}
           alt="Academy"
           variant="square"
           src="/images/logo.png"
@@ -138,7 +136,7 @@ export default function KioskLogin() {
           component="form"
           noValidate
           onSubmit={handleSubmit}
-          sx={{ mt: 3, flexGrow: 1 }}
+          sx={{ mt: 3, flexGrow: 1, width: 1 }}
         >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12}>
