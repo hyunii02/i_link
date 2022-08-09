@@ -2,8 +2,6 @@ const path = require("path");
 
 const db = require(path.join(__dirname, "..", "models"));
 const Groups = db.groups;
-const Users = db.users;
-const Kids = db.kids;
 
 // 반 등록
 // [post] /groups/register
@@ -23,57 +21,30 @@ exports.group_regist = async function (req, res) {
     });
 };
 
-// TODO:!!!
 // 반 목록 조회
 // [get]  /groups/list/:centerNo
 exports.group_list = async function (req, res) {
   const centerNo = req.params.centerNo;
-  let group = [];
-  let teacher = [];
-  let kids = [];
 
-  await Groups.findAll({ where: { center_no: centerNo }, raw: true })
+  // 해당 유치원에 있는 반, 교사, 원생 테이블 조인 -> 반 정보와 교사 수, 원생 수 함께 가져옴
+  let query =
+    "SELECT g.group_no, g.center_no, g.group_name, s.kid_cnt, t.teacher_cnt " +
+    " FROM(SELECT u.group_no, COUNT(DISTINCT user_no) teacher_cnt FROM `groups` " +
+    ` JOIN users u WHERE user_type = 2 AND u.center_no = ${centerNo} AND u.group_no IS NOT NULL GROUP BY group_no) t ` +
+    " LEFT JOIN `groups` g ON t.group_no = g.group_no " +
+    " LEFT JOIN (SELECT k.group_no, COUNT(DISTINCT kid_no) kid_cnt FROM `groups` " +
+    ` JOIN kids k WHERE k.center_no = ${centerNo} AND k.group_no IS NOT NULL GROUP BY group_no) s ON s.group_no = g.group_no ; `;
+
+  await db.sequelize
+    .query(query, {
+      type: db.sequelize.QueryTypes.SELECT,
+    })
     .then((data) => {
-      group = data;
+      res.status(200).json(data);
     })
     .catch((err) => {
-      console.log(err);
-      throw err;
+      res.status(500).json({ error: err.message, message: "목록 조회 과정에 문제 발생" });
     });
-
-  await Users.findAll({
-    group: ["group_no"],
-    attributes: ["group_no", [db.sequelize.fn("COUNT", "group_no"), "teacher_cnt"]],
-    where: { user_type: 2, center_no: centerNo },
-    raw: true,
-  })
-    .then((data) => {
-      teacher = data;
-    })
-    .catch((err) => {
-      console.log(err);
-      throw err;
-    });
-
-  await Kids.findAll({
-    group: ["group_no"],
-    attributes: ["group_no", [db.sequelize.fn("COUNT", "group_no"), "kid_cnt"]],
-    where: { center_no: centerNo },
-    raw: true,
-  })
-    .then((data) => {
-      kids = data;
-    })
-    .catch((err) => {
-      console.log(err);
-      throw err;
-    });
-
-  console.log("반 목록", group);
-  console.log("반별 교사 수", teacher);
-  console.log("반별 원생 수", kids);
-
-  res.status(200).json({ group, teacher, kids });
 };
 
 // 반 상세 조회
@@ -89,7 +60,7 @@ exports.group_detail = async function (req, res) {
       }
     })
     .catch((err) => {
-      res.status(500).json({ error: err.message, message: "목록 조회 과정에 문제 발생" });
+      res.status(500).json({ error: err.message, message: "반 정보 조회 과정에 문제 발생" });
     });
 };
 
