@@ -51,7 +51,7 @@ router.use("/meals", require(path.join(__dirname, "meals")));
 /**
  * @swagger
  * tags:
- *    name: Memebers
+ *    name: Members
  *    description: 멤버관리 CRUD
  */
 router.use("/members", require(path.join(__dirname, "members")));
@@ -62,7 +62,7 @@ router.use("/members", require(path.join(__dirname, "members")));
  *    name: Surveys
  *    description: 키즈 설문 CRUD
  */
- router.use("/surveys", require(path.join(__dirname, "surveys")));
+router.use("/surveys", require(path.join(__dirname, "surveys")));
 
 /**
  * @swagger
@@ -70,6 +70,6 @@ router.use("/members", require(path.join(__dirname, "members")));
  *    name: Reports
  *    description: 특이사항 CRUD
  */
- router.use("/reports", require(path.join(__dirname, "reports")));
+router.use("/reports", require(path.join(__dirname, "reports")));
 
 module.exports = router;
