@@ -76,8 +76,10 @@ router.post("/register", groupController.group_regist);
  *              schema:
  *                type: object
  *                example:
- *                    [{"반1": "반 정보1"},{"반2": "반정보2"}]
- *        "400":
+ *                    [ {"group_no": 1, "center_no": 1, "group_name": "삼다수", "kid_cnt": 1, "teacher_cnt": 1 },
+ *                     { "group_no": 3, "center_no": 1, "group_name": "평창수", "kid_cnt": 1, "teacher_cnt": 3 },
+ *                     { "group_no": 4, "center_no": 1, "group_name": "에비앙", "kid_cnt": 1, "teacher_cnt": 3 } ]
+ *        "500":
  *          description: 반 목록 조회 실패
  *          content:
  *            application/json:
@@ -87,7 +89,7 @@ router.post("/register", groupController.group_regist);
  *                    message:
  *                      type: string
  *                      example:
- *                          "목록 조회 과정에 문제 발생"
+ *                          "해당 정보를 찾을 수 없습니다."
  */
 router.get("/list/:centerNo", groupController.group_list);
 
