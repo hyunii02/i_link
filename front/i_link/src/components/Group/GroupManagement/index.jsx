@@ -13,40 +13,6 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { baseURL } from "../../../api/axios";
 
-// 테스트용 데이터
-const subData = [
-  {
-    id: 1,
-    className: "장미반",
-    studentNum: 20,
-    teacherNum: 2,
-  },
-  {
-    id: 2,
-    className: "햇살반",
-    studentNum: 15,
-    teacherNum: 1,
-  },
-  {
-    id: 3,
-    className: "양념반",
-    studentNum: 15,
-    teacherNum: 2,
-  },
-  {
-    id: 4,
-    className: "후라이드반",
-    studentNum: 16,
-    teacherNum: 2,
-  },
-  {
-    id: 5,
-    className: "배지우반",
-    studentNum: 10,
-    teacherNum: 1,
-  },
-];
-
 const headerList = [
   {
     id: 1,
