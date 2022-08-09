@@ -75,14 +75,14 @@ export default function Login() {
     };
     try {
       const response = await axios.post(baseURL + urls.fetchLogin, body);
-      const resUserType = response.data.data.user.userType;
-      const resUserName = response.data.data.user.userName;
-      const resUserNo = response.data.data.user.userNo;
+      const resUserType = response.data.data.user.user_type;
+      const resUserName = response.data.data.user.user_name;
+      const resUserNo = response.data.data.user.user_no;
       const resAccessToken = response.data.data.token.access_token;
       const resRefreshToken = response.data.data.token.refresh_token;
-      const resUserPhone = response.data.data.token.user_phone;
-      const resUserCenter = response.data.data.token.user_center;
-      const resUserGroup = response.data.data.token.user_group;
+      const resUserPhone = response.data.data.user.user_phone;
+      const resUserCenter = response.data.data.user.center_no;
+      const resUserGroup = response.data.data.user.group_no;
       // 로그인 성공 시 유저 정보 세션에 저장
       setUserNo(resUserNo);
       setUserName(resUserName);
