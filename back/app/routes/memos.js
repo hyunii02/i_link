@@ -21,7 +21,7 @@ const memosController = require(path.join(__dirname, "..", "controllers", "memos
  *                type: object
  *                properties:
  *                  groupNo:
- *                    type: string
+ *                    type: integer
  *                    description: "반 번호"
  *                  memoContent:
  *                    type: string
