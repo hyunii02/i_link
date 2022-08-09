@@ -140,7 +140,7 @@ export default function Login() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: "80px",
+            marginTop: "50px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -150,15 +150,16 @@ export default function Login() {
           <Typography
             id="font_test"
             component="h6"
-            variant="h4"
+            variant="h3"
             sx={{ color: "rgba(0, 0, 0, 0.6)" }}
           >
             원과 가정을 잇다
           </Typography>
           <Avatar
-            sx={{ width: 250, height: 250 }}
+            sx={{ width: 380, height: 350 }}
             alt="Academy"
             src="/images/logo.png"
+            variant="square"
           ></Avatar>
           {/* 로그인 form */}
           <Box
@@ -167,7 +168,7 @@ export default function Login() {
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
-            <Grid container spacing={2}>
+            <Grid container spacing={1}>
               <Grid item xs={12} sm={12}>
                 {/* 이메일 입력창 */}
                 <TextField
@@ -176,7 +177,7 @@ export default function Login() {
                   id="email"
                   label="이메일"
                   name="email"
-                  autoComplete="email"
+                  autoComplete="phone"
                   autoFocus
                   value={formValues.email}
                   onChange={handleChange}
@@ -207,7 +208,7 @@ export default function Login() {
               fullWidth
               variant="contained"
               style={{ background: colorPalette.BUTTON_COLOR }}
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 1, mb: 2 }}
               onChange={handleChange}
             >
               <Typography id="font_test" component="h6" variant="h6">
