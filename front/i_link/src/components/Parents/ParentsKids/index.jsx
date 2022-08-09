@@ -1,7 +1,6 @@
 // 2022.08.02 안정현 기본 페이지 구성 //
-// 2022.08.04 ~ 08.05안정현 디자인, 이미지 업로드 기능 수정 및 추가//
-// 해야할 것 : axios, 유치원 등록, 이미지 호버링 //
-// 에... 그림자 호버링 이상해서 일단 색깔 바뀌는 호버링으로 임시방편으로 해놓음... 주말 중으로 다시 해보기! //
+// 2022.08.04 ~ 08.05 안정현 디자인, 이미지 업로드 기능 수정 및 추가//
+// 2022.08.09 안정현 axios //
 
 import React from "react";
 import { useState } from "react";
@@ -84,7 +83,6 @@ const Uploader = ({ image, setImage }) => {
 // 남여 성별 체크 버튼
 const ColorToggleButton = ({ gender, setGender }) => {
   const handleChange = (event, newAlignment) => {
-    console.log(newAlignment);
     setGender(newAlignment);
   };
 
@@ -104,12 +102,12 @@ const ColorToggleButton = ({ gender, setGender }) => {
       fullWidth
       sx={{ background: "white" }}
     >
-      <ToggleButton value="male" id="font_test">
+      <ToggleButton value="M" id="font_test">
         <Typography id="font_test" component="h6" variant="h6">
           남자
         </Typography>
       </ToggleButton>
-      <ToggleButton value="female" id="font_test">
+      <ToggleButton value="F" id="font_test">
         <Typography id="font_test" component="h6" variant="h6">
           여자
         </Typography>
@@ -130,7 +128,7 @@ export default function ParentsKids() {
   };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
-  const [gender, setGender] = useState("male");
+  const [gender, setGender] = useState("M");
   const [image, setImage] = useState({
     image_file: "",
     preview_URL: "/images/user.png",
@@ -146,26 +144,25 @@ export default function ParentsKids() {
     return true;
   };
   // 아이 등록 버튼 클릭 시
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    // 유효성 검사 통과 시 axios 실행 해야하는 데 되니?
+    // 유효성 검사 통과 시 axios 실행
     if (validate()) {
-      // body에 들어 갈 것 확인하기
       const body = {
         kidName: formValues.kidname,
         kidBirth: formValues.date,
         kidGender: gender,
-        kidProfileUrl: image.image_file,
+        // kidProfileUrl: image.image_file,
+        kidProfileUrl:null,
         userNo: userNo,
       };
-      // try {
-      //   const response = await axios.post(
-      //     baseURL + urls.fetchKidsRegister,
-      //     body
-      //   );
-      //   navigate("/parents/home"); //아이 등록을 완료하면 home으로 보낸다?
-      // } catch (err) {}
-      console.log(body);
+      try {
+        axios.post(
+          baseURL + urls.fetchKidsRegister,
+          body
+        ).then((response) => console.log(response))
+        navigate("/parents/home"); //아이 등록을 완료하면 home으로 보낸다???
+      } catch (err) {}
     }
   };
 
