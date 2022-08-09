@@ -4,6 +4,7 @@ import MemoKiosk from "../../../components/Memo/Kiosk";
 import Weather from "../../../components/Weather";
 import MealKiosk from "../../../components/Meal/Kiosk";
 import MealKioskSnack from "../../../components/Meal/KioskSnack";
+import KioskLogout from "../../../components/User/KioskLogout";
 
 const KioskMain = () => {
   return (
@@ -22,7 +23,7 @@ const KioskMain = () => {
           <Weather />
         </Grid>
         <Grid item xs={1}>
-          원생 정보 로그아웃
+          <KioskLogout />
         </Grid>
       </Grid>
       <Grid
