@@ -19,7 +19,36 @@ exports.notice_regist = async function (req, res) {
 
 // 공지사항 목록 조회
 // [get]  /notices/list/:centerNo
-exports.notice_list = async function (req, res) {};
+exports.notice_list = async function (req, res) {
+  const centerNo = req.params.centerNo;
+  const keyword = req.query.keyword; // 일단 제목만 검색
+
+  if (keyword != null) console.log("검색 키워드: ", keyword);
+  const condition = keyword
+    ? { notice_title: { [Op.like]: `%${keyword}%` }, center_no: centerNo }
+    : { center_no: centerNo };
+
+  await Notices.findAll({
+    where: condition,
+    attributes: {
+      include: [
+        "notice_no",
+        "center_no",
+        "notice_title",
+        "notice_content",
+        [
+          // 날짜 형식 포맷 후 전송
+          db.sequelize.fn("DATE_FORMAT", db.sequelize.col("notice_date"), "%Y-%m-%d %h:%i:%s"),
+          "notice_date",
+        ],
+        "hit",
+      ],
+    },
+    raw: true,
+  })
+    .then((data) => res.status(200).json(data))
+    .catch((err) => res.status(500).json({ error: err.message, message: "조회 실패" }));
+};
 
 // 공지사항 조회
 // [get] /notices/:noticeNo
