@@ -51,8 +51,8 @@ router.use("/meals", require(path.join(__dirname, "meals")));
 /**
  * @swagger
  * tags:
- *    name: Meals
- *    description: 식단 CRUD
+ *    name: Memebers
+ *    description: 멤버관리 CRUD
  */
 router.use("/members", require(path.join(__dirname, "members")));
 
