@@ -20,8 +20,6 @@ const redisClient = require(path.join(__dirname, "..", "config", "redis"));
 // 회원가입
 // [post] /users/register
 exports.user_regist = async function (req, res) {
-  // *** Content-Type: application/json
-
   // User
   const user = {
     user_type: req.body.userType,
@@ -30,35 +28,26 @@ exports.user_regist = async function (req, res) {
     user_name: req.body.userName,
     user_phone: req.body.userPhone ? req.body.userPhone : null,
     user_profile_url: req.body.userProfileUrl ? req.body.userProfileUrl : null,
-    group_no: req.body.groupNo ? req.body.groupNo : null,
-    center_no: req.body.centerNo ? req.body.centerNo : null,
   };
 
   await Users.create(user)
     .then((data) => {
-      console.log("회원가입 완료");
-      res.send(data);
+      res.status(200).json({ message: "회원가입 완료" });
     })
     .catch((err) => {
-      res.status(400).json({
-        errormessage: err.message,
-        message: "회원 가입 실패.",
-      });
+      res.status(500).json({ error: err.message, message: "회원 가입 실패." });
     });
 };
 
 // 로그인
 // [post] /users/login
-exports.user_login_post = async function (req, res) {
+exports.user_login = async function (req, res) {
   const userEmail = req.body.userEmail;
   const userPw = req.body.userPw;
 
   // 입력된 이메일로 사용자 찾기
   let user = await Users.findOne({ where: { user_email: userEmail } }).catch((err) => {
-    res.status(400).json({
-      errormessage: err.message,
-      message: "잘못된 요청입니다.",
-    });
+    res.status(500).json({ error: err.message, message: "잘못된 요청입니다." });
   });
 
   // 아이디가 있는 경우
@@ -69,21 +58,30 @@ exports.user_login_post = async function (req, res) {
     // 로그인 성공
     if (password_valid) {
       // front에 전달할 사용자 객체에 필요한 데이터만 적재
-      user = {
-        userNo: user.user_no,
-        userName: user.user_name,
-        userType: user.user_type,
-      };
+      // user = {
+      //   userNo: user.user_no,
+      //   userName: user.user_name,
+      //   userType: user.user_type,
+      //   userEmail: user.user_email,
+      //   userPhone: user.user_phone,
+      //   userProfileUrl: user.user_profile_url,
+      // };
 
-      const access_token = jwt.sign(user, JWT_ACCESS_SECRET, { expiresIn: JWT_ACCESS_TIME });
-      const refresh_token = jwt.sign(user, JWT_REFRESH_SECRET, { expiresIn: JWT_REFRESH_TIME });
+      user.user_pw = "";
+
+      const access_token = jwt.sign(user.toJSON(), JWT_ACCESS_SECRET, {
+        expiresIn: JWT_ACCESS_TIME,
+      });
+      const refresh_token = jwt.sign(user.toJSON(), JWT_REFRESH_SECRET, {
+        expiresIn: JWT_REFRESH_TIME,
+      });
 
       // 헤더에 jwt 토큰 전송
       res.setHeader("Authorization", "Bearer " + access_token);
 
       // 갱신 토큰 redis에 저장
-      redisClient.set(user.userNo.toString(), JSON.stringify({ token: refresh_token }));
-      redisClient.expire(user.userNo.toString(), 604800); // 604800초 (7일) 후 redis에서 자동 삭제
+      redisClient.set(user.user_no.toString(), JSON.stringify({ token: refresh_token }));
+      redisClient.expire(user.user_no.toString(), 604800); // 604800초 (7일) 후 redis에서 자동 삭제
 
       return res.status(200).json({
         logined: true,
@@ -91,12 +89,12 @@ exports.user_login_post = async function (req, res) {
         data: { user, token: { access_token, refresh_token } },
       });
     } else {
-      // 로그인 실패
-      res.status(400).json({ message: "비밀번호 오류" });
+      // 비밀번호 틀린 경우
+      res.status(500).json({ logined: false, message: "비밀번호 오류" });
     }
   } else {
     // 아이디가 없는 경우
-    res.status(400).json({ message: "아이디 없음" });
+    res.status(500).json({ logined: false, message: "아이디 없음" });
   }
 };
 
@@ -112,23 +110,19 @@ exports.verify_token = function (req, res) {
 // [post] /users/token
 exports.refresh_token = function (req, res) {
   const user = req.body.user;
-  /* user 형식
-  user = {
-        userNo: user.user_no,
-        userName: user.user_name,
-        userType: user.user_type,
-      }
-  */
+
   console.log("토큰 갱신 사용자", user);
   const access_token = jwt.sign(user, JWT_ACCESS_SECRET, { expiresIn: JWT_ACCESS_TIME });
-  const refresh_token = jwt.sign(user, JWT_REFRESH_SECRET, { expiresIn: JWT_REFRESH_TIME });
+  const refresh_token = jwt.sign(user, JWT_REFRESH_SECRET, {
+    expiresIn: JWT_REFRESH_TIME,
+  });
 
   // 헤더에 jwt 토큰 전송
   res.setHeader("Authorization", "Bearer " + access_token);
 
   // 갱신 토큰 redis에 저장
-  redisClient.set(user.userNo.toString(), JSON.stringify({ token: refresh_token }));
-  redisClient.expire(user.userNo.toString(), 604800); // redis 키 TTL 갱신
+  redisClient.set(user.user_no.toString(), JSON.stringify({ token: refresh_token }));
+  redisClient.expire(user.user_no.toString(), 604800); // redis 키 TTL 갱신
 
   return res.status(200).json({
     logined: true,
@@ -149,37 +143,34 @@ exports.user_logout = function (req, res) {
 
   // 토큰 헤더에 작성했는지 확인 로그
   const header = req.headers.authorization;
-  console.log(header);
+  console.log("Header: ", header);
 
   return res.status(200).json({ logined: false, message: "로그아웃" });
 };
 
 // 회원 정보 조회
-// [get] /users/:user_no
+// [get] /users/:userNo
 exports.user_detail = async function (req, res) {
-  const userNo = req.params.user_no;
+  const userNo = req.params.userNo;
 
   // pk로 사용자 정보 조회
-  const user = await Users.findByPk(userNo).catch((err) => {
-    res.status(400).json({
-      errormessage: err.message,
-      message: "잘못된 요청입니다.",
+  await Users.findByPk(userNo, { attributes: { exclude: ["user_pw", "group_no", "center_no"] } })
+    .then((data) => {
+      if (data === null) {
+        res.status(400).json({ message: "해당 사용자를 찾을 수 없습니다." });
+      } else {
+        res.status(200).json(data);
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message, message: "사용자 정보 조회 과정에 문제 발생" });
     });
-  });
-
-  if (user === null) {
-    console.log("사용자를 찾을 수 없습니다.");
-  } else {
-    user.user_pw = ""; // 사용자 패스워드는 가져오지 않음
-    console.log(user);
-    res.send(user);
-  }
 };
 
 // 회원 정보 수정
-// [put] /users/:user_no
+// [put] /users/:userNo
 exports.user_update = async function (req, res) {
-  const userNo = req.params.user_no;
+  const userNo = req.params.userNo;
 
   // User
   const user = {
@@ -196,46 +187,30 @@ exports.user_update = async function (req, res) {
   await Users.update(user, { where: { user_no: userNo }, individualHooks: true })
     .then((result) => {
       if (result[0] === 1) {
-        // 수정 완료
-        console.log("회원 수정 완료");
-        res.redirect("/users/logout"); // 재로그인
+        res.status(200).json({ message: "회원 정보 수정 완료" });
       } else {
-        // 수정 실패
-        res.send({
-          message: "회원을 찾을 수 없거나 데이터가 비어있음",
-        });
+        res.status(400).json({ message: "해당 회원을 찾을 수 없거나 데이터가 비어있음." });
       }
     })
     .catch((err) => {
-      res.status(400).json({
-        errormessage: err.message,
-        message: "회원 수정 실패.",
-      });
+      res.status(500).json({ error: err.message, message: "회원 정보 수정 실패." });
     });
 };
 
 // 회원 정보 삭제
-// [delete] /users/:user_no
+// [delete] /users/:userNo
 exports.user_remove = async function (req, res) {
-  const userNo = req.params.user_no;
+  const userNo = req.params.userNo;
 
   await Users.destroy({ where: { user_no: userNo } })
     .then((result) => {
       if (result == 1) {
-        // 삭제 완료
-        console.log("회원 탈퇴 완료");
-        res.redirect("/users/logout");
+        res.status(200).json({ logined: false, message: "회원 탈퇴 완료" });
       } else {
-        // 삭제 실패
-        res.send({
-          message: "해당 회원을 찾을 수 없습니다.",
-        });
+        res.status(400).json({ message: "해당 회원을 찾을 수 없음." });
       }
     })
     .catch((err) => {
-      res.status(400).json({
-        errormessage: err.message,
-        message: "회원 탈퇴 실패.",
-      });
+      res.status(500).json({ error: err.message, message: "회원 탈퇴 실패." });
     });
 };
