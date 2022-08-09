@@ -13,12 +13,9 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { urls, baseURL } from "../../../api/axios";
 import { colorPalette } from "../../../constants/constants";
-
-const theme = createTheme();
 
 export default function KioskLogin() {
   // validation
@@ -104,104 +101,107 @@ export default function KioskLogin() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: "80px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-          style={{ transform: "scale(2)" }}
-        >
-          <Grid container></Grid>
+    <Container>
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: "80px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          height: "80vh",
+        }}
+      >
+        <Grid container></Grid>
 
-          {/* 로고 이미지 */}
-          <Typography
-            id="font_test"
-            component="h6"
-            variant="h4"
-            sx={{ color: "rgba(0, 0, 0, 0.6)" }}
-          >
-            원과 가정을 잇다
-          </Typography>
-          <Avatar
-            sx={{ width: 250, height: 250 }}
-            alt="Academy"
-            src="/images/logo.png"
-          ></Avatar>
-          {/* 로그인 form */}
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={12}>
-                {/* 이메일 입력창 */}
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="이메일"
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                  value={formValues.email}
-                  onChange={handleChange}
-                  sx={{ background: "white" }}
-                />
-                <p>{formErrors.email}</p>
-              </Grid>
-              {/* 비밀번호 입력창 */}
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="비밀번호"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  value={formValues.password}
-                  onChange={handleChange}
-                  sx={{ background: "white" }}
-                />
-                <p>{formErrors.password}</p>
-              </Grid>
+        {/* 로고 이미지 */}
+        <Typography
+          id="font_test"
+          component="h6"
+          variant="h1"
+          sx={{
+            color: "rgba(0, 0, 0, 0.6)",
+            flexGrow: 0.1,
+            verticalAlign: "bottom",
+          }}
+        >
+          원과 가정을 잇다
+        </Typography>
+        <Avatar
+          sx={{ width: "60%", flexGrow: 2 }}
+          alt="Academy"
+          variant="square"
+          src="/images/logo.png"
+        ></Avatar>
+        {/* 로그인 form */}
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit}
+          sx={{ mt: 3, flexGrow: 1 }}
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12}>
+              {/* 이메일 입력창 */}
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="이메일"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                value={formValues.email}
+                onChange={handleChange}
+                sx={{ background: "white" }}
+              />
+              <p>{formErrors.email}</p>
             </Grid>
-            {/* 로그인 버튼 */}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              style={{ background: colorPalette.BUTTON_COLOR }}
-              sx={{ mt: 3, mb: 2 }}
-              onChange={handleChange}
-            >
-              <Typography id="font_test" component="h6" variant="h6">
-                로그인
-              </Typography>
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                {/* 회원가입 페이지로 연결 */}
-                <Link
-                  href="/user/signup"
-                  variant="body2"
-                  id="font_test"
-                  style={{ color: "#808080", textDecoration: "none" }}
-                >
-                  회원가입
-                </Link>
-              </Grid>
+            {/* 비밀번호 입력창 */}
+            <Grid item xs={12} sm={12}>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                label="비밀번호"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                value={formValues.password}
+                onChange={handleChange}
+                sx={{ background: "white" }}
+              />
+              <p>{formErrors.password}</p>
             </Grid>
-          </Box>
+          </Grid>
+          {/* 로그인 버튼 */}
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            style={{ background: colorPalette.BUTTON_COLOR }}
+            sx={{ mt: 3, mb: 2 }}
+            onChange={handleChange}
+          >
+            <Typography id="font_test" component="h6" variant="h6">
+              로그인
+            </Typography>
+          </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              {/* 회원가입 페이지로 연결 */}
+              <Link
+                href="/user/signup"
+                variant="body2"
+                id="font_test"
+                style={{ color: "#808080", textDecoration: "none" }}
+              >
+                회원가입
+              </Link>
+            </Grid>
+          </Grid>
         </Box>
-      </Container>
-    </ThemeProvider>
+      </Box>
+    </Container>
   );
 }
