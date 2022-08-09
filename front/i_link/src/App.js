@@ -51,6 +51,7 @@ const App = () => {
           <Route path="/" element={<UserLogin />} />
           <Route path="/user/signup" element={<UserSignUp />} />
           <Route path="/user/update" element={<UserUpdate />} />
+          <Route path="/master/registacademy" element={<MasterRegistAcademy />} />
         </Route>
         {/* 원장님, 학부모, 선생님 */}
         <Route element={<LayOut />}>
@@ -60,7 +61,7 @@ const App = () => {
           <Route path="/master/managemember" element={<MasterManageMember />} />
           <Route path="/master/memo" element={<MasterMemo />} />
           <Route path="/master/notice" element={<MasterNotice />} />
-          <Route path="/master/registacademy" element={<MasterRegistAcademy />} />
+          
           {/* 학부모 */}
           <Route path="/parents/diet" element={<ParentsDiet />} />
           <Route path="/parents/home" element={<ParentsHome />} />
