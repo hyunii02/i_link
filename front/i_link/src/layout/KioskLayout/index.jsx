@@ -1,21 +1,14 @@
 import React from "react";
-import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
+import Wrapper from "./styles";
 
 const KioskLayout = () => {
   return (
-    <Box
-      sx={{
-        boxSizing: "border-box",
-        width: "100vw",
-        height: "100vh",
-        bgcolor: "#4CA761",
-        border: 70,
-        borderColor: "#B87C35",
-      }}
-    >
-      <Outlet />
-    </Box>
+    <Wrapper>
+      <div className="layout">
+        <Outlet />
+      </div>
+    </Wrapper>
   );
 };
 

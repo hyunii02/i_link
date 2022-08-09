@@ -1,4 +1,6 @@
 // 2022.08.03 강민재 구조 수정
+/// 2022.08.08 강민재 엑시오스 인스턴스 생성
+import Axios from "axios"; // 인스턴스와 구분하기 위해 대문자 사용
 
 const baseURL = "https://i7e102.p.ssafy.io:8000";
 
@@ -36,7 +38,7 @@ const urls = {
   fetchReportsUpdate: "/reports/",
   fetchReportsDelete: "/reports/",
   fetchMealsList: "/meals/list/",
-  fetchMealsRegister: "/meals",
+  fetchMealsRegister: "/meals/register",
   fetchMealsDetail: "/meals/",
   fetchTodaysMeals: "/meals/",
   fetchMealsUpdate: "/meals/",
@@ -55,4 +57,9 @@ const urls = {
   fetchQuizsList: "/quizs/list/",
 };
 
-export { baseURL, urls };
+const axios = Axios.create({
+  baseURL: baseURL,
+  headers: { Authorization: "Bearer " + sessionStorage.getItem("accessToken") },
+});
+
+export { axios, baseURL, urls };

@@ -1,7 +1,12 @@
 import React from "react";
+import Reports from "../../../components/Reports";
 
 const ParentsRepo = () => {
-  return <div>ParentsReport</div>;
+  return (
+    <>
+      <Reports></Reports>
+    </>
+  );
 };
 
 export default ParentsRepo;

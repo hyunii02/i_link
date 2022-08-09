@@ -26,7 +26,6 @@ import Select from "@mui/material/Select";
 import { urls, baseURL } from "../../../api/axios";
 import { colorPalette } from "../../../constants/constants";
 
-
 // Select components
 const BasicSelectCheck = ({ handleSelect }) => {
   const [value, setValue] = useState("3");
@@ -43,7 +42,7 @@ const BasicSelectCheck = ({ handleSelect }) => {
         sx={{ background: "white" }}
         inputProps={{ "aria-label": "Without label" }}
       >
-        <MenuItem value="3" >부모님</MenuItem>
+        <MenuItem value="3">부모님</MenuItem>
         <MenuItem value="1">원장님</MenuItem>
         <MenuItem value="2">선생님</MenuItem>
       </Select>
@@ -71,29 +70,36 @@ export default function SignUp() {
   // 에러메시지
   const validate = () => {
     const errors = {};
+    let flag = false;
     if (!formValues.email) {
       errors.email = "이메일을 입력해주세요.";
+      flag = true;
     }
     if (!formValues.password) {
       errors.password = "비밀번호를 입력해주세요.";
+      flag = true;
     }
     if (formValues.password.length < 6) {
       errors.password = "6자리 이상 입력해주세요.";
+      flag = true;
     }
     if (formValues.password !== formValues.check_password) {
       errors.check_password = "비밀번호가 일치하지 않습니다.";
+      flag = true;
     }
     if (!formValues.username) {
       errors.username = "이름을 입력해주세요.";
+      flag = true;
     }
     if (!formValues.phone_number) {
       errors.phone_number = "전화번호를 입력해주세요.";
+      flag = true;
     }
     setFormErrors(errors);
-    if (!(errors.email + errors.password)) {
-      return true;
+    if (flag) {
+      return false;
     }
-    return false;
+    return true;
   };
   // 드롭다운 값 변경
   const handleSelect = (val) => {
@@ -115,10 +121,15 @@ export default function SignUp() {
       try {
         const response = await axios.post(
           baseURL + urls.fetchUsersRegister,
-          body,
+          body
         );
         navigate("/");
-      } catch (err) {}
+      } catch (err) {
+        const errors = {
+          email: "이미 가입된 이메일입니다.",
+        };
+        setFormErrors(errors);
+      }
     }
   };
 
@@ -146,7 +157,7 @@ export default function SignUp() {
             alt="Academy"
             src="/images/logo.png"
           ></Avatar>
-          <Typography 
+          <Typography
             component="h1"
             variant="h5"
             id="font_test"
@@ -180,7 +191,7 @@ export default function SignUp() {
                   autoFocus
                   value={formValues.email}
                   onChange={handleChange}
-                  sx={{ background: "white", mt:2.2 }}
+                  sx={{ background: "white", mt: 2.2 }}
                 />
                 <p>{formErrors.email}</p>
               </Grid>
@@ -263,11 +274,11 @@ export default function SignUp() {
             <Grid container justifyContent="flex-end">
               {/* 로그인 페이지로 연결 */}
               <Grid item>
-                <Link 
+                <Link
                   href="/"
-                  variant="body2" 
-                  id="font_test" 
-                  style={{ color: "#808080", textDecoration:"none" }}
+                  variant="body2"
+                  id="font_test"
+                  style={{ color: "#808080", textDecoration: "none" }}
                 >
                   아이디가 있으신가요? 로그인하기
                 </Link>
