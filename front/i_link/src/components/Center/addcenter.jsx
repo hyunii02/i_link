@@ -108,10 +108,10 @@ export default function MasterRegistCenter(props) {
       
       axios
 
-        .post(urls.fetchCentersRegister, totalData)
+      .post(urls.fetchCentersRegister, totalData)
 
-        .then((response) => console.log(response));
-        navigate("/master/managemember");
+      .then((response) => console.log(response));
+      navigate("/master/managemember");
     }
     
   };
