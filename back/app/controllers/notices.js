@@ -82,7 +82,24 @@ exports.notice_detail = async function (req, res) {
 
 // 공지사항 수정
 // [put] /notices/:noticeNo
-exports.notice_update = async function (req, res) {};
+exports.notice_update = async function (req, res) {
+  const noticeNo = req.params.noticeNo;
+  const notice = {
+    notice_title: req.body.noticeTitle,
+    notice_content: req.body.noticeContent,
+  };
+  await Notices.update(notice, { where: { notice_no: noticeNo } })
+    .then((result) => {
+      if (result[0] === 1) {
+        res.status(200).json({ message: "공지사항 수정 완료" });
+      } else {
+        res.status(400).json({ message: "해당 정보를 찾을 수 없거나 데이터가 비어있음" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message, message: "공지사항 수정 실패" });
+    });
+};
 
 // 공지사항 삭제
 // [delete] /notices/:noticeNo
