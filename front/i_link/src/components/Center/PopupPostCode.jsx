@@ -1,3 +1,5 @@
+// 2022 08 08 배지우
+
 import React from "react";
 import DaumPostcode from "react-daum-postcode";
 import { Button, Modal } from "@mui/material";
@@ -29,12 +31,11 @@ const PopupPostCode = (props) => {
   };
 
   const postCodeStyle = {
-    position: "absolute",
-    top: "70%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
+    position: "fixed",
+    top: 110,
+    left: 650,
+    width: 500,
+    bgcolor: "red",
     border: "2px solid #000",
     boxShadow: 0,
     p: 4,
@@ -44,7 +45,14 @@ const PopupPostCode = (props) => {
     <div>
       <DaumPostcode style={postCodeStyle} onComplete={handlePostCode} />
 
-      <Button
+      <Button 
+        id ="font_test"
+        sx={{
+        
+        ml : 13,
+        background : "#FF8A7B",
+        color : "black",
+        }}
         type="button"
         onClick={() => {
           props.onClose();

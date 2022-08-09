@@ -15,8 +15,8 @@ import { useState ,useContext} from "react";
 import { UserContext } from "../../context/user";
 import { axios, urls } from "../../api/axios";
 import { colorPalette } from "../../constants/constants";
-import { fontWeight } from "@mui/system";
 import { Alert } from "@mui/material";
+
 
 const theme = createTheme();
 
@@ -35,11 +35,9 @@ export default function MasterRegistCenter(props) {
   const [totalData, setTotalData] = useState(obj); //최종 모집 데이터
 
   
-  {
-    /*입력한 주소를 가져오는 함수*/
-  }
 
 
+  // 입력한 주소를 가져오는 함수
 
   const addAddress = (data) => {
     setAddress(data);
@@ -98,11 +96,12 @@ export default function MasterRegistCenter(props) {
         
       }
     }
-    }
-    
     axios
     .post(urls.fetchCentersRegister, totalData)
     .then((response) => console.log(response));
+    }
+    
+    
     
 
 
@@ -118,7 +117,7 @@ export default function MasterRegistCenter(props) {
             alignItems: "center",
           }}
         >
-          <Typography variant="h4" sx={{ color : "black" , mb:4}}>유치원 등록</Typography>
+          <Typography variant="h4" id="font_test" sx={{ color : "black" , mb:4}}>유치원 등록</Typography>
           {/* 로고 이미지 */}
           {/* <Typography
             id="font_test"
@@ -135,13 +134,14 @@ export default function MasterRegistCenter(props) {
           ></Avatar> */}
           {/* 유치원 등록 form */}
           <Box component="form" noValidate sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={12}>
+            <Grid  container spacing={2}>
+              <Grid  item xs={12} sm={12}>
                 {/* 유치원 이름 입력창 */}
                 <TextField
+                  
                   required
                   fullWidth
-                  id="centername"
+                  id="font_test"
                   placeholder="유치원 이름을 입력하세요"
                   name="centername"
                   onChange={handleChangeCenter}
@@ -155,7 +155,7 @@ export default function MasterRegistCenter(props) {
                 <TextField
                   required
                   fullWidth
-                  id="center_tel"
+                  id="font_test"
                   placeholder="유치원 번호를 입력하세요"
                   name="center_tel"
                   onChange={handleChangeTel}
@@ -168,6 +168,7 @@ export default function MasterRegistCenter(props) {
                 <TextField
                   required
                   fullWidth
+                  id="font_test"
                   value={address.zonecode || ""}
                   placeholder="우편번호"
                   sx={{ background: "white" }}
@@ -183,8 +184,8 @@ export default function MasterRegistCenter(props) {
                 <TextField
                   required
                   value={address.fullAddress || ""}
-                  name="address"
-                  id="address"
+                  name="address"  
+                  id="font_test"
                   placeholder="주소를 입력하세요"
                   fullWidth
                   sx={{ background: "white" }}
@@ -195,7 +196,8 @@ export default function MasterRegistCenter(props) {
               <Grid item xs={12} sm={12}>
                 <TextField
                   fullWidth
-                  id="detaileaddress"
+                  
+                  id="font_test"
                   placeholder="상세주소를 입력하세요"
                   onChange={handleChangeDetail}
                   sx={{ background: "white" }}
@@ -218,6 +220,7 @@ export default function MasterRegistCenter(props) {
             <Grid container justifyContent="flex-end"></Grid>
           </Box>
         </Box>
+        
       </Container>
     </ThemeProvider>
   );
