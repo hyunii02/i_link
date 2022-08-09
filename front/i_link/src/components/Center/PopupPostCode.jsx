@@ -3,6 +3,7 @@
 import React from "react";
 import DaumPostcode from "react-daum-postcode";
 import { Button, Modal } from "@mui/material";
+import Box from "@mui/material/Box";
 
 const PopupPostCode = (props) => {
   const { addAddress, onClose } = props;
@@ -31,37 +32,40 @@ const PopupPostCode = (props) => {
   };
 
   const postCodeStyle = {
-    position: "fixed",
-    top: 110,
-    left: 650,
+    position: "relative",
+    top: 10,
+    right: "105%",
     width: 500,
-    bgcolor: "red",
+    
+
+    
     border: "2px solid #000",
     boxShadow: 0,
     p: 4,
   };
 
   return (
-    <div>
-      <DaumPostcode style={postCodeStyle} onComplete={handlePostCode} />
-
-      <Button 
-        id ="font_test"
-        sx={{
-        
-        ml : 13,
-        background : "#FF8A7B",
-        color : "black",
-        }}
-        type="button"
-        onClick={() => {
-          props.onClose();
-        }}
-        className="postCode_btn"
-      >
-        닫기
-      </Button>
-    </div>
+    <Box >
+      
+      <DaumPostcode style={postCodeStyle} onComplete={handlePostCode}/>
+        <Button
+          id="font_test"
+          sx={{
+            ml:22.5,
+            mt:1.2,
+            background: "#FF8A7B",
+            color: "black",
+          }}
+          type="button"
+          onClick={() => {
+            onClose();
+          }}
+          className="postCode_btn"
+        >
+          닫기
+        </Button>
+      
+    </Box>
   );
 };
 
