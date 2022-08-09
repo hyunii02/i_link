@@ -16,7 +16,6 @@ const GroupListItem = (props) => {
 
   // 부모 컴포넌트로부터의 props
   const { classData, deleteClicked } = props;
-  console.log(classData);
 
   // 리스트 버튼 클릭 핸들러 => 반 디테일 컴포넌트 표시
   const listClickedHandler = (e) => {
@@ -47,12 +46,12 @@ const GroupListItem = (props) => {
           </Grid>
           <Grid item xs={4}>
             <Typography id="font_test" color="rgba(0, 0, 0, 0.6)">
-              {classData.studentNum}
+              {classData.kid_cnt}
             </Typography>
           </Grid>
           <Grid item xs={3}>
             <Typography id="font_test" color="rgba(0, 0, 0, 0.6)">
-              {classData.teacherNum}
+              {classData.teacher_cnt}
             </Typography>
           </Grid>
           <Grid item xs={1}>

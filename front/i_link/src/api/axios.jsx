@@ -55,6 +55,11 @@ const urls = {
   fetchStamps: "/stamp/",
   fetchTodaysWeathers: "/weathers/",
   fetchQuizsList: "/quizs/list/",
+  // 2022-08-09 김국진 추가
+  fetchSubmitWaitTeacher: "/members/manage/teacher/", // 가입 승인 대기 교사 목록
+  fetchSubmitWaitKids: "/members/manage/kids/", // 가입 승인 대기 원아 목록
+  fetchSubmitTeacher: "/members/manage/teacher/", // 가입 등록 승인 교사
+  fetchSubmitKids: "/members/manage/kids/", // 가입 등록 승인 원아
 };
 
 const axios = Axios.create({

@@ -1,55 +1,133 @@
 // 가입 승인 통합 컴포넌트
 // 2022.08.05 김국진 전체 수정
 
-import { useState } from "react";
+import { useState, useContext, useEfect } from "react";
 import { Box, Typography } from "@mui/material";
 import RegistMemberLists from "../RegistKidsLists";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import axios from "axios";
+import { baseURL, urls } from "../../../api/axios";
+import { UserContext } from "../../../context/user";
+import { useEffect } from "react";
 
-// Dummy Data
-const kids = [
-  {
-    id: 1123,
-    name: "김국진",
-    group: "자바반",
-  },
-  {
-    id: 21252,
-    name: "강민재",
-    group: "파이썬반",
-  },
-  {
-    id: 22346,
-    name: "강민재",
-    group: "파이썬반",
-  },
-  {
-    id: 212,
-    name: "강민재",
-    group: "파이썬반",
-  },
-  {
-    id: 237,
-    name: "강민재",
-    group: "파이썬반",
-  },
-  {
-    id: 123,
-    name: "강민재",
-    group: "파이썬반",
-  },
-];
-
-const RegistKids = () => {
+const RegistKids = (props) => {
+  // 상위 컴포넌트에서 반 목록을 가져옴
+  const { classList, getGroupList } = props;
   // 서버로부터 응답된 가입승인 명단 관리
-  const [listItem, setListItem] = useState(kids);
+  const [listItem, setListItem] = useState([]);
   // 원아/선생님 선택 버튼 상태 관리용
-  const [selectedItem, setSelectedItem] = useState(1);
+  const [selectedItem, setSelectedItem] = useState("1");
+  // 가입승인을 위한 객체
+  const [submitList, setSubmitList] = useState([]);
+
+  const { userType } = useContext(UserContext);
+
+  useEffect(() => {
+    getKidsList();
+  }, []);
+
+  // 원생 가입 승인 대기 목록 가져오는 axios
+  const getKidsList = () => {
+    axios
+      .get(baseURL + urls.fetchSubmitWaitKids + userType)
+      .then((response) => {
+        // 받은 데이터를 화면에서 쓰기 위해 새롭게 포매팅
+        const newArray = [];
+        const newSubmitArray = [];
+        response.data.map((data) => {
+          // 가입승인요청 목록 표시용 상태관리
+          const newObj = {
+            no: data.kid_no,
+            name: data.kid_name,
+            profile_url: data.kid_profile_url,
+          };
+          newArray.push(newObj);
+
+          // 가입승인용 상태관리
+          const newSubmitObj = {
+            kidNo: data.kid_no,
+            groupNo: null,
+          };
+          newSubmitArray.push(newSubmitObj);
+        });
+
+        setListItem(newArray);
+        setSubmitList(newSubmitArray);
+      });
+  };
+
+  // 선생 가입 승인 대기 목록 가져오는 axios
+  const getTeacherList = () => {
+    axios
+      .get(baseURL + urls.fetchSubmitWaitTeacher + userType)
+      .then((response) => {
+        // 받은 데이터를 화면에서 쓰기 위해 새롭게 포매팅
+        const newArray = [];
+        const newSubmitArray = [];
+        response.data.map((data) => {
+          // 가입승인요청 목록 표시용 상태관리
+          const newObj = {
+            no: data.user_no,
+            name: data.user_name,
+            profile_url: data.user_profile_url,
+          };
+          newArray.push(newObj);
+
+          // 가입승인용 상태관리
+          const newSubmitObj = {
+            userNo: data.user_no,
+            groupNo: null,
+          };
+          newSubmitArray.push(newSubmitObj);
+        });
+
+        setListItem(newArray);
+        setSubmitList(newSubmitArray);
+      });
+  };
+
+  // 가입 승인 리스트에서 반을 선택했을 경우 상태 변경
+  const submitListStateChange = (id, group) => {
+    let newArray = null;
+    if (selectedItem === "1") {
+      newArray = submitList.map((list) =>
+        list.kidNo === id ? { ...list, groupNo: group } : list,
+      );
+    } else if (selectedItem === "2") {
+      newArray = submitList.map((list) =>
+        list.userNo === id ? { ...list, groupNo: group } : list,
+      );
+    }
+    setSubmitList(newArray);
+  };
+
+  // 가입승인 버튼 시 put 처리
+  const onSubmitButtonClickHandler = () => {
+    // 가입 승인 상태(원아/선생)에 따라 URL을 다르게 설정
+    const fullURL =
+      baseURL +
+      (selectedItem === "1" ? urls.fetchSubmitKids : urls.fetchSubmitTeacher) +
+      userType;
+
+    let kidsList;
+    let teacherList;
+    selectedItem === "1" ? (kidsList = submitList) : (teacherList = submitList);
+    axios
+      .put(fullURL, selectedItem === "1" ? { kidsList } : { teacherList })
+      .then((response) => {
+        // 데이터가 바뀔 시 새로운 리스트 읽어들임
+        selectedItem === "1" ? getKidsList() : getTeacherList();
+        // 반 목록도 새로 읽어들임
+        getGroupList();
+      });
+  };
 
   // 원아/선생님 선택 버튼 상태 변경 동작부
   const buttonClickHandler = (e) => {
     setSelectedItem((selectedItem) => e.currentTarget.value);
+    if (e.currentTarget.value === "1") getKidsList();
+    else if (e.currentTarget.value === "2") getTeacherList();
   };
 
   return (
@@ -88,7 +166,7 @@ const RegistKids = () => {
           aria-label="outlined primary button group"
         >
           <Button
-            variant={parseInt(selectedItem) === 1 ? "contained" : "outlined"}
+            variant={selectedItem === "1" ? "contained" : "outlined"}
             color="warning"
             value="1"
             onClick={buttonClickHandler}
@@ -96,7 +174,7 @@ const RegistKids = () => {
             <Typography id="font_test"> 원아 </Typography>
           </Button>
           <Button
-            variant={parseInt(selectedItem) === 2 ? "contained" : "outlined"}
+            variant={selectedItem === "2" ? "contained" : "outlined"}
             color="warning"
             value="2"
             onClick={buttonClickHandler}
@@ -109,11 +187,19 @@ const RegistKids = () => {
       <Box
         sx={{ marginLeft: "10px", marginRight: "10px", marginBottom: "10px" }}
       >
-        <RegistMemberLists datas={listItem}></RegistMemberLists>
+        <RegistMemberLists
+          datas={listItem}
+          classList={classList}
+          submitListStateChange={submitListStateChange}
+        ></RegistMemberLists>
       </Box>
       {/* 가입 승인 버튼 표시 */}
       <Box textAlign="right" sx={{ marginRight: "10px", marginBottom: "10px" }}>
-        <Button variant="contained" color="warning">
+        <Button
+          variant="contained"
+          color="warning"
+          onClick={onSubmitButtonClickHandler}
+        >
           <Typography id="font_test">가입승인</Typography>
         </Button>
       </Box>

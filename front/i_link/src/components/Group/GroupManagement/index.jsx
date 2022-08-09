@@ -1,6 +1,6 @@
 // 원장>반관리>반관리 컴포넌트
 // create by 김국진
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import GroupListItem from "../GroupListItem/";
 import GroupInsert from "../GroupInsert/";
 import Button from "@mui/material/Button";
@@ -12,6 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { baseURL } from "../../../api/axios";
+import { UserContext } from "../../../context/user";
 
 const headerList = [
   {
@@ -38,17 +39,13 @@ const headerList = [
 
 let newId = 6;
 
-const GroupManagement = () => {
+const GroupManagement = (props) => {
+  const { getGroupList, classData, setClassData } = props;
   // 반 등록 컴포넌트에 대한 state 값
   const [insertFlag, setInsertFlag] = useState(false);
-  // 통합 반 정보 state 값
-  const [classData, setClassData] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get(baseURL + "/groups/list/1")
-      .then((response) => setClassData(response.data));
-  }, []);
+  // 유치원 search를 위한 useContext
+  const { userType } = useContext(UserContext);
 
   // 반 등록 버튼 클릭 시 핸들러함수
   const insertClicked = () => {
@@ -70,11 +67,9 @@ const GroupManagement = () => {
 
   // props용 반 추가 함수
   const insertClass = (data) => {
-    console.log(data, newId);
     const newClass = classData.concat({ id: newId, className: data });
     setClassData(newClass);
     newId = newId + 1;
-    console.log(classData);
   };
 
   return (
@@ -153,6 +148,7 @@ const GroupManagement = () => {
           <GroupInsert
             insertClass={insertClass}
             cancelClicked={insertComponentToggle}
+            getGroupList={getGroupList}
           />
         )}
         {/* 반의 객체 갯수만큼 반 리스트 컴포넌트를 화면에 렌더링 */}
