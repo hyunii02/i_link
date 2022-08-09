@@ -43,8 +43,8 @@ function verifyRefreshToken(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, JWT_REFRESH_SECRET);
-
-    redisClient.get(decoded.userNo.toString(), (err, data) => {
+    console.log(decoded);
+    redisClient.get(decoded.user_no.toString(), (err, data) => {
       if (err) {
         // throw err;
         console.log("fff", err.message);
