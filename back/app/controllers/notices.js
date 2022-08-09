@@ -52,7 +52,33 @@ exports.notice_list = async function (req, res) {
 
 // 공지사항 조회
 // [get] /notices/:noticeNo
-exports.notice_detail = async function (req, res) {};
+exports.notice_detail = async function (req, res) {
+  const noticeNo = req.params.noticeNo;
+  await Notices.findOne({
+    where: { notice_no: noticeNo },
+    attributes: {
+      include: [
+        "notice_no",
+        "center_no",
+        "notice_title",
+        "notice_content",
+        [
+          // 날짜 형식 포맷 후 전송
+          db.sequelize.fn("DATE_FORMAT", db.sequelize.col("notice_date"), "%Y-%m-%d %h:%i:%s"),
+          "notice_date",
+        ],
+        "hit",
+      ],
+    },
+  })
+    .then((notice) => {
+      if (notice == null) res.status(400).json({ message: "해당 데이터가 없습니다." });
+      res.status(200).json(notice);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message, message: "조회 실패" });
+    });
+};
 
 // 공지사항 수정
 // [put] /notices/:noticeNo
