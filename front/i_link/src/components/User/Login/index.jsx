@@ -177,7 +177,7 @@ export default function Login() {
                   id="email"
                   label="이메일"
                   name="email"
-                  autoComplete="phone"
+                  autoComplete="email"
                   autoFocus
                   value={formValues.email}
                   onChange={handleChange}
