@@ -11,6 +11,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SearchForm from "./searchform";
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/user";
 import { axios, urls } from "../../api/axios";
 import { colorPalette } from "../../constants/constants";
@@ -21,7 +22,7 @@ const theme = createTheme();
 export default function MasterRegistCenter(props) {
   // 원장회원번호
 
-  
+  const navigate = useNavigate();
   
   const { userNo } = useContext(UserContext);
 
@@ -103,11 +104,14 @@ export default function MasterRegistCenter(props) {
     event.preventDefault();
 
     if (validate()) {
+
+      
       axios
 
         .post(urls.fetchCentersRegister, totalData)
 
         .then((response) => console.log(response));
+        navigate("/master/managemember");
     }
     
   };
