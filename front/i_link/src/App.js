@@ -10,6 +10,7 @@ import KioskMain from './pages/Kiosk/Main/KioskMain';
 import KioskQuiz from './pages/Kiosk/Quiz/KioskQuiz';
 import KioskSurvey from './pages/Kiosk/Survey/KioskVote';
 import KioskStamp from './pages/Kiosk/Stamp/KioskAward';
+import KioskLoginPage from './pages/Kiosk/Login';
 import MasterDiet from './pages/Master/Diet/MasterDiet';
 import MasterManageGroup from './pages/Master/ManageGroup/MasterManageGroup';
 import MasterManageMember from './pages/Master/ManageMember/MasterManageMember';
@@ -39,7 +40,8 @@ const App = () => {
       <Routes>
         {/* 키오스크 */}
         <Route element={<KioskLayout />}>
-          <Route path="/kiosk" element={<KioskMain />} />
+          <Route path="/kiosk" element={<KioskLoginPage />} />
+          <Route path="/kiosk/main" element={<KioskMain />} />
           <Route path="/kiosk/stamp" element={<KioskStamp />} />
           <Route path="/kiosk/quiz" element={<KioskQuiz />} />
           <Route path="/kiosk/survey" element={<KioskSurvey />} />  
@@ -49,6 +51,7 @@ const App = () => {
           <Route path="/" element={<UserLogin />} />
           <Route path="/user/signup" element={<UserSignUp />} />
           <Route path="/user/update" element={<UserUpdate />} />
+          <Route path="/master/registacademy" element={<MasterRegistAcademy />} />
         </Route>
         {/* 원장님, 학부모, 선생님 */}
         <Route element={<LayOut />}>
@@ -58,7 +61,7 @@ const App = () => {
           <Route path="/master/managemember" element={<MasterManageMember />} />
           <Route path="/master/memo" element={<MasterMemo />} />
           <Route path="/master/notice" element={<MasterNotice />} />
-          <Route path="/master/registacademy" element={<MasterRegistAcademy />} />
+          
           {/* 학부모 */}
           <Route path="/parents/diet" element={<ParentsDiet />} />
           <Route path="/parents/home" element={<ParentsHome />} />

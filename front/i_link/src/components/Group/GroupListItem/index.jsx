@@ -6,16 +6,23 @@ import Button from "@mui/material/Button";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import GroupDetail from "../GroupDetail";
+import axios from "axios";
+import { baseURL, urls } from "../../../api/axios";
 
 const GroupListItem = (props) => {
   // 반 상세 보기 컴포넌트 상태 관리
   const [childView, setChildView] = useState(false);
+  const [student, setStudent] = useState([]);
 
   // 부모 컴포넌트로부터의 props
   const { classData, deleteClicked } = props;
+  console.log(classData);
 
   // 리스트 버튼 클릭 핸들러 => 반 디테일 컴포넌트 표시
-  const listClickedHandler = () => {
+  const listClickedHandler = (e) => {
+    axios
+      .get(baseURL + urls.fetchKids + classData.group_no)
+      .then((response) => setStudent((student) => response.data));
     setChildView((childView) => !childView);
   };
 
@@ -34,7 +41,7 @@ const GroupListItem = (props) => {
         <Grid container>
           <Grid item xs={4}>
             <Typography id="font_test" color="rgba(0, 0, 0, 0.6)">
-              {classData.className}
+              {classData.group_name}
             </Typography>
             {/*<ListItemText primary={classData.className} /> */}
           </Grid>
@@ -64,7 +71,7 @@ const GroupListItem = (props) => {
         </Grid>
       </ListItemButton>
       <Box style={{ display: "flex" }}>
-        {childView && <GroupDetail key={classData.className} />}
+        {childView && <GroupDetail key={classData.group_no} kid={student} />}
       </Box>
     </Box>
   );

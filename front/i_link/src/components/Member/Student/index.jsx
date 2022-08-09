@@ -58,7 +58,8 @@ const MemberStudent = (props) => {
     >
       <Card
         sx={{
-          maxWidth: 400,
+          maxWidth: 500,
+          height: 200,
           border: "10px solid #fae2e2",
           background: "#FAF1DA",
           /* FAE6D7 */
