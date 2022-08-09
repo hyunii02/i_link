@@ -54,11 +54,12 @@ const MealKioskSnack = () => {
           paddingLeft: "0",
         }}
       >
-        {meal.split(",").map((food) => (
-          <li key={food} style={{ marginLeft: "0px", marginBottom: "1vh" }}>
-            {food}
-          </li>
-        ))}
+        {meal &&
+          meal.split(",").map((food) => (
+            <li key={food} style={{ marginLeft: "0px", marginBottom: "1vh" }}>
+              {food}
+            </li>
+          ))}
       </ul>
     </div>
   );
