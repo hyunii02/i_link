@@ -30,7 +30,7 @@ exports.group_list = async function (req, res) {
   let query =
     "SELECT g.group_no, g.center_no, g.group_name, s.kid_cnt, t.teacher_cnt " +
     " FROM(SELECT u.group_no, COUNT(DISTINCT user_no) teacher_cnt FROM `groups` " +
-    ` JOIN users u WHERE user_type = 2 u.center_no = ${centerNo} AND u.group_no IS NOT NULL GROUP BY group_no) t ` +
+    ` JOIN users u WHERE user_type = 2 AND u.center_no = ${centerNo} AND u.group_no IS NOT NULL GROUP BY group_no) t ` +
     " LEFT JOIN `groups` g ON t.group_no = g.group_no " +
     " LEFT JOIN (SELECT k.group_no, COUNT(DISTINCT kid_no) kid_cnt FROM `groups` " +
     ` JOIN kids k WHERE k.center_no = ${centerNo} AND k.group_no IS NOT NULL GROUP BY group_no) s ON s.group_no = g.group_no ; `;
