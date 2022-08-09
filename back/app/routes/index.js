@@ -48,5 +48,28 @@ router.use("/kids", require(path.join(__dirname, "kids")));
  *    description: 식단 CRUD
  */
 router.use("/meals", require(path.join(__dirname, "meals")));
+/**
+ * @swagger
+ * tags:
+ *    name: Meals
+ *    description: 식단 CRUD
+ */
+router.use("/members", require(path.join(__dirname, "members")));
+
+/**
+ * @swagger
+ * tags:
+ *    name: Surveys
+ *    description: 키즈 설문 CRUD
+ */
+ router.use("/surveys", require(path.join(__dirname, "surveys")));
+
+/**
+ * @swagger
+ * tags:
+ *    name: Reports
+ *    description: 특이사항 CRUD
+ */
+ router.use("/reports", require(path.join(__dirname, "reports")));
 
 module.exports = router;
