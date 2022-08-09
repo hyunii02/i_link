@@ -103,4 +103,17 @@ exports.notice_update = async function (req, res) {
 
 // 공지사항 삭제
 // [delete] /notices/:noticeNo
-exports.notice_remove = async function (req, res) {};
+exports.notice_remove = async function (req, res) {
+  const noticeNo = req.params.noticeNo;
+  await Notices.destroy({ where: { notice_no: noticeNo } })
+    .then((result) => {
+      if (result == 1) {
+        res.status(200).json({ message: "삭제 완료" });
+      } else {
+        res.status(400).json({ message: "해당 정보를 찾을 수 없습니다." });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message, message: "삭제 실패" });
+    });
+};
