@@ -131,7 +131,7 @@ router.post("/register", userController.user_regist);
  *                      example:
  *                          "비밀번호 오류 or 아이디 없음"
  */
-router.post("/login", userController.user_login_post);
+router.post("/login", userController.user_login);
 
 /**
  * @swagger
@@ -160,17 +160,16 @@ router.post("/login", userController.user_login_post);
  */
 router.get("/logout", userController.user_logout);
 
-
 /**
  * @swagger
- * /users/{user_no}:
+ * /users/{userNo}:
  *  get:
  *    summary: "회원 정보 조회"
  *    description: "요청 경로에 값을 담아 서버에 보낸다."
  *    tags: [Users]
  *    parameters:
  *      - in: path
- *        name: user_no
+ *        name: userNo
  *        required: true
  *        description: 유저 회원 번호
  *        schema:
@@ -222,19 +221,19 @@ router.get("/logout", userController.user_logout);
  *                  example:
  *                      "사용자를 찾을 수 없습니다."
  */
-router.get("/:user_no", userController.user_detail);
+router.get("/:userNo", userController.user_detail);
 
 /**
  * @swagger
  * paths:
- *  /users/{user_no}:
+ *  /users/{userNo}:
  *    put:
  *      summary: "회원 정보 수정"
  *      description: "put 방식으로 회원 정보 수정"
  *      tags: [Users]
  *      parameters:
  *        - in: path
- *          name: user_no
+ *          name: userNo
  *          required: true
  *          description: 유저 회원 번호
  *          schema:
@@ -290,19 +289,19 @@ router.get("/:user_no", userController.user_detail);
  *                      example:
  *                          "회원 수정 실패"
  */
-router.put("/:user_no", userController.user_update);
+router.put("/:userNo", userController.user_update);
 
 /**
  * @swagger
  * paths:
- *  /users/{user_no}:
+ *  /users/{userNo}:
  *    delete:
  *      summary: "회원 탈퇴"
  *      description: "delete 방식으로 회원 탈퇴"
  *      tags: [Users]
  *      parameters:
  *        - in: path
- *          name: user_no
+ *          name: userNo
  *          required: true
  *          description: 유저 회원 번호
  *          schema:
@@ -332,6 +331,6 @@ router.put("/:user_no", userController.user_update);
  *                      example:
  *                          "회원 탈퇴 실패"
  */
-router.delete("/:user_no", userController.user_remove);
+router.delete("/:userNo", userController.user_remove);
 
 module.exports = router;
