@@ -26,7 +26,7 @@ router.post("/token", auth.verifyRefreshToken, userController.refresh_token);
  *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (유저 회원가입)
  *          required: true
  *          content:
- *            application/x-www-form-urlencoded:
+ *            multipart/form-data:
  *              schema:
  *                type: object
  *                properties:
@@ -45,9 +45,9 @@ router.post("/token", auth.verifyRefreshToken, userController.refresh_token);
  *                  userPhone:
  *                    type: string
  *                    description: "유저 전화번호(xxx-xxxx-xxxx)"
- *                  userProfileUrl:
- *                    type: string
- *                    description: "유저 프로필 사진 주소"
+ *                  userProfile:
+ *                    type: file
+ *                    description: "유저 프로필 사진"
  *      responses:
  *        "200":
  *          description: 회원 가입 성공
@@ -74,7 +74,7 @@ router.post("/token", auth.verifyRefreshToken, userController.refresh_token);
  *                          "회원가입 실패"
  */
 
-router.post("/register", profile.single("image"), userController.user_regist);
+router.post("/register", profile.single("userProfile"), userController.user_regist);
 
 /**
  * @swagger
@@ -244,7 +244,7 @@ router.get("/:userNo", userController.user_detail);
  *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (회원 수정)
  *          required: true
  *          content:
- *            application/x-www-form-urlencoded:
+ *            multipart/form-data:
  *              schema:
  *                type: object
  *                properties:
@@ -260,9 +260,9 @@ router.get("/:userNo", userController.user_detail);
  *                  userPhone:
  *                    type: string
  *                    description: "유저 전화번호(xxx-xxxx-xxxx)"
- *                  userProfileUrl:
- *                    type: string
- *                    description: "유저 프로필 사진 주소"
+ *                  userProfile:
+ *                    type: file
+ *                    description: "유저 프로필 사진"
  *      responses:
  *        "200":
  *          description: 회원 수정 성공
@@ -298,7 +298,7 @@ router.get("/:userNo", userController.user_detail);
  *                      example:
  *                          "회원 수정 실패."
  */
-router.put("/:userNo", userController.user_update);
+router.put("/:userNo", profile.single("userProfile"), userController.user_update);
 
 /**
  * @swagger

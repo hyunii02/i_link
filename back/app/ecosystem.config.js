@@ -3,8 +3,8 @@ module.exports = {
     {
       name: "app",
       script: "./app.js",
-      watch: "false",
-      ignore_watch: ["*.log"],
+      watch: ".",
+      ignore_watch: ["/uploads"],
       exec_mode: "cluster",
       autorestart: true,
       wait_ready: true, // Node.js 앱으로부터 앱 실행 시작 신호를 직접 받겠다
