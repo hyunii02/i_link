@@ -152,6 +152,37 @@ exports.kid_update = async function (req, res) {
     });
 };
 
+// 원생 등원상태 수정
+// [put]  /kids/attendance/:kidNo/:kidState
+exports.kid_update_attendance = async function (req, res) {
+  const kidNo = req.params.kidNo;
+
+  // 원생
+  const kid = {
+    kid_state: req.params.kidState,
+  };
+
+  await Kids.update(kid, { where: { kid_no: kidNo } })
+    .then((result) => {
+      if (result[0] === 1) {
+        res.status(200).json({
+          message: "정보 수정 완료",
+        });
+      } else {
+        // 수정 실패
+        res.status(400).json({
+          message: "요청 실패",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        errormessage: err.message,
+        message: "정보 수정 실패",
+      });
+    });
+};
+
 // 원생 삭제
 // [delete] /kids/:kidNo
 exports.kid_remove = async function (req, res) {
