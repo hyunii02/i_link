@@ -40,7 +40,7 @@ const headerList = [
 let newId = 6;
 
 const GroupManagement = (props) => {
-  const { getGroupList, classData, setClassData } = props;
+  const { getGroupList, classData, setClassData, getsubmitList } = props;
   // 반 등록 컴포넌트에 대한 state 값
   const [insertFlag, setInsertFlag] = useState(false);
 
@@ -64,13 +64,6 @@ const GroupManagement = (props) => {
   function insertComponentToggle() {
     setInsertFlag((insertFlag) => !insertFlag);
   }
-
-  // props용 반 추가 함수
-  const insertClass = (data) => {
-    const newClass = classData.concat({ id: newId, className: data });
-    setClassData(newClass);
-    newId = newId + 1;
-  };
 
   return (
     /* 화면 크게 감싸주는 Part */
@@ -146,7 +139,6 @@ const GroupManagement = (props) => {
         {/* state값에 맞게 반 등록 컴포넌트를 on/off */}
         {insertFlag && (
           <GroupInsert
-            insertClass={insertClass}
             cancelClicked={insertComponentToggle}
             getGroupList={getGroupList}
           />
@@ -158,6 +150,8 @@ const GroupManagement = (props) => {
             className={data.group_name}
             key={data.group_no}
             deleteClicked={deleteClicked}
+            getGroupList={getGroupList}
+            getsubmitList={getsubmitList}
           ></GroupListItem>
         ))}
       </List>

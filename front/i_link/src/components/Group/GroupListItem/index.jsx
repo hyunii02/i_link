@@ -15,7 +15,8 @@ const GroupListItem = (props) => {
   const [student, setStudent] = useState([]);
 
   // 부모 컴포넌트로부터의 props
-  const { classData, deleteClicked } = props;
+  const { classData, deleteClicked, getGroupList, getsubmitList } = props;
+  console.log(classData);
 
   // 리스트 버튼 클릭 핸들러 => 반 디테일 컴포넌트 표시
   const listClickedHandler = (e) => {
@@ -26,9 +27,13 @@ const GroupListItem = (props) => {
   };
 
   // 삭제 버튼 클릭 핸들러
-  const deleteClickedHandler = () => {
-    // 현재 컴포넌트의 키값을 파라미터로 넣어서 부모 컴포넌트의 메서드를 호출
-    deleteClicked(classData.className);
+  const deleteClickedHandler = (e) => {
+    const fullURL = baseURL + urls.fetchGroupsDelete + e.currentTarget.value;
+    // axios delete를 이용하여 현재 classNo를 삭제
+    axios.delete(fullURL).then(() => {
+      getGroupList();
+      getsubmitList();
+    });
   };
 
   return (
@@ -61,6 +66,7 @@ const GroupListItem = (props) => {
               size="small"
               style={{ marginRight: "5%" }}
               onClick={deleteClickedHandler}
+              value={classData.group_no}
             >
               <Typography variant="body2" id="font_test">
                 삭제
