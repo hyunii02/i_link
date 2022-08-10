@@ -28,12 +28,21 @@ const BasicSelectCheck = ({ groupList, getTotalList }) => {
       <Select
         value={value}
         onChange={selectChange}
-        sx={{ background: "white" }}
+        sx={{
+          background: "white",
+          height: "60px",
+          border: "6px solid #fae2e2",
+          background: "#FAF1DA",
+        }}
         inputProps={{ "aria-label": "Without label" }}
       >
         {groupList.map((list, index) => (
-          <MenuItem value={list.value} key={index}>
-            <Typography id="font_test" variant="h5">
+          <MenuItem
+            value={list.value}
+            key={index}
+            sx={{ background: "#FAF1DA" }}
+          >
+            <Typography id="font_test" variant="h6">
               {list.content}
             </Typography>
           </MenuItem>
@@ -128,35 +137,42 @@ const MasterManageMember = () => {
 
   return (
     <Box>
-      <div>
+      <div style={{ marginBottom: "30px" }}>
         {arrayIsEmpty(groupList) || (
           <BasicSelectCheck groupList={groupList} getTotalList={getTotalList} />
         )}
       </div>
-      <Grid
-        container
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "row",
-          marginBottom: "30px",
-        }}
-        spacing={0.5}
-      >
-        {teacher?.map((tea, index) => (
-          <Grid item xs={4} key={index}>
-            <MemberTeacher teacher={tea} />
+      <Box>
+        <Box>
+          <Grid container spacing={0.5}>
+            {teacher?.map((tea, index) => (
+              <Grid
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  marginBottom: "30px",
+                }}
+                item
+                xs={4}
+                key={index}
+              >
+                <MemberTeacher teacher={tea} />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-      <Grid container spacing={0.5}>
-        {student?.map((stu, index) => (
-          <Grid item xs={3} key={index} style={{ marginBottom: "10px" }}>
-            <MemberStudent student={stu} />
+        </Box>
+        <Box>
+          <Grid container spacing={0.5}>
+            {student?.map((stu, index) => (
+              <Grid item xs={3} key={index} style={{ marginBottom: "10px" }}>
+                <MemberStudent student={stu} />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 };
