@@ -6,7 +6,7 @@ const ItemsList = ({ items }) => {
       style={{
         listStyle: "none",
         fontFamily: "NanumGimYuICe",
-        fontSize: "4vh",
+        fontSize: "6vh",
         marginTop: "1vh",
         marginLeft: "1vh",
         paddingLeft: "0",
@@ -27,7 +27,7 @@ const KioskTitle = ({ title }) => {
     <div
       style={{
         fontFamily: "NanumJangMiCe",
-        fontSize: "8vh",
+        fontSize: "7vh",
         paddingLeft: "1vh",
       }}
     >

@@ -17,7 +17,16 @@ const Clock = () => {
   return (
     <div>
       <KioskTitle title={today} />
-      <KioskTitle title={time} />
+      <div
+        style={{
+          fontFamily: "NanumJangMiCe",
+          fontSize: "12vh",
+          paddingLeft: "1vh",
+          verticalAlign: "top",
+        }}
+      >
+        {time}
+      </div>
     </div>
   );
 };
