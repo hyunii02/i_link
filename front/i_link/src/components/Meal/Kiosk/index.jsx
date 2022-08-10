@@ -21,7 +21,7 @@ const MealKioskSnack = () => {
   };
 
   useEffect(() => {
-    getMeal("1", getToday());
+    getMeal(localStorage.getItem("userCenter"), getToday());
   }, []);
   return (
     <div>
