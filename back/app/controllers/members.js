@@ -4,6 +4,7 @@ const db = require(path.join(__dirname, "..", "models"));
 
 const Users = db.users;
 const Kids = db.kids;
+const Reports = db.reports;
 const Op = db.Sequelize.Op; // 검색을 위한 객체
 
 // 승인 대기중인 교사 목록
@@ -208,25 +209,28 @@ exports.member_kidsList = async function (req, res) {
 
   // 만약 반을 선택하면 해당 반 원생 목록만 조회
   const groupNo = req.query.groupNo ? req.query.groupNo : null;
-  if (groupNo != null) console.log("반 번호: " + groupNo);
+  // if (groupNo != null) console.log("반 번호: " + groupNo);
 
   // 검색 조건
-  const condition = groupNo
-    ? [{ center_no: centerNo }, { group_no: groupNo }]
-    : [{ center_no: centerNo }, { group_no: { [Op.ne]: null } }];
+  // const condition = groupNo
+  //   ? [{ center_no: centerNo }, { group_no: groupNo }]
+  //   : [{ center_no: centerNo }, { group_no: { [Op.ne]: null } }];
 
-  await Kids.findAll({
-    attributes: ["kid_no", "kid_name", "kid_profile_url"], // 가져올 데이터 컬럼
-    where: { [Op.and]: condition },
-    raw: true, // dataValues만 가져옴
-  })
+  let query =
+    "select kid.kid_no, kid.kid_name, kid.kid_profile_url, kid.kid_state, Count(rpt.report_no) as kid_report " +
+    " from kids as kid left join reports as rpt " +
+    " on kid.kid_no = rpt.kid_no " +
+    ` where kid.center_no=${centerNo} and kid.group_no=${groupNo} ` +
+    " group by kid.kid_no; ";
+
+  await db.sequelize
+    .query(query, {
+      type: db.sequelize.QueryTypes.SELECT,
+    })
     .then((data) => {
       res.status(200).json(data);
     })
     .catch((err) => {
-      res.status(500).json({
-        error: err.message,
-        message: "목록 조회 과정에 문제 발생",
-      });
+      res.status(500).json({ error: err.message, message: "목록 조회 과정에 문제 발생" });
     });
 };
