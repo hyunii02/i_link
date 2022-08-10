@@ -3,7 +3,7 @@ const path = require("path");
 const router = express.Router();
 
 const auth = require(path.join(__dirname, "..", "utils", "auth"));
-const userController = require(path.join(__dirname, "..", "controllers", "user"));
+const userController = require(path.join(__dirname, "..", "controllers", "users"));
 
 // 토큰 검증 test
 // auth.verifyToken을 통해 유효한 토큰인지 검증 후, 유효하다면 다음 경로 이동 가능, 그렇지 않다면 이동 불가
@@ -249,21 +249,18 @@ router.get("/:userNo", userController.user_detail);
  *                  userName:
  *                    type: string
  *                    description: "유저 이름"
+ *                  currentPw:
+ *                    type: string
+ *                    description: "현재 비밀번호"
  *                  userPw:
  *                    type: string
- *                    description: "유저 비밀번호"
+ *                    description: "새로운 비밀번호"
  *                  userPhone:
  *                    type: string
  *                    description: "유저 전화번호(xxx-xxxx-xxxx)"
  *                  userProfileUrl:
  *                    type: string
  *                    description: "유저 프로필 사진 주소"
- *                  groupNo:
- *                    type: integer
- *                    description: "유치원 반 번호"
- *                  centerNo:
- *                    type: integer
- *                    description: "유치원 번호"
  *      responses:
  *        "200":
  *          description: 회원 수정 성공
@@ -275,8 +272,7 @@ router.get("/:userNo", userController.user_detail);
  *                    message:
  *                      type: string
  *                      example:
- *                          "회원 수정 완료"
- *
+ *                          "회원 수정 완료."
  *        "400":
  *          description: 회원 수정 실패
  *          content:
@@ -287,7 +283,18 @@ router.get("/:userNo", userController.user_detail);
  *                    message:
  *                      type: string
  *                      example:
- *                          "회원 수정 실패"
+ *                          "해당 회원을 찾을 수 없거나 데이터가 비어있음."
+ *        "500":
+ *          description: 회원 수정 실패
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "회원 수정 실패."
  */
 router.put("/:userNo", userController.user_update);
 
