@@ -1,6 +1,5 @@
 // 2022.08.08 배지우 //
 
-
 import React from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,31 +10,31 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SearchForm from "./searchform";
-import { useState ,useContext} from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/user";
 import { axios, urls } from "../../api/axios";
 import { colorPalette } from "../../constants/constants";
 import { Alert } from "@mui/material";
 
-
 const theme = createTheme();
 
 export default function MasterRegistCenter(props) {
   // 원장회원번호
+
+  const navigate = useNavigate();
+  
   const { userNo } = useContext(UserContext);
-  console.log(userNo)
 
   const obj = {
     centerName: "",
     centerAddr: "",
     centerTel: "",
-    userNo: userNo ,
+    userNo: userNo,
   };
   const [address, setAddress] = useState(""); // 주소api를 통해 입력데이터
   const [totalData, setTotalData] = useState(obj); //최종 모집 데이터
-
-  
-
+  const [formErrors, setFormErrors] = useState({});
 
   // 입력한 주소를 가져오는 함수
 
@@ -43,8 +42,33 @@ export default function MasterRegistCenter(props) {
     setAddress(data);
   };
 
-  // 유치원 이름 입력변화
+  //유효성 검사
+  const validate = () => {
+    const errors ={};
+    let flag = false;
+    if (!totalData.centerName) {
+      errors.centerName = "유치원 이름을 입력해주세요.";
+      flag = true;
+      
+    }
 
+    if (!totalData.centerAddr) {
+      errors.centerAddr = "유치원 주소를 입력해주세요.";
+      flag = true;
+    }
+
+    if (!totalData.centerTel) {
+      errors.centerTel = "유치원 번호를 입력해주세요.";
+      flag = true;
+    }
+    setFormErrors(errors);
+    if (flag) {
+      
+      return false;
+    }
+    return true;
+  };
+  // 유치원 이름 입력변화
   const handleChangeCenter = (event) => {
     const middleData = {
       ...totalData,
@@ -76,34 +100,21 @@ export default function MasterRegistCenter(props) {
   };
   // 최종 데이터 submit
   const submitAddress = (event) => {
+    
     event.preventDefault();
 
-    const validate = () => {
-      
-      if (!totalData.centerName) {
-        alert = "유치원 명을 입력해주세요.";
-        
-        
-      }
-      
-      if (!totalData.centerAddr) {
-        alert = "유치원 주소를 입력해주세요";
-        
-      }
-      
-      if (totalData.centerTel) {
-        <Alert severity="error">ㅎㅇㅎㅇ</Alert>
-        
-      }
-    }
-    axios
-    .post(urls.fetchCentersRegister, totalData)
-    .then((response) => console.log(response));
-    }
-    
-    
-    
+    if (validate()) {
 
+      
+      axios
+
+      .post(urls.fetchCentersRegister, totalData)
+
+      .then((response) => console.log(response));
+      navigate("/master/managemember");
+    }
+    
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -117,7 +128,13 @@ export default function MasterRegistCenter(props) {
             alignItems: "center",
           }}
         >
-          <Typography variant="h4" id="font_test" sx={{ color : "black" , mb:4}}>유치원 등록</Typography>
+          <Typography
+            variant="h4"
+            id="font_test"
+            sx={{ color: "black", mb: 4 }}
+          >
+            유치원 등록
+          </Typography>
           {/* 로고 이미지 */}
           {/* <Typography
             id="font_test"
@@ -134,11 +151,10 @@ export default function MasterRegistCenter(props) {
           ></Avatar> */}
           {/* 유치원 등록 form */}
           <Box component="form" noValidate sx={{ mt: 3 }}>
-            <Grid  container spacing={2}>
-              <Grid  item xs={12} sm={12}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12}>
                 {/* 유치원 이름 입력창 */}
                 <TextField
-                  
                   required
                   fullWidth
                   id="font_test"
@@ -149,6 +165,7 @@ export default function MasterRegistCenter(props) {
                   autoFocus
                   sx={{ background: "white" }}
                 />
+                <p id="font_test">{formErrors.centerName}</p>
               </Grid>
               <Grid item xs={12} sm={12}>
                 {/* 유치원 번호 입력창 */}
@@ -161,6 +178,7 @@ export default function MasterRegistCenter(props) {
                   onChange={handleChangeTel}
                   sx={{ background: "white" }}
                 />
+                <p id="font_test">{formErrors.centerTel}</p>
               </Grid>
 
               {/*주소찾기 */}
@@ -184,19 +202,19 @@ export default function MasterRegistCenter(props) {
                 <TextField
                   required
                   value={address.fullAddress || ""}
-                  name="address"  
+                  name="address"
                   id="font_test"
                   placeholder="주소를 입력하세요"
                   fullWidth
                   sx={{ background: "white" }}
                 ></TextField>
+                <p id="font_test">{formErrors.centerAddr}</p>
               </Grid>
 
               {/*상세 주소 입력*/}
               <Grid item xs={12} sm={12}>
                 <TextField
                   fullWidth
-                  
                   id="font_test"
                   placeholder="상세주소를 입력하세요"
                   onChange={handleChangeDetail}
@@ -220,7 +238,6 @@ export default function MasterRegistCenter(props) {
             <Grid container justifyContent="flex-end"></Grid>
           </Box>
         </Box>
-        
       </Container>
     </ThemeProvider>
   );
