@@ -1,9 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import BasicModal from "./RepoModal";
 import RepoItemList from "./RepoItemList";
+import { UserContext } from "../../context/user";
+import { axios, urls, baseURL } from "../../api/axios";
 
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+
 
 export default function Reports() {
   // 임시 데이터
@@ -20,12 +23,27 @@ export default function Reports() {
     },
   ]);
 
-  const nextId = useRef(0);
-  const handleSumit = (text, value) => {
+  const nextId = useRef(3); //임시데이터에 기본 id값을 줘서 일단 3으로 바꿔놓음 => 임시데이터 지우고 0으로 다시 바꾸기!
+  const { userNo } = useContext(UserContext);
+
+  const handleSumit = (text, type) => {
+    const body = {
+      kidNo : '1',
+      reportWriter : userNo,
+      reportType: type,
+      reportContent: text
+    }
+    // try {
+    //   axios.post(
+    //     baseURL + urls.fetchReportsRegister,
+    //     body
+    //   ).then() //
+    // }
+
     const repo = {
       id: nextId.current,
       text,
-      value,
+      type,
     };
     setRepos(repos.concat(repo));
     nextId.current += 1;
@@ -48,7 +66,7 @@ export default function Reports() {
       <Typography id="font_test" component="h1" variant="h4">
         특이사항
       </Typography>
-      <BasicModal onSubmit={handleSumit} />
+      <BasicModal handleSubmit={handleSumit} />
       <RepoItemList repos={repos} onRemove={onRemove} />
     </Box>
   );

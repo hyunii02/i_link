@@ -4,6 +4,8 @@ import MemoKiosk from "../../../components/Memo/Kiosk";
 import Weather from "../../../components/Weather";
 import MealKiosk from "../../../components/Meal/Kiosk";
 import MealKioskSnack from "../../../components/Meal/KioskSnack";
+import KioskLogout from "../../../components/User/KioskLogout";
+import Clock from "../../../components/Weather/Clock";
 
 const KioskMain = () => {
   return (
@@ -12,24 +14,25 @@ const KioskMain = () => {
         container
         spacing={2}
         sx={{
-          height: "50vh",
+          height: "45vh",
         }}
       >
         <Grid item xs={8}>
           <MemoKiosk />
         </Grid>
         <Grid item xs={3}>
+          <Clock />
           <Weather />
         </Grid>
         <Grid item xs={1}>
-          원생 정보 로그아웃
+          <KioskLogout />
         </Grid>
       </Grid>
       <Grid
         container
         spacing={2}
         sx={{
-          height: "50vh",
+          height: "45vh",
         }}
       >
         <Grid item xs={4}>

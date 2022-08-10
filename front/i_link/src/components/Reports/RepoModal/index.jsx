@@ -14,6 +14,55 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 
+//라디오 버튼
+const RowRadioButtonsGroup = ({type, setType}) => {
+  const selectChange = (event) => {
+    setType(event.target.value);
+  };
+  return (
+  <FormControl>
+    <RadioGroup
+      value={type}
+      onChange={selectChange}
+      row
+      aria-labelledby="demo-row-radio-buttons-group-label"
+      name="row-radio-buttons-group"
+    >
+      <FormControlLabel
+        value="1"
+        control={<Radio />}
+        label="등하원"
+      />
+      <FormControlLabel
+        value="2"
+        control={<Radio />}
+        label="교우관계"
+      />
+      <FormControlLabel
+        value="3"
+        control={<Radio />}
+        label="알레르기(음식)"
+      />
+      <FormControlLabel
+        value="4"
+        control={<Radio />}
+        label="약복용"
+      />
+      <FormControlLabel
+        value="5"
+        control={<Radio />}
+        label="수면"
+      />
+      <FormControlLabel
+        value="6"
+        control={<Radio />}
+        label="기타"
+      />
+    </RadioGroup>
+  </FormControl>
+  )
+}
+
 // 모달창 스타일
 const style = {
   position: "absolute",
@@ -27,16 +76,17 @@ const style = {
 };
 
 // 모달창
-export default function BasicModal(props) {
+export default function BasicModal({handleSubmit}) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [value, setValue] = useState("");
+  const [text, setText] = useState("");
+  const [type, setType] = useState("");
 
   // 입력할때마다
   const handleChange = (e) => {
-    setValue(e.target.value);
+    setText(e.target.value);
   };
 
   // enter칠 때 submit 되게 하고싶은데 안되네용.. 왜죵? 일단 보류
@@ -46,18 +96,19 @@ export default function BasicModal(props) {
     }
   };
 
+
   const handleSumit = (e) => {
     e.preventDefault(); //새로고침 방지
     // 아무것도 입력하지 않았을 때, submit 방지
-    if (!value) return;
-    props.onSubmit(value);
+    if (!text) return;
+    handleSubmit(text, type);
     setOpen(false); //submit 후 창 닫기
-    setValue(""); //submit 후 textfield 창 비우기
+    setText(""); //submit 후 textfield 창 비우기
   };
 
   return (
     <div>
-      <Button variant="contained" onClick={handleOpen}>
+      <Button variant="contained" onClick={handleOpen} align="left" >
         글쓰기
       </Button>
       <Modal
@@ -80,45 +131,12 @@ export default function BasicModal(props) {
                 특이사항
               </Typography>
               {/* 특이사항 선택 창(라디오 버튼) */}
-              <FormControl>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
-                >
-                  <FormControlLabel
-                    value="attend"
-                    control={<Radio />}
-                    label="등하원"
-                  />
-                  <FormControlLabel
-                    value="friends"
-                    control={<Radio />}
-                    label="교우관계"
-                  />
-                  <FormControlLabel
-                    value="allergy"
-                    control={<Radio />}
-                    label="알레르기(음식)"
-                  />
-                  <FormControlLabel
-                    value="medicine"
-                    control={<Radio />}
-                    label="약복용"
-                  />
-                  <FormControlLabel
-                    value="etc"
-                    control={<Radio />}
-                    label="기타"
-                  />
-                </RadioGroup>
-              </FormControl>
+              <RowRadioButtonsGroup type={type} setType={setType}/>
             </Box>
             {/* 특이사항 적는 칸 */}
             <Box sx={{ my: 3, mx: 2 }}>
               <Grid container alignItems="center">
                 <Grid item xs>
-                  {/* TextField => 칸의 height 기본값 주는 것 필요 */}
                   <TextField
                     fullWidth
                     type="text"
@@ -126,7 +144,7 @@ export default function BasicModal(props) {
                     name="text"
                     multiline
                     rows={4}
-                    value={value}
+                    value={text}
                     onChange={handleChange}
                     onKeyPress={handleKeyPress} //enter시 저장하고싶은데 안되니까 일단 보류욤
                   ></TextField>

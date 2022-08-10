@@ -2,14 +2,19 @@
 import React from "react";
 import RepoItem from "../RepoItem";
 
-import Box from "@mui/material/Box";
+import Grid from '@mui/material/Grid';
+
 
 export default function RepoItemList({ repos, onRemove }) {
   return (
-    <Box>
+    <Grid container
+    justifyContent={"center"}
+      // alignItems={"center"}
+      // textAlign= {'center'}
+      >
       {repos.map((repo) => (
         <RepoItem repo={repo} key={repo.id} onRemove={onRemove}></RepoItem>
       ))}
-    </Box>
+    </Grid>
   );
 }
