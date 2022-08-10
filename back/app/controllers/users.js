@@ -2,6 +2,7 @@ const path = require("path");
 
 const db = require(path.join(__dirname, "..", "models"));
 const Users = db.users;
+const Kids = db.kids;
 
 // 비밀번호 암호화
 const bcrypt = require("bcrypt");
@@ -53,20 +54,12 @@ exports.user_login = async function (req, res) {
   // 아이디가 있는 경우
   if (user) {
     // 입력 비밀번호와 DB에 저장된 비밀번호 비교
-    const password_valid = await bcrypt.compare(userPw, user.user_pw);
+    const password_valid = await bcrypt.compare(userPw, user.user_pw).catch((err) => {
+      res.status(500).json({ error: err.message, message: "비밀번호 비교 과정 중 문제 발생" });
+    });
 
     // 로그인 성공
     if (password_valid) {
-      // front에 전달할 사용자 객체에 필요한 데이터만 적재
-      // user = {
-      //   userNo: user.user_no,
-      //   userName: user.user_name,
-      //   userType: user.user_type,
-      //   userEmail: user.user_email,
-      //   userPhone: user.user_phone,
-      //   userProfileUrl: user.user_profile_url,
-      // };
-
       user.user_pw = "";
 
       const access_token = jwt.sign(user.toJSON(), JWT_ACCESS_SECRET, {
@@ -171,30 +164,56 @@ exports.user_detail = async function (req, res) {
 // [put] /users/:userNo
 exports.user_update = async function (req, res) {
   const userNo = req.params.userNo;
+  const currentPw = req.body.currentPw;
 
-  // User
-  const user = {
-    user_type: req.body.userType,
-    user_email: req.body.userEmail,
-    user_pw: req.body.userPw,
-    user_name: req.body.userName,
-    user_phone: req.body.userPhone ? req.body.userPhone : null,
-    user_profile_url: req.body.userProfileUrl ? req.body.userProfileUrl : null,
-    group_no: req.body.groupNo ? req.body.groupNo : null,
-    center_no: req.body.centerNo ? req.body.centerNo : null,
-  };
+  let user = await Users.findOne({ where: { user_no: userNo } }).catch((err) => {
+    res.status(500).json({ error: err.message, message: "잘못된 요청입니다." });
+  });
 
-  await Users.update(user, { where: { user_no: userNo }, individualHooks: true })
-    .then((result) => {
-      if (result[0] === 1) {
-        res.status(200).json({ message: "회원 정보 수정 완료" });
-      } else {
-        res.status(400).json({ message: "해당 회원을 찾을 수 없거나 데이터가 비어있음." });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message, message: "회원 정보 수정 실패." });
+  // 아이디가 있는 경우
+  if (user) {
+    // 비밀번호가 일치하는지 확인
+    const password_valid = await bcrypt.compare(currentPw, user.user_pw).catch((err) => {
+      res.status(500).json({ error: err.message, message: "비밀번호 비교과정 중 문제 발생" });
     });
+    // 비밀번호가 일치하는 경우
+    if (password_valid) {
+      const userPw = req.body.userPw;
+      // 비밀번호도 변경한다면
+      if (userPw) {
+        user = {
+          user_name: req.body.userName,
+          user_pw: userPw,
+          user_phone: req.body.userPhone ? req.body.userPhone : null,
+          user_profile_url: req.body.userProfileUrl ? req.body.userProfileUrl : null,
+        };
+      }
+      // 비밀번호는 변경 안함
+      else {
+        user = {
+          user_name: req.body.userName,
+          user_phone: req.body.userPhone ? req.body.userPhone : null,
+          user_profile_url: req.body.userProfileUrl ? req.body.userProfileUrl : null,
+        };
+      }
+      // 정보 수정
+      await Users.update(user, { where: { user_no: userNo }, individualHooks: true })
+        .then((result) => {
+          if (result[0] === 1) {
+            res.status(200).json({ message: "회원 정보 수정 완료." });
+          } else {
+            res.status(400).json({ message: "해당 회원을 찾을 수 없거나 데이터가 비어있음." });
+          }
+        })
+        .catch((err) => {
+          res.status(500).json({ error: err.message, message: "회원 정보 수정 실패." });
+        });
+    } else {
+      res.status(400).json({ message: "비밀번호 입력 오류." });
+    }
+  } else {
+    res.status(400).json({ message: "사용자를 찾을 수 없습니다." });
+  }
 };
 
 // 회원 정보 삭제

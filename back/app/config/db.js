@@ -7,7 +7,7 @@ const conn = {
   PASSWORD: process.env.DB_PASS,
   DB: process.env.DB_NAME,
   dialect: "mysql",
-  timezone: "Asia/Seoul",
+  timezone: "+09:00",
   pool: {
     max: 5,
     min: 0,
