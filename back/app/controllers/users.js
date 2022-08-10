@@ -1,8 +1,8 @@
 const path = require("path");
+const fs = require("fs");
 
 const db = require(path.join(__dirname, "..", "models"));
 const Users = db.users;
-const Kids = db.kids;
 
 // 비밀번호 암호화
 const bcrypt = require("bcrypt");
@@ -21,23 +21,34 @@ const redisClient = require(path.join(__dirname, "..", "config", "redis"));
 // 회원가입
 // [post] /users/register
 exports.user_regist = async function (req, res) {
-  // User
-  const user = {
-    user_type: req.body.userType,
-    user_email: req.body.userEmail,
-    user_pw: req.body.userPw,
-    user_name: req.body.userName,
-    user_phone: req.body.userPhone ? req.body.userPhone : null,
-    user_profile_url: req.body.userProfileUrl ? req.body.userProfileUrl : null,
-  };
+  try {
+    const file = req.file ? req.file : null;
+    let userProfileUrl = "";
+    // 프로필 사진 업로드된 경우 입력될 데이터 값
+    if (file !== null) userProfileUrl = "/uploads/profile/" + req.file.filename;
+    // 프로필 사진 업로드 안한 경우
+    else userProfileUrl = null;
 
-  await Users.create(user)
-    .then((data) => {
-      res.status(200).json({ message: "회원가입 완료" });
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message, message: "회원 가입 실패." });
-    });
+    // User
+    const user = {
+      user_type: req.body.userType,
+      user_email: req.body.userEmail,
+      user_pw: req.body.userPw,
+      user_name: req.body.userName,
+      user_phone: req.body.userPhone ? req.body.userPhone : null,
+      user_profile_url: userProfileUrl,
+    };
+
+    await Users.create(user)
+      .then((data) => {
+        res.status(200).json({ message: "회원가입 완료" });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message, message: "회원 가입 실패." });
+      });
+  } catch (err) {
+    res.status(500).json({ error: err.message, message: "회원 가입 실패." });
+  }
 };
 
 // 로그인
@@ -162,54 +173,81 @@ exports.user_detail = async function (req, res) {
 
 // 회원 정보 수정
 // [put] /users/:userNo
-exports.user_update = async function (req, res) {
+exports.user_update = async function (req, res, next) {
   const userNo = req.params.userNo;
   const currentPw = req.body.currentPw;
 
   let user = await Users.findOne({ where: { user_no: userNo } }).catch((err) => {
-    res.status(500).json({ error: err.message, message: "잘못된 요청입니다." });
+    res.status(500).json({ error: err.message, message: "비밀번호 비교 과정 중 문제 발생" });
   });
 
   // 아이디가 있는 경우
   if (user) {
     // 비밀번호가 일치하는지 확인
-    const password_valid = await bcrypt.compare(currentPw, user.user_pw).catch((err) => {
-      res.status(500).json({ error: err.message, message: "비밀번호 비교과정 중 문제 발생" });
-    });
-    // 비밀번호가 일치하는 경우
-    if (password_valid) {
-      const userPw = req.body.userPw;
-      // 비밀번호도 변경한다면
-      if (userPw) {
-        user = {
-          user_name: req.body.userName,
-          user_pw: userPw,
-          user_phone: req.body.userPhone ? req.body.userPhone : null,
-          user_profile_url: req.body.userProfileUrl ? req.body.userProfileUrl : null,
-        };
-      }
-      // 비밀번호는 변경 안함
-      else {
-        user = {
-          user_name: req.body.userName,
-          user_phone: req.body.userPhone ? req.body.userPhone : null,
-          user_profile_url: req.body.userProfileUrl ? req.body.userProfileUrl : null,
-        };
-      }
-      // 정보 수정
-      await Users.update(user, { where: { user_no: userNo }, individualHooks: true })
-        .then((result) => {
-          if (result[0] === 1) {
-            res.status(200).json({ message: "회원 정보 수정 완료." });
-          } else {
-            res.status(400).json({ message: "해당 회원을 찾을 수 없거나 데이터가 비어있음." });
+    try {
+      const password_valid = await bcrypt.compare(currentPw, user.user_pw).catch((err) => {
+        res.status(500).json({ error: err.message, message: "잘못된 요청입니다." });
+      });
+
+      // 비밀번호가 일치하는 경우
+      if (password_valid) {
+        const userPw = req.body.userPw;
+        const file = req.file ? req.file : null;
+        let userProfileUrl = "";
+
+        // 프로필 사진 업로드된 경우 입력될 데이터 값
+        if (file !== null) {
+          console.log("upload path: ", user.user_profile_url);
+          if (fs.existsSync(path.join(__dirname, "..", user.user_profile_url))) {
+            try {
+              fs.unlinkSync(path.join(__dirname, "..", user.user_profile_url));
+              console.log("이전 profile image 삭제 완료");
+            } catch (err) {
+              console.log(err.message);
+              throw err;
+            }
           }
-        })
-        .catch((err) => {
-          res.status(500).json({ error: err.message, message: "회원 정보 수정 실패." });
-        });
-    } else {
-      res.status(400).json({ message: "비밀번호 입력 오류." });
+          userProfileUrl = "/uploads/profile/" + req.file.filename;
+          console.log("upload file: ", file);
+        }
+        // 프로필 사진 업로드 안한 경우
+        else userProfileUrl = user.user_profile_url;
+
+        console.log("profile: ", userProfileUrl);
+        // 비밀번호도 변경한다면
+        if (userPw) {
+          user = {
+            user_name: req.body.userName,
+            user_pw: userPw,
+            user_phone: req.body.userPhone ? req.body.userPhone : null,
+            user_profile_url: userProfileUrl,
+          };
+        }
+        // 비밀번호는 변경 안함
+        else {
+          user = {
+            user_name: req.body.userName,
+            user_phone: req.body.userPhone ? req.body.userPhone : null,
+            user_profile_url: userProfileUrl,
+          };
+        }
+        // 정보 수정
+        await Users.update(user, { where: { user_no: userNo }, individualHooks: true })
+          .then((result) => {
+            if (result[0] === 1) {
+              res.status(200).json({ message: "회원 정보 수정 완료." });
+            } else {
+              res.status(400).json({ message: "해당 회원을 찾을 수 없거나 데이터가 비어있음." });
+            }
+          })
+          .catch((err) => {
+            res.status(500).json({ error: err.message, message: "회원 정보 수정 실패." });
+          });
+      } else {
+        res.status(400).json({ message: "비밀번호 입력 오류." });
+      }
+    } catch {
+      res.status(500).json({ message: "잘못된 요청" });
     }
   } else {
     res.status(400).json({ message: "사용자를 찾을 수 없습니다." });
