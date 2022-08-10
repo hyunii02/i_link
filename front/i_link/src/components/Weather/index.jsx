@@ -8,7 +8,7 @@ const Weather = () => {
 
   const getWeather = async () => {
     const response = await axios.get(
-      `http://api.openweathermap.org/data/2.5/weather?id=${BUSAN_KEY}&appid=${WEATHER_API_KEY}`
+      `https://api.openweathermap.org/data/2.5/weather?id=${BUSAN_KEY}&appid=${WEATHER_API_KEY}`
     );
     const icon = response.data.weather[0].icon;
     setWeatherIcon(`http://openweathermap.org/img/wn/${icon}@2x.png`);
