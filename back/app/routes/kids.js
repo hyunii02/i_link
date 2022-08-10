@@ -331,6 +331,65 @@ router.put("/:kidNo", kidsController.kid_update);
 /**
  * @swagger
  * paths:
+ *  /kids/attendance/{kidNo}/{kidState}:
+ *    put:
+ *      summary: "아이 등원 상태 정보 수정"
+ *      description: "put 방식으로 아이 등원 상태 정보 수정"
+ *      tags: [Kids]
+ *      parameters:
+ *        - in: path
+ *          name: kidNo
+ *          required: true
+ *          description: 아이 번호
+ *          schema:
+ *            type: integer
+ *        - in: path
+ *          name: kidState
+ *          required: true
+ *          description: 아이 등원상태
+ *          schema:
+ *            type: integer
+ *      responses:
+ *        "200":
+ *          description: 정보 수정 성공
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "정보 수정 완료"
+ *
+ *        "400":
+ *          description: 정보 수정 실패
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "요청 실패"
+ *        "500":
+ *          description: 서버 오류 발생
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "서버 오류 발생"
+ */
+router.put("/attendance/:kidNo/:kidState", kidsController.kid_update_attendance);
+
+/**
+ * @swagger
+ * paths:
  *  /kids/{kidNo}:
  *    delete:
  *      summary: "아이 정보 삭제"
