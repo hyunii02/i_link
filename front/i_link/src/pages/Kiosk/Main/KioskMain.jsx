@@ -20,11 +20,11 @@ const KioskMain = () => {
         <Grid item xs={8}>
           <MemoKiosk />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={3.5}>
           <Clock />
           <Weather />
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={0.5}>
           <KioskLogout />
         </Grid>
       </Grid>
