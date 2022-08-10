@@ -15,7 +15,7 @@ const RegistKidsLists = (props) => {
   return (
     <Box>
       <Grid container spacing={1}>
-        {datas.map((data) => (
+        {datas?.map((data) => (
           <Grid item xs={3} key={data.no}>
             <RegistKidsList
               kid={data}

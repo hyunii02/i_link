@@ -75,7 +75,7 @@ const MemberStudent = (props) => {
         >
           {
             <Avatar
-              src={student.src}
+              src={student.kid_profile_src}
               sx={{
                 width: 112,
                 height: 112,
@@ -97,7 +97,7 @@ const MemberStudent = (props) => {
           }}
         >
           <Typography id="font_test" variant="h5">
-            {student.name}
+            {student.kid_name}
           </Typography>
         </CardContent>
         {/* Card 버튼 파트 */}
