@@ -1,7 +1,5 @@
 import React from "react";
 import Button from "@mui/material/Button";
-import { useContext } from "react";
-import { UserContext } from "../../../context/user";
 import { colorPalette } from "../../../constants/constants";
 import { useNavigate } from "react-router-dom";
 
@@ -26,7 +24,7 @@ const KioskLogout = () => {
       variant="contained"
       style={{ background: colorPalette.BUTTON_COLOR }}
       onClick={handleLogout}
-      sx={{ mx: 3, boxShadow: 0, width: 0.8 }}
+      sx={{ boxShadow: 0, width: 1, fontSize: "2vh" }}
     >
       로그아웃
     </Button>
