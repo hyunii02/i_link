@@ -3,6 +3,7 @@ const path = require("path");
 const router = express.Router();
 
 const auth = require(path.join(__dirname, "..", "utils", "auth"));
+const profile = require(path.join(__dirname, "..", "utils", "profile"));
 const userController = require(path.join(__dirname, "..", "controllers", "users"));
 
 // 토큰 검증 test
@@ -72,7 +73,8 @@ router.post("/token", auth.verifyRefreshToken, userController.refresh_token);
  *                      example:
  *                          "회원가입 실패"
  */
-router.post("/register", userController.user_regist);
+
+router.post("/register", profile.single("image"), userController.user_regist);
 
 /**
  * @swagger
