@@ -33,7 +33,7 @@ const urls = {
   fetchNoticesDelete: "/notices/",
   fetchGroupsReport: "/reports/list/",
   fetchKidsReport: "/reports/list/",
-  fetchReportsRegister: "/reports",
+  fetchReportsRegister: "/reports/register", //안정현 수정
   fetchReportsDetail: "/reports/",
   fetchReportsUpdate: "/reports/",
   fetchReportsDelete: "/reports/",
