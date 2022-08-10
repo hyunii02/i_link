@@ -12,25 +12,14 @@ import {
   Typography,
 } from "@mui/material";
 
-// 반정보 더미 데이터
-const groups = [
-  {
-    id: 1,
-    name: "파이썬반",
-  },
-  {
-    id: 2,
-    name: "자바반",
-  },
-];
-
 // 반 선택 드롭다운 컴포넌트
-const GroupSelect = ({ groups }) => {
+const GroupSelect = ({ kidId, classList, submitListStateChange }) => {
   // selected는 선택한 반이 저장되는 상태
   const [selected, setSelected] = React.useState("");
 
   const handleChange = (event) => {
-    setSelected(event.target.value);
+    setSelected((selected) => event.target.value);
+    submitListStateChange(kidId, event.target.value);
   };
 
   return (
@@ -46,10 +35,10 @@ const GroupSelect = ({ groups }) => {
           label="selected"
           onChange={handleChange}
         >
-          {groups.map((group, idx) => (
-            <MenuItem value={group.name} key={idx}>
+          {classList.map((list, idx) => (
+            <MenuItem value={list.id} key={idx}>
               <Typography id="font_test" color="rgba(0, 0, 0, 0.6)">
-                {group.name}
+                {list.group_name}
               </Typography>
             </MenuItem>
           ))}
@@ -59,33 +48,39 @@ const GroupSelect = ({ groups }) => {
   );
 };
 
-const RegistKidsList = ({ kid }) => (
-  <Card variant="outlined" sx={{ borderRadius: "5px" }}>
-    <Grid
-      container
-      spacing={2}
-      sx={{
-        bgcolor: "background.paper",
-        boxShadow: 1,
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "5px",
-        paddingBottom: "5px",
-      }}
-    >
-      <Grid item xs={1}></Grid>
-      <Grid item xs={4}>
-        <Typography id="font_test" color="rgba(0, 0, 0, 0.6)">
-          {kid.name}
-        </Typography>
+const RegistKidsList = ({ kid, classList, submitListStateChange }) => {
+  return (
+    <Card variant="outlined" sx={{ borderRadius: "5px" }}>
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          bgcolor: "background.paper",
+          boxShadow: 1,
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          paddingTop: "5px",
+          paddingBottom: "5px",
+        }}
+      >
+        <Grid item xs={1}></Grid>
+        <Grid item xs={4}>
+          <Typography id="font_test" color="rgba(0, 0, 0, 0.6)">
+            {kid.name}
+          </Typography>
+        </Grid>
+        <Grid item xs={7}>
+          <GroupSelect
+            classList={classList}
+            kidId={kid.no}
+            submitListStateChange={submitListStateChange}
+          ></GroupSelect>
+        </Grid>
       </Grid>
-      <Grid item xs={7}>
-        <GroupSelect groups={groups}></GroupSelect>
-      </Grid>
-    </Grid>
-  </Card>
-);
+    </Card>
+  );
+};
 
 export default RegistKidsList;

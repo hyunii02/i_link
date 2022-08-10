@@ -19,14 +19,14 @@ const Logout = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    setUserNo(null);
-    setUserName(null);
-    setUserType(null);
-    setUserPhone(null);
-    setUserCenter(null);
-    setUserGroup(null);
-    setAccessToken(null);
-    setRefreshToken(null);
+    setUserNo("");
+    setUserName("");
+    setUserType("");
+    setUserPhone("");
+    setUserCenter("");
+    setUserGroup("");
+    setAccessToken("");
+    setRefreshToken("");
 
     navigate("/");
   };

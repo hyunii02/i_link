@@ -1,130 +1,67 @@
-import React, { useState } from "react";
-import { Box, Grid } from "@mui/material";
+import React, { useState, useContext, useEffect } from "react";
+import { Box, Grid, Typography } from "@mui/material";
 import MemberStudent from "../../../components/Member/Student";
-
-const memberStudent = [
-  {
-    id: 1,
-    name: "김국진",
-    src: "/images/avatar/picachu.png",
-    state: 1,
-  },
-  {
-    id: 2,
-    name: "배지우",
-    src: "/images/avatar/jilbbug.png",
-    state: 1,
-  },
-  {
-    id: 3,
-    name: "안정현",
-    src: "/images/avatar/Happiny.png",
-    state: 1,
-  },
-  {
-    id: 4,
-    name: "송형근",
-    src: "/images/avatar/bkain.png",
-    state: 1,
-  },
-  {
-    id: 5,
-    name: "강민재",
-    src: "/images/avatar/ggobu.png",
-    state: 1,
-  },
-  {
-    id: 6,
-    name: "이소영",
-    src: "/images/avatar/gora.png",
-    state: 2,
-  },
-  {
-    id: 7,
-    name: "김국진",
-    src: "/images/avatar/picachu.png",
-    state: 1,
-  },
-  {
-    id: 8,
-    name: "배지우",
-    src: "/images/avatar/jilbbug.png",
-    state: 1,
-  },
-  {
-    id: 9,
-    name: "안정현",
-    src: "/images/avatar/Happiny.png",
-    state: 1,
-  },
-  {
-    id: 10,
-    name: "송형근",
-    src: "/images/avatar/bkain.png",
-    state: 1,
-  },
-  {
-    id: 11,
-    name: "강민재",
-    src: "/images/avatar/ggobu.png",
-    state: 1,
-  },
-  {
-    id: 12,
-    name: "이소영",
-    src: "/images/avatar/gora.png",
-    state: 2,
-  },
-  {
-    id: 13,
-    name: "김국진",
-    src: "/images/avatar/picachu.png",
-    state: 1,
-  },
-  {
-    id: 14,
-    name: "배지우",
-    src: "/images/avatar/jilbbug.png",
-    state: 1,
-  },
-  {
-    id: 15,
-    name: "안정현",
-    src: "/images/avatar/Happiny.png",
-    state: 1,
-  },
-  {
-    id: 16,
-    name: "송형근",
-    src: "/images/avatar/bkain.png",
-    state: 1,
-  },
-  {
-    id: 17,
-    name: "강민재",
-    src: "/images/avatar/ggobu.png",
-    state: 1,
-  },
-  {
-    id: 18,
-    name: "이소영",
-    src: "/images/avatar/gora.png",
-    state: 2,
-  },
-];
+import MemberTeacher from "../../../components/Member/Teacher";
+import axios from "axios";
+import { baseURL, urls } from "../../../api/axios";
+import { UserContext } from "../../../context/user";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
 
 const TeacherManagement = () => {
-  const [student, setStudent] = useState(memberStudent);
+  // 원생 목록 상태 관리
+  const [student, setStudent] = useState([]);
+  // 조회 선택한 groupNo 상태 관리
+  const [selectedGroupNo, setSelectedGroupNo] = useState(0);
+  // 반 목록 저장
+  const [groupList, setGroupList] = useState([]);
+
+  // 전역 상태에서 현재 회원의 소속 유치원
+  const { userCenter, userGroup } = useContext(UserContext);
+
+  // 빈 배열인지 체크
+  const arrayIsEmpty = (arr) => {
+    if (!Array.isArray(arr)) {
+      return false;
+    }
+    return arr.length == 0;
+  };
+
+  // 서버에서 원생 목록을 가져옴
+  const getKidList = () => {
+    // 요청할 URL 포매팅
+    const fullURL = baseURL + urls.fetchMemberKidsList + userCenter;
+    console.log(fullURL);
+    // axios.get으로 현재 반의 선생 목록을 가져옴
+    try {
+      axios
+        .get(fullURL, {
+          params: { centerNo: userCenter, groupNo: userGroup },
+        })
+        .then((response) => setStudent(response.data));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getKidList();
+  }, []);
 
   return (
     <Box>
-      <Grid container spacing={0.5}>
-        {student.map((stu) => (
-          <Grid item xs={3} key={stu.id} style={{ marginBottom: "10px" }}>
-            <MemberStudent key={stu.id} student={stu} />
+      <Box>
+        <Box>
+          <Grid container spacing={0.5}>
+            {student?.map((stu, index) => (
+              <Grid item xs={3} key={index} style={{ marginBottom: "10px" }}>
+                <MemberStudent student={stu} />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 };

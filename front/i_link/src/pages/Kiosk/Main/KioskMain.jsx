@@ -5,6 +5,7 @@ import Weather from "../../../components/Weather";
 import MealKiosk from "../../../components/Meal/Kiosk";
 import MealKioskSnack from "../../../components/Meal/KioskSnack";
 import KioskLogout from "../../../components/User/KioskLogout";
+import Clock from "../../../components/Weather/Clock";
 
 const KioskMain = () => {
   return (
@@ -13,16 +14,17 @@ const KioskMain = () => {
         container
         spacing={2}
         sx={{
-          height: "50vh",
+          height: "45vh",
         }}
       >
         <Grid item xs={8}>
           <MemoKiosk />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={3.5}>
+          <Clock />
           <Weather />
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={0.5}>
           <KioskLogout />
         </Grid>
       </Grid>
@@ -30,7 +32,7 @@ const KioskMain = () => {
         container
         spacing={2}
         sx={{
-          height: "50vh",
+          height: "45vh",
         }}
       >
         <Grid item xs={4}>

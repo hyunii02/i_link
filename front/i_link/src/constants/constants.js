@@ -46,4 +46,10 @@ const sidebar = [
     MASTER, TEACHER, PARENTS
 ];
 
-export { constants, sidebar, colorPalette }
+// 날씨 API 키
+const WEATHER_API_KEY = 'c00ce1808d4b20b91902bd808d91e9f9';
+
+// 날씨 API 부산 도시 KEY
+const BUSAN_KEY = '1838524'
+
+export { constants, sidebar, colorPalette, WEATHER_API_KEY, BUSAN_KEY }

@@ -1,14 +1,12 @@
 // 2022.08.08 강민재 //
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -23,6 +21,14 @@ export default function KioskLogin() {
   const initialValues = { email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      console.log(accessToken);
+      navigate("/kiosk/main");
+    }
+  }, []);
 
   // 에러메시지
   const validate = () => {
@@ -125,18 +131,18 @@ export default function KioskLogin() {
         >
           원과 가정을 잇다
         </Typography>
-        <Avatar
-          sx={{ width: "30vw", height: "30vh", flexGrow: 2 }}
-          alt="Academy"
-          variant="square"
-          src="/images/logo.png"
-        ></Avatar>
+        {/* 로고 */}
+        <img
+          alt="logo"
+          src="images/logo.png"
+          style={{ objectFit: "scale-down", width: "60%" }}
+        />
         {/* 로그인 form */}
         <Box
           component="form"
           noValidate
           onSubmit={handleSubmit}
-          sx={{ mt: 3, flexGrow: 1, width: 1 }}
+          sx={{ mt: 3, flexGrow: 1, width: 0.6 }}
         >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12}>
@@ -185,19 +191,6 @@ export default function KioskLogin() {
               로그인
             </Typography>
           </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              {/* 회원가입 페이지로 연결 */}
-              <Link
-                href="/user/signup"
-                variant="body2"
-                id="font_test"
-                style={{ color: "#808080", textDecoration: "none" }}
-              >
-                회원가입
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
       </Box>
     </Container>

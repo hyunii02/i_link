@@ -1,162 +1,178 @@
-import React, { useState } from "react";
-import { Box, Grid } from "@mui/material";
+// 2022-08-10 김국진 학생/선생 목록 axios 작업. 등원/하원/설문완료 상태 관리
+import React, { useState, useContext, useEffect } from "react";
+import { Box, Grid, Typography } from "@mui/material";
 import MemberStudent from "../../../components/Member/Student";
 import MemberTeacher from "../../../components/Member/Teacher";
+import axios from "axios";
+import { baseURL, urls } from "../../../api/axios";
+import { UserContext } from "../../../context/user";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
 
-const memberStudent = [
-  {
-    id: 1,
-    name: "김국진",
-    src: "/images/avatar/picachu.png",
-    state: 1,
-  },
-  {
-    id: 2,
-    name: "배지우",
-    src: "/images/avatar/jilbbug.png",
-    state: 1,
-  },
-  {
-    id: 3,
-    name: "안정현",
-    src: "/images/avatar/Happiny.png",
-    state: 1,
-  },
-  {
-    id: 4,
-    name: "송형근",
-    src: "/images/avatar/bkain.png",
-    state: 1,
-  },
-  {
-    id: 5,
-    name: "강민재",
-    src: "/images/avatar/ggobu.png",
-    state: 1,
-  },
-  {
-    id: 6,
-    name: "이소영",
-    src: "/images/avatar/gora.png",
-    state: 2,
-  },
-  {
-    id: 7,
-    name: "김국진",
-    src: "/images/avatar/picachu.png",
-    state: 1,
-  },
-  {
-    id: 8,
-    name: "배지우",
-    src: "/images/avatar/jilbbug.png",
-    state: 1,
-  },
-  {
-    id: 9,
-    name: "안정현",
-    src: "/images/avatar/Happiny.png",
-    state: 1,
-  },
-  {
-    id: 10,
-    name: "송형근",
-    src: "/images/avatar/bkain.png",
-    state: 1,
-  },
-  {
-    id: 11,
-    name: "강민재",
-    src: "/images/avatar/ggobu.png",
-    state: 1,
-  },
-  {
-    id: 12,
-    name: "이소영",
-    src: "/images/avatar/gora.png",
-    state: 2,
-  },
-  {
-    id: 13,
-    name: "김국진",
-    src: "/images/avatar/picachu.png",
-    state: 1,
-  },
-  {
-    id: 14,
-    name: "배지우",
-    src: "/images/avatar/jilbbug.png",
-    state: 1,
-  },
-  {
-    id: 15,
-    name: "안정현",
-    src: "/images/avatar/Happiny.png",
-    state: 1,
-  },
-  {
-    id: 16,
-    name: "송형근",
-    src: "/images/avatar/bkain.png",
-    state: 1,
-  },
-  {
-    id: 17,
-    name: "강민재",
-    src: "/images/avatar/ggobu.png",
-    state: 1,
-  },
-  {
-    id: 18,
-    name: "이소영",
-    src: "/images/avatar/gora.png",
-    state: 2,
-  },
-];
+// Select components
+const BasicSelectCheck = ({ groupList, getTotalList }) => {
+  const [value, setValue] = useState(groupList[0].value);
 
-const memberTeacher = [
-  {
-    id: 1,
-    name: "설리반",
-    src: "",
-  },
-  {
-    id: 2,
-    name: "에디슨",
-    src: "",
-  },
-];
+  const selectChange = (event) => {
+    setValue((value) => event.target.value);
+  };
+
+  // selectedBox의 선택 값이 바뀌게 될 시, 선생/원아 목록을 다시 불러들임
+  useEffect(() => {
+    getTotalList(value);
+  }, [value]);
+
+  return (
+    <FormControl fullWidth>
+      <Select
+        value={value}
+        onChange={selectChange}
+        sx={{
+          background: "white",
+          height: "60px",
+          border: "6px solid #fae2e2",
+          background: "#FAF1DA",
+        }}
+        inputProps={{ "aria-label": "Without label" }}
+      >
+        {groupList.map((list, index) => (
+          <MenuItem
+            value={list.value}
+            key={index}
+            sx={{ background: "#FAF1DA" }}
+          >
+            <Typography id="font_test" variant="h6">
+              {list.content}
+            </Typography>
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+};
 
 const MasterManageMember = () => {
-  const [student, setStudent] = useState(memberStudent);
-  const [teacher, setTeacher] = useState(memberTeacher);
+  // 원생 목록 상태 관리
+  const [student, setStudent] = useState([]);
+  // 선생 목록 상태 관리
+  const [teacher, setTeacher] = useState([]);
+  // 조회 선택한 groupNo 상태 관리
+  const [selectedGroupNo, setSelectedGroupNo] = useState(0);
+  // 반 목록 저장
+  const [groupList, setGroupList] = useState([]);
+
+  // 전역 상태에서 현재 회원의 소속 유치원
+  const { userCenter } = useContext(UserContext);
+
+  // 빈 배열인지 체크
+  const arrayIsEmpty = (arr) => {
+    if (!Array.isArray(arr)) {
+      return false;
+    }
+    return arr.length == 0;
+  };
+
+  // 서버에서 선생 목록을 가져옴
+  const getTeacherList = (value) => {
+    // 요청할 URL 포매팅
+    const fullURL = baseURL + urls.fetchMemberTeacherList + userCenter;
+    // axios.get으로 현재 반의 선생 목록을 가져옴
+    try {
+      axios
+        .get(fullURL, {
+          params: { centerNo: userCenter, groupNo: value },
+        })
+        .then((response) => setTeacher(response.data));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 서버에서 원생 목록을 가져옴
+  const getKidList = (value) => {
+    // 요청할 URL 포매팅
+    const fullURL = baseURL + urls.fetchMemberKidsList + userCenter;
+    // axios.get으로 현재 반의 선생 목록을 가져옴
+    try {
+      axios
+        .get(fullURL, {
+          params: { centerNo: userCenter, groupNo: value },
+        })
+        .then((response) => setStudent(response.data));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 서버에서 반 목록을 가져옴
+  const getGroupList = () => {
+    const fullURL = baseURL + urls.fetchGroupsList + userCenter;
+    const newArray = [];
+    axios.get(fullURL).then((response) => {
+      response.data.map((data) => {
+        const newObj = {
+          value: data.group_no,
+          content: data.group_name,
+        };
+        newArray.push(newObj);
+      });
+      setGroupList(newArray);
+    });
+  };
+
+  // 반 목록 선택 시 반에 맞는 정보
+  const getTotalList = (value) => {
+    getTeacherList(value);
+    getKidList(value);
+  };
+
+  useEffect(() => {
+    getGroupList();
+  }, []);
+
+  useEffect(() => {
+    console.log(groupList);
+  }, [groupList]);
 
   return (
     <Box>
-      <Grid
-        container
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "row",
-          marginBottom: "30px",
-        }}
-        spacing={0.5}
-      >
-        {teacher.map((tea) => (
-          <Grid item xs={4} key={tea.id}>
-            <MemberTeacher teacher={tea} />
+      <div style={{ marginBottom: "30px" }}>
+        {arrayIsEmpty(groupList) || (
+          <BasicSelectCheck groupList={groupList} getTotalList={getTotalList} />
+        )}
+      </div>
+      <Box>
+        <Box>
+          <Grid container spacing={0.5}>
+            {teacher?.map((tea, index) => (
+              <Grid
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  marginBottom: "30px",
+                }}
+                item
+                xs={4}
+                key={index}
+              >
+                <MemberTeacher teacher={tea} />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-      <Grid container spacing={0.5}>
-        {student.map((stu) => (
-          <Grid item xs={3} key={stu.id} style={{ marginBottom: "10px" }}>
-            <MemberStudent key={stu.id} student={stu} />
+        </Box>
+        <Box>
+          <Grid container spacing={0.5}>
+            {student?.map((stu, index) => (
+              <Grid item xs={3} key={index} style={{ marginBottom: "10px" }}>
+                <MemberStudent student={stu} />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 };
