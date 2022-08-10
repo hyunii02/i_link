@@ -7,7 +7,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
+import { UserContext } from "../../context/user";
 import NoticeWriteForm from "./noticewriteform";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
@@ -17,59 +18,12 @@ import Modal from "@mui/material/Modal";
 import { Box, Grid } from "@mui/material";
 import NoticeDetail from "./noticedetail";
 
-const notice = [
-  //더미데이터
-  {
-    notice_no: 4,
-    notice_title:
-      "주말은 언제올까요 정말정말 배고프네요 저녁 추천좀 부탁드립니다.",
-    notice_content:
-      "폭우가 계속되고있습니다. 가정에서 다들 쉬시고 저녁 맛있는거 드시고 내일 조심히 출근하시고 화이팅입니다.",
-    notice_date: "방가방가",
-    notice_user: "배지우",
-    hit: 5,
-  },
-  {
-    notice_no: 3,
-    notice_title:
-      "9/1 일 지우원장님의 생일파티가 유치원에서 있습니다. 많은참여 부탁드립니다.",
-    notice_content:
-      "폭우가 계속되고있습니다. 가정에서 다들 쉬시고 저녁 맛있는거 드시고 내일 조심히 출근하시고 화이팅입니다.",
-    notice_date: "포켓몬",
-    notice_user: "강민재",
-    hit: 4,
-  },
-  {
-    notice_no: 2,
-    notice_title:
-      "계속 이어지는 폭우로 인해 가정에서 휴식을 취하시기 바랍니다.",
-    notice_content:
-      "폭우가 계속되고있습니다. 가정에서 다들 쉬시고 저녁 맛있는거 드시고 내일 조심히 출근하시고 화이팅입니다.",
-    notice_date: "안녕",
-    notice_user: "김국진",
-    hit: 2,
-  },
-  {
-    notice_no: 1,
-    notice_title: "코로나 방역수칙으로 인한 가정에서 주의 요망",
-    notice_content:
-      "폭우가 계속되고있습니다. 가정에서 다들 쉬시고 저녁 맛있는거 드시고 내일 조심히 출근하시고 화이팅입니다.",
-    notice_date: "반가워",
-    notice_user: "배지우",
-    hit: 3,
-  },
-];
-
 export default function Notice(props) {
-  
-  
-  const [notices, setNotices] = useState(notice);
+  const { userCenter } = useContext(UserContext);
+  const [notices, setNotices] = useState([]);
   const [details, setDetails] = useState("");
   //게시글 넘버 받아오는 것
-  let max_val = notices.map(o => o.notice_no).reduce((max, curr) => max < curr ? curr : max );
-  
-  const idCount = useRef(max_val);
-  
+
   useEffect(() => {
     getNoticeList();
   }, []);
@@ -77,7 +31,7 @@ export default function Notice(props) {
   const getNoticeList = (e) => {
     try {
       axios
-        .get(baseURL + urls.fetchNotices + 1)
+        .get(baseURL + urls.fetchNotices + userCenter)
         .then((response) => setNotices(response.data));
     } catch (e) {
       console.log(e);
@@ -98,15 +52,25 @@ export default function Notice(props) {
     p: 4,
   };
 
-  const addNotice = (notice) => {
-    notice.notice_no = idCount.current;
-    setNotices([notice, ...notices]);
-
-    idCount.current += 1;
-  };
-
   const detailNotice = (notice) => {
     setDetails(notice);
+  };
+
+  //삭제
+  const handleDelete = (event) => {
+    console.log(event);
+
+    try {
+      axios
+        .delete(baseURL + urls.fetchNoticesDelete + event)
+        .then((response) => {
+          if (response.status === 200) {
+            getNoticeList();
+          }
+        });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const detailCount = (notice) => {
@@ -118,14 +82,17 @@ export default function Notice(props) {
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
-  //모달창 상태관리
+  //공지사항 디테일 모달관리
 
   const [open1, setOpen1] = useState(false);
   const handleOpen1 = () => {
     setOpen1(true);
   };
   const handleClose1 = () => setOpen1(false);
+  
 
+
+  //글작성 모달 관리
   const [open2, setOpen2] = useState(false);
   const handleOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
@@ -137,7 +104,6 @@ export default function Notice(props) {
   };
   return (
     <div id="font_test">
-      
       <h2>공지사항</h2>
 
       <TableContainer component={Paper}>
@@ -150,9 +116,7 @@ export default function Notice(props) {
               <TableCell id="font_test" width="700px" align="center">
                 제목
               </TableCell>
-              <TableCell id="font_test" width="80px" align="center">
-                작성인
-              </TableCell>
+
               <TableCell id="font_test" width="110px" align="center">
                 작성일
               </TableCell>
@@ -195,7 +159,7 @@ export default function Notice(props) {
                 >
                   {notice.notice_title}
                 </TableCell>
-                <TableCell
+                {/* <TableCell
                   onClick={() => {
                     handleOpen1();
                     detailNotice(notice);
@@ -204,7 +168,7 @@ export default function Notice(props) {
                   align="center"
                 >
                   {notice.notice_user}
-                </TableCell>
+                </TableCell> */}
                 <TableCell
                   onClick={() => {
                     handleOpen1();
@@ -229,7 +193,7 @@ export default function Notice(props) {
                   <Button
                     sx={{ color: "red" }}
                     size="small"
-                    onClick={() => onRemove(notice.notice_no)}
+                    onClick={() => handleDelete(notice.notice_no)}
                   >
                     삭제
                   </Button>
@@ -283,7 +247,7 @@ export default function Notice(props) {
       >
         {/* 모달창 스타일 */}
         <Box sx={style}>
-          <NoticeWriteForm idCount={idCount.current} addNotice={addNotice} />
+          <NoticeWriteForm handleClose2={handleClose2} getNoticeList={getNoticeList} />
           <div>
             <Button sx={{ ml: 90 }} onClick={handleClose2}>
               닫기

@@ -33,9 +33,8 @@ const NoticeDetail = (props) => {
       <Typography variant="h5" fontSize="20px" sx={{ height: 50 }}>
         제목 : {detailNotice.notice_title}
       </Typography>
-      <Box>
+      
       <Typography>{detailNotice.notice_content}</Typography>
-      </Box>
     </Box>
   );
 };

@@ -6,25 +6,38 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState ,useContext } from "react";
 import { UserContext } from "../../context/user"
-
+import axios from "axios";
+import { baseURL, urls } from "../../api/axios";
 export default function NoticeWriteForm(props) {
   const [noticeTitle, setNoticeTitle] = useState("");
   const [noticeContent, setNoticeContent] = useState("");
-  const { addNotice, idCount } = props;
-  const { userName } = useContext(UserContext);
+  const { getNoticeList, handleClose2 } = props;
+  const { userCenter } = useContext(UserContext);
 
   // 정보를 보내는 함수
   const handleSubmit = (event) => {
     event.preventDefault();
     const noticeData = {
-      notice_no: idCount,
-      notice_title: noticeTitle,
-      notice_content: noticeContent,
-      notice_count : 0,
-      notice_user : userName,
-      hit: 0
+      centerNo : userCenter,
+      noticeTitle: noticeTitle,
+      noticeContent: noticeContent,
+      
     };
-    addNotice(noticeData);
+    
+
+    try {
+      axios
+        .post(baseURL + urls.fetchNoticsRegister,noticeData)
+        .then((response) => {
+          if (response.status===200) {
+            getNoticeList()
+            handleClose2()
+          }
+        }
+        );
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -37,16 +50,16 @@ export default function NoticeWriteForm(props) {
         flexDirection: "column",
         alignItems: "center",
       }}
-      noValidate
+      
       autoComplete="off"
     >
       <Box>
         <h1>공지사항</h1>
       </Box>
       <TextField
-        sx={{background :"white"}}
+        sx={{background :"white", width:500}}
         onChange={(e) => setNoticeTitle(e.target.value)}
-        fullWidth
+        
         label="제목을 작성하세요"
         id="title"
         name="title"
@@ -55,9 +68,9 @@ export default function NoticeWriteForm(props) {
       />
 
       <TextField
-        sx={{background :"white"}}
+        sx={{background :"white" , width:500}}
         onChange={(e) => setNoticeContent(e.target.value)}
-        fullWidth
+        
         id="content"
         name="content"
         label="내용을 작성하세요"
