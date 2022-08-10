@@ -116,8 +116,13 @@ router.post("/register", userController.user_regist);
  *                      type: object
  *                      example:
  *                          [
- *                              user : { "user_no": 13, "user_type": 1, "user_name": "유저1" },
- *                              token : {access_token: "afhwelrkl2kjlkjl23r", refresh_token: "jrl2qhrlkjqhfjj3enr"}
+ *                              학부모인경우 : {user : { "user_no": 13, "user_type": 3, "user_name": "유저1" },
+ *                              token : {access_token: "afhwelrkl2kjlkjl23r", refresh_token: "jrl2qhrlkjqhfjj3enr"},
+ *                              kids_list : [{아이정보1},{아이정보2}]},
+ *
+ *                              학부모가아닌경우 : {user : { "user_no": 13, "user_type": 3, "user_name": "유저1" },
+ *                              token : {access_token: "afhwelrkl2kjlkjl23r", refresh_token: "jrl2qhrlkjqhfjj3enr"}}
+ *
  *                          ]
  *        "400":
  *          description: 로그인 실패
