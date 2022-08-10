@@ -2,6 +2,7 @@ const path = require("path");
 
 const db = require(path.join(__dirname, "..", "models"));
 const Users = db.users;
+const Kids = db.kids;
 
 // 비밀번호 암호화
 const bcrypt = require("bcrypt");
@@ -67,6 +68,17 @@ exports.user_login = async function (req, res) {
       //   userProfileUrl: user.user_profile_url,
       // };
 
+      if (user.user_type === 3) {
+        var kids = await Kids.findAll({
+          where: { parents_no: user.user_no },
+          raw: true,
+        }).catch((err) => {
+          res.status(500).json({
+            message: err.message || "아이 목록 조회 과정에 문제 발생",
+          });
+        });
+      }
+
       user.user_pw = "";
 
       const access_token = jwt.sign(user.toJSON(), JWT_ACCESS_SECRET, {
@@ -82,12 +94,19 @@ exports.user_login = async function (req, res) {
       // 갱신 토큰 redis에 저장
       redisClient.set(user.user_no.toString(), JSON.stringify({ token: refresh_token }));
       redisClient.expire(user.user_no.toString(), 604800); // 604800초 (7일) 후 redis에서 자동 삭제
-
-      return res.status(200).json({
-        logined: true,
-        message: "로그인 성공",
-        data: { user, token: { access_token, refresh_token } },
-      });
+      if (user.user_type === 3) {
+        return res.status(200).json({
+          logined: true,
+          message: "로그인 성공",
+          data: { user, token: { access_token, refresh_token }, kids_list: kids },
+        });
+      } else {
+        return res.status(200).json({
+          logined: true,
+          message: "로그인 성공",
+          data: { user, token: { access_token, refresh_token } },
+        });
+      }
     } else {
       // 비밀번호 틀린 경우
       res.status(500).json({ logined: false, message: "비밀번호 오류" });
