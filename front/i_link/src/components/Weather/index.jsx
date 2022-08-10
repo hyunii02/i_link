@@ -16,7 +16,13 @@ const Weather = () => {
   useEffect(() => {
     getWeather();
   }, []);
-  return <img src={weatherIcon} style={{ width: "60%" }} alt="weather" />;
+  return (
+    <img
+      src={weatherIcon}
+      style={{ objectFit: "fill", width: "50%" }}
+      alt="weather"
+    />
+  );
 };
 
 export default Weather;
