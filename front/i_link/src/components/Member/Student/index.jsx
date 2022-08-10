@@ -8,6 +8,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box, Grid, IconButton, Badge, Avatar } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import axios from "axios";
+import { baseURL, urls } from "../../../api/axios";
 
 // 알림 뱃지 스타일링
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -41,10 +43,9 @@ const MemberStudent = (props) => {
 
   // 우측 상단 뱃지 클릭 이벤트 핸들러
   const badgeClickHandler = (e) => {
+    const fullURL = baseURL + urls.fetchKidsReport + student.kid_no;
     // 뱃지를 클릭했는지 유효성 검사
-    if (e.target === e.currentTarget.children[1]) {
-      alert(`${student.name}의 특이사항`);
-    }
+    axios.get(fullURL).then((response) => console.log(response));
   };
 
   return (
