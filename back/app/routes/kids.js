@@ -165,6 +165,45 @@ router.get("/list/:groupNo", kidsController.kid_class_list);
 /**
  * @swagger
  * paths:
+ *  /kids/list/parent/{userNo}:
+ *    get:
+ *      summary: "부모별 아이 목록 조회"
+ *      description: "get 방식으로 부모별 아이 목록 조회"
+ *      tags: [Kids]
+ *      parameters:
+ *        - in: path
+ *          name: userNo
+ *          required: true
+ *          description: 부모 회원 번호
+ *          schema:
+ *            type: integer
+ *      responses:
+ *        "200":
+ *          description: 부모별 아이 목록 조회 성공
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                example:
+ *                    [{"아이1": "아이정보2"},
+ *                     {"아이2": "아이정보2"},]
+ *        "500":
+ *          description: 반별 원생 목록 조회 실패
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "목록 조회 과정에 문제 발생"
+ */
+router.get("/list/parent/:userNo", kidsController.kid_parent_list);
+
+/**
+ * @swagger
+ * paths:
  *  /kids/{kidNo}:
  *    get:
  *      summary: "아이 정보 조회"
