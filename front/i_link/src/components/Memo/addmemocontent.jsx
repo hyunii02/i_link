@@ -1,6 +1,6 @@
 import { Box } from "@mui/system";
 import * as React from "react";
-import { useState ,useRef} from "react";
+import { useState, useRef } from "react";
 import { TextField, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 
@@ -8,17 +8,24 @@ import Button from "@mui/material/Button";
 // index -> creatememo -> creatememoform -> addmemocomponent
 
 const AddMemoContent = (props) => {
-  const { content } = props;
-
+  const { content, onRemove2 } = props;
 
   return (
-    <Box >
-      
-      <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"center"}} variant="button" display="flex"  >
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+        variant="button"
+        display="flex"
+      >
         🏳️‍🌈 {content.content}
-        <Button sx={{ color:"red"}}>삭제</Button>
+        <Button onClick={() => onRemove2(content.id)} sx={{ color: "red" }}>
+          삭제
+        </Button>
       </Box>
-
     </Box>
   );
 };

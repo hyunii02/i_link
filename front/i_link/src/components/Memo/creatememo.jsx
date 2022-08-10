@@ -17,12 +17,12 @@ import CreateMemoForm from "./creatememoform";
 import { borderColor } from "@mui/system";
 
 export default function CreateMemo(props) {
-  const {addMemo,idCount} = props;
-  
+  const { addMemo, idCount } = props;
+
   const style = {
-    display:"flex",
-    flexDirection:"column",
-    justifyContent:"space-between",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
     // 모달창 스타일 지정
     position: "absolute",
     top: "60%",
@@ -36,9 +36,13 @@ export default function CreateMemo(props) {
     p: 4,
   };
   //모달창 열고닫기 관리
-  const [open, setOpen] = useState(false); 
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    console.log("wefwefwef");
+  };
+
   return (
     <Grid item={true} xs={12} sm={6} md={4}>
       <Card
@@ -55,13 +59,15 @@ export default function CreateMemo(props) {
             justifyContent: "center",
             alignItems: "center",
             height: 300,
-            border : 2 ,
-            color : "#FCCACA",
-            
+            border: 2,
+            color: "#FCCACA",
           }}
         >
-          <Fab sx={{background:"#FBF6F6"}} aria-label="add">
-            <AddIcon onClick={handleOpen}></AddIcon>
+          <Fab sx={{ background: "#FBF6F6" }} aria-label="add">
+            <AddIcon
+              sx={{ width: 60, height: 100 }}
+              onClick={handleOpen}
+            ></AddIcon>
             <Modal
               open={open}
               onClose={handleClose}
@@ -69,9 +75,13 @@ export default function CreateMemo(props) {
               aria-describedby="modal-modal-description"
             >
               <Box sx={style}>
-                <CreateMemoForm  handleClose={handleClose} idCount={idCount}addMemo={addMemo}/>
+                <CreateMemoForm
+                  handleClose={handleClose}
+                  idCount={idCount}
+                  addMemo={addMemo}
+                />
                 <div>
-                  <Button sx={{ml:30}}onClick={handleClose}>
+                  <Button sx={{ ml: 30 }} onClick={handleClose}>
                     close
                   </Button>
                 </div>
