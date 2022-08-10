@@ -3,23 +3,20 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
 
+const NoticeDetail = (props) => {
+  const { detailNotice } = props;
 
-
-const NoticeDetail =(props) =>{
-  const {detailNotice} = props; 
-  
-  
-  
-  
-
-  return(
+  return (
     <Box
       component="form"
       sx={{
         "& .MuiTextField-root": { mt: 5 }, // 텍스트필드마다 mt 5
-        
-        height:500,
+
+        height: 500,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -28,21 +25,19 @@ const NoticeDetail =(props) =>{
       autoComplete="off"
     >
       <Box>
-        <h1>공지사항 디자인 수정 쌉 필요</h1>
+        <h1>공지사항</h1>
+
+        
       </Box>
 
-      <Typography sx={{width:400,height:50}}>제목 : {detailNotice.notice_title}</Typography>
-
-
+      <Typography variant="h5" fontSize="20px" sx={{ height: 50 }}>
+        제목 : {detailNotice.notice_title}
+      </Typography>
+      <Box>
       <Typography>{detailNotice.notice_content}</Typography>
-        
-      
-
-      
+      </Box>
     </Box>
-
-
-  )
+  );
 };
 
-export default NoticeDetail
+export default NoticeDetail;

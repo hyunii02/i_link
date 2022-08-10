@@ -4,20 +4,25 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useState ,useContext } from "react";
+import { UserContext } from "../../context/user"
 
 export default function NoticeWriteForm(props) {
   const [noticeTitle, setNoticeTitle] = useState("");
   const [noticeContent, setNoticeContent] = useState("");
   const { addNotice, idCount } = props;
+  const { userName } = useContext(UserContext);
 
   // 정보를 보내는 함수
   const handleSubmit = (event) => {
     event.preventDefault();
     const noticeData = {
-      notice_id: idCount,
+      notice_no: idCount,
       notice_title: noticeTitle,
       notice_content: noticeContent,
+      notice_count : 0,
+      notice_user : userName,
+      hit: 0
     };
     addNotice(noticeData);
   };
