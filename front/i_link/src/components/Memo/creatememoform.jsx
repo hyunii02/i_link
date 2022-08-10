@@ -15,7 +15,7 @@ const CreateMemoForm = (props) => {
   const [memoTitle, setMemoTitle] = useState("");
   const [memoContent, setMemoContent] = useState("");
   const [contentList, setContentList] = useState([]);
-  const { addMemo, idCount, handleClose } = props;
+  const { addMemo, idCount, handleClose} = props;
 
   // 엔터누를때마다 값을 하나씩 저장.
   const keyDownHandler = (e) => {
@@ -27,6 +27,9 @@ const CreateMemoForm = (props) => {
         content: memoContent,
       };
       setContentList([...contentList, content]);
+      console.log(content)
+      setMemoContent('');
+      
       
       
     }
@@ -49,6 +52,12 @@ const CreateMemoForm = (props) => {
   };
 
 
+  const onRemove2 = (id) => {
+    console.log(id)
+    setContentList(contentList.filter((content) => content.id !== id));
+  
+  };
+
 
   return (
     <div>
@@ -69,7 +78,7 @@ const CreateMemoForm = (props) => {
           placeholder="제목을 입력하세요"
           onChange={(e) => setMemoTitle(e.target.value)}
         ></TextField>
-
+        
         <TextField
           sx={{
             background: "#F2EFDA",
@@ -84,7 +93,7 @@ const CreateMemoForm = (props) => {
         <br />
         <Box>
           {contentList.map((content) => (
-            <AddMemoContent key={content.id} content={content} />
+            <AddMemoContent key={content.id} content={content} onRemove2={onRemove2} />
           ))}
         </Box>
         <Button

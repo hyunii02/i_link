@@ -50,7 +50,7 @@ export default function Album() {
   
   const onRemove = (id) => {
     console.log(id);
-    setCards(card.filter((card) => card.cards_id !== id));
+    setCards(cards.filter((card) => card.cards_id !== id));
   
   };
   return (
@@ -61,7 +61,7 @@ export default function Album() {
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            <CreateMemo addMemo={addMemo} idCount={idCount} />
+            <CreateMemo addMemo={addMemo} idCount={idCount.current}  />
             {cards.map((card) => (
               <Grid item key={card.cards_id} xs={12} sm={6} md={4}>
                 <Card
