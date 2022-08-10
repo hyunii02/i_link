@@ -13,90 +13,31 @@ import { useEffect } from "react";
 
 const RegistKids = (props) => {
   // 상위 컴포넌트에서 반 목록을 가져옴
-  const { classList, getGroupList } = props;
-  // 서버로부터 응답된 가입승인 명단 관리
-  const [listItem, setListItem] = useState([]);
+  const {
+    classList,
+    getGroupList,
+    listItem,
+    setListItem,
+    submitList,
+    setSubmitList,
+    getKidsList,
+    getTeacherList,
+  } = props;
   // 원아/선생님 선택 버튼 상태 관리용
   const [selectedItem, setSelectedItem] = useState("1");
-  // 가입승인을 위한 객체
-  const [submitList, setSubmitList] = useState([]);
 
   const { userType } = useContext(UserContext);
-
-  useEffect(() => {
-    getKidsList();
-  }, []);
-
-  // 원생 가입 승인 대기 목록 가져오는 axios
-  const getKidsList = () => {
-    axios
-      .get(baseURL + urls.fetchSubmitWaitKids + userType)
-      .then((response) => {
-        // 받은 데이터를 화면에서 쓰기 위해 새롭게 포매팅
-        const newArray = [];
-        const newSubmitArray = [];
-        response.data.map((data) => {
-          // 가입승인요청 목록 표시용 상태관리
-          const newObj = {
-            no: data.kid_no,
-            name: data.kid_name,
-            profile_url: data.kid_profile_url,
-          };
-          newArray.push(newObj);
-
-          // 가입승인용 상태관리
-          const newSubmitObj = {
-            kidNo: data.kid_no,
-            groupNo: null,
-          };
-          newSubmitArray.push(newSubmitObj);
-        });
-
-        setListItem(newArray);
-        setSubmitList(newSubmitArray);
-      });
-  };
-
-  // 선생 가입 승인 대기 목록 가져오는 axios
-  const getTeacherList = () => {
-    axios
-      .get(baseURL + urls.fetchSubmitWaitTeacher + userType)
-      .then((response) => {
-        // 받은 데이터를 화면에서 쓰기 위해 새롭게 포매팅
-        const newArray = [];
-        const newSubmitArray = [];
-        response.data.map((data) => {
-          // 가입승인요청 목록 표시용 상태관리
-          const newObj = {
-            no: data.user_no,
-            name: data.user_name,
-            profile_url: data.user_profile_url,
-          };
-          newArray.push(newObj);
-
-          // 가입승인용 상태관리
-          const newSubmitObj = {
-            userNo: data.user_no,
-            groupNo: null,
-          };
-          newSubmitArray.push(newSubmitObj);
-        });
-
-        setListItem(newArray);
-        setSubmitList(newSubmitArray);
-      });
-  };
 
   // 가입 승인 리스트에서 반을 선택했을 경우 상태 변경
   const submitListStateChange = (id, group) => {
     let newArray = null;
     if (selectedItem === "1") {
       newArray = submitList.map((list) =>
-        list.kidNo === id ? { ...list, groupNo: group } : list,
+        list.kidNo === id ? { ...list, groupNo: group } : list
       );
     } else if (selectedItem === "2") {
       newArray = submitList.map((list) =>
-        list.userNo === id ? { ...list, groupNo: group } : list,
+        list.userNo === id ? { ...list, groupNo: group } : list
       );
     }
     setSubmitList(newArray);
