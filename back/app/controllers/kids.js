@@ -79,6 +79,25 @@ exports.kid_class_list = async function (req, res) {
     });
 };
 
+// 부모별 아이 목록 조회
+// [get]  /kids/list/parent/:userNo
+exports.kid_parent_list = async function (req, res) {
+  const parentNo = req.params.userNo;
+
+  await Kids.findAll({
+    where: { parents_no: parentNo },
+    raw: true,
+  })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "목록 조회 과정에 문제 발생",
+      });
+    });
+};
+
 // 원생 조회
 // [get] /kids/:kidNo
 exports.kid_detail = async function (req, res) {
