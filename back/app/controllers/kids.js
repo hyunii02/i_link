@@ -25,7 +25,7 @@ exports.kid_regist = async function (req, res) {
 
     await Kids.create(kid)
       .then((data) => {
-        res.status(200).json({ message: "아이 등록 완료" });
+        res.status(200).json({ kid_no: data.kid_no, message: "아이 등록 완료" });
       })
       .catch((err) => {
         res.status(500).json({ error: err.message, message: "아이 등록 실패." });
