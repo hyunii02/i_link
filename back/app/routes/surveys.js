@@ -25,7 +25,7 @@ const surveysController = require(path.join(__dirname, "..", "controllers", "sur
  *                    description: "아이 번호"
  *                  surveyResult:
  *                    type: string
- *                    description: "설문 결과"
+ *                    description: "설문 결과(1슬픔 2그저그럼 3좋음 4상당히좋음)"
  *                  surveyDate:
  *                    type: string
  *                    format: date
@@ -140,6 +140,5 @@ router.get("/list/:kidNo", surveysController.survey_list);
  *                          "해당 정보를 찾을 수 없습니다."
  */
 router.get("/:surveyNo", surveysController.survey_detail);
-
 
 module.exports = router;
