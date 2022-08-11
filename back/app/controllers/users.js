@@ -21,34 +21,22 @@ const redisClient = require(path.join(__dirname, "..", "config", "redis"));
 // 회원가입
 // [post] /users/register
 exports.user_regist = async function (req, res) {
-  try {
-    const file = req.file ? req.file : null;
-    let userProfileUrl = "";
-    // 프로필 사진 업로드된 경우 입력될 데이터 값
-    if (file !== null) userProfileUrl = "/uploads/profile/" + req.file.filename;
-    // 프로필 사진 업로드 안한 경우
-    else userProfileUrl = null;
+  // User
+  const user = {
+    user_type: req.body.userType,
+    user_email: req.body.userEmail,
+    user_pw: req.body.userPw,
+    user_name: req.body.userName,
+    user_phone: req.body.userPhone ? req.body.userPhone : null,
+  };
 
-    // User
-    const user = {
-      user_type: req.body.userType,
-      user_email: req.body.userEmail,
-      user_pw: req.body.userPw,
-      user_name: req.body.userName,
-      user_phone: req.body.userPhone ? req.body.userPhone : null,
-      user_profile_url: userProfileUrl,
-    };
-
-    await Users.create(user)
-      .then((data) => {
-        res.status(200).json({ message: "회원가입 완료" });
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err.message, message: "회원 가입 실패." });
-      });
-  } catch (err) {
-    res.status(500).json({ error: err.message, message: "회원 가입 실패." });
-  }
+  await Users.create(user)
+    .then((data) => {
+      res.status(200).json({ message: "회원가입 완료" });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message, message: "회원 가입 실패." });
+    });
 };
 
 // 로그인
@@ -94,11 +82,11 @@ exports.user_login = async function (req, res) {
       });
     } else {
       // 비밀번호 틀린 경우
-      res.status(500).json({ logined: false, message: "비밀번호 오류" });
+      res.status(500).json({ message: "비밀번호 오류" });
     }
   } else {
     // 아이디가 없는 경우
-    res.status(500).json({ logined: false, message: "아이디 없음" });
+    res.status(500).json({ message: "아이디 없음" });
   }
 };
 
