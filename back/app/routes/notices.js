@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const attachment = require("../utils/attachment");
 const router = express.Router();
 
 const noticeController = require(path.join(__dirname, "..", "controllers", "notices"));
@@ -16,7 +17,7 @@ const noticeController = require(path.join(__dirname, "..", "controllers", "noti
  *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (공지사항 등록)
  *          required: true
  *          content:
- *            application/x-www-form-urlencoded:
+ *            multipart/form-data:
  *              schema:
  *                type: object
  *                properties:
@@ -54,7 +55,7 @@ const noticeController = require(path.join(__dirname, "..", "controllers", "noti
  *                      example:
  *                          "공지 작성 실패"
  */
-router.post("/register", noticeController.notice_regist);
+router.post("/register", attachment.array("file", 5), noticeController.notice_regist);
 
 /**
  * @swagger
@@ -180,7 +181,7 @@ router.get("/:noticeNo", noticeController.notice_detail);
  *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (공지사항 정보 수정)
  *          required: true
  *          content:
- *            application/x-www-form-urlencoded:
+ *            multipart/form-data:
  *              schema:
  *                type: object
  *                properties:
@@ -226,7 +227,7 @@ router.get("/:noticeNo", noticeController.notice_detail);
  *                      example:
  *                          "공지사항 수정 실패"
  */
-router.put("/:noticeNo", noticeController.notice_update);
+router.put("/:noticeNo", attachment.array("file", 5), noticeController.notice_update);
 
 /**
  * @swagger
