@@ -17,6 +17,8 @@ export default function NoticeWriteForm(props) {
   // 정보를 보내는 함수
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    
     const noticeData = {
       centerNo : userCenter,
       noticeTitle: noticeTitle,
