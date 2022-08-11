@@ -13,6 +13,7 @@ const AddMemoContent = (props) => {
   return (
     <Box>
       <Box
+        id="font_test"
         sx={{
           display: "flex",
           justifyContent: "space-between",
@@ -22,7 +23,7 @@ const AddMemoContent = (props) => {
         display="flex"
       >
         🏳️‍🌈 {content.content}
-        <Button onClick={() => onRemove2(content.id)} sx={{ color: "red" }}>
+        <Button id="font_test" onClick={() => onRemove2(content.id)} sx={{ color: "red" }}>
           삭제
         </Button>
       </Box>
