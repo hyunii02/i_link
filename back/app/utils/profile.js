@@ -16,6 +16,7 @@ const storage = multer.diskStorage({
     cb(null, path.join(uploadPath));
   },
   filename: function (req, file, cb) {
+    console.log("[middleware] profile-storage: ", file);
     cb(null, new Date().getTime() + path.extname(file.originalname));
   },
 });

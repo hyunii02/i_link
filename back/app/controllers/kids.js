@@ -11,6 +11,7 @@ exports.kid_regist = async function (req, res) {
     const file = req.file ? req.file : null;
     // 프로필 사진 업로드된 경우 입력될 데이터 값
     let kidProfileUrl = file !== null ? "/uploads/profile/" + req.file.filename : null;
+    console.log("[controllers] kid_regist: ", file);
 
     // 아이
     const kid = {
