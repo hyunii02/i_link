@@ -26,6 +26,7 @@ const urls = {
   fetchKidsUpdate: "/kids/",
   fetchKidsDelete: "/kids/",
   fetchKids: "/kids/list/",
+  fetchParentKids: "/kids/list/parent/",
   fetchNotices: "/notices/list/",
   fetchNoticsRegister: "/notices/register",
   fetchNoticesDetail: "/notices/",
@@ -44,13 +45,13 @@ const urls = {
   fetchMealsUpdate: "/meals/",
   fetchMealsDelete: "/meals/",
   fetchMemosList: "/memos/list/",
-  fetchMemosRegister: "/memos",
+  fetchMemosRegister: "/memos/register",
   fetchMemosDetail: "/memos/",
   fetchMemosUpdate: "/memos/",
   fetchMemosDelete: "/memos/",
   fetchTodaysMemos: "/memos/",
   fetchSurveysList: "/surveys/list/",
-  fetchSurveysRegister: "/surveys",
+  fetchSurveysRegister: "/surveys/register",
   fetchSurveysDetail: "/surveys/",
   fetchStamps: "/stamp/",
   fetchTodaysWeathers: "/weathers/",
@@ -62,6 +63,7 @@ const urls = {
   fetchSubmitKids: "/members/manage/kids/", // 가입 등록 승인 원아
   fetchMemberTeacherList: "/members/teacher/", // 유치원 반별 교사 목록 조회
   fetchMemberKidsList: "/members/kids/", // 유치원 반별 원아 목록 조회
+  fetchKidsStateChange: "/kids/attendance/",
 };
 
 const axios = Axios.create({

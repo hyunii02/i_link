@@ -22,6 +22,7 @@ export default function Notice(props) {
   const { userCenter } = useContext(UserContext);
   const [notices, setNotices] = useState([]);
   const [details, setDetails] = useState("");
+
   //게시글 넘버 받아오는 것
 
   useEffect(() => {
@@ -77,11 +78,6 @@ export default function Notice(props) {
     notice.hit += 1;
   };
 
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-
   //공지사항 디테일 모달관리
 
   const [open1, setOpen1] = useState(false);
@@ -89,8 +85,6 @@ export default function Notice(props) {
     setOpen1(true);
   };
   const handleClose1 = () => setOpen1(false);
-  
-
 
   //글작성 모달 관리
   const [open2, setOpen2] = useState(false);
@@ -120,9 +114,7 @@ export default function Notice(props) {
               <TableCell id="font_test" width="110px" align="center">
                 작성일
               </TableCell>
-              <TableCell id="font_test" width="50px" align="center">
-                조회
-              </TableCell>
+
               <TableCell id="font_test" width="30px" align="center"></TableCell>
             </TableRow>
           </TableHead>
@@ -177,18 +169,9 @@ export default function Notice(props) {
                   }}
                   align="center"
                 >
-                  {year}년{month}월{day}일
+                  {notice.notice_date.substr(0, 10)}
                 </TableCell>
-                <TableCell
-                  onClick={() => {
-                    handleOpen1();
-                    detailNotice(notice);
-                    detailCount(notice);
-                  }}
-                  align="center"
-                >
-                  {notice.hit}
-                </TableCell>
+
                 <TableCell align="center">
                   <Button
                     sx={{ color: "red" }}
@@ -247,7 +230,10 @@ export default function Notice(props) {
       >
         {/* 모달창 스타일 */}
         <Box sx={style}>
-          <NoticeWriteForm handleClose2={handleClose2} getNoticeList={getNoticeList} />
+          <NoticeWriteForm
+            handleClose2={handleClose2}
+            getNoticeList={getNoticeList}
+          />
           <div>
             <Button sx={{ ml: 90 }} onClick={handleClose2}>
               닫기

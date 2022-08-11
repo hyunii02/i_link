@@ -93,13 +93,18 @@ const MasterManageMember = () => {
   const getKidList = (value) => {
     // 요청할 URL 포매팅
     const fullURL = baseURL + urls.fetchMemberKidsList + userCenter;
+    console.log("원생목록 다시 value: ", value);
     // axios.get으로 현재 반의 선생 목록을 가져옴
     try {
       axios
         .get(fullURL, {
           params: { centerNo: userCenter, groupNo: value },
         })
-        .then((response) => setStudent(response.data));
+        .then((response) => {
+          const newData = [...response.data];
+          console.log(newData);
+          setStudent((student) => newData);
+        });
     } catch (e) {
       console.log(e);
     }
@@ -125,15 +130,12 @@ const MasterManageMember = () => {
   const getTotalList = (value) => {
     getTeacherList(value);
     getKidList(value);
+    setSelectedGroupNo(value);
   };
 
   useEffect(() => {
     getGroupList();
   }, []);
-
-  useEffect(() => {
-    console.log(groupList);
-  }, [groupList]);
 
   return (
     <Box>
@@ -167,7 +169,11 @@ const MasterManageMember = () => {
           <Grid container spacing={0.5}>
             {student?.map((stu, index) => (
               <Grid item xs={3} key={index} style={{ marginBottom: "10px" }}>
-                <MemberStudent student={stu} />
+                <MemberStudent
+                  student={stu}
+                  getKidList={getKidList}
+                  selectedGroupNo={selectedGroupNo}
+                />
               </Grid>
             ))}
           </Grid>
