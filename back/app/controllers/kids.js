@@ -7,28 +7,30 @@ const Kids = db.kids;
 // 자녀 등록
 // [post] /kids/register
 exports.kid_regist = async function (req, res) {
-  // *** Content-Type: application/json
-  // 아이
-  const kid = {
-    kid_name: req.body.kidName,
-    kid_birth: req.body.kidBirth ? req.body.kidBirth : null,
-    kid_gender: req.body.kidGender ? req.body.kidGender : null,
-    kid_profile_url: req.body.kidProfileUrl ? req.body.kidProfileUrl : null,
-    parents_no: req.body.userNo, // front에서 input type: hidden
-  };
+  try {
+    const file = req.file ? req.file : null;
+    // 프로필 사진 업로드된 경우 입력될 데이터 값
+    let kidProfileUrl = file !== null ? "/uploads/profile/" + req.file.filename : null;
 
-  await Kids.create(kid)
-    .then((data) => {
-      console.log("아이 등록 완료", data.dataValues);
-      res.status(200).json({
-        message: "아이 등록 완료",
+    // 아이
+    const kid = {
+      kid_name: req.body.kidName,
+      kid_birth: req.body.kidBirth ? req.body.kidBirth : null,
+      kid_gender: req.body.kidGender ? req.body.kidGender : null,
+      kid_profile_url: kidProfileUrl,
+      parents_no: req.body.userNo, // front에서 input type: hidden
+    };
+
+    await Kids.create(kid)
+      .then((data) => {
+        res.status(200).json({ message: "아이 등록 완료" });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message, message: "아이 등록 실패." });
       });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        message: err.message || "아이 등록 실패",
-      });
-    });
+  } catch (err) {
+    res.status(500).json({ error: err.message, message: "아이 등록 실패." });
+  }
 };
 
 // 자녀 유치원 등록
