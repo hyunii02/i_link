@@ -8,6 +8,7 @@ const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
+  timezone: dbConfig.timezone,
   operatorsAliases: 0,
 
   pool: {
@@ -33,6 +34,7 @@ db.kids = models.kids;
 db.meals = models.meals;
 db.surveys = models.surveys;
 db.reports = models.reports;
+db.notices = models.notices;
 db.quiz = models.quiz;
 
 module.exports = db;

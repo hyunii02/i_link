@@ -7,28 +7,31 @@ const Kids = db.kids;
 // 자녀 등록
 // [post] /kids/register
 exports.kid_regist = async function (req, res) {
-  // *** Content-Type: application/json
-  // 아이
-  const kid = {
-    kid_name: req.body.kidName,
-    kid_birth: req.body.kidBirth ? req.body.kidBirth : null,
-    kid_gender: req.body.kidGender ? req.body.kidGender : null,
-    kid_profile_url: req.body.kidProfileUrl ? req.body.kidProfileUrl : null,
-    parents_no: req.body.userNo, // front에서 input type: hidden
-  };
+  try {
+    const file = req.file ? req.file : null;
+    // 프로필 사진 업로드된 경우 입력될 데이터 값
+    let kidProfileUrl = file !== null ? "/uploads/profile/" + req.file.filename : null;
+    console.log("[controllers] kid_regist: ", file);
 
-  await Kids.create(kid)
-    .then((data) => {
-      console.log("아이 등록 완료", data.dataValues);
-      res.status(200).json({
-        message: "아이 등록 완료",
+    // 아이
+    const kid = {
+      kid_name: req.body.kidName,
+      kid_birth: req.body.kidBirth ? req.body.kidBirth : null,
+      kid_gender: req.body.kidGender ? req.body.kidGender : null,
+      kid_profile_url: kidProfileUrl,
+      parents_no: req.body.userNo, // front에서 input type: hidden
+    };
+
+    await Kids.create(kid)
+      .then((data) => {
+        res.status(200).json({ message: "아이 등록 완료" });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message, message: "아이 등록 실패." });
       });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        message: err.message || "아이 등록 실패",
-      });
-    });
+  } catch (err) {
+    res.status(500).json({ error: err.message, message: "아이 등록 실패." });
+  }
 };
 
 // 자녀 유치원 등록
@@ -79,6 +82,25 @@ exports.kid_class_list = async function (req, res) {
     });
 };
 
+// 부모별 아이 목록 조회
+// [get]  /kids/list/parent/:userNo
+exports.kid_parent_list = async function (req, res) {
+  const parentNo = req.params.userNo;
+
+  await Kids.findAll({
+    where: { parents_no: parentNo },
+    raw: true,
+  })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "목록 조회 과정에 문제 발생",
+      });
+    });
+};
+
 // 원생 조회
 // [get] /kids/:kidNo
 exports.kid_detail = async function (req, res) {
@@ -110,6 +132,37 @@ exports.kid_update = async function (req, res) {
     kid_birth: req.body.kidBirth,
     kid_gender: req.body.kidGender,
     kid_profile_url: req.body.kidProfileUrl ? req.body.kidProfileUrl : null,
+  };
+
+  await Kids.update(kid, { where: { kid_no: kidNo } })
+    .then((result) => {
+      if (result[0] === 1) {
+        res.status(200).json({
+          message: "정보 수정 완료",
+        });
+      } else {
+        // 수정 실패
+        res.status(400).json({
+          message: "요청 실패",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        errormessage: err.message,
+        message: "정보 수정 실패",
+      });
+    });
+};
+
+// 원생 등원상태 수정
+// [put]  /kids/attendance/:kidNo/:kidState
+exports.kid_update_attendance = async function (req, res) {
+  const kidNo = req.params.kidNo;
+
+  // 원생
+  const kid = {
+    kid_state: req.params.kidState,
   };
 
   await Kids.update(kid, { where: { kid_no: kidNo } })

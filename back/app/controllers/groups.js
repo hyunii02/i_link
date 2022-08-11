@@ -28,12 +28,12 @@ exports.group_list = async function (req, res) {
 
   // 해당 유치원에 있는 반, 교사, 원생 테이블 조인 -> 반 정보와 교사 수, 원생 수 함께 가져옴
   let query =
-    "SELECT g.group_no, g.center_no, g.group_name, s.kid_cnt, t.teacher_cnt " +
-    " FROM(SELECT u.group_no, COUNT(DISTINCT user_no) teacher_cnt FROM `groups` " +
-    ` JOIN users u WHERE user_type = 2 u.center_no = ${centerNo} AND u.group_no IS NOT NULL GROUP BY group_no) t ` +
-    " LEFT JOIN `groups` g ON t.group_no = g.group_no " +
+    "SELECT g.group_no, g.center_no, g.group_name, IFNULL(s.kid_cnt, 0) kid_cnt, IFNULL(t.teacher_cnt, 0) teacher_cnt FROM `groups` g " +
+    " LEFT JOIN  (SELECT u.group_no, COUNT(DISTINCT user_no) teacher_cnt FROM `groups` " +
+    " JOIN users u WHERE user_type = 2 AND u.group_no IS NOT NULL GROUP BY group_no) t ON t.group_no = g.group_no " +
     " LEFT JOIN (SELECT k.group_no, COUNT(DISTINCT kid_no) kid_cnt FROM `groups` " +
-    ` JOIN kids k WHERE k.center_no = ${centerNo} AND k.group_no IS NOT NULL GROUP BY group_no) s ON s.group_no = g.group_no ; `;
+    " JOIN kids k WHERE k.group_no IS NOT NULL GROUP BY group_no) s ON s.group_no = g.group_no " +
+    ` WHERE center_no = ${centerNo}; `;
 
   await db.sequelize
     .query(query, {

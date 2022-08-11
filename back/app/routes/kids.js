@@ -3,6 +3,7 @@ const path = require("path");
 const router = express.Router();
 
 const kidsController = require(path.join(__dirname, "..", "controllers", "kids"));
+const profile = require(path.join(__dirname, "..", "utils", "profile"));
 
 /**
  * @swagger
@@ -30,12 +31,12 @@ const kidsController = require(path.join(__dirname, "..", "controllers", "kids")
  *                  kidGenger:
  *                    type: string
  *                    description: "아이 성별(남-'M', 여-'F')"
- *                  kidProfileUrl:
- *                    type: string
- *                    description: "아이 프로필 사진 주소"
+ *                  kidProfile:
+ *                    type: file
+ *                    description: "아이 사진"
  *                  userNo:
  *                    type: integer
- *                    description: "아이 프로필 사진 주소"
+ *                    description: "회원 번호(부모)"
  *      responses:
  *        "200":
  *          description: 아이 등록 성공
@@ -61,7 +62,7 @@ const kidsController = require(path.join(__dirname, "..", "controllers", "kids")
  *                      example:
  *                          "아이 등록 실패"
  */
-router.post("/register", kidsController.kid_regist);
+router.post("/register", profile.single("kidProfile"), kidsController.kid_regist);
 
 /**
  * @swagger
@@ -161,6 +162,45 @@ router.put("/register", kidsController.kid_center_regist);
  *                          "목록 조회 과정에 문제 발생"
  */
 router.get("/list/:groupNo", kidsController.kid_class_list);
+
+/**
+ * @swagger
+ * paths:
+ *  /kids/list/parent/{userNo}:
+ *    get:
+ *      summary: "부모별 아이 목록 조회"
+ *      description: "get 방식으로 부모별 아이 목록 조회"
+ *      tags: [Kids]
+ *      parameters:
+ *        - in: path
+ *          name: userNo
+ *          required: true
+ *          description: 부모 회원 번호
+ *          schema:
+ *            type: integer
+ *      responses:
+ *        "200":
+ *          description: 부모별 아이 목록 조회 성공
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                example:
+ *                    [{"아이1": "아이정보2"},
+ *                     {"아이2": "아이정보2"},]
+ *        "500":
+ *          description: 반별 원생 목록 조회 실패
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "목록 조회 과정에 문제 발생"
+ */
+router.get("/list/parent/:userNo", kidsController.kid_parent_list);
 
 /**
  * @swagger
@@ -288,6 +328,65 @@ router.get("/:kidNo", kidsController.kid_detail);
  *                          "서버 오류 발생"
  */
 router.put("/:kidNo", kidsController.kid_update);
+
+/**
+ * @swagger
+ * paths:
+ *  /kids/attendance/{kidNo}/{kidState}:
+ *    put:
+ *      summary: "아이 등원 상태 정보 수정"
+ *      description: "put 방식으로 아이 등원 상태 정보 수정"
+ *      tags: [Kids]
+ *      parameters:
+ *        - in: path
+ *          name: kidNo
+ *          required: true
+ *          description: 아이 번호
+ *          schema:
+ *            type: integer
+ *        - in: path
+ *          name: kidState
+ *          required: true
+ *          description: 아이 등원상태
+ *          schema:
+ *            type: integer
+ *      responses:
+ *        "200":
+ *          description: 정보 수정 성공
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "정보 수정 완료"
+ *
+ *        "400":
+ *          description: 정보 수정 실패
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "요청 실패"
+ *        "500":
+ *          description: 서버 오류 발생
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "서버 오류 발생"
+ */
+router.put("/attendance/:kidNo/:kidState", kidsController.kid_update_attendance);
 
 /**
  * @swagger

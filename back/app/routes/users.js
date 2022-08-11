@@ -3,7 +3,8 @@ const path = require("path");
 const router = express.Router();
 
 const auth = require(path.join(__dirname, "..", "utils", "auth"));
-const userController = require(path.join(__dirname, "..", "controllers", "user"));
+const profile = require(path.join(__dirname, "..", "utils", "profile"));
+const userController = require(path.join(__dirname, "..", "controllers", "users"));
 
 // 토큰 검증 test
 // auth.verifyToken을 통해 유효한 토큰인지 검증 후, 유효하다면 다음 경로 이동 가능, 그렇지 않다면 이동 불가
@@ -25,7 +26,7 @@ router.post("/token", auth.verifyRefreshToken, userController.refresh_token);
  *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (유저 회원가입)
  *          required: true
  *          content:
- *            application/x-www-form-urlencoded:
+ *            multipart/form-data:
  *              schema:
  *                type: object
  *                properties:
@@ -44,9 +45,9 @@ router.post("/token", auth.verifyRefreshToken, userController.refresh_token);
  *                  userPhone:
  *                    type: string
  *                    description: "유저 전화번호(xxx-xxxx-xxxx)"
- *                  userProfileUrl:
- *                    type: string
- *                    description: "유저 프로필 사진 주소"
+ *                  userProfile:
+ *                    type: file
+ *                    description: "유저 프로필 사진"
  *      responses:
  *        "200":
  *          description: 회원 가입 성공
@@ -72,7 +73,8 @@ router.post("/token", auth.verifyRefreshToken, userController.refresh_token);
  *                      example:
  *                          "회원가입 실패"
  */
-router.post("/register", userController.user_regist);
+
+router.post("/register", profile.single("userProfile"), userController.user_regist);
 
 /**
  * @swagger
@@ -116,7 +118,7 @@ router.post("/register", userController.user_regist);
  *                      type: object
  *                      example:
  *                          [
- *                              user : { "user_no": 13, "user_type": 1, "user_name": "유저1" },
+ *                              user : { "user_no": 13, "user_type": 3, "user_name": "유저1" },
  *                              token : {access_token: "afhwelrkl2kjlkjl23r", refresh_token: "jrl2qhrlkjqhfjj3enr"}
  *                          ]
  *        "400":
@@ -242,28 +244,25 @@ router.get("/:userNo", userController.user_detail);
  *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (회원 수정)
  *          required: true
  *          content:
- *            application/x-www-form-urlencoded:
+ *            multipart/form-data:
  *              schema:
  *                type: object
  *                properties:
  *                  userName:
  *                    type: string
  *                    description: "유저 이름"
+ *                  currentPw:
+ *                    type: string
+ *                    description: "현재 비밀번호"
  *                  userPw:
  *                    type: string
- *                    description: "유저 비밀번호"
+ *                    description: "새로운 비밀번호"
  *                  userPhone:
  *                    type: string
  *                    description: "유저 전화번호(xxx-xxxx-xxxx)"
- *                  userProfileUrl:
- *                    type: string
- *                    description: "유저 프로필 사진 주소"
- *                  groupNo:
- *                    type: integer
- *                    description: "유치원 반 번호"
- *                  centerNo:
- *                    type: integer
- *                    description: "유치원 번호"
+ *                  userProfile:
+ *                    type: file
+ *                    description: "유저 프로필 사진"
  *      responses:
  *        "200":
  *          description: 회원 수정 성공
@@ -275,8 +274,7 @@ router.get("/:userNo", userController.user_detail);
  *                    message:
  *                      type: string
  *                      example:
- *                          "회원 수정 완료"
- *
+ *                          "회원 수정 완료."
  *        "400":
  *          description: 회원 수정 실패
  *          content:
@@ -287,9 +285,20 @@ router.get("/:userNo", userController.user_detail);
  *                    message:
  *                      type: string
  *                      example:
- *                          "회원 수정 실패"
+ *                          "해당 회원을 찾을 수 없거나 데이터가 비어있음."
+ *        "500":
+ *          description: 회원 수정 실패
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "회원 수정 실패."
  */
-router.put("/:userNo", userController.user_update);
+router.put("/:userNo", profile.single("userProfile"), userController.user_update);
 
 /**
  * @swagger
