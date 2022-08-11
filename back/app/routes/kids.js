@@ -17,7 +17,7 @@ const profile = require(path.join(__dirname, "..", "utils", "profile"));
  *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (자녀 등록)
  *          required: true
  *          content:
- *            application/x-www-form-urlencoded:
+ *            multipart/form-data:
  *              schema:
  *                type: object
  *                properties:
@@ -28,7 +28,7 @@ const profile = require(path.join(__dirname, "..", "utils", "profile"));
  *                    type: string
  *                    format: date
  *                    description: "아이 생년월일"
- *                  kidGenger:
+ *                  kidGender:
  *                    type: string
  *                    description: "아이 성별(남-'M', 여-'F')"
  *                  kidProfile:
@@ -231,7 +231,7 @@ router.get("/list/parent/:userNo", kidsController.kid_parent_list);
  *                  kid_name:
  *                    type: string
  *                    example: "이키즈"
- *                  kid-birth:
+ *                  kid_birth:
  *                    type: string
  *                    format: date
  *                    example: "2017-09-19"
@@ -277,7 +277,7 @@ router.get("/:kidNo", kidsController.kid_detail);
  *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (아이 정보 수정)
  *          required: true
  *          content:
- *            application/x-www-form-urlencoded:
+ *            multipart/form-data:
  *              schema:
  *                type: object
  *                properties:
@@ -285,12 +285,12 @@ router.get("/:kidNo", kidsController.kid_detail);
  *                    type: string
  *                    format: date
  *                    description: "아이 생년월일"
- *                  kidGenger:
+ *                  kidGender:
  *                    type: string
  *                    description: "아이 성별(남-'M', 여-'F')"
- *                  kidProfileUrl:
- *                    type: string
- *                    description: "아이 프로필 사진 주소"
+ *                  kidProfile:
+ *                    type: file
+ *                    description: "아이 프로필 사진"
  *      responses:
  *        "200":
  *          description: 정보 수정 성공
@@ -327,7 +327,7 @@ router.get("/:kidNo", kidsController.kid_detail);
  *                      example:
  *                          "서버 오류 발생"
  */
-router.put("/:kidNo", kidsController.kid_update);
+router.put("/:kidNo", profile.single("kidProfile"), kidsController.kid_update);
 
 /**
  * @swagger

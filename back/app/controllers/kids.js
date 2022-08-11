@@ -1,4 +1,5 @@
 const path = require("path");
+const fs = require("fs");
 
 const db = require(path.join(__dirname, "..", "models"));
 
@@ -126,33 +127,59 @@ exports.kid_detail = async function (req, res) {
 // [put]  /kids/:kidNo
 exports.kid_update = async function (req, res) {
   const kidNo = req.params.kidNo;
+  const file = req.file ? req.file : null;
 
-  // 원생
-  const kid = {
-    kid_birth: req.body.kidBirth,
-    kid_gender: req.body.kidGender,
-    kid_profile_url: req.body.kidProfileUrl ? req.body.kidProfileUrl : null,
-  };
+  try {
+    // 프로필 사진 업로드된 경우 입력될 데이터 값
+    let kidProfileUrl = file !== null ? "/uploads/profile/" + req.file.filename : null;
+    console.log("[controllers] kid_update: ", file);
 
-  await Kids.update(kid, { where: { kid_no: kidNo } })
-    .then((result) => {
-      if (result[0] === 1) {
-        res.status(200).json({
-          message: "정보 수정 완료",
-        });
-      } else {
-        // 수정 실패
-        res.status(400).json({
-          message: "요청 실패",
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        errormessage: err.message,
-        message: "정보 수정 실패",
-      });
+    let kid = await Kids.findByPk(kidNo).catch((err) => {
+      res.status(500).json({ error: err.message, message: "아이 정보 조회 과정 중 문제 발생" });
     });
+
+    // 프로필 사진 업로드된 경우 입력될 데이터 값
+    if (file !== null) {
+      console.log("original uploaded file path: ", kid.kid_profile_url);
+      if (kid.kid_profile_url && fs.existsSync(path.join(__dirname, "..", kid.kid_profile_url))) {
+        try {
+          fs.unlinkSync(path.join(__dirname, "..", kid.kid_profile_url));
+          console.log("-------------------------------------이전 Kid Profile Image 삭제 완료");
+        } catch (err) {
+          console.log(err.message);
+          throw err;
+        }
+      }
+      kidProfileUrl = "/uploads/profile/" + req.file.filename;
+      console.log("latest uploaded file: ", file);
+    }
+    // 프로필 사진 업로드 안한 경우
+    else kidProfileUrl = kid.kid_profile_url;
+
+    console.log("kid profile url: ", kidProfileUrl);
+
+    // 아이
+    kid = {
+      kid_name: req.body.kidName,
+      kid_birth: req.body.kidBirth,
+      kid_gender: req.body.kidGender,
+      kid_profile_url: kidProfileUrl,
+    };
+
+    await Kids.update(kid, { where: { kid_no: kidNo } })
+      .then((result) => {
+        if (result[0] === 1) {
+          res.status(200).json({ message: "정보 수정 완료" });
+        } else {
+          res.status(400).json({ message: "요청 실패" });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message, message: "정보 수정 실패" });
+      });
+  } catch (err) {
+    res.status(500).json({ error: err.message, message: "아이 정보 수정 실패." });
+  }
 };
 
 // 원생 등원상태 수정

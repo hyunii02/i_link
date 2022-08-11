@@ -14,10 +14,10 @@ exports.survey_regist = async function (req, res) {
   const survey = {
     kid_no: req.body.kidNo, // 아이별 설문
     survey_result: req.body.surveyResult ? req.body.surveyResult : null,
-    survey_date: req.body.surveyDate,
   };
 
-  await surveys.create(survey)
+  await surveys
+    .create(survey)
     .then((data) => {
       console.log("설문 등록 완료");
       res.status(200).json(data);
@@ -34,12 +34,13 @@ exports.survey_regist = async function (req, res) {
 exports.survey_list = async function (req, res) {
   const kidNo = req.params.kidNo;
 
-  await surveys.findAll({
-    where: {
-      kid_no: kidNo
-    },
-    raw: true,
-  })
+  await surveys
+    .findAll({
+      where: {
+        kid_no: kidNo,
+      },
+      raw: true,
+    })
     .then((data) => {
       res.status(200).json(data);
     })
@@ -55,7 +56,8 @@ exports.survey_list = async function (req, res) {
 exports.survey_detail = async function (req, res) {
   const surveyNo = req.params.surveyNo;
 
-  await surveys.findByPk(surveyNo)
+  await surveys
+    .findByPk(surveyNo)
     .then((data) => {
       if (data === null) {
         res.status(500).json({
@@ -72,4 +74,3 @@ exports.survey_detail = async function (req, res) {
       });
     });
 };
-
