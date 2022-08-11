@@ -2,7 +2,7 @@
 // 2022.07.29 안정현 validation //
 // 2022.08.02 강민재 axios, validation //
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -31,6 +31,9 @@ export default function Login() {
   const initialValues = { email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
+
+  // 세션 스토리지에 write 후에 navigate를 실행시키기 위한 state
+  const [changeState, setChangeState] = useState(false);
   const {
     setUserName,
     setUserType,
@@ -40,7 +43,15 @@ export default function Login() {
     setUserCenter,
     setAccessToken,
     setRefreshToken,
+    setKidsList,
+    setFirstKid,
   } = useContext(UserContext);
+
+  useEffect(() => {
+    if (changeState) {
+      navigate("/parents/home");
+    }
+  }, [changeState]);
 
   // 에러메시지
   const validate = () => {
@@ -98,12 +109,28 @@ export default function Login() {
         switch (resUserType) {
           case 1:
             navigate("/master/managemember");
+            setKidsList(null);
+            setFirstKid(null);
             break;
           case 2:
             navigate("/teacher/management");
+            setKidsList(null);
+            setFirstKid(null);
             break;
+          // 부모 로그인 성공 시, 부모에 속해 있는 아이의 정보를 가져온 후 navigate
           case 3:
-            navigate("/parents/home");
+            {
+              axios
+                .get(baseURL + urls.fetchParentKids + resUserNo)
+                .then((response) => {
+                  if (response.status === 200) {
+                    setKidsList(response.data);
+                    setFirstKid(response.data[0]);
+                    setChangeState(true);
+                    //navigate("/parents/home");
+                  }
+                });
+            }
             break;
           default:
             console.log("알 수 없는 회원 유형");
