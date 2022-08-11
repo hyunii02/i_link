@@ -33,6 +33,8 @@ import KioskLayout from './layout/KioskLayout';
 import Error from './pages/Error/Error';
 import LayoutWithoutHeader from './layout/WithoutHeader';
 import { UserProvider } from './context/user';
+import TeacherJoinCenter from "./pages/Teacher/JoinCenter/JoinCenter";
+import ParentsJoinCenter from './pages/Parents/JoinCenter/JoinCenter';
 
 const App = () => {
   return (
@@ -44,7 +46,7 @@ const App = () => {
           <Route path="/kiosk/main" element={<KioskMain />} />
           <Route path="/kiosk/stamp" element={<KioskStamp />} />
           <Route path="/kiosk/quiz" element={<KioskQuiz />} />
-          <Route path="/kiosk/survey" element={<KioskSurvey />} />  
+          <Route path="/kiosk/survey" element={<KioskSurvey />} />
         </Route>
         {/* 사이드바 없는 화면(로그인, 회원가입, 회원정보수정) */}
         <Route element={<LayoutWithoutHeader />}>
@@ -61,7 +63,7 @@ const App = () => {
           <Route path="/master/managemember" element={<MasterManageMember />} />
           <Route path="/master/memo" element={<MasterMemo />} />
           <Route path="/master/notice" element={<MasterNotice />} />
-          
+
           {/* 학부모 */}
           <Route path="/parents/diet" element={<ParentsDiet />} />
           <Route path="/parents/home" element={<ParentsHome />} />
@@ -69,6 +71,7 @@ const App = () => {
           <Route path="/parents/quiz" element={<ParentsQuiz />} />
           <Route path="/parents/registkid" element={<ParentsRegistKid />} />
           <Route path="/parents/repo" element={<ParentsRepo />} />
+          <Route path="/parents/joincenter" element={<ParentsJoinCenter />} />
           {/* 선생님 */}
           <Route path="/teacher/detail" element={<TeacherDetail />} />
           <Route path="/teacher/diet" element={<TeacherDiet />} />
@@ -76,6 +79,7 @@ const App = () => {
           <Route path="/teacher/memo" element={<TeacherMemo />} />
           <Route path="/teacher/notice" element={<TeacherNotice />} />
           <Route path="/teacher/quiz" element={<TeacherQuiz />} />
+          <Route path="/teacher/joincenter" element={<TeacherJoinCenter />} />
         </Route>
         {/* 헤더, 사이드바 없는 화면 */}
         <Route path="*" element={<Error />} />
