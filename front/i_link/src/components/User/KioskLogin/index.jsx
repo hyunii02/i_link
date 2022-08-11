@@ -25,10 +25,9 @@ export default function KioskLogin() {
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
-      console.log(accessToken);
       navigate("/kiosk/main");
     }
-  }, []);
+  }, [navigate]);
 
   // 에러메시지
   const validate = () => {
@@ -80,6 +79,14 @@ export default function KioskLogin() {
       localStorage.setItem("userPhone", resUserPhone);
       localStorage.setItem("userCenter", resUserCenter);
       localStorage.setItem("userGroup", resUserGroup);
+      const kidResponse = await axios.get(
+        baseURL + urls.fetchParentKids + resUserNo
+      );
+      localStorage.setItem("kidsList", JSON.stringify(kidResponse.data));
+      if (!localStorage.getItem("kidName")) {
+        localStorage.setItem("kidName", kidResponse.data[0].kid_name);
+        localStorage.setItem("kidNo", kidResponse.data[0].kid_no);
+      }
 
       navigate("/kiosk/main");
     } catch (err) {
