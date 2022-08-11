@@ -72,4 +72,12 @@ router.use("/surveys", require(path.join(__dirname, "surveys")));
  */
 router.use("/reports", require(path.join(__dirname, "reports")));
 
+/**
+ * @swagger
+ * tags:
+ *    name: Quiz
+ *    description: 퀴즈 CRUD
+ */
+router.use("/quiz", require(path.join(__dirname, "quiz")));
+
 module.exports = router;
