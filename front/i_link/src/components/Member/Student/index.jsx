@@ -22,6 +22,7 @@ import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { baseURL, urls } from "../../../api/axios";
 import MailIcon from "@mui/icons-material/Mail";
+import { Translate } from "@mui/icons-material";
 
 // 알림 뱃지 스타일링
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -70,10 +71,8 @@ const reportForm = [
 ];
 
 const MemberStudent = (props) => {
-  // page에서 가져온 원생 정보
-  const { student } = props;
-  // 원생정보를 useState 상태관리
-  const [studentState, setStudentState] = useState(parseInt(student.kid_state));
+  // page에서 가져온 원생 정보, 원생 정보 다시 가져오는 메서드
+  const { student, getKidList, selectedGroupNo } = props;
   // 모달창 open/close 상태관리
   const [open, setOpen] = useState(false);
   // 특이사항 객체배열 상태관리
@@ -96,9 +95,26 @@ const MemberStudent = (props) => {
     newArray[index] = !newArray[index];
     setChildDetailView(newArray);
   };
+
   // 버튼 클릭 이벤트 핸들러. 버튼 클릭에 따라 원생의 상태 변경
   const buttonClickHandler = (e) => {
-    setStudentState((studentState) => e.currentTarget.value);
+    try {
+      const fullURL =
+        baseURL +
+        urls.fetchKidsStateChange +
+        student.kid_no +
+        "/" +
+        e.currentTarget.value;
+      axios.put(fullURL).then((response) => {
+        if (response.status === 200) {
+          getKidList(selectedGroupNo);
+        } else {
+          console.log("데이터 response Error!! [", response.status, "]");
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   // 우측 상단 뱃지 클릭 이벤트 핸들러
@@ -175,7 +191,10 @@ const MemberStudent = (props) => {
         }}
       >
         {student.kid_report === 0 || (
-          <IconButton onClick={badgeClickHandler}>
+          <IconButton
+            onClick={badgeClickHandler}
+            style={{ transform: "translate(35deg)" }}
+          >
             <Badge badgeContent={student.kid_report} color="primary">
               <MailIcon color="action" fontSize="large" />
             </Badge>
@@ -201,7 +220,7 @@ const MemberStudent = (props) => {
         >
           {
             <Avatar
-              src={student.kid_profile_src}
+              src={baseURL + student.kid_profile_url}
               sx={{
                 width: 112,
                 height: 112,
@@ -237,10 +256,10 @@ const MemberStudent = (props) => {
         >
           <Grid container style={{ marginLeft: "2px" }}>
             {buttonText.map((text, index) => (
-              <Grid item xs={4} key={index}>
+              <Grid item xs={4} key={index} sx={{ textAlign: "center" }}>
                 <Button
                   variant={
-                    parseInt(studentState) === index + 1
+                    parseInt(student.kid_state) === index + 1
                       ? "contained"
                       : "outlined"
                   }

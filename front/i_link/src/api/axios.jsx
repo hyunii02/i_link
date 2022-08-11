@@ -63,6 +63,7 @@ const urls = {
   fetchSubmitKids: "/members/manage/kids/", // 가입 등록 승인 원아
   fetchMemberTeacherList: "/members/teacher/", // 유치원 반별 교사 목록 조회
   fetchMemberKidsList: "/members/kids/", // 유치원 반별 원아 목록 조회
+  fetchKidsStateChange: "/kids/attendance/",
 };
 
 const axios = Axios.create({

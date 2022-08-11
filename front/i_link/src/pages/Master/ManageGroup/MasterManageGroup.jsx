@@ -19,13 +19,13 @@ const MasterManageGroup = () => {
   // 원아/선생님 선택 버튼 상태 관리용
   const [selectedItem, setSelectedItem] = useState("1");
 
-  const { userType } = useContext(UserContext);
+  const { userType, userCenter } = useContext(UserContext);
 
   // 유치원의 그룹 리스트를 가져오는 axios
   const getGroupList = () => {
     try {
       axios
-        .get(baseURL + "/groups/list/" + userType)
+        .get(baseURL + urls.fetchGroupsList + userCenter)
         .then((response) => setClassData(response.data));
     } catch (e) {
       console.log(e);
