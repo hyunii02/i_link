@@ -33,7 +33,7 @@ exports.report_groupList = async function (req, res) {
       include: [
         [
           // 날짜 형식 포맷 후 전송
-          db.sequelize.fn("DATE_FORMAT", db.sequelize.col("report_date"), "%Y-%m-%d %h:%i:%s"),
+          db.sequelize.fn("DATE_FORMAT", db.sequelize.col("report_date"), "%Y-%m-%d %r"),
           "report_date",
         ],
       ],
@@ -65,7 +65,7 @@ exports.report_kidList = async function (req, res) {
       include: [
         [
           // 날짜 형식 포맷 후 전송
-          db.sequelize.fn("DATE_FORMAT", db.sequelize.col("report_date"), "%Y-%m-%d %h:%i:%s"),
+          db.sequelize.fn("DATE_FORMAT", db.sequelize.col("report_date"), "%Y-%m-%d %r"),
           "report_date",
         ],
       ],
