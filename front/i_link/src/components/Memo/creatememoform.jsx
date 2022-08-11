@@ -2,20 +2,36 @@
 // index -> creatememo -> creatememoform -> addmemocomponent
 
 import React from "react";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import CreateMemo from "./creatememo";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import AddMemoContent from "./addmemocontent";
 import DatePicker from "react-datepicker";
+import { UserContext } from "../../context/user";
+import { baseURL, urls } from "../../api/axios";
+import axios from "axios";
+
 let id_index = 1;
 // 2022 08 03 김국진
 const CreateMemoForm = (props) => {
+  const { userGroup } = useContext(UserContext);
   const [memoTitle, setMemoTitle] = useState("");
   const [memoContent, setMemoContent] = useState("");
   const [contentList, setContentList] = useState([]);
-  const { addMemo, idCount, handleClose} = props;
+  const { getMemoList, handleClose, selectValue,clickGroupHandler} = props;
+
+
+  //날짜 입력 제목
+
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const memo_date = `${year}-${month}-${day}`
+  
+  
 
   // 엔터누를때마다 값을 하나씩 저장.
   const keyDownHandler = (e) => {
@@ -38,16 +54,35 @@ const CreateMemoForm = (props) => {
   const buttonClickHandler = (e) => {
     const subData = [];
     contentList.map((content) => subData.push(content.content));
-
+    
     e.preventDefault();
+    const lastMemoContent =subData.join(',')
+    
     const newData = {
-      cards_id: idCount,
-      cards_title: memoTitle,
-      cards_content: subData,
+      groupNo: selectValue,
+      memoDate: memo_date,
+      memoContent: lastMemoContent,
     };
-    console.log(subData);
-    addMemo(newData);
-    handleClose();
+    try {
+      axios
+        .post(baseURL + urls.fetchMemosRegister,newData)
+        .then((response) => {
+          if (response.status===200) {
+            console.log(response)
+            
+            clickGroupHandler();
+            handleClose();
+            
+          }
+        }
+        );
+    } catch (e) {
+      console.log(e);
+    }
+    
+    console.log(newData)
+    
+    
     
   };
 
@@ -73,10 +108,10 @@ const CreateMemoForm = (props) => {
           sx={{
             background: "#F2EFDA",
           }}
-          value={memoTitle}
+          value = {memo_date}
           type="text"
           placeholder="제목을 입력하세요"
-          onChange={(e) => setMemoTitle(e.target.value)}
+          // onChange={(e) => setMemoTitle(e.target.value)}
         ></TextField>
         
         <TextField
@@ -105,7 +140,9 @@ const CreateMemoForm = (props) => {
           }}
           type="submit"
           variant="contained"
+          
           onClick={buttonClickHandler}
+            
         >
           메모추가
         </Button>

@@ -3,7 +3,8 @@
 // index -> creatememo -> creatememoform -> addmemocomponent
 
 import * as React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef,useEffect, useContext } from "react";
+import { UserContext } from "../../context/user";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -12,58 +13,163 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
-import { createTheme, keyframes, ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CreateMemo from "./creatememo";
 import Box from "@mui/material/Box";
+import { baseURL, urls } from "../../api/axios";
 
-const card = [
-  //더미데이터
-  { cards_id: 1, cards_title: "8/1", cards_content: ["손수건", "실로폰"] },
-  {
-    cards_id: 2,
-    cards_title: "7/30",
-    cards_content: ["찰흙", "마스크", "노트북"],
-  },
-  { cards_id: 3, cards_title: "7/29", cards_content: ["실내화", "색연필"] },
-  {
-    cards_id: 4,
-    cards_title: "7/28",
-    cards_content: ["체온계", "가방", "연필"],
-  },
-];
+
+
+
+
 
 const theme = createTheme();
 
 export default function Album() {
-  const [cards, setCards] = useState(card);
-  const idCount = useRef(5); // id값지정
 
-  const addMemo = (card) => {
-    card.cards_id = idCount.current
-    setCards([card, ...cards]);
-    console.log(card);
-    idCount.current+=1;
+
+
+
+  const { userGroup,userCenter } = useContext(UserContext);
+  const [cards, setCards] = useState([]);
+  const [groupList, setGroupList] = useState([]);
+  const [groupNo, setGroupNo] = useState(null);
+  const [selectValue,setSelectValue] = useState('');
+
+  //반정보받아오기
+  const getGroupList = () => {
+    const fullURL = baseURL + urls.fetchGroupsList + userCenter;
+    const newArray = [];
+    axios.get(fullURL).then((response) => {
+      response.data.map((data) => {
+        const newObj = {
+          value: data.group_no,
+          content: data.group_name,
+        };
+        newArray.push(newObj);
+      });
+      console.log(newArray)
+      setGroupList(newArray);
+      setSelectValue(newArray[0].value)
+    });
+  };
+  
+
+
+  // 반 목록 선택 시 반에 맞는 정보
+ 
+  const clickGroupHandler=()=>{
+    if (selectValue===''){
+      return
+    }
+    
+    try {
+      axios
+        
+        .get(baseURL + urls.fetchMemosList + selectValue)
+        .then((response) => setCards(response.data));
+
+        
+    } catch (e) {
+      console.log(e);
+    }
+
+  }
+
+  useEffect(() => {
+    clickGroupHandler();
+  }, [selectValue]);
+
+
+  useEffect(() => {
+    getGroupList();
+  }, []);
+
+
+  //axios 로 정보를 받아온다.
+  const getMemoList = (e) => {
+    
+    try {
+      axios
+        .get(baseURL + urls.fetchMemosList + userGroup)
+        .then((response) => setCards(response.data));
+        
+    } catch (e) {
+      console.log(e);
+    }
+    
+  };
+   ///삭제함수
+  
+  const handleDelete = (event) => {
+    console.log(event);
+
+    try {
+      axios
+        .delete(baseURL + urls.fetchMemosDelete + event)
+        .then((response) => {
+          if (response.status === 200) {
+            clickGroupHandler();
+          }
+        });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  //삭제 함수
-  
-  const onRemove = (id) => {
-    console.log(id);
-    setCards(cards.filter((card) => card.cards_id !== id));
-  
-  };
+
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <main>
+      <FormControl fullWidth>
+      <Select
+        onChange={(e)=>setSelectValue(e.target.value)}
+        value={selectValue}
+        sx={{
+          
+          height: "60px",
+          border: "6px solid #fae2e2",
+          background: "#FAF1DA",
+        }}
+        inputProps={{ "aria-label": "Without label" }}
+      >
+        {groupList.map((list, index) => (
+          <MenuItem
+            value={list.value}
+            key={index}
+            sx={{ background: "#FAF1DA" }}
+            
+          >
+            <Typography id="font_test" variant="h6">
+              {list.content}
+            </Typography>
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+
+
+
+
+
         {/* Hero unit */}
+
+
+
+        
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            <CreateMemo addMemo={addMemo} idCount={idCount.current}  />
+            <CreateMemo selectValue={selectValue}getMemoList={getMemoList} clickGroupHandler={clickGroupHandler}  />
             {cards.map((card) => (
-              <Grid item key={card.cards_id} xs={12} sm={6} md={4}>
+              <Grid item key={card.memo_no} xs={12} sm={6} md={4}>
                 <Card
                   sx={{ height: 240, display: "flex", flexDirection: "column" }}
                 >
@@ -74,15 +180,15 @@ export default function Album() {
                       variant="h5"
                       component="h2"
                     >
-                      {card.cards_title}
+                      {card.memo_date}
                     </Typography>
-                    {card.cards_content.map((card, key) => (
+                    {card.memo_content.split(",").map((card, key) => (
                       <Typography key={key}>🏳️‍🌈 {card}</Typography>
                     ))}
                   </CardContent>
                   <Box sx={{ display: "flex", justifyContent: "end" }}>
                     
-                    <Button onClick={() => onRemove(card.cards_id)}
+                    <Button onClick={() => handleDelete(card.memo_no)}
                       sx={{
                         background: "#C5EDFD",
                         width: 20,
