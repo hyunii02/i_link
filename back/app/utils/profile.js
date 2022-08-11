@@ -7,7 +7,12 @@ const uploadPath = path.join(__dirname, "..", "uploads", "profile");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    !fs.existsSync(uploadPath) && fs.mkdirSync(uploadPath);
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true }, (err) => {
+        console.log(err);
+        throw err;
+      });
+    }
     cb(null, path.join(uploadPath));
   },
   filename: function (req, file, cb) {
@@ -23,7 +28,8 @@ const fileFilter = (req, file, cb) => {
   ) {
     cb(null, true);
   } else {
-    cb(new Error("지원하지 않는 파일 형식"), false);
+    req.fileValidationError = "jpg, jpeg, png 파일만 업로드 가능합니다.";
+    cb(null, false);
   }
 };
 
