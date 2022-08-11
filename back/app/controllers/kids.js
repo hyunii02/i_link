@@ -141,7 +141,7 @@ exports.kid_update = async function (req, res) {
     // 프로필 사진 업로드된 경우 입력될 데이터 값
     if (file !== null) {
       console.log("original uploaded file path: ", kid.kid_profile_url);
-      if (fs.existsSync(path.join(__dirname, "..", kid.kid_profile_url))) {
+      if (kid.kid_profile_url && fs.existsSync(path.join(__dirname, "..", kid.kid_profile_url))) {
         try {
           fs.unlinkSync(path.join(__dirname, "..", kid.kid_profile_url));
           console.log("-------------------------------------이전 Kid Profile Image 삭제 완료");
