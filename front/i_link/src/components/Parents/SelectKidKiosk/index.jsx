@@ -13,7 +13,7 @@ import {
 import { PersonAdd } from "@mui/icons-material";
 import { axios, urls } from "../../../api/axios";
 
-const SelectKidKiosk = () => {
+const SelectKidKiosk = ({ kidName, setKidName }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [kidsList, setKidsList] = useState(
     JSON.parse(localStorage.getItem("kidsList") || "[]")
@@ -39,6 +39,7 @@ const SelectKidKiosk = () => {
     }
   };
   const handleSelect = (kidName, kidNo) => {
+    setKidName(kidName);
     localStorage.setItem("kidName", kidName);
     localStorage.setItem("kidNo", kidNo);
   };
@@ -56,7 +57,7 @@ const SelectKidKiosk = () => {
             aria-expanded={open ? "true" : undefined}
           >
             <Avatar sx={{ width: 100, height: 100, fontSize: "2.8rem" }}>
-              {localStorage.getItem("kidName").slice(1) || "싸피"}
+              {kidName.slice(1) || "싸피"}
             </Avatar>
           </IconButton>
         </Tooltip>

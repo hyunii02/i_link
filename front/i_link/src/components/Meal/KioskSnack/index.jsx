@@ -21,7 +21,14 @@ const MealKioskSnack = () => {
   };
 
   useEffect(() => {
-    getSnack(localStorage.getItem("userCenter"), getToday());
+    const surveyDay = localStorage.getItem(
+      localStorage.getItem("kidName") + "SurveyDay"
+    );
+    if (surveyDay === getToday()) {
+      getSnack(localStorage.getItem("userCenter"), getToday(true));
+    } else {
+      getSnack(localStorage.getItem("userCenter"), getToday());
+    }
   }, []);
   return (
     <div>

@@ -7,7 +7,14 @@ import { ItemsList, KioskTitle } from "../../Common";
 const MemoKiosk = () => {
   const [memo, setMemo] = useState(null);
   useEffect(() => {
-    getMomos(localStorage.getItem("userGroup"), getToday());
+    const surveyDay = localStorage.getItem(
+      localStorage.getItem("kidName") + "SurveyDay"
+    );
+    if (surveyDay === getToday()) {
+      getMomos(localStorage.getItem("userGroup"), getToday(true));
+    } else {
+      getMomos(localStorage.getItem("userGroup"), getToday());
+    }
   }, []);
 
   const styles = {
