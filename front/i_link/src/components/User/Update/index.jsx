@@ -43,29 +43,36 @@ export default function Update() {
   // 에러메시지
   const validate = () => {
     const errors = {};
+    let flag = false;
     if (!formValues.password) {
       errors.password = "비밀번호를 입력해주세요.";
+      flag = true;
     }
     if (!formValues.new_password || formValues.new_password.indexOf(" ")>= 0) {
       errors.new_password = "새로운 비밀번호를 입력해주세요.";
+      flag = true;
     }
     if (formValues.new_password.length < 6) {
       errors.new_password = "6자리 이상 입력해주세요.";
+      flag = true;
     }
     if (formValues.new_password !== formValues.new_check_password) {
       errors.new_check_password = "비밀번호가 일치하지 않습니다.";
+      flag = true;
     }
     if (!formValues.new_username) {
       errors.new_username = "이름을 입력해주세요.";
+      flag = true;
     }
     if (!formValues.new_phone_number) {
       errors.new_phone_number = "전화번호를 입력해주세요.";
+      flag = true;
     }
     setFormErrors(errors);
-    if (!errors.password) {
-      return true;
+    if (flag) {
+      return false;
     }
-    return false;
+    return true;
   }
 
   const { userNo } =useContext(UserContext)
@@ -83,11 +90,18 @@ export default function Update() {
         userProfile: null,
         // userEmail: formValues.email,
       };
-      console.log(body)
-      axios
-        .put(baseURL + urls.fetchUsersUpdate + userNo, body)
-        .then((response) => console.log(response))
-      navigate('/'); //회원정보 수정 시 다시 로그인페이지로 이동
+      try {
+        const response = await axios.put(
+          baseURL + urls.fetchUsersUpdate + userNo,
+          body
+        );
+        navigate("/"); //회원정보 수정 시 다시 로그인페이지로 이동
+      } catch (err) {
+        const errors = {
+          password: "비밀번호가 일치하지 않습니다.",
+        };
+        setFormErrors(errors);
+      }
     }
   };
 
@@ -229,6 +243,7 @@ export default function Update() {
               style={{ background: colorPalette.BUTTON_COLOR }}
               size="large"
               sx={{ mt: 3, mb: 2 }}
+              onChange={handleChange}
             >
               <Typography id="font_test" component="h6" variant="h6">
                 회원수정
