@@ -63,10 +63,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Swagger Config 파일과 연결
-
 const { swaggerUi, specs } = require("./config/swagger");
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+
+// uploads 폴더 내에 있는 정적 파일 로드
+app.use("/uploads", express.static("uploads"));
 
 // 테이블 생성 or 수정 필요 시에만 주석 해제 후 실행
 // db.sequelize.sync({ force: true }); // force: 테이블 컬럼 수정
