@@ -17,7 +17,7 @@ import CreateMemoForm from "./creatememoform";
 import { borderColor } from "@mui/system";
 
 export default function CreateMemo(props) {
-  const { addMemo, idCount } = props;
+  const { getMemoList,selectValue,clickGroupHandler } = props;
 
   const style = {
     display: "flex",
@@ -76,9 +76,12 @@ export default function CreateMemo(props) {
             >
               <Box sx={style}>
                 <CreateMemoForm
+                  selectValue ={selectValue}
+                  getMemoList={getMemoList}
                   handleClose={handleClose}
-                  idCount={idCount}
-                  addMemo={addMemo}
+                  clickGroupHandler={clickGroupHandler}
+                  
+                  
                 />
                 <div>
                   <Button sx={{ ml: 30 }} onClick={handleClose}>
