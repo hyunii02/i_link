@@ -35,7 +35,7 @@ export default function Album() {
 
 
 
-  const { userGroup,userCenter } = useContext(UserContext);
+  const { userGroup,userCenter,userType } = useContext(UserContext);
   const [cards, setCards] = useState([]);
   const [groupList, setGroupList] = useState([]);
   const [groupNo, setGroupNo] = useState(null);
@@ -71,7 +71,7 @@ export default function Album() {
     try {
       axios
         
-        .get(baseURL + urls.fetchMemosList + selectValue)
+        .get(baseURL + urls.fetchMemosList + (userType === '2' ? userGroup : selectValue))
         .then((response) => setCards(response.data));
 
         
@@ -106,12 +106,12 @@ export default function Album() {
   };
    ///삭제함수
   
-  const handleDelete = (event) => {
-    console.log(event);
+  const handleDelete = (memoNo) => {
+    
 
     try {
       axios
-        .delete(baseURL + urls.fetchMemosDelete + event)
+        .delete(baseURL + urls.fetchMemosDelete + memoNo)
         .then((response) => {
           if (response.status === 200) {
             clickGroupHandler();
@@ -128,6 +128,7 @@ export default function Album() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <main>
+      {userType===1 && (
       <FormControl fullWidth>
       <Select
         onChange={(e)=>setSelectValue(e.target.value)}
@@ -154,6 +155,7 @@ export default function Album() {
         ))}
       </Select>
     </FormControl>
+      )}
 
 
 
