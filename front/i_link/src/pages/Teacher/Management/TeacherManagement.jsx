@@ -5,17 +5,10 @@ import MemberTeacher from "../../../components/Member/Teacher";
 import axios from "axios";
 import { baseURL, urls } from "../../../api/axios";
 import { UserContext } from "../../../context/user";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import FormControl from "@mui/material/FormControl";
 
 const TeacherManagement = () => {
   // 원생 목록 상태 관리
   const [student, setStudent] = useState([]);
-  // 조회 선택한 groupNo 상태 관리
-  const [selectedGroupNo, setSelectedGroupNo] = useState(0);
-  // 반 목록 저장
-  const [groupList, setGroupList] = useState([]);
 
   // 전역 상태에서 현재 회원의 소속 유치원
   const { userCenter, userGroup } = useContext(UserContext);
@@ -56,7 +49,7 @@ const TeacherManagement = () => {
           <Grid container spacing={0.5}>
             {student?.map((stu, index) => (
               <Grid item xs={3} key={index} style={{ marginBottom: "10px" }}>
-                <MemberStudent student={stu} />
+                <MemberStudent student={stu} getKidList={getKidList} />
               </Grid>
             ))}
           </Grid>

@@ -3,12 +3,12 @@
 // 2022.08.09 안정현 axios //
 
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { getToday } from "../../../commonFuction";
 
-import { axios, urls, baseURL } from "../../../api/axios";
-import { useContext } from "react";
+import { urls, baseURL } from "../../../api/axios";
+import axios from "axios";
 import { UserContext } from "../../../context/user";
 import { colorPalette } from "../../../constants/constants";
 
@@ -26,13 +26,16 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 //이미지 업로드
-const Uploader = ({ image, setImage }) => {
+const Uploader = ({ image, setImage, sendImage, setSendImage }) => {
   let inputRef; //이미지 미리보기를 위해서 Ref를 사용
 
   //이미지 저장
   const saveImage = (event) => {
-    event.preventDefault();
+    //event.preventDefault();
+
+    // 이미지를 가져 올 시
     if (event.target.files[0]) {
+      setSendImage((sendImage) => event.target.files[0]);
       // 새로운 이미지를 올리면 createObjectURL()을 통해 기존 URL을 폐기
       URL.revokeObjectURL(image.preview_URL);
       const preview_URL = URL.createObjectURL(event.target.files[0]);
@@ -129,6 +132,7 @@ export default function ParentsKids() {
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [gender, setGender] = useState("M");
+  const [sendImage, setSendImage] = useState("");
   const [image, setImage] = useState({
     image_file: "",
     preview_URL: "/images/user.png",
@@ -143,25 +147,40 @@ export default function ParentsKids() {
     }
     return true;
   };
+
   // 아이 등록 버튼 클릭 시
   const handleSubmit = (event) => {
     event.preventDefault();
     // 유효성 검사 통과 시 axios 실행
     if (validate()) {
+      // 서버에 요청보낼 Body
       const body = {
         kidName: formValues.kidname,
         kidBirth: formValues.date,
         kidGender: gender,
-        // kidProfileUrl: image.image_file,
-        kidProfileUrl:null,
+        kidProfile: image.image_file,
         userNo: userNo,
       };
+      // 사진 전송을 위해 헤더에 Multi-part로 type 설정
+      const config = {
+        headers: {
+          "Content-type": "multipart/form-data",
+        },
+      };
       try {
-        axios.post(
-          baseURL + urls.fetchKidsRegister,
-          body
-        ).then((response) => console.log(response))
-        navigate("/parents/home"); //아이 등록을 완료하면 home으로 보낸다???
+        axios
+          .post(baseURL + urls.fetchKidsRegister, body, config)
+          .then((response) => {
+            // 응답 성공 시
+            if (response.status === 200) {
+              navigate("/parents/joincenter", {
+                state: { kid_no: response.data.kid_no },
+              });
+            } else {
+              // 응답 실패 시
+              console.log("아이 등록 실패");
+            }
+          });
       } catch (err) {}
     }
   };
@@ -198,7 +217,12 @@ export default function ParentsKids() {
             <Grid container spacing={1}>
               {/* 이미지 업로드 */}
               <Grid item xs={12} sm={12}>
-                <Uploader image={image} setImage={setImage}></Uploader>
+                <Uploader
+                  image={image}
+                  setImage={setImage}
+                  sendImage={sendImage}
+                  setSendImage={setSendImage}
+                ></Uploader>
               </Grid>
               {/* 아이 이름 입력창 */}
               <Grid item xs={12} sm={12}>
@@ -242,10 +266,8 @@ export default function ParentsKids() {
                 <p id="font_test" align="center">
                   아이의 성별을 선택해주세요
                 </p>
-                <ColorToggleButton
-                  gender={gender}
-                  setGender={setGender}
-                ></ColorToggleButton>
+                {/* 남/여 성별 체크버튼 */}
+                <ColorToggleButton gender={gender} setGender={setGender} />
               </Grid>
               {/* 유치원 등록 만들어야함! */}
               {/* 아이등록 버튼 */}
