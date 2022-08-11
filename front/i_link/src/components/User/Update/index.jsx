@@ -1,15 +1,16 @@
 // 2022.07.27 배지우 //
 // 2022.08.01 안정현 validation //
 // 2022.08.05 안정현 디자인 수정 //
-// 기본값 받아오는 거, 뒤로가기 버튼 수정 필요 //
+// 2022.08.11 안정현 axios //
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { urls, baseURL } from "../../../api/axios";
 import { colorPalette } from "../../../constants/constants";
+import { UserContext } from "../../../context/user"
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -26,6 +27,7 @@ const theme = createTheme();
 
 export default function Update() {
   const navigate = useNavigate();
+  
   // validation
   const initialValues = {
     email: '',
@@ -41,16 +43,16 @@ export default function Update() {
   // 에러메시지
   const validate = () => {
     const errors = {};
-    // if (!formValues.password) {
-    //   errors.password = "비밀번호를 입력해주세요.";
-    // }
-    if (!formValues.new_password) {
+    if (!formValues.password) {
+      errors.password = "비밀번호를 입력해주세요.";
+    }
+    if (!formValues.new_password || formValues.new_password.indexOf(" ")>= 0) {
       errors.new_password = "새로운 비밀번호를 입력해주세요.";
     }
     if (formValues.new_password.length < 6) {
       errors.new_password = "6자리 이상 입력해주세요.";
     }
-    if (formValues.password !== formValues.new_check_password) {
+    if (formValues.new_password !== formValues.new_check_password) {
       errors.new_check_password = "비밀번호가 일치하지 않습니다.";
     }
     if (!formValues.new_username) {
@@ -66,25 +68,26 @@ export default function Update() {
     return false;
   }
 
+  const { userNo } =useContext(UserContext)
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     // 유효성검사 통과 시 axios 실행
-    // body 확인 필요
     if (validate()) {
       const body = {
-        userType: formValues.type,
-        userEmail: formValues.email,
-        userPw: formValues.new_password,
+        userNo: parseInt(userNo),
         userName: formValues.new_username,
+        currentPw: formValues.password,
+        userPw: formValues.new_password,
         userPhone: formValues.new_phone_number,
+        userProfile: null,
+        // userEmail: formValues.email,
       };
-      try {
-        const response = await axios.post(
-          baseURL + urls.fetchUsersRegister,
-          body,
-        );
-        navigate("/"); //다시 로그인페이지로 가나? 어디로 가나요???
-      } catch (err) {}
+      console.log(body)
+      axios
+        .put(baseURL + urls.fetchUsersUpdate + userNo, body)
+        .then((response) => console.log(response))
+      navigate('/'); //회원정보 수정 시 다시 로그인페이지로 이동
     }
   };
 
@@ -129,7 +132,7 @@ export default function Update() {
           >
             <Grid container spacing={2}>
               {/* 아이디창 */}
-              <Grid item xs={12} sm={12}>
+              {/* <Grid item xs={12} sm={12}>
                 <TextField
                   required
                   fullWidth
@@ -140,9 +143,9 @@ export default function Update() {
                   autoFocus
                   sx={{ background: "white" }}
                 />
-              </Grid>
+              </Grid> */}
               {/* 기존 비밀번호 입력창 */}
-              {/* <Grid item xs={12} sm={12}>
+              <Grid item xs={12} sm={12}>
                 <TextField
                   required
                   fullWidth
@@ -156,7 +159,7 @@ export default function Update() {
                   sx={{ background: "white" }}
                 />
                 <p>{formErrors.password}</p>
-              </Grid> */}
+              </Grid>
               {/* 새로운 비밀번호 입력창 */}
               <Grid item xs={12}>
                 <TextField
@@ -169,7 +172,7 @@ export default function Update() {
                   autoComplete="new_password"
                   value={formValues.new_password}
                   onChange={handleChange}
-                  sx={{ background: "white", mt:2.2 }}
+                  sx={{ background: "white" }}
                 />
                 <p>{formErrors.new_password}</p>
               </Grid>
@@ -193,7 +196,7 @@ export default function Update() {
                 <TextField
                   required
                   fullWidth
-                  name="new_username" // 바꾸기전 이름 기본입력 필요
+                  name="new_username" // 바꾸기전 이름 기본입력 필요???
                   label="이름"
                   id="new_username"
                   autoComplete="new_username"
@@ -207,7 +210,7 @@ export default function Update() {
                 <TextField
                   required
                   fullWidth
-                  name="new_phone_number" // 바꾸기전 번호 기본입력 필요
+                  name="new_phone_number" // 바꾸기전 번호 기본입력 필요???
                   label="전화번호"
                   id="new_phone_number"
                   autoComplete="phone_number"
@@ -236,7 +239,8 @@ export default function Update() {
               <Button
                 variant="body2" 
                 id="font_test" 
-                style={{ color: "#808080", textDecoration:"none" }}>
+                style={{ color: "#808080", textDecoration:"none" }}
+                onClick={() => {navigate(-1)}}>
                   뒤로가기
                 </Button>
             </Grid>
