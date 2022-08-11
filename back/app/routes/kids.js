@@ -3,6 +3,7 @@ const path = require("path");
 const router = express.Router();
 
 const kidsController = require(path.join(__dirname, "..", "controllers", "kids"));
+const profile = require(path.join(__dirname, "..", "utils", "profile"));
 
 /**
  * @swagger
@@ -30,12 +31,12 @@ const kidsController = require(path.join(__dirname, "..", "controllers", "kids")
  *                  kidGenger:
  *                    type: string
  *                    description: "아이 성별(남-'M', 여-'F')"
- *                  kidProfileUrl:
- *                    type: string
- *                    description: "아이 프로필 사진 주소"
+ *                  kidProfile:
+ *                    type: file
+ *                    description: "아이 사진"
  *                  userNo:
  *                    type: integer
- *                    description: "아이 프로필 사진 주소"
+ *                    description: "회원 번호(부모)"
  *      responses:
  *        "200":
  *          description: 아이 등록 성공
@@ -61,7 +62,7 @@ const kidsController = require(path.join(__dirname, "..", "controllers", "kids")
  *                      example:
  *                          "아이 등록 실패"
  */
-router.post("/register", kidsController.kid_regist);
+router.post("/register", profile.single("kidProfile"), kidsController.kid_regist);
 
 /**
  * @swagger
