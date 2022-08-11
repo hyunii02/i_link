@@ -8,7 +8,7 @@ import UserSignUp from './pages/User/SignUp/UserSignUp';
 import UserUpdate from './pages/User/Update/UserUpdate';
 import KioskMain from './pages/Kiosk/Main/KioskMain';
 import KioskQuiz from './pages/Kiosk/Quiz/KioskQuiz';
-import KioskSurvey from './pages/Kiosk/Survey/KioskVote';
+import KioskSurvey from './pages/Kiosk/Survey';
 import KioskStamp from './pages/Kiosk/Stamp/KioskAward';
 import KioskLoginPage from './pages/Kiosk/Login';
 import MasterDiet from './pages/Master/Diet/MasterDiet';

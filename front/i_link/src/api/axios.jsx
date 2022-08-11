@@ -51,7 +51,7 @@ const urls = {
   fetchMemosDelete: "/memos/",
   fetchTodaysMemos: "/memos/",
   fetchSurveysList: "/surveys/list/",
-  fetchSurveysRegister: "/surveys",
+  fetchSurveysRegister: "/surveys/register",
   fetchSurveysDetail: "/surveys/",
   fetchStamps: "/stamp/",
   fetchTodaysWeathers: "/weathers/",
