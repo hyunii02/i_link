@@ -26,10 +26,6 @@ const surveysController = require(path.join(__dirname, "..", "controllers", "sur
  *                  surveyResult:
  *                    type: string
  *                    description: "설문 결과(1슬픔 2그저그럼 3좋음 4상당히좋음)"
- *                  surveyDate:
- *                    type: string
- *                    format: date
- *                    description: "설문 날짜"
  *      responses:
  *        "200":
  *          description: 설문 등록 성공
