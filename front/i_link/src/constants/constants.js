@@ -16,7 +16,7 @@ const MASTER = [
     { id: 2, name: "공지사항", path: "/master/notice", },
     { id: 3, name: "알림장", path: "/master/memo", },
     { id: 4, name: "식단관리", path: "/master/diet", },
-    { id: 5, name: "활동사진", path: "", },
+    { id: 5, name: "활동사진", path: "/master/pictureboard", },
     { id: 6, name: "반관리", path: "/master/managegroup", }
 ]
 
@@ -27,7 +27,7 @@ const TEACHER = [
     { id: 3, name: "알림장", path: "/teacher/memo", },
     { id: 4, name: "식단관리", path: "/teacher/diet", },
     { id: 5, name: "퀴즈", path: "/teacher/quiz", },
-    { id: 6, name: "활동사진", path: "", }
+    { id: 6, name: "활동사진", path: "/teacher/pictureboard", }
 ]
 
 // 부모님 권한 ID NavBar Data, Path 관리 객체배열
@@ -37,7 +37,7 @@ const PARENTS = [
     { id: 3, name: "특이사항", path: "/parents/repo", },
     { id: 4, name: "식단간식", path: "/parents/diet", },
     { id: 5, name: "키즈퀴즈", path: "/parents/quiz", },
-    { id: 6, name: "활동사진", path: "", },
+    { id: 6, name: "활동사진", path: "/parents/pictureboard", },
     { id: 7, name: "아이등록", path: "/parents/registkid", }
 ]
 
