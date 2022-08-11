@@ -1,6 +1,6 @@
 // 2022.08.08 강민재 //
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -22,10 +22,12 @@ export default function KioskLogin() {
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
 
-  const accessToken = localStorage.getItem("accessToken");
-  if (accessToken) {
-    navigate("/kiosk/main");
-  }
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      navigate("/kiosk/main");
+    }
+  }, [navigate]);
 
   // 에러메시지
   const validate = () => {

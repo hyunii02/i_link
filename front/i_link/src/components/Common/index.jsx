@@ -10,6 +10,7 @@ const ItemsList = ({ items }) => {
         marginTop: "1vh",
         marginLeft: "1vh",
         paddingLeft: "0",
+        color: "white",
       }}
     >
       {items &&
@@ -29,6 +30,7 @@ const KioskTitle = ({ title }) => {
         fontFamily: "NanumJangMiCe",
         fontSize: "7vh",
         paddingLeft: "1vh",
+        color: "white",
       }}
     >
       {title}
