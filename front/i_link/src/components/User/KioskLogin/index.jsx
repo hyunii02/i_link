@@ -1,6 +1,6 @@
 // 2022.08.08 강민재 //
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -22,13 +22,10 @@ export default function KioskLogin() {
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
-      console.log(accessToken);
-      navigate("/kiosk/main");
-    }
-  }, []);
+  const accessToken = localStorage.getItem("accessToken");
+  if (accessToken) {
+    navigate("/kiosk/main");
+  }
 
   // 에러메시지
   const validate = () => {
@@ -80,6 +77,14 @@ export default function KioskLogin() {
       localStorage.setItem("userPhone", resUserPhone);
       localStorage.setItem("userCenter", resUserCenter);
       localStorage.setItem("userGroup", resUserGroup);
+      const kidResponse = await axios.get(
+        baseURL + urls.fetchParentKids + resUserNo
+      );
+      localStorage.setItem("kidsList", JSON.stringify(kidResponse.data));
+      if (!localStorage.getItem("kidName")) {
+        localStorage.setItem("kidName", kidResponse.data[0].kid_name);
+        localStorage.setItem("kidNo", kidResponse.data[0].kid_no);
+      }
 
       navigate("/kiosk/main");
     } catch (err) {

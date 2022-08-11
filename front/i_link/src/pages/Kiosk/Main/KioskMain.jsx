@@ -6,6 +6,7 @@ import MealKiosk from "../../../components/Meal/Kiosk";
 import MealKioskSnack from "../../../components/Meal/KioskSnack";
 import KioskLogout from "../../../components/User/KioskLogout";
 import Clock from "../../../components/Weather/Clock";
+import SelectKidKiosk from "../../../components/Parents/SelectKidKiosk";
 
 const KioskMain = () => {
   return (
@@ -26,6 +27,7 @@ const KioskMain = () => {
         </Grid>
         <Grid item xs={0.5}>
           <KioskLogout />
+          <SelectKidKiosk />
         </Grid>
       </Grid>
       <Grid
