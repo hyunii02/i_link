@@ -10,16 +10,55 @@ exports.notice_regist = async function (req, res) {
   try {
     const fileList = req.files ? req.files : null;
     console.log(fileList);
-    res.end();
+    const transaction = await db.sequelize.transaction(); // 트랜잭션
+    let noticeNo = 0;
+
     const notice = {
       center_no: req.body.centerNo,
       notice_title: req.body.noticeTitle,
       notice_content: req.body.noticeContent,
     };
-    await Notices.create(notice)
-      .then((data) => res.status(200).json({ message: "공지 작성 완료." }))
+
+    // 공지사항 게시글 작성
+    await Notices.create(notice, { transaction })
+      .then((data) => {
+        // 번호 가져오기 - 첨부파일 작성 시 사용
+        noticeNo = data.notice_no;
+      })
       .catch((err) => res.status(500).json({ error: err.message, message: "공지 작성 실패." }));
+
+    const promises = [];
+    for (let i = 0; i < fileList.length; i++) {
+      // 쿼리 실행 후 결과 저장
+      promises.push(
+        db.sequelize.query(
+          `INSERT INTO files(notice_no, file_name, file_size, file_type, file_location) 
+          VALUES(?, ?, ?, ?, ?);`,
+          {
+            type: db.sequelize.QueryTypes.INSERT,
+            replacements: [
+              noticeNo,
+              fileList[i].originalname,
+              fileList[i].size,
+              fileList[i].mimetype,
+              "/uploads/attachment/" + fileList[i].filename,
+            ],
+            transaction,
+          },
+        ),
+      );
+    }
+
+    await Promise.all(promises)
+      .then(() => {
+        res.status(200).json({ message: "첨부파일 등록 완료." });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message, message: "첨부파일 등록 실패." });
+      });
+    await transaction.commit();
   } catch (err) {
+    await transaction.rollback();
     res.status(500).json({ error: err.message, message: "공지 작성 실패." });
   }
 };
