@@ -49,6 +49,9 @@ const profile = require(path.join(__dirname, "..", "utils", "profile"));
  *                      type: string
  *                      example:
  *                          "아이 등록 완료"
+ *                    kid_no:
+ *                      type: integer
+ *                      description: "아이 번호"
  *
  *        "500":
  *          description: 아이 등록 실패
@@ -80,12 +83,12 @@ router.post("/register", profile.single("kidProfile"), kidsController.kid_regist
  *              schema:
  *                type: object
  *                properties:
- *                  centerNo:
- *                    type: integer
- *                    description: "유치원 번호"
  *                  kidNo:
  *                    type: integer
  *                    description: "아이 번호"
+ *                  centerNo:
+ *                    type: integer
+ *                    description: "유치원 번호"
  *      responses:
  *        "200":
  *          description: 아이 유치원 등록 성공
