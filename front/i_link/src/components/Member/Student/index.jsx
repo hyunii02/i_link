@@ -166,7 +166,7 @@ const MemberStudent = (props) => {
               textAlign="center"
               sx={{ mb: 3 }}
             >
-              {student.kid_name}원아의 특이사항
+              {student.kid_name} 원아의 특이사항
             </Typography>
             {reportDefaultList.map((list, index) => (
               <Report
