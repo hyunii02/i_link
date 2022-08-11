@@ -20,7 +20,7 @@ module.exports = function (sequelize, DataTypes) {
       kid_gender: {
         type: DataTypes.STRING(1),
         allowNull: true,
-        validate: { isIn: ["M", "F"] },
+        validate: { isIn: [["M", "F"]] },
       },
       kid_stamp: {
         type: DataTypes.INTEGER,
