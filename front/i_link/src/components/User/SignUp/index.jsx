@@ -53,6 +53,7 @@ const BasicSelectCheck = ({ handleSelect }) => {
 const theme = createTheme();
 
 export default function SignUp() {
+
   const navigate = useNavigate();
   // validation
   const initialValues = {
@@ -71,11 +72,11 @@ export default function SignUp() {
   const validate = () => {
     const errors = {};
     let flag = false;
-    if (!formValues.email) {
+    if (!formValues.email || formValues.email.indexOf(" ")>= 0) {
       errors.email = "이메일을 입력해주세요.";
       flag = true;
     }
-    if (!formValues.password) {
+    if (!formValues.password || formValues.password.indexOf(" ")>= 0) {
       errors.password = "비밀번호를 입력해주세요.";
       flag = true;
     }
