@@ -33,5 +33,6 @@ db.kids = models.kids;
 db.meals = models.meals;
 db.surveys = models.surveys;
 db.reports = models.reports;
+db.quiz = models.quiz;
 
 module.exports = db;
