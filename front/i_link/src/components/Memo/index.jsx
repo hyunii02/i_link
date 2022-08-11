@@ -177,6 +177,7 @@ export default function Album() {
                 >
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography
+                      
                       sx={{ background: "#F2FADC", mb: 4 }}
                       gutterBottom
                       variant="h5"
@@ -185,12 +186,12 @@ export default function Album() {
                       {card.memo_date}
                     </Typography>
                     {card.memo_content.split(",").map((card, key) => (
-                      <Typography key={key}>🏳️‍🌈 {card}</Typography>
+                      <Typography id="font_test" key={key}>🏳️‍🌈 {card}</Typography>
                     ))}
                   </CardContent>
                   <Box sx={{ display: "flex", justifyContent: "end" }}>
                     
-                    <Button onClick={() => handleDelete(card.memo_no)}
+                    <Button id="font_test" onClick={() => handleDelete(card.memo_no)}
                       sx={{
                         background: "#C5EDFD",
                         width: 20,
