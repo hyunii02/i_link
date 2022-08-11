@@ -80,16 +80,19 @@ exports.memo_update = async function (req, res) {
       if (result[0] === 1) {
         // 수정 완료
         console.log("알림장 수정 완료");
-        res.redirect(`/memos/${memoNo}`); // 알림장 정보 조회 페이지
+        res.status(200).json({
+          message: "알림장 수정 완료",
+        });
       } else {
         // 수정 실패
-        res.json({
+        res.status(400).json({
           message: "해당 알림장을 찾을 수 없거나 데이터가 비어있음",
         });
       }
     })
     .catch((err) => {
       res.status(500).json({
+        errMessage: err.message,
         message: "알림장 수정 실패",
       });
     });
@@ -104,16 +107,17 @@ exports.memo_remove = async function (req, res) {
     .then((result) => {
       if (result == 1) {
         // 삭제 완료
-        res.json("알림장 삭제 완료");
+        res.status(200).json("알림장 삭제 완료");
       } else {
         // 삭제 실패
-        res.json({
+        res.status(400).json({
           message: "해당 알림장을 찾을 수 없습니다.",
         });
       }
     })
     .catch((err) => {
       res.status(500).json({
+        errMessage: err.message,
         message: "알림장 삭제 실패",
       });
     });
