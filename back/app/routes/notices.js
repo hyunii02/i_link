@@ -223,6 +223,9 @@ router.get("/:noticeNo", noticeController.notice_detail);
  *                  noticeContent:
  *                    type: string
  *                    description: "공지사항 내용"
+ *                  files:
+ *                    type: file
+ *                    description: "첨부파일 (전송 가능한 최대 파일 개수: 5, 총 25MB)"
  *      responses:
  *        "200":
  *          description: 공지사항 수정 성공
@@ -258,7 +261,7 @@ router.get("/:noticeNo", noticeController.notice_detail);
  *                      example:
  *                          "공지사항 수정 실패"
  */
-router.put("/:noticeNo", attachment.array("file", 5), noticeController.notice_update);
+router.put("/:noticeNo", attachment.array("files", 5), noticeController.notice_update);
 
 /**
  * @swagger

@@ -1,4 +1,5 @@
 const path = require("path");
+const fs = require("fs");
 
 const db = require(path.join(__dirname, "..", "models"));
 const Notices = db.notices;
@@ -33,25 +34,21 @@ exports.notice_regist = async function (req, res) {
       for (let i = 0; i < fileList.length; i++) {
         // 쿼리 실행 후 결과 저장
         promises.push(
-          db.sequelize
-            .query(
-              `INSERT INTO files(notice_no, file_name, file_size, file_type, file_location) 
+          db.sequelize.query(
+            `INSERT INTO files(notice_no, file_name, file_size, file_type, file_location) 
             VALUES(?, ?, ?, ?, ?);`,
-              {
-                type: db.sequelize.QueryTypes.INSERT,
-                replacements: [
-                  noticeNo,
-                  fileList[i].originalname,
-                  fileList[i].size,
-                  fileList[i].mimetype,
-                  "/uploads/attachment/" + fileList[i].filename,
-                ],
-                transaction,
-              },
-            )
-            .catch((err) =>
-              res.status(500).json({ error: err.message, message: "첨부파일 등록 실패." }),
-            ),
+            {
+              type: db.sequelize.QueryTypes.INSERT,
+              replacements: [
+                noticeNo,
+                fileList[i].originalname,
+                fileList[i].size,
+                fileList[i].mimetype,
+                "/uploads/attachment/" + fileList[i].filename,
+              ],
+              transaction,
+            },
+          ),
         );
       }
 
@@ -141,25 +138,71 @@ exports.notice_update = async function (req, res) {
   const noticeNo = req.params.noticeNo;
   const fileList = req.files ? req.files : null;
   const transaction = await db.sequelize.transaction(); // 트랜잭션
+  let originFileList = null;
 
   try {
-    const promises = [];
     const notice = {
       notice_title: req.body.noticeTitle,
       notice_content: req.body.noticeContent,
     };
 
-    promises.push(Notices.update(notice, { where: { notice_no: noticeNo }, transaction }));
+    await Notices.update(notice, { where: { notice_no: noticeNo }, transaction });
 
     if (fileList) {
-    }
-    await Promise.all(promises)
-      .then(() => {
-        res.status(200).json({ message: "공지사항 수정 완료" });
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err.message, message: "공지사항 수정 실패" });
+      const promises = [];
+
+      await Files.findAll({ where: { notice_no: noticeNo }, raw: true })
+        .then((data) => {
+          originFileList = data;
+          console.log(data);
+        })
+        .catch((err) => console.log({ error: err.message, message: "파일 조회 실패." }));
+
+      await db.sequelize.query(`DELETE FROM files WHERE notice_no = ?;`, {
+        type: db.sequelize.QueryTypes.DELETE,
+        replacements: [noticeNo],
       });
+
+      for (let i = 0; i < fileList.length; i++) {
+        // 쿼리 실행 후 결과 저장
+        promises.push(
+          db.sequelize.query(
+            `INSERT INTO files(notice_no, file_name, file_size, file_type, file_location) 
+            VALUES(?, ?, ?, ?, ?);`,
+            {
+              type: db.sequelize.QueryTypes.INSERT,
+              replacements: [
+                noticeNo,
+                fileList[i].originalname,
+                fileList[i].size,
+                fileList[i].mimetype,
+                "/uploads/attachment/" + fileList[i].filename,
+              ],
+              transaction,
+            },
+          ),
+        );
+      }
+
+      await Promise.all(promises)
+        .then(() => {
+          if (originFileList.length > 0) {
+            for (let i = 0; i < originFileList.length; i++) {
+              if (fs.existsSync(path.join(__dirname, "..", originFileList[i].file_location))) {
+                try {
+                  fs.unlinkSync(path.join(__dirname, "..", originFileList[i].file_location));
+                } catch (err) {
+                  console.log(err.message);
+                }
+              }
+            }
+          }
+          res.status(200).json({ message: "공지사항 수정 완료" });
+        })
+        .catch((err) => {
+          res.status(500).json({ error: err.message, message: "공지사항 수정 실패" });
+        });
+    }
     await transaction.commit();
   } catch (err) {
     await transaction.rollback();
