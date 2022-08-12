@@ -151,7 +151,7 @@ const Header = () => {
                 </Button>
               ))}
             </Box>
-            {firstKid && <SelectKidWeb />}
+            <SelectKidWeb />
             <Logout />
           </Toolbar>
         </Container>

@@ -45,6 +45,7 @@ export default function Login() {
     setRefreshToken,
     setKidsList,
     setFirstKid,
+    setUserProfileUrl,
   } = useContext(UserContext);
 
   useEffect(() => {
@@ -94,6 +95,8 @@ export default function Login() {
       const resUserPhone = response.data.data.user.user_phone;
       const resUserCenter = response.data.data.user.center_no;
       const resUserGroup = response.data.data.user.group_no;
+      const resUserProfileUrl = response.data.data.user.user_profile_url;
+
       // 로그인 성공 시 유저 정보 세션에 저장
       setUserNo(resUserNo);
       setUserName(resUserName);
@@ -103,19 +106,34 @@ export default function Login() {
       setUserPhone(resUserPhone);
       setUserCenter(resUserCenter);
       setUserGroup(resUserGroup);
+      setUserProfileUrl(resUserProfileUrl);
 
       // 로그인 성공 시 대응되는 페이지로 네비게이트
       if (response.data.message === "로그인 성공") {
         switch (resUserType) {
+          // 원장 권한
           case 1:
-            navigate("/master/managemember");
-            setKidsList(null);
-            setFirstKid(null);
+            // 소속된 유치원이 없을 경우 유치원 등록 페이지로 이동
+            if (resUserCenter === null) {
+              navigate("/master/registacademy");
+            } else {
+              // 메인페이지로 이동
+              navigate("/master/managemember");
+            }
             break;
+          // 선생 권한
           case 2:
-            navigate("/teacher/management");
-            setKidsList(null);
-            setFirstKid(null);
+            // 소속된 유치원이 없을 경우 유치원 등록 페이지로 이동
+            if (resUserCenter === null) {
+              navigate("/teacher/joincenter");
+            } else {
+              // 소속 유치원은 있지만 반 배정이 되어 있지 않을 경우, 대기 페이지로 이동
+              if (resUserGroup === null) {
+                navigate("/teacher/wait");
+              } else {
+                navigate("/teacher/management");
+              }
+            }
             break;
           // 부모 로그인 성공 시, 부모에 속해 있는 아이의 정보를 가져온 후 navigate
           case 3:
@@ -123,11 +141,19 @@ export default function Login() {
               axios
                 .get(baseURL + urls.fetchParentKids + resUserNo)
                 .then((response) => {
-                  if (response.status === 200) {
-                    setKidsList(response.data);
-                    setFirstKid(response.data[0]);
-                    setChangeState(true);
-                    //navigate("/parents/home");
+                  console.log(response.data.length);
+                  // 등록된 아이가 없을 시
+                  if (response.data.length === 0) {
+                    setKidsList("");
+                    setFirstKid("");
+                    navigate("/parents/registkid");
+                  } else {
+                    if (response.status === 200) {
+                      setKidsList(response.data);
+                      setFirstKid(response.data[0]);
+                      setChangeState(true);
+                      navigate("/parents/home");
+                    }
                   }
                 });
             }

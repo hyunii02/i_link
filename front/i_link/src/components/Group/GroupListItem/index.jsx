@@ -16,7 +16,6 @@ const GroupListItem = (props) => {
 
   // 부모 컴포넌트로부터의 props
   const { classData, deleteClicked, getGroupList, getsubmitList } = props;
-  console.log(classData);
 
   // 리스트 버튼 클릭 핸들러 => 반 디테일 컴포넌트 표시
   const listClickedHandler = (e) => {
