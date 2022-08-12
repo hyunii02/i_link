@@ -20,7 +20,7 @@ export default function CreateMemo(props) {
   const { getMemoList,selectValue,clickGroupHandler } = props;
 
   const style = {
-    display: "flex",
+    display:"flex",
     flexDirection: "column",
     justifyContent: "space-between",
     // 모달창 스타일 지정
@@ -29,7 +29,7 @@ export default function CreateMemo(props) {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 400,
-    height: 500,
+    height: 600,
     bgcolor: "#F8FAD7",
     border: "5px solid #FCE6D4",
     boxShadow: 24,
@@ -37,12 +37,13 @@ export default function CreateMemo(props) {
   };
   //모달창 열고닫기 관리
   const [open, setOpen] = useState(false);
+  const [clicks, setClicks] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     console.log("wefwefwef");
   };
-
+  
   return (
     <Grid item={true} xs={12} sm={6} md={4}>
       <Card
@@ -74,7 +75,7 @@ export default function CreateMemo(props) {
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
-              <Box sx={style}>
+              <Box sx={style}>  
                 <CreateMemoForm
                   selectValue ={selectValue}
                   getMemoList={getMemoList}
@@ -83,9 +84,10 @@ export default function CreateMemo(props) {
                   
                   
                 />
+                
                 <div>
-                  <Button sx={{ ml: 30 }} onClick={handleClose}>
-                    close
+                  <Button id="font_test" sx={{ mt:19,ml: 35 }} onClick={handleClose}>
+                    닫기
                   </Button>
                 </div>
               </Box>

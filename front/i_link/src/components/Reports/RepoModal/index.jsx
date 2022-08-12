@@ -72,16 +72,16 @@ export default function BasicModal({ getReportData }) {
     setText(e.target.value);
   };
 
-  const { userNo } = useContext(UserContext);
+  const { userNo, firstKid } = useContext(UserContext);
 
   const sendReport = () => {
     const body = {
-      kidNo: 1,
+      kidNo: firstKid.kid_no,
       userNo: parseInt(userNo),
       reportType: parseInt(type),
       reportContent: text,
     };
-    console.log(body);
+    console.log(firstKid)
     axios
       .post(urls.fetchReportsRegister, body)
       .then((response) => getReportData());
