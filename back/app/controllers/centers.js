@@ -2,6 +2,7 @@ const path = require("path");
 
 const db = require(path.join(__dirname, "..", "models"));
 const Centers = db.centers;
+const Users = db.users;
 const Op = db.Sequelize.Op; // 검색을 위한 객체
 
 // 유치원 등록
@@ -17,7 +18,27 @@ exports.center_regist = async function (req, res) {
 
   await Centers.create(center)
     .then((data) => {
-      res.status(200).json({ message: "유치원 등록 완료" });
+      //유치원 등록 성공 시 원장 소속 변경
+      Users.update({ center_no: data.center_no }, { where: { user_no: req.body.userNo } })
+        .then((result) => {
+          if (result[0] === 1) {
+            // 소속 유치원 정보 수정 완료
+            res.status(200).json({
+              message: "유치원 등록 후 소속 유치원 정보 수정 완료",
+            });
+          } else {
+            // 소속 유치원 정보 수정 실패
+            res.status(400).json({
+              message: "유치원 등록 후 소속 유치원 정보 수정 요청 오류 발생",
+            });
+          }
+        })
+        .catch((err) => {
+          res.status(500).json({
+            errMessage: err.message,
+            message: "유치원 등록 후 소속 유치원 정보 수정 실패",
+          });
+        });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message, message: "유치원 등록 실패" });
