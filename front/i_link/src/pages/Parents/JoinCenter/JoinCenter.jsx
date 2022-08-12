@@ -22,8 +22,6 @@ const ParentsJoinCenter = () => {
 
   const location = useLocation();
 
-  console.log(location);
-
   const navigate = useNavigate();
 
   const getCenterData = (centerId) => {
@@ -82,19 +80,17 @@ const ParentsJoinCenter = () => {
       centerNo: parseInt(selectedCenter),
       kidNo: location.state.kid_no,
     };
-    console.log(body);
     try {
       axios
         .put(baseURL + urls.fetchKidsRegister, body)
         .then((response) => {
-          console.log(response);
           navigate("/parents/home");
         })
         .catch((error) => {
-          console.log(error);
+          //console.log(error);
         });
     } catch (e) {
-      console.log(e);
+      //console.log(e);
     }
   };
 

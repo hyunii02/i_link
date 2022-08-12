@@ -64,6 +64,7 @@ const urls = {
   fetchMemberTeacherList: "/members/teacher/", // 유치원 반별 교사 목록 조회
   fetchMemberKidsList: "/members/kids/", // 유치원 반별 원아 목록 조회
   fetchKidsStateChange: "/kids/attendance/",
+  fetchTeacherCenterSet: "/users/center/modify", // 선생님용 유치원 정보 수정
 };
 
 const axios = Axios.create({

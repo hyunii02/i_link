@@ -15,6 +15,8 @@ const Logout = () => {
     setUserGroup,
     setAccessToken,
     setRefreshToken,
+    setKidsList,
+    setFirstKid,
   } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -27,6 +29,8 @@ const Logout = () => {
     setUserGroup("");
     setAccessToken("");
     setRefreshToken("");
+    setKidsList("");
+    setFirstKid("");
 
     navigate("/");
   };

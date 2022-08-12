@@ -3,6 +3,7 @@
 // 2022.08.01 안정현 select components //
 // 2022.08.03 강민재, 안정현 axios, validation //
 // 2022.08.04 김국진 로고 변경, 컴포넌트 사이즈 수정, input box 배경색 하얀색으로 변경 //
+// 2022.08.12 김국진 아이디 이메일형식 체크하는지 검사
 
 import React from "react";
 import { useState } from "react";
@@ -25,6 +26,64 @@ import Select from "@mui/material/Select";
 
 import { urls, baseURL } from "../../../api/axios";
 import { colorPalette } from "../../../constants/constants";
+
+//이미지 업로드
+const Uploader = ({ image, setImage, sendImage, setSendImage }) => {
+  let inputRef; //이미지 미리보기를 위해서 Ref를 사용
+
+  //이미지 저장
+  const saveImage = (event) => {
+    //event.preventDefault();
+
+    // 이미지를 가져 올 시
+    if (event.target.files[0]) {
+      setSendImage((sendImage) => event.target.files[0]);
+      // 새로운 이미지를 올리면 createObjectURL()을 통해 기존 URL을 폐기
+      URL.revokeObjectURL(image.preview_URL);
+      const preview_URL = URL.createObjectURL(event.target.files[0]);
+      setImage(() => ({
+        image_file: event.target.files[0],
+        preview_URL: preview_URL,
+      }));
+    }
+  };
+
+  return (
+    <Box
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      {/* 이미지 삽입 */}
+      <input
+        id="kidprofileurl"
+        type="file"
+        accept="image/*"
+        onChange={saveImage}
+        onClick={(event) => (event.target.value = null)} // 클릭할 때 마다 file input의 value를 초기화 하지 않으면 버그가 발생할 수 있다
+        ref={(refParam) => (inputRef = refParam)}
+        style={{ display: "none" }}
+      />
+      {/* 이미지 창 */}
+      <Avatar
+        onClick={() => inputRef.click()}
+        alt="kids_picture"
+        src={image.preview_URL}
+        sx={{
+          width: 200,
+          height: 200,
+          "&:hover": {
+            backgroundColor: "#FFFEF4",
+          },
+        }}
+        style={{ cursor: "pointer" }}
+      ></Avatar>
+    </Box>
+  );
+};
 
 // Select components
 const BasicSelectCheck = ({ handleSelect }) => {
@@ -53,7 +112,6 @@ const BasicSelectCheck = ({ handleSelect }) => {
 const theme = createTheme();
 
 export default function SignUp() {
-
   const navigate = useNavigate();
   // validation
   const initialValues = {
@@ -67,16 +125,25 @@ export default function SignUp() {
 
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
+  const [sendImage, setSendImage] = useState("");
+  const [image, setImage] = useState({
+    image_file: "",
+    preview_URL: "/images/user.png",
+  });
 
   // 에러메시지
   const validate = () => {
     const errors = {};
     let flag = false;
-    if (!formValues.email || formValues.email.indexOf(" ")>= 0) {
+    if (!formValues.email || formValues.email.indexOf(" ") >= 0) {
       errors.email = "이메일을 입력해주세요.";
       flag = true;
     }
-    if (!formValues.password || formValues.password.indexOf(" ")>= 0) {
+    if (formValues.email.indexOf("@") === -1) {
+      errors.email = "아이디 형식이 잘못되었습니다.";
+      flag = true;
+    }
+    if (!formValues.password || formValues.password.indexOf(" ") >= 0) {
       errors.password = "비밀번호를 입력해주세요.";
       flag = true;
     }
@@ -113,18 +180,44 @@ export default function SignUp() {
     // 유효성검사 통과 시 axios 실행
     if (validate()) {
       const body = {
-        userType: formValues.type,
+        userType: parseInt(formValues.type),
         userEmail: formValues.email,
         userPw: formValues.password,
         userName: formValues.username,
         userPhone: formValues.phone_number,
+        userProfile: image.image_file,
+      };
+      console.log(body);
+      // 사진 전송을 위해 헤더에 Multi-part로 type 설정
+      const config = {
+        headers: {
+          "Content-type": "multipart/form-data",
+        },
       };
       try {
+        axios
+          .post(baseURL + urls.fetchUsersRegister, body, config)
+          .then((response) => {
+            console.log("RES: ", response);
+            // 응답 성공 시
+            if (response.status === 200) {
+              navigate("/");
+            } else {
+              // 응답 실패 시
+              console.log("회원 등록 실패");
+            }
+          });
+        /*
         const response = await axios.post(
           baseURL + urls.fetchUsersRegister,
-          body
+          body,
+          config,
         );
-        navigate("/");
+        console.log(response);
+        if (response.status === 200) {
+          navigate("/");
+        }
+        navigate("/");*/
       } catch (err) {
         const errors = {
           email: "이미 가입된 이메일입니다.",
@@ -174,6 +267,15 @@ export default function SignUp() {
             sx={{ mt: 5 }}
           >
             <Grid container spacing={2}>
+              {/* 이미지 업로드 */}
+              <Grid item xs={12} sm={12}>
+                <Uploader
+                  image={image}
+                  setImage={setImage}
+                  sendImage={sendImage}
+                  setSendImage={setSendImage}
+                ></Uploader>
+              </Grid>
               {/* 부모님, 원장님, 선생님 선택창 */}
               <Grid item xs={12} sm={12}>
                 <BasicSelectCheck
