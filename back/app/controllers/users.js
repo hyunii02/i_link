@@ -166,7 +166,10 @@ exports.user_update = async function (req, res) {
   // 현재 비밀번호
   const currentPw = req.body.currentPw;
 
-  let user = await Users.findOne({ where: { user_no: userNo }, raw: true }).catch((err) => {
+  let user = await Users.findOne({
+    where: { user_no: userNo },
+    raw: true,
+  }).catch((err) => {
     res.status(500).json({ error: err.message, message: "사용자 정보 조회 과정에 문제 발생" });
   });
 
@@ -225,11 +228,7 @@ exports.user_update = async function (req, res) {
         // 정보 수정
         await Users.update(user, condition)
           .then((result) => {
-            if (result[0] === 1) {
-              res.status(200).json({ message: "회원 정보 수정 완료." });
-            } else {
-              res.status(400).json({ message: "해당 회원을 찾을 수 없거나 데이터가 비어있음." });
-            }
+            res.status(200).json({ message: "회원 정보 수정 완료." });
           })
           .catch((err) => {
             res.status(500).json({ error: err.message, message: "회원 정보 수정 실패." });
@@ -253,17 +252,9 @@ exports.user_center_update = async function (req, res) {
 
   await Users.update({ center_no: centerNo }, { where: { user_no: userNo } })
     .then((result) => {
-      if (result[0] === 1) {
-        // 소속 유치원 정보 수정 완료
-        res.status(200).json({
-          message: "소속 유치원 정보 수정 완료",
-        });
-      } else {
-        // 소속 유치원 정보 수정 실패
-        res.status(400).json({
-          message: "소속 유치원 정보 수정 요청 오류 발생",
-        });
-      }
+      res.status(200).json({
+        message: "소속 유치원 정보 수정 완료",
+      });
     })
     .catch((err) => {
       res.status(500).json({

@@ -112,12 +112,8 @@ exports.report_update = async function (req, res) {
   };
 
   await Reports.update(report, { where: { report_no: reportNo } })
-    .then((result) => {
-      if (result[0] === 1) {
-        res.status(200).json({ message: "전달사항 수정 완료" });
-      } else {
-        res.status(400).json({ message: "해당 정보를 찾을 수 없거나 데이터가 비어있음" });
-      }
+    .then(() => {
+      res.status(200).json({ message: "전달사항 수정 완료" });
     })
     .catch((err) => {
       res.status(500).send({
