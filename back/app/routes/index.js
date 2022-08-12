@@ -79,6 +79,7 @@ router.use("/reports", require(path.join(__dirname, "reports")));
  *    description: 공지사항 CRUD
  */
 router.use("/notices", require(path.join(__dirname, "notices")));
+
 /**
  * @swagger
  * tags:
@@ -86,5 +87,13 @@ router.use("/notices", require(path.join(__dirname, "notices")));
  *    description: 퀴즈 CRUD
  */
 router.use("/quiz", require(path.join(__dirname, "quiz")));
+
+/**
+ * @swagger
+ * tags:
+ *    name: Stamps
+ *    description: 칭찬도장 관리
+ */
+router.use("/stamps", require(path.join(__dirname, "stamps")));
 
 module.exports = router;
