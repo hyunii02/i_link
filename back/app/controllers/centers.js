@@ -24,6 +24,7 @@ exports.center_regist = async function (req, res) {
           if (result[0] === 1) {
             // 소속 유치원 정보 수정 완료
             res.status(200).json({
+              center_no: data.center_no,
               message: "유치원 등록 후 소속 유치원 정보 수정 완료",
             });
           } else {
