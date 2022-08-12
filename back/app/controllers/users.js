@@ -21,22 +21,25 @@ const redisClient = require(path.join(__dirname, "..", "config", "redis"));
 // 회원가입
 // [post] /users/register
 exports.user_regist = async function (req, res) {
-  // User
-  const user = {
-    user_type: req.body.userType,
-    user_email: req.body.userEmail,
-    user_pw: req.body.userPw,
-    user_name: req.body.userName,
-    user_phone: req.body.userPhone ? req.body.userPhone : null,
-  };
+  try {
+    // User
+    const user = {
+      user_type: req.body.userType,
+      user_email: req.body.userEmail,
+      user_pw: req.body.userPw,
+      user_name: req.body.userName,
+      user_phone: req.body.userPhone ? req.body.userPhone : null,
+      user_profile_url: req.file ? "/uploads/profile/" + req.file.filename : null,
+    };
 
-  await Users.create(user)
-    .then((data) => {
-      res.status(200).json({ message: "회원가입 완료" });
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message, message: "회원 가입 실패." });
-    });
+    await Users.create(user)
+      .then((data) => {
+        res.status(200).json({ message: "회원가입 완료" });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message, message: "회원 가입 실패." });
+      });
+  } catch (err) {}
 };
 
 // 로그인
