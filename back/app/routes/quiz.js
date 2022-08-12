@@ -116,6 +116,73 @@ router.get("/list/:userNo", quizController.quiz_list);
 /**
  * @swagger
  * paths:
+ *  /quiz/today/{groupNo}:
+ *    get:
+ *      summary: "오늘의 퀴즈 정보 조회"
+ *      description: "get 방식으로 오늘의 퀴즈 정보 조회"
+ *      tags: [Quiz]
+ *      parameters:
+ *        - in: path
+ *          name: groupNo
+ *          required: true
+ *          description: 반 번호
+ *          schema:
+ *            type: integer
+ *      responses:
+ *        "200":
+ *          description: 퀴즈 정보 조회 성공
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  quiz_no:
+ *                    type: integer
+ *                    example: 4
+ *                  quiz_writer:
+ *                    type: integer
+ *                    example: 13
+ *                  group_no:
+ *                    type: integer
+ *                    example: 1
+ *                  quiz_content:
+ *                    type: string
+ *                    example: "이건 뭘까요?"
+ *                  quiz_sel_1:
+ *                    type: string
+ *                    example: "크레파스"
+ *                  quiz_sel_2:
+ *                    type: string
+ *                    example: "도레미파"
+ *                  quiz_sel_3:
+ *                    type: string
+ *                    example: "물감"
+ *                  quiz_sel_4:
+ *                    type: string
+ *                    example: "고양이"
+ *                  quiz_ans:
+ *                    type: integer
+ *                    example: 4
+ *                  quiz_date:
+ *                    type: string
+ *                    example: "2022-08-11"
+ *        "500":
+ *          description: 오늘의 퀴즈 정보 조회 실패
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "해당 정보를 찾을 수 없습니다."
+ */
+router.get("/today/:groupNo", quizController.quiz_today);
+
+/**
+ * @swagger
+ * paths:
  *  /quiz/{quizNo}:
  *    get:
  *      summary: "퀴즈 정보 조회"
@@ -247,6 +314,48 @@ router.get("/:quizNo", quizController.quiz_detail);
  *                          "퀴즈 수정 실패"
  */
 router.put("/:quizNo", quizController.quiz_update);
+
+/**
+ * @swagger
+ * paths:
+ *  /quiz/today/{quizNo}:
+ *    put:
+ *      summary: "퀴즈 오늘 날짜로 지정"
+ *      description: "put 방식으로 퀴즈 날짜 정보 수정"
+ *      tags: [Quiz]
+ *      parameters:
+ *        - in: path
+ *          name: quizNo
+ *          required: true
+ *          description: 퀴즈 번호
+ *          schema:
+ *            type: integer
+ *      responses:
+ *        "200":
+ *          description: 퀴즈 날짜 수정 성공
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "퀴즈 날짜 수정 완료"
+ *
+ *        "500":
+ *          description: 퀴즈 날짜 수정 실패
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "퀴즈 날짜 수정 실패"
+ */
+router.put("/today/:quizNo", quizController.quiz_date_update);
 
 /**
  * @swagger
