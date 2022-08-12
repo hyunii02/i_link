@@ -245,6 +245,34 @@ exports.user_update = async function (req, res) {
   }
 };
 
+// 회원 소속 유치원 정보 수정
+// [put] /users/center/modify
+exports.user_center_update = async function (req, res) {
+  const userNo = req.body.userNo;
+  const centerNo = req.body.centerNo;
+
+  await Users.update({ center_no: centerNo }, { where: { user_no: userNo } })
+    .then((result) => {
+      if (result[0] === 1) {
+        // 소속 유치원 정보 수정 완료
+        res.status(200).json({
+          message: "소속 유치원 정보 수정 완료",
+        });
+      } else {
+        // 소속 유치원 정보 수정 실패
+        res.status(400).json({
+          message: "소속 유치원 정보 수정 요청 오류 발생",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        errMessage: err.message,
+        message: "소속 유치원 정보 수정 실패",
+      });
+    });
+};
+
 // 회원 정보 삭제
 // [delete] /users/:userNo
 exports.user_remove = async function (req, res) {
