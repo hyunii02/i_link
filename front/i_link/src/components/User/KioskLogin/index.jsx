@@ -86,6 +86,7 @@ export default function KioskLogin() {
       if (!localStorage.getItem("kidName")) {
         localStorage.setItem("kidName", kidResponse.data[0].kid_name);
         localStorage.setItem("kidNo", kidResponse.data[0].kid_no);
+        localStorage.setItem("kidUrl", kidResponse.data[0].kid_profile_url);
       }
 
       navigate("/kiosk/main");

@@ -3,7 +3,7 @@
 // index -> creatememo -> creatememoform -> addmemocomponent
 
 import * as React from "react";
-import { useState, useRef,useEffect, useContext } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { UserContext } from "../../context/user";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -23,23 +23,14 @@ import CreateMemo from "./creatememo";
 import Box from "@mui/material/Box";
 import { baseURL, urls } from "../../api/axios";
 
-
-
-
-
-
 const theme = createTheme();
 
 export default function Album() {
-
-
-
-
-  const { userGroup,userCenter } = useContext(UserContext);
+  const { userGroup, userCenter, userType } = useContext(UserContext);
   const [cards, setCards] = useState([]);
   const [groupList, setGroupList] = useState([]);
   const [groupNo, setGroupNo] = useState(null);
-  const [selectValue,setSelectValue] = useState('');
+  const [selectValue, setSelectValue] = useState("");
 
   //반정보받아오기
   const getGroupList = () => {
@@ -53,65 +44,57 @@ export default function Album() {
         };
         newArray.push(newObj);
       });
-      console.log(newArray)
+      console.log(newArray);
       setGroupList(newArray);
-      setSelectValue(newArray[0].value)
+      setSelectValue(newArray[0].value);
     });
   };
-  
-
 
   // 반 목록 선택 시 반에 맞는 정보
- 
-  const clickGroupHandler=()=>{
-    if (selectValue===''){
-      return
+
+  const clickGroupHandler = () => {
+    if (selectValue === "") {
+      return;
     }
-    
+
     try {
       axios
-        
-        .get(baseURL + urls.fetchMemosList + selectValue)
-        .then((response) => setCards(response.data));
 
-        
+        .get(
+          baseURL +
+            urls.fetchMemosList +
+            (userType === "2" ? userGroup : selectValue)
+        )
+        .then((response) => setCards(response.data));
     } catch (e) {
       console.log(e);
     }
-
-  }
+  };
 
   useEffect(() => {
     clickGroupHandler();
   }, [selectValue]);
 
-
   useEffect(() => {
     getGroupList();
   }, []);
 
-
   //axios 로 정보를 받아온다.
   const getMemoList = (e) => {
-    
     try {
       axios
         .get(baseURL + urls.fetchMemosList + userGroup)
         .then((response) => setCards(response.data));
-        
     } catch (e) {
       console.log(e);
     }
-    
   };
-   ///삭제함수
-  
-  const handleDelete = (event) => {
-    console.log(event);
+  ///삭제함수
 
+  const handleDelete = (memoNo) => {
     try {
       axios
-        .delete(baseURL + urls.fetchMemosDelete + event)
+        .delete(baseURL + urls.fetchMemosDelete + memoNo)
         .then((response) => {
           if (response.status === 200) {
             clickGroupHandler();
@@ -122,52 +105,47 @@ export default function Album() {
     }
   };
 
-
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <main>
-      <FormControl fullWidth>
-      <Select
-        onChange={(e)=>setSelectValue(e.target.value)}
-        value={selectValue}
-        sx={{
-          
-          height: "60px",
-          border: "6px solid #fae2e2",
-          background: "#FAF1DA",
-        }}
-        inputProps={{ "aria-label": "Without label" }}
-      >
-        {groupList.map((list, index) => (
-          <MenuItem
-            value={list.value}
-            key={index}
-            sx={{ background: "#FAF1DA" }}
-            
-          >
-            <Typography id="font_test" variant="h6">
-              {list.content}
-            </Typography>
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-
-
-
-
+        {userType == 1 && (
+          <FormControl sx={{pt:5,pl:18,pr:18}}fullWidth>
+            <Select
+              onChange={(e) => setSelectValue(e.target.value)}
+              value={selectValue}
+              sx={{
+                height: "60px",
+                border: "6px solid #fae2e2",
+                background: "#FAF1DA",
+              }}
+              inputProps={{ "aria-label": "Without label" }}
+            >
+              {groupList.map((list, index) => (
+                <MenuItem
+                  value={list.value}
+                  key={index}
+                  sx={{ background: "#FAF1DA" }}
+                >
+                  <Typography id="font_test" variant="h6">
+                    {list.content}
+                  </Typography>
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
 
         {/* Hero unit */}
 
-
-
-        
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            <CreateMemo selectValue={selectValue}getMemoList={getMemoList} clickGroupHandler={clickGroupHandler}  />
+            <CreateMemo
+              selectValue={selectValue}
+              getMemoList={getMemoList}
+              clickGroupHandler={clickGroupHandler}
+            />
             {cards.map((card) => (
               <Grid item key={card.memo_no} xs={12} sm={6} md={4}>
                 <Card
@@ -183,12 +161,16 @@ export default function Album() {
                       {card.memo_date}
                     </Typography>
                     {card.memo_content.split(",").map((card, key) => (
-                      <Typography key={key}>🏳️‍🌈 {card}</Typography>
+                      <Typography id="font_test" key={key}>
+                        🏳️‍🌈 {card}
+                      </Typography>
                     ))}
                   </CardContent>
+                  {userType!==3 &&(
                   <Box sx={{ display: "flex", justifyContent: "end" }}>
-                    
-                    <Button onClick={() => handleDelete(card.memo_no)}
+                    <Button
+                      id="font_test"
+                      onClick={() => handleDelete(card.memo_no)}
                       sx={{
                         background: "#C5EDFD",
                         width: 20,
@@ -199,6 +181,7 @@ export default function Album() {
                       삭제
                     </Button>
                   </Box>
+                  )}
                 </Card>
               </Grid>
             ))}
