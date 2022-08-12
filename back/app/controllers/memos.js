@@ -21,9 +21,7 @@ exports.memo_regist = async function (req, res) {
       res.status(200).json(data);
     })
     .catch((err) => {
-      res.status(500).json({
-        message: err.message || "알림장 등록 실패",
-      });
+      res.status(500).json({ error: err.message, message: "알림장 등록 실패" });
     });
 };
 
@@ -37,9 +35,7 @@ exports.memo_list = async function (req, res) {
       res.status(200).json(data);
     })
     .catch((err) => {
-      res.status(500).json({
-        message: err.message || "목록 조회 과정에 문제 발생",
-      });
+      res.status(500).json({ error: err.message, message: "목록 조회 과정에 문제 발생" });
     });
 };
 
@@ -50,18 +46,15 @@ exports.memo_detail = async function (req, res) {
   await Memos.findByPk(memoNo)
     .then((data) => {
       if (data === null) {
-        res.status(500).json({
+        res.status(400).json({
           message: "해당 정보를 찾을 수 없습니다.",
         });
       } else {
-        console.log(data);
         res.status(200).json(data);
       }
     })
     .catch((err) => {
-      res.status(500).json({
-        message: err.message || "목록 조회 과정에 문제 발생",
-      });
+      res.status(500).json({ error: err.message, message: "목록 조회 과정에 문제 발생" });
     });
 };
 
@@ -76,25 +69,11 @@ exports.memo_update = async function (req, res) {
   };
 
   await Memos.update(memo, { where: { memo_no: memoNo } })
-    .then((result) => {
-      if (result[0] === 1) {
-        // 수정 완료
-        console.log("알림장 수정 완료");
-        res.status(200).json({
-          message: "알림장 수정 완료",
-        });
-      } else {
-        // 수정 실패
-        res.status(400).json({
-          message: "해당 알림장을 찾을 수 없거나 데이터가 비어있음",
-        });
-      }
+    .then(() => {
+      res.status(200).json({ message: "알림장 수정 완료" });
     })
     .catch((err) => {
-      res.status(500).json({
-        errMessage: err.message,
-        message: "알림장 수정 실패",
-      });
+      res.status(500).json({ error: err.message, message: "알림장 수정 실패" });
     });
 };
 
@@ -106,19 +85,12 @@ exports.memo_remove = async function (req, res) {
   await Memos.destroy({ where: { memo_no: memoNo } })
     .then((result) => {
       if (result == 1) {
-        // 삭제 완료
         res.status(200).json("알림장 삭제 완료");
       } else {
-        // 삭제 실패
-        res.status(400).json({
-          message: "해당 알림장을 찾을 수 없습니다.",
-        });
+        res.status(400).json({ message: "해당 알림장을 찾을 수 없습니다." });
       }
     })
     .catch((err) => {
-      res.status(500).json({
-        errMessage: err.message,
-        message: "알림장 삭제 실패",
-      });
+      res.status(500).json({ error: err.message, message: "알림장 삭제 실패" });
     });
 };
