@@ -26,7 +26,7 @@ router.post("/token", auth.verifyRefreshToken, userController.refresh_token);
  *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (유저 회원가입)
  *          required: true
  *          content:
- *            multipart/form-data:
+ *            application/x-www-form-urlencoded:
  *              schema:
  *                type: object
  *                properties:
@@ -45,9 +45,6 @@ router.post("/token", auth.verifyRefreshToken, userController.refresh_token);
  *                  userPhone:
  *                    type: string
  *                    description: "유저 전화번호(xxx-xxxx-xxxx)"
- *                  userProfile:
- *                    type: file
- *                    description: "유저 프로필 사진"
  *      responses:
  *        "200":
  *          description: 회원 가입 성공
@@ -73,8 +70,7 @@ router.post("/token", auth.verifyRefreshToken, userController.refresh_token);
  *                      example:
  *                          "회원가입 실패"
  */
-
-router.post("/register", profile.single("userProfile"), userController.user_regist);
+router.post("/register", userController.user_regist);
 
 /**
  * @swagger
@@ -116,11 +112,28 @@ router.post("/register", profile.single("userProfile"), userController.user_regi
  *                          "로그인 성공"
  *                    data:
  *                      type: object
- *                      example:
- *                          [
- *                              user : { "user_no": 13, "user_type": 3, "user_name": "유저1" },
- *                              token : {access_token: "afhwelrkl2kjlkjl23r", refresh_token: "jrl2qhrlkjqhfjj3enr"}
- *                          ]
+ *                      properties:
+ *                        user:
+ *                          type: object
+ *                          properties:
+ *                             user_no:
+ *                               type: integer
+ *                               example: 1
+ *                             user_type:
+ *                               type: integer
+ *                               example: 3
+ *                             user_name:
+ *                               type: string
+ *                               example: "사용자"
+ *                        token:
+ *                          type: object
+ *                          properties:
+ *                             access_token:
+ *                               type: string
+ *                               example: "eyJhbGciOiJIUzI1NiIsInR5cCI"
+ *                             refresh_token:
+ *                               type: string
+ *                               example: "eyJhbGciOiJIUzI1NiIsInR5cCI"
  *        "400":
  *          description: 로그인 실패
  *          content:
@@ -323,6 +336,10 @@ router.put("/:userNo", profile.single("userProfile"), userController.user_update
  *              schema:
  *                type: object
  *                properties:
+ *                    logined:
+ *                      type: boolean
+ *                      example:
+ *                          "false"
  *                    message:
  *                      type: string
  *                      example:
