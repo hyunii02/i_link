@@ -167,12 +167,8 @@ exports.kid_update = async function (req, res) {
     };
 
     await Kids.update(kid, { where: { kid_no: kidNo } })
-      .then((result) => {
-        if (result[0] === 1) {
-          res.status(200).json({ message: "정보 수정 완료" });
-        } else {
-          res.status(400).json({ message: "요청 실패" });
-        }
+      .then(() => {
+        res.status(200).json({ message: "정보 수정 완료" });
       })
       .catch((err) => {
         res.status(500).json({ error: err.message, message: "정보 수정 실패" });
@@ -193,23 +189,11 @@ exports.kid_update_attendance = async function (req, res) {
   };
 
   await Kids.update(kid, { where: { kid_no: kidNo } })
-    .then((result) => {
-      if (result[0] === 1) {
-        res.status(200).json({
-          message: "정보 수정 완료",
-        });
-      } else {
-        // 수정 실패
-        res.status(400).json({
-          message: "요청 실패",
-        });
-      }
+    .then(() => {
+      res.status(200).json({ message: "정보 수정 완료" });
     })
     .catch((err) => {
-      res.status(500).json({
-        errormessage: err.message,
-        message: "정보 수정 실패",
-      });
+      res.status(500).json({ error: err.message, message: "정보 수정 실패" });
     });
 };
 
@@ -217,24 +201,32 @@ exports.kid_update_attendance = async function (req, res) {
 // [delete] /kids/:kidNo
 exports.kid_remove = async function (req, res) {
   const kidNo = req.params.kidNo;
+  let kid = await Kids.findByPk(kidNo).catch((err) => {
+    res.status(500).json({ error: err.message, message: "아이 정보 조회 과정 중 문제 발생" });
+  });
+
+  if (kid.kid_profile_url && fs.existsSync(path.join(__dirname, "..", kid.kid_profile_url))) {
+    try {
+      fs.unlinkSync(path.join(__dirname, "..", kid.kid_profile_url));
+    } catch (err) {
+      console.log(err.message);
+      throw err;
+    }
+  }
+
   await Kids.destroy({ where: { kid_no: kidNo } })
     .then((result) => {
       if (result == 1) {
-        // 삭제 완료
         res.status(200).json({
           message: "아이 정보 삭제 완료",
         });
       } else {
-        // 삭제 실패
         res.status(400).json({
           message: "요청 실패",
         });
       }
     })
     .catch((err) => {
-      res.status(500).json({
-        errormessage: err.message,
-        message: "삭제 실패",
-      });
+      res.status(500).json({ error: err.message, message: "삭제 실패" });
     });
 };

@@ -96,12 +96,8 @@ exports.center_update = async function (req, res) {
   };
 
   await Centers.update(center, { where: { center_no: centerNo } })
-    .then((result) => {
-      if (result[0] === 1) {
-        res.status(200).json({ message: "유치원 수정 완료" }); // 유치원 정보 조회 페이지
-      } else {
-        res.status(400).json({ message: "해당 정보를 찾을 수 없거나 데이터가 비어있음" });
-      }
+    .then(() => {
+      res.status(200).json({ message: "유치원 수정 완료" }); // 유치원 정보 조회 페이지
     })
     .catch((err) => {
       res.status(500).json({ error: err.message, message: "유치원 수정 실패" });
