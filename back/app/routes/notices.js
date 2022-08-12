@@ -167,6 +167,8 @@ router.get("/list/:centerNo", noticeController.notice_list);
  *                       file_location:
  *                         type: string
  *                         example: "/uploads/attachment/1660264052446.png"
+ *                    example: [{ "file_no": 11, "file_name": "kid img.png", "file_location": "/uploads/attachment/1660280444914.png" },
+ *                              { "file_no": 12, "file_name": "profile.png", "file_location": "/uploads/attachment/1660280444915.png" } ]
  *        "400":
  *          description: 공지사항 조회 실패
  *          content:
@@ -188,7 +190,7 @@ router.get("/list/:centerNo", noticeController.notice_list);
  *                    message:
  *                      type: string
  *                      example:
- *                          "조회 실패"
+ *                          "공지사항 조회 실패"
  */
 router.get("/:noticeNo", noticeController.notice_detail);
 
