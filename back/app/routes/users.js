@@ -316,6 +316,65 @@ router.put("/:userNo", profile.single("userProfile"), userController.user_update
 /**
  * @swagger
  * paths:
+ *  /users/center/modify:
+ *    put:
+ *      summary: "소속 유치원 정보 수정"
+ *      description: "put 방식으로 소속 유치원 정보 수정"
+ *      tags: [Users]
+ *      requestBody:
+ *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (소속 유치원 정보 수정)
+ *          required: true
+ *          content:
+ *            application/x-www-form-urlencoded:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  userNo:
+ *                    type: integer
+ *                    description: "유저 번호"
+ *                  centerNo:
+ *                    type: integer
+ *                    description: "유치원 번호"
+ *      responses:
+ *        "200":
+ *          description: 소속 유치원 정보 수정 성공
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "소속 유치원 정보 수정 완료."
+ *        "400":
+ *          description: 소속 유치원 정보 수정 요청 실패
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "소속 유치원 정보 수정 요청 오류 발생"
+ *        "500":
+ *          description: 회원 수정 실패
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "소속 유치원 정보 수정 실패."
+ */
+router.put("/center/modify", userController.user_center_update);
+
+/**
+ * @swagger
+ * paths:
  *  /users/{userNo}:
  *    delete:
  *      summary: "회원 탈퇴"
