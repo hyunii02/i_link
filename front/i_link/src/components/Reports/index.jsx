@@ -1,6 +1,6 @@
 // 안정현
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import BasicModal from "./RepoModal";
 import RepoItemList from "./RepoItemList";
 import { urls, baseURL } from "../../api/axios";
@@ -9,10 +9,11 @@ import axios from "axios";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import { UserContext } from "../../context/user";
 
 export default function Reports(props) {
-  // 임시 데이터
   const [repos, setRepos] = useState([]);
+  const { firstKid } =useContext(UserContext)
 
   // 삭제 기능
   const onRemove = (id) => {
@@ -22,7 +23,7 @@ export default function Reports(props) {
   //서버에서 특이사항 데이터 받아오기(get방식)
   const getReportData = () => {
     axios
-      .get(baseURL + urls.fetchKidsReport + "1")
+      .get(baseURL + urls.fetchKidsReport + firstKid.kid_no)
       .then((response) => setRepos(response.data));
   };
   useEffect(() => {

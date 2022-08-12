@@ -27,6 +27,17 @@ const theme = createTheme();
 
 export default function Update() {
   const navigate = useNavigate();
+  const {
+    setUserNo,
+    setUserName,
+    setUserType,
+    setUserPhone,
+    setUserCenter,
+    setUserGroup,
+    setAccessToken,
+    setRefreshToken,
+    userNo,
+  } = useContext(UserContext);
   
   // validation
   const initialValues = {
@@ -75,7 +86,6 @@ export default function Update() {
     return true;
   }
 
-  const { userNo } =useContext(UserContext)
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -95,6 +105,14 @@ export default function Update() {
           baseURL + urls.fetchUsersUpdate + userNo,
           body
         );
+        setUserNo("");
+        setUserName("");
+        setUserType("");
+        setUserPhone("");
+        setUserCenter("");
+        setUserGroup("");
+        setAccessToken("");
+        setRefreshToken("");
         navigate("/"); //회원정보 수정 시 다시 로그인페이지로 이동
       } catch (err) {
         const errors = {
