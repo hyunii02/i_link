@@ -30,6 +30,9 @@ const noticeController = require(path.join(__dirname, "..", "controllers", "noti
  *                  noticeContent:
  *                    type: string
  *                    description: "공지사항 내용"
+ *                  files:
+ *                    type: file
+ *                    description: "첨부파일 (전송 가능한 최대 파일 개수: 5, 총 25MB)"
  *      responses:
  *        "200":
  *          description: 공지사항 등록 성공
@@ -55,7 +58,7 @@ const noticeController = require(path.join(__dirname, "..", "controllers", "noti
  *                      example:
  *                          "공지 작성 실패"
  */
-router.post("/register", attachment.array("file", 5), noticeController.notice_regist);
+router.post("/register", attachment.array("files", 5), noticeController.notice_regist);
 
 /**
  * @swagger
@@ -143,21 +146,27 @@ router.get("/list/:centerNo", noticeController.notice_list);
  *                  notice_no:
  *                    type: integer
  *                    example: 1
- *                  center_no:
- *                    type: integer
- *                    example: 1
  *                  notice_title:
  *                    type: string
  *                    example: "공지 제목"
  *                  notice_content:
  *                    type: string
  *                    example: "공지 내용"
- *                  report_date:
+ *                  notice_date:
  *                    type: string
  *                    example: "2022-08-03 07:28:21"
- *                  hit:
- *                    type: integer
- *                    example: 0
+ *                  files:
+ *                    type: object
+ *                    properties:
+ *                       file_no:
+ *                         type: integer
+ *                         example: 3
+ *                       file_name:
+ *                         type: string
+ *                         example: "kid img.png"
+ *                       file_location:
+ *                         type: string
+ *                         example: "/uploads/attachment/1660264052446.png"
  *        "400":
  *          description: 공지사항 조회 실패
  *          content:
@@ -235,7 +244,6 @@ router.get("/:noticeNo", noticeController.notice_detail);
  *                      type: string
  *                      example:
  *                          "해당 정보를 찾을 수 없거나 데이터가 비어있음"
- *
  *        "500":
  *          description: 공지사항 수정 실패
  *          content:

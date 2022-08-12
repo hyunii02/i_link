@@ -99,23 +99,31 @@ exports.notice_list = async function (req, res) {
 // [get] /notices/:noticeNo
 exports.notice_detail = async function (req, res) {
   const noticeNo = req.params.noticeNo;
-  await Notices.findOne({
-    where: { notice_no: noticeNo },
-    attributes: {
-      include: [
-        "notice_no",
-        "center_no",
-        "notice_title",
-        "notice_content",
-        [
-          // 날짜 형식 포맷 후 전송
-          db.sequelize.fn("DATE_FORMAT", db.sequelize.col("notice_date"), "%Y-%m-%d %h:%i:%s"),
-          "notice_date",
+
+  await Promise.all([
+    Notices.findOne({
+      where: { notice_no: noticeNo },
+      attributes: {
+        include: [
+          "notice_no",
+          "notice_title",
+          "notice_content",
+          [
+            // 날짜 형식 포맷 후 전송
+            db.sequelize.fn("DATE_FORMAT", db.sequelize.col("notice_date"), "%Y-%m-%d %H:%i:%s"),
+            "notice_date",
+          ],
+          "hit",
         ],
-        "hit",
+      },
+      include: [
+        {
+          model: Files,
+          as: "files",
+        },
       ],
-    },
-  })
+    }),
+  ])
     .then((notice) => {
       if (notice == null) res.status(400).json({ message: "해당 데이터가 없습니다." });
       res.status(200).json(notice);

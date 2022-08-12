@@ -34,7 +34,7 @@ const fileFilter = (req, file, cb) => {
 module.exports = multer({
   storage: storage,
   limits: {
-    fileSize: 1024 * 1024 * 25, // 파일 최대 크기: 10MB
+    fileSize: 1024 * 1024 * 25, // 파일 최대 크기: 25MB
   },
   fileFilter: fileFilter,
 });
