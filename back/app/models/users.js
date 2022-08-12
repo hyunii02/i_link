@@ -27,7 +27,7 @@ module.exports = function (sequelize, DataTypes) {
         unique: "user_email_UNIQUE",
       },
       user_pw: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING(255),
         allowNull: false,
       },
       user_name: {
@@ -98,15 +98,15 @@ module.exports = function (sequelize, DataTypes) {
         },
       ],
       hooks: {
-        beforeCreate: async (user) => {
+        beforeCreate: (user) => {
           if (user.user_pw) {
-            const salt = await bcrypt.genSaltSync(10, "a");
+            const salt = bcrypt.genSaltSync(10, "a");
             user.user_pw = bcrypt.hashSync(user.user_pw, salt);
           }
         },
-        beforeUpdate: async (user) => {
+        beforeUpdate: (user) => {
           if (user.user_pw) {
-            const salt = await bcrypt.genSaltSync(10, "a");
+            const salt = bcrypt.genSaltSync(10, "a");
             user.user_pw = bcrypt.hashSync(user.user_pw, salt);
           }
         },
