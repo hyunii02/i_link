@@ -63,7 +63,7 @@ router.post("/register", attachment.array("file", 5), noticeController.notice_re
  *  /notices/list/{centerNo}:
  *    get:
  *      summary: "공지사항 목록 조회"
- *      description: "get 방식으로 공지사항 개인 목록 조회"
+ *      description: "get 방식으로 공지사항 목록 조회"
  *      tags: [Notices]
  *      parameters:
  *        - in: path
@@ -72,6 +72,12 @@ router.post("/register", attachment.array("file", 5), noticeController.notice_re
  *          description: 유치원 번호
  *          schema:
  *            type: integer
+ *        - in: query
+ *          name: keyword
+ *          required: false
+ *          description: 검색 키워드 (제목)
+ *          schema:
+ *            type: string
  *      responses:
  *        "200":
  *          description: 공지사항 목록 조회 성공
@@ -79,9 +85,24 @@ router.post("/register", attachment.array("file", 5), noticeController.notice_re
  *            application/json:
  *              schema:
  *                type: object
+ *                properties:
+ *                  notice_no:
+ *                    type: integer
+ *                    example: 1
+ *                  notice_title:
+ *                    type: string
+ *                    example: "공지 제목"
+ *                  notice_date:
+ *                    type: string
+ *                    example: "2022-08-03 07:28:21"
+ *                  attachment:
+ *                    type: integer
+ *                    example: 0 (없음 - 0, 있음 - 1)
  *                example:
- *                    [ { "notice_no": 1, "center_no": 1, "notice_title": "공지 제목", "notice_content": "공지 내용 !!", "notice_date": "2022-08-09 05:14:54", "hit": 0 },
- *                      { "notice_no": 3, "center_no": 1, "notice_title": "공지 제목", "notice_content": "공지 내용 !!", "notice_date": "2022-08-09 03:49:12", "hit": 0 } ]
+ *                    [{"notice_no": 21, "notice_title": "새로운공지제목", "notice_date": "2022-08-12 10:59:15", "attachment": 0 },
+ *                     { "notice_no": 18, "notice_title": "폭우에 주의하세요", "notice_date": "2022-08-12 10:31:04", "attachment": 0 },
+ *                     { "notice_no": 17, "notice_title": "test title", "notice_date": "2022-08-12 09:27:32", "attachment": 1 },
+ *                     { "notice_no": 16, "notice_title": "공지입니다~", "notice_date": "2022-08-11 16:47:48", "attachment": 0 }]
  *        "500":
  *          description: 공지사항 조회 실패
  *          content:
@@ -92,7 +113,7 @@ router.post("/register", attachment.array("file", 5), noticeController.notice_re
  *                    message:
  *                      type: string
  *                      example:
- *                          "조회 실패"
+ *                          "목록 조회 과정에 문제 발생"
  */
 router.get("/list/:centerNo", noticeController.notice_list);
 

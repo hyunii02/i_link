@@ -2,6 +2,7 @@ const path = require("path");
 
 const db = require(path.join(__dirname, "..", "models"));
 const Notices = db.notices;
+const Files = db.files;
 const Op = db.Sequelize.Op;
 
 // 공지사항 등록
@@ -69,31 +70,29 @@ exports.notice_list = async function (req, res) {
   const centerNo = req.params.centerNo;
   const keyword = req.query.keyword; // 일단 제목만 검색
 
-  if (keyword != null) console.log("검색 키워드: ", keyword);
-  const condition = keyword
-    ? { notice_title: { [Op.like]: `%${keyword}%` }, center_no: centerNo }
-    : { center_no: centerNo };
+  if (keyword) console.log("검색 키워드: ", keyword);
 
-  await Notices.findAll({
-    where: condition,
-    attributes: {
-      include: [
-        "notice_no",
-        "center_no",
-        "notice_title",
-        "notice_content",
-        [
-          // 날짜 형식 포맷 후 전송
-          db.sequelize.fn("DATE_FORMAT", db.sequelize.col("notice_date"), "%Y-%m-%d %h:%i:%s"),
-          "notice_date",
-        ],
-        "hit",
-      ],
-    },
-    raw: true,
-  })
-    .then((data) => res.status(200).json(data))
-    .catch((err) => res.status(500).json({ error: err.message, message: "조회 실패" }));
+  const condition = keyword
+    ? `WHERE notice_title LIKE '%${keyword}%' AND center_no = ${centerNo} `
+    : `WHERE center_no = ${centerNo} `;
+
+  let query =
+    "SELECT n.notice_no, n.notice_title, DATE_FORMAT(n.notice_date,'%Y-%m-%d %H:%i:%s') notice_date , ( " +
+    " SELECT EXISTS (SELECT file_no FROM files f WHERE f. notice_no = n.notice_no)) attachment " +
+    ` FROM notices n ${condition} ` +
+    " ORDER BY notice_no DESC; ";
+
+  await db.sequelize
+    .query(query, {
+      type: db.sequelize.QueryTypes.SELECT,
+      raw: true,
+    })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message, message: "목록 조회 과정에 문제 발생" });
+    });
 };
 
 // 공지사항 조회
