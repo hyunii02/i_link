@@ -216,14 +216,18 @@ exports.notice_update = async function (req, res) {
 // [delete] /notices/:noticeNo
 exports.notice_remove = async function (req, res) {
   const noticeNo = req.params.noticeNo;
-  await Promise.all(
+  await Promise.all([
     Notices.destroy({ where: { notice_no: noticeNo } }),
     Files.destroy({ where: { notice_no: noticeNo } }),
-  )
-    .then(() => {
-      res.status(200).json({ message: "삭제 완료" });
+  ])
+    .then((result) => {
+      if (result[0] == 1) {
+        res.status(200).json({ message: "공지사항 삭제 완료." });
+      } else {
+        res.status(400).json({ message: "해당 데이터를 찾을 수 없음." });
+      }
     })
     .catch((err) => {
-      res.status(500).json({ error: err.message, message: "목록 조회 과정에 문제 발생" });
+      res.status(500).json({ error: err.message, message: "공지사항 삭제 실패" });
     });
 };
