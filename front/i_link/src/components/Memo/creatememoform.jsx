@@ -21,7 +21,9 @@ const CreateMemoForm = (props) => {
   const [memoTitle, setMemoTitle] = useState("");
   const [memoContent, setMemoContent] = useState("");
   const [contentList, setContentList] = useState([]);
+  const [formErrors, setFormErrors] = useState({});
   const { getMemoList, handleClose, selectValue, clickGroupHandler } = props;
+
 
   //날짜 입력 제목
 
@@ -65,9 +67,30 @@ const CreateMemoForm = (props) => {
 
     const newData = {
       groupNo: selectValue,
-      memoDate: memo_date,
+      memoDate: memoTitle,
       memoContent: lastMemoContent,
     };
+    const validate = () => {
+      const errors = {};
+      let flag = false;
+      if (!newData.memoDate) {
+        errors.memoTitle = "날짜를 선택해 주세요";
+        flag = true;
+      }
+
+      if (!newData.memoContent) {
+        errors.lastMemoContent = "항목을 추가해 주세요";
+        flag = true;
+      }
+
+      setFormErrors(errors);
+      if (flag) {
+        return false;
+      }
+      return true;
+    };
+    if (validate()){
+
     try {
       axios
         .post(baseURL + urls.fetchMemosRegister, newData)
@@ -82,6 +105,7 @@ const CreateMemoForm = (props) => {
     } catch (e) {
       console.log(e);
     }
+  }
 
     console.log(newData);
   };
@@ -103,31 +127,37 @@ const CreateMemoForm = (props) => {
         }}
       >
         <Grid container spacing={1}>
-          <Grid item xs={4.8}>
+          <Grid item xs={5.9}>
             <TextField
               id="font_test"
+              type="date"
               sx={{
                 background: "#F2EFDA",
+                width:200
               }}
-              value={memo_date}
-              type="text"
+              value={memoTitle}
+              
 
-              // onChange={(e) => setMemoTitle(e.target.value)}
+              onChange={(e) => setMemoTitle(e.target.value)}
             ></TextField>
+            <p id="font_test">{formErrors.memoTitle}</p>
           </Grid>
 
-          <Grid item xs={9}>
+          <Grid item xs={8}>
             <TextField
               id="font_test"
+              
               sx={{
+                width:200,
                 background: "#F2EFDA",
               }}
               value={memoContent}
               type="text"
-              placeholder="내용"
+              placeholder="내용을 입력하세요"
               onChange={(e) => setMemoContent(e.target.value)}
               onKeyDown={keyDownHandler}
             ></TextField>
+            <p id="font_test">{formErrors.lastMemoContent}</p>
           </Grid>
           <Grid item xs={3}>
             {memoContent !== "" && (
@@ -136,7 +166,8 @@ const CreateMemoForm = (props) => {
                 onClick={eachMemoAdd}
                 sx={{
                   mt: 2,
-                  height: 56,
+                  width:90, 
+                  height: 58,
                   background: "#6E5203",
                   color: "white",
                 }}
@@ -156,6 +187,7 @@ const CreateMemoForm = (props) => {
             />
           ))}
         </Box>
+        
         <Button
         id="font_test"
           sx={{
@@ -170,6 +202,7 @@ const CreateMemoForm = (props) => {
         >
           메모추가
         </Button>
+        
       </Box>
     </div>
   );

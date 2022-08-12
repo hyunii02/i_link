@@ -19,7 +19,7 @@ import { Box, Grid } from "@mui/material";
 import NoticeDetail from "./noticedetail";
 
 export default function Notice(props) {
-  const { userCenter } = useContext(UserContext);
+  const { userCenter, userType } = useContext(UserContext);
   const [notices, setNotices] = useState([]);
   const [details, setDetails] = useState("");
 
@@ -91,11 +91,6 @@ export default function Notice(props) {
   const handleOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
 
-  //삭제 함수
-
-  const onRemove = (id) => {
-    setNotices(notices.filter((notice) => notice.notice_no !== id));
-  };
   return (
     <div id="font_test">
       <h2>공지사항</h2>
@@ -111,11 +106,21 @@ export default function Notice(props) {
                 제목
               </TableCell>
 
-              <TableCell id="font_test" width="110px" align="center">
+              <TableCell
+                sx={{ pr: 5 }}
+                id="font_test"
+                width="120px"
+                align="right"
+              >
                 작성일
               </TableCell>
-
-              <TableCell id="font_test" width="30px" align="center"></TableCell>
+              {userType !== 3 && userType !== "3" && (
+                <TableCell
+                  id="font_test"
+                  width="10px"
+                  align="center"
+                ></TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -167,43 +172,48 @@ export default function Notice(props) {
                     detailNotice(notice);
                     detailCount(notice);
                   }}
-                  align="center"
+                  align="right"
                 >
                   {notice.notice_date.substr(0, 10)}
                 </TableCell>
-
-                <TableCell align="center">
-                  <Button
-                    sx={{ color: "red" }}
-                    size="small"
-                    onClick={() => handleDelete(notice.notice_no)}
-                  >
-                    삭제
-                  </Button>
-                </TableCell>
+                {userType !== 3 && userType !== "3" && (
+                  <TableCell align="right">
+                    <Button
+                      sx={{ color: "red" }}
+                      size="small"
+                      onClick={() => handleDelete(notice.notice_no)}
+                    >
+                      삭제
+                    </Button>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <Button
-        className="write-button"
-        sx={{
-          borderColor: "red",
-          border: 1,
-          color: "black",
-          background: "#7FC3FD",
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "15px",
-          marginLeft: "1080px",
-          width: 30,
-          height: 40,
-        }}
-        onClick={handleOpen2}
-      >
-        글작성
-      </Button>
+      <Box sx={{ display: "flex", justifyContent: "end" }}>
+        {userType !== 3 && userType !== "3" && (
+          <Button
+            className="write-button"
+            sx={{
+              borderColor: "red",
+              border: 1,
+              color: "black",
+              background: "#7FC3FD",
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "15px",
+
+              width: 30,
+              height: 40,
+            }}
+            onClick={handleOpen2}
+          >
+            글작성
+          </Button>
+        )}
+      </Box>
 
       <Modal
         open={open1}
@@ -211,11 +221,11 @@ export default function Notice(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        {/* 모달창 스타일 */}
+        {/* 모달창 스타일 디테일페이지 닫기 */}
         <Box sx={style}>
           <NoticeDetail detailNotice={details} />
           <div>
-            <Button sx={{ ml: 90 }} onClick={handleClose1}>
+            <Button id="font_test" sx={{ ml: 90 }} onClick={handleClose1}>
               닫기
             </Button>
           </div>
@@ -228,17 +238,22 @@ export default function Notice(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        {/* 모달창 스타일 */}
+        {/* 모달창 스타일 글작성 페이지 닫기*/}
         <Box sx={style}>
           <NoticeWriteForm
             handleClose2={handleClose2}
             getNoticeList={getNoticeList}
           />
-          <div>
-            <Button sx={{ ml: 90 }} onClick={handleClose2}>
-              닫기
-            </Button>
-          </div>
+
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "end",
+            }}
+          >
+            <Button id="font_test" sx={{mt:1,mr:18}}onClick={handleClose2}>닫기</Button>
+          </Box>
         </Box>
       </Modal>
     </div>
