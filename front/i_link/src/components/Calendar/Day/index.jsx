@@ -1,7 +1,7 @@
 // 2022.08.05 김국진
 // 1일치 달력 컴포넌트
 
-import { Box, Button, Modal, Typography, TextField } from "@mui/material";
+import { Box, Button, Modal, Typography, TextField, Grid } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import IconButton from "@mui/material/IconButton";
@@ -66,18 +66,22 @@ const CalendarDay = (props) => {
   const [snackList, setSnackList] = useState([]);
 
   // 편집 권한 체크를 위한 Context 호출
-  const { userType, userCenter } = useContext(UserContext);
+  const { userType } = useContext(UserContext);
 
   // 모달창 > 식단 추가 시
   const dietInsertHandler = (e) => {
     if (e.key === "Enter") {
-      const obj = {
-        id: dietIdx++,
-        content: diet,
-      };
-      setDietList((dietList) => [...dietList, obj]);
-      setDiet("");
+      dietInsert();
     }
+  };
+
+  const dietInsert = () => {
+    const obj = {
+      id: dietIdx++,
+      content: diet,
+    };
+    setDietList((dietList) => [...dietList, obj]);
+    setDiet("");
   };
 
   // 모달창 > 식단 삭제 시
@@ -92,13 +96,17 @@ const CalendarDay = (props) => {
   // 모달창 > 스낵 추가 시
   const snackInsertHandler = (e) => {
     if (e.key === "Enter") {
-      const obj = {
-        id: snackIdx++,
-        content: snack,
-      };
-      setSnackList((snackList) => [...snackList, obj]);
-      setSnack("");
+      snackInsert();
     }
+  };
+
+  const snackInsert = () => {
+    const obj = {
+      id: snackIdx++,
+      content: snack,
+    };
+    setSnackList((snackList) => [...snackList, obj]);
+    setSnack("");
   };
 
   // 모달창 > 스낵 삭제 시
@@ -212,7 +220,7 @@ const CalendarDay = (props) => {
           marginTop: "10px",
         }}
       >
-        {userType !== 3 &&
+        {userType !== "3" &&
           day.day !== 0 &&
           index % 6 !== 0 &&
           isEmptyArr(day.meal) && (
@@ -238,19 +246,47 @@ const CalendarDay = (props) => {
                   <Typography id="font_test" variant="h6" sx={{ mt: 2 }}>
                     식단 등록
                   </Typography>
-                  <TextField
-                    id="outlined-basic"
-                    label="식단을 입력하세요"
-                    variant="outlined"
-                    size="small"
-                    value={diet}
-                    fullWidth
-                    sx={{ marginTop: "10px" }}
-                    onChange={(e) => {
-                      setDiet((diet) => e.target.value);
-                    }}
-                    onKeyDown={dietInsertHandler}
-                  />
+                  <Grid container>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        flexDirection: "row",
+                        width: "100%",
+                      }}
+                    >
+                      <Grid item xs={9.5}>
+                        <TextField
+                          id="outlined-basic"
+                          label="식단을 입력하세요"
+                          variant="outlined"
+                          size="small"
+                          value={diet}
+                          fullWidth
+                          sx={{ marginTop: "10px" }}
+                          onChange={(e) => {
+                            setDiet((diet) => e.target.value);
+                          }}
+                          onKeyDown={dietInsertHandler}
+                        />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Button
+                          variant="contained"
+                          color="warning"
+                          size="small"
+                          fullWidth
+                          style={{ marginRight: "5%" }}
+                          onClick={dietInsert}
+                        >
+                          <Typography variant="body1" id="font_test">
+                            추가
+                          </Typography>
+                        </Button>
+                      </Grid>
+                    </Box>
+                  </Grid>
                   {dietList.map((list) => (
                     <DietInsert
                       listItem={list}
@@ -261,19 +297,47 @@ const CalendarDay = (props) => {
                   <Typography id="font_test" variant="h6" sx={{ mt: 2 }}>
                     간식 등록
                   </Typography>
-                  <TextField
-                    id="outlined-basic"
-                    label="간식을 입력하세요"
-                    variant="outlined"
-                    size="small"
-                    value={snack}
-                    fullWidth
-                    sx={{ marginTop: "10px" }}
-                    onChange={(e) => {
-                      setSnack((snack) => e.target.value);
-                    }}
-                    onKeyDown={snackInsertHandler}
-                  />
+                  <Grid container>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        flexDirection: "row",
+                        width: "100%",
+                      }}
+                    >
+                      <Grid item xs={9.5}>
+                        <TextField
+                          id="outlined-basic"
+                          label="간식을 입력하세요"
+                          variant="outlined"
+                          size="small"
+                          value={snack}
+                          fullWidth
+                          sx={{ marginTop: "10px" }}
+                          onChange={(e) => {
+                            setSnack((snack) => e.target.value);
+                          }}
+                          onKeyDown={snackInsertHandler}
+                        />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Button
+                          variant="contained"
+                          color="warning"
+                          size="small"
+                          fullWidth
+                          style={{ marginRight: "5%" }}
+                          onClick={snackInsert}
+                        >
+                          <Typography variant="body1" id="font_test">
+                            추가
+                          </Typography>
+                        </Button>
+                      </Grid>
+                    </Box>
+                  </Grid>
                   {snackList.map((list) => (
                     <DietInsert
                       listItem={list}
@@ -328,7 +392,7 @@ const CalendarDay = (props) => {
           top: "110px",
         }}
       >
-        {userType !== 3 && !isEmptyArr(day.meal) && (
+        {userType !== "3" && !isEmptyArr(day.meal) && (
           <Box sx={{ textAlign: "right" }}>
             <IconButton onClick={deleteButtonClickHandler}>
               <RemoveCircleOutlineIcon fontSize="small" />
