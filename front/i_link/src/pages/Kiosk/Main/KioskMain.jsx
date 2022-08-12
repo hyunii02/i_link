@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 const KioskMain = () => {
   const [kidName, setKidName] = useState(localStorage.getItem("kidName"));
+  const [kidUrl, setKidUrl] = useState(localStorage.getItem("kidUrl"));
   const navigate = useNavigate();
   useEffect(() => {
     const kidName = localStorage.getItem("kidName");
@@ -41,7 +42,12 @@ const KioskMain = () => {
         </Grid>
         <Grid item xs={0.5}>
           <KioskLogout />
-          <SelectKidKiosk kidName={kidName} setKidName={setKidName} />
+          <SelectKidKiosk
+            kidName={kidName}
+            setKidName={setKidName}
+            kidUrl={kidUrl}
+            setKidUrl={setKidUrl}
+          />
         </Grid>
       </Grid>
       <Grid

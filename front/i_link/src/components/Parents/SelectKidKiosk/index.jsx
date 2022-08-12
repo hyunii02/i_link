@@ -11,9 +11,9 @@ import {
   ListItemIcon,
 } from "@mui/material";
 import { PersonAdd } from "@mui/icons-material";
-import { axios, urls } from "../../../api/axios";
+import { axios, urls, baseURL } from "../../../api/axios";
 
-const SelectKidKiosk = ({ kidName, setKidName }) => {
+const SelectKidKiosk = ({ kidName, setKidName, kidUrl, setKidUrl }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [kidsList, setKidsList] = useState(
     JSON.parse(localStorage.getItem("kidsList") || "[]")
@@ -38,10 +38,12 @@ const SelectKidKiosk = ({ kidName, setKidName }) => {
       console.log(err);
     }
   };
-  const handleSelect = (kidName, kidNo) => {
+  const handleSelect = (kidName, kidNo, kidUrl) => {
     setKidName(kidName);
+    setKidUrl(kidUrl);
     localStorage.setItem("kidName", kidName);
     localStorage.setItem("kidNo", kidNo);
+    localStorage.setItem("kidUrl", kidUrl);
   };
 
   return (
@@ -56,9 +58,10 @@ const SelectKidKiosk = ({ kidName, setKidName }) => {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 100, height: 100, fontSize: "2.8rem" }}>
-              {kidName.slice(1) || "싸피"}
-            </Avatar>
+            <Avatar
+              sx={{ width: 100, height: 100, fontSize: "2.8rem" }}
+              src={baseURL + kidUrl || "/images/user.png"}
+            ></Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -101,11 +104,14 @@ const SelectKidKiosk = ({ kidName, setKidName }) => {
           <MenuItem
             sx={{ fontSize: "3rem" }}
             key={kid.kid_name}
-            onClick={() => handleSelect(kid.kid_name, kid.kid_no)}
+            onClick={() =>
+              handleSelect(kid.kid_name, kid.kid_no, kid.kid_profile_url)
+            }
           >
-            <Avatar sx={{ width: 100, height: 100, fontSize: "2.8rem" }}>
-              {kid.kid_name.slice(1)}
-            </Avatar>
+            <Avatar
+              sx={{ width: 100, height: 100, fontSize: "2.8rem" }}
+              src={baseURL + kid.kid_profile_url || "/images/user.png"}
+            ></Avatar>
             {kid.kid_name}
           </MenuItem>
         ))}
