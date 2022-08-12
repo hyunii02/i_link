@@ -20,17 +20,10 @@ exports.stamp_stamping = async function (req, res) {
 
   await Kids.update({ kid_stamp: kid.kid_stamp + 1 }, { where: { kid_no: kidNo } })
     .then((result) => {
-      if (result[0] === 1) {
-        // 칭찬도장 찍어주기 성공
-        res.status(200).json({
-          message: "칭찬도장 + 1",
-        });
-      } else {
-        // 도장 찍어주기 실패
-        res.status(400).json({
-          message: "도장 찍기 요청 오류 발생",
-        });
-      }
+      // 칭찬도장 찍어주기 성공
+      res.status(200).json({
+        message: "칭찬도장 + 1",
+      });
     })
     .catch((err) => {
       res.status(500).json({
@@ -49,17 +42,9 @@ exports.stamp_update = async function (req, res) {
 
   await Kids.update({ kid_stamp: req.body.kidStamp }, { where: { kid_no: kidNo } })
     .then((result) => {
-      if (result[0] === 1) {
-        // 칭찬도장 수정 완료
-        res.status(200).json({
-          message: "칭찬 도장 수정 완료",
-        });
-      } else {
-        // 칭찬도장 수정 실패
-        res.status(400).json({
-          message: "칭찬 도장 수정 요청 오류 발생",
-        });
-      }
+      res.status(200).json({
+        message: "칭찬 도장 수정 완료",
+      });
     })
     .catch((err) => {
       res.status(500).json({
