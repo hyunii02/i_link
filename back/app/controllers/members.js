@@ -104,10 +104,7 @@ exports.member_kid_getList = async function (req, res) {
       res.status(200).json(data);
     })
     .catch((err) => {
-      res.status(500).json({
-        error: err.message,
-        message: "목록 조회 과정에 문제 발생",
-      });
+      res.status(500).json({ error: err.message, message: "목록 조회 과정에 문제 발생" });
     });
 };
 
@@ -195,10 +192,7 @@ exports.member_teacherList = async function (req, res) {
       res.status(200).json(data);
     })
     .catch((err) => {
-      res.status(500).json({
-        error: err.message,
-        message: "목록 조회 과정에 문제 발생",
-      });
+      res.status(500).json({ error: err.message, message: "목록 조회 과정에 문제 발생" });
     });
 };
 

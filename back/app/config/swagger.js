@@ -11,10 +11,10 @@ const options = {
     },
     servers: [
       {
-        url: "https://localhost:8000",
+        url: "https://i7e102.p.ssafy.io:8000",
       },
       {
-        url: "https://i7e102.p.ssafy.io:8000",
+        url: "https://localhost:8000",
       },
     ],
   },
