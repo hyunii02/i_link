@@ -107,6 +107,8 @@ export default function Login() {
       setUserCenter(resUserCenter);
       setUserGroup(resUserGroup);
       setUserProfileUrl(resUserProfileUrl);
+      setKidsList("");
+      setFirstKid("");
 
       // 로그인 성공 시 대응되는 페이지로 네비게이트
       if (response.data.message === "로그인 성공") {
@@ -144,8 +146,6 @@ export default function Login() {
                   console.log(response.data.length);
                   // 등록된 아이가 없을 시
                   if (response.data.length === 0) {
-                    setKidsList("");
-                    setFirstKid("");
                     navigate("/parents/registkid");
                   } else {
                     if (response.status === 200) {
