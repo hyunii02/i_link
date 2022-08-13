@@ -73,7 +73,7 @@ exports.quiz_list = async function (req, res) {
   const writerNo = req.params.userNo;
 
   let query =
-    "SELECT * FROM quiz q JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
+    "SELECT * FROM quiz q LEFT JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
     ` WHERE quiz_writer = ${writerNo}`;
 
   await db.sequelize
@@ -109,7 +109,7 @@ exports.quiz_today = async function (req, res) {
   const groupNo = req.params.groupNo;
 
   let query =
-    "SELECT * FROM quiz q JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
+    "SELECT * FROM quiz q LEFT JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
     ` WHERE group_no = ${groupNo} AND quiz_date = DATE_FORMAT(now(), '%Y-%m-%d');`;
 
   await db.sequelize
@@ -146,10 +146,24 @@ exports.quiz_today = async function (req, res) {
 // [get]  /quiz/:quizNo
 exports.quiz_detail = async function (req, res) {
   const quizNo = req.params.quizNo;
-
-  let query =
-    "SELECT * FROM quiz q JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
-    ` WHERE q.quiz_no = ${quizNo};`;
+  let query = "SELECT * FROM quiz_images " + ` WHERE quiz_no = ${quizNo};`;
+  await db.sequelize
+    .query(query, {
+      type: db.sequelize.QueryTypes.SELECT,
+      raw: true,
+    })
+    .then((data) => {
+      if (data.length > 0) {
+        query =
+          "SELECT * FROM quiz q LEFT JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
+          ` WHERE q.quiz_no = ${quizNo};`;
+      } else {
+        query = "SELECT * FROM quiz " + ` WHERE quiz_no = ${quizNo};`;
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message, message: "퀴즈 조회 과정에 문제 발생" });
+    });
 
   await db.sequelize
     .query(query, {
@@ -157,6 +171,7 @@ exports.quiz_detail = async function (req, res) {
       raw: true,
     })
     .then((data) => {
+      console.log(data);
       res.status(200).json(data);
     })
     .catch((err) => {

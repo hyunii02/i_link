@@ -48,20 +48,19 @@ const quiz = require(path.join(__dirname, "..", "utils", "quiz"));
  *                    type: string
  *                    format: date
  *                    description: "퀴즈 날짜"
- *
- *                  contentImg:
+ *                  quizContentUrl:
  *                    type: file
  *                    description: "퀴즈 질문 사진"
- *                  sel1Img:
+ *                  quizSel1Url:
  *                    type: file
  *                    description: "퀴즈 선택지 1 사진"
- *                  sel2Img:
+ *                  quizSel2Url:
  *                    type: file
  *                    description: "퀴즈 선택지 2 사진"
- *                  sel3Img:
+ *                  quizSel3Url:
  *                    type: file
  *                    description: "퀴즈 선택지 3 사진"
- *                  sel4Img:
+ *                  quizSel4Url:
  *                    type: file
  *                    description: "퀴즈 선택지 4 사진"
  *      responses:
@@ -124,7 +123,7 @@ router.post(
  *              schema:
  *                type: object
  *                example:
- *                    [{"퀴즈1": "퀴즈 정보1"},{"퀴즈2": "퀴즈 정보2"}]
+ *                    [ { "quiz_no": null, "quiz_writer": 122, "group_no": 21, "quiz_content": "ㅣ가 뭘까요?", "quiz_sel_1": "기역", "quiz_sel_2": "작대기", "quiz_sel_3": "물감", "quiz_sel_4": "국진", "quiz_ans": 3, "quiz_date": null, "img_no": null, "quiz_content_url": null, "quiz_sel_1_url": null, "quiz_sel_2_url": null, "quiz_sel_3_url": null, "quiz_sel_4_url": null}]
  *        "500":
  *          description: 퀴즈 조회 실패
  *          content:
@@ -192,6 +191,21 @@ router.get("/list/:userNo", quizController.quiz_list);
  *                  quiz_date:
  *                    type: string
  *                    example: "2022-08-11"
+ *                  quiz_content_url:
+ *                    type: string
+ *                    example: "/uploads/quiz/1660377721357.png"
+ *                  quiz_sel_1_url:
+ *                    type: string
+ *                    example: "/uploads/quiz/1660377721357.png"
+ *                  quiz_sel_2_url:
+ *                    type: string
+ *                    example: "/uploads/quiz/1660377721357.png"
+ *                  quiz_sel_3_url:
+ *                    type: string
+ *                    example: "/uploads/quiz/1660377721357.png"
+ *                  quiz_sel_4_url:
+ *                    type: string
+ *                    example: "/uploads/quiz/1660377721357.png"
  *        "500":
  *          description: 오늘의 퀴즈 정보 조회 실패
  *          content:
@@ -259,6 +273,21 @@ router.get("/today/:groupNo", quizController.quiz_today);
  *                  quiz_date:
  *                    type: string
  *                    example: "2022-08-11"
+ *                  quiz_content_url:
+ *                    type: string
+ *                    example: "/uploads/quiz/1660377721357.png"
+ *                  quiz_sel_1_url:
+ *                    type: string
+ *                    example: "/uploads/quiz/1660377721357.png"
+ *                  quiz_sel_2_url:
+ *                    type: string
+ *                    example: "/uploads/quiz/1660377721357.png"
+ *                  quiz_sel_3_url:
+ *                    type: string
+ *                    example: "/uploads/quiz/1660377721357.png"
+ *                  quiz_sel_4_url:
+ *                    type: string
+ *                    example: "/uploads/quiz/1660377721357.png"
  *        "500":
  *          description: 퀴즈 정보 조회 실패
  *          content:
@@ -314,19 +343,19 @@ router.get("/:quizNo", quizController.quiz_detail);
  *                  quizAns:
  *                    type: integer
  *                    description: "퀴즈 답(1,2,3,4)"
- *                  contentImg:
+ *                  quizContentUrl:
  *                    type: file
  *                    description: "퀴즈 질문 사진"
- *                  sel1Img:
+ *                  quizSel1Url:
  *                    type: file
  *                    description: "퀴즈 선택지 1 사진"
- *                  sel2Img:
+ *                  quizSel2Url:
  *                    type: file
  *                    description: "퀴즈 선택지 2 사진"
- *                  sel3Img:
+ *                  quizSel3Url:
  *                    type: file
  *                    description: "퀴즈 선택지 3 사진"
- *                  sel4Img:
+ *                  quizSel4Url:
  *                    type: file
  *                    description: "퀴즈 선택지 4 사진"
  *      responses:
