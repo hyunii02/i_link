@@ -43,11 +43,11 @@ exports.quiz_regist = async function (req, res) {
           {
             type: db.sequelize.QueryTypes.INSERT,
             replacements: [
-              imgList.contentImg ? uploadPath + imgList.quizContentUrl[0].filename : null,
-              imgList.sel1Img ? uploadPath + imgList.quizSel1Url[0].filename : null,
-              imgList.sel2Img ? uploadPath + imgList.quizSel2Url[0].filename : null,
-              imgList.sel3Img ? uploadPath + imgList.quizSel3Url[0].filename : null,
-              imgList.sel4Img ? uploadPath + imgList.quizSel4Url[0].filename : null,
+              imgList.quizContentUrl ? uploadPath + imgList.quizContentUrl[0].filename : null,
+              imgList.quizSel1Url ? uploadPath + imgList.quizSel1Url[0].filename : null,
+              imgList.quizSel2Url ? uploadPath + imgList.quizSel2Url[0].filename : null,
+              imgList.quizSel3Url ? uploadPath + imgList.quizSel3Url[0].filename : null,
+              imgList.quizSel4Url ? uploadPath + imgList.quizSel4Url[0].filename : null,
               quizNo,
             ],
             transaction,
