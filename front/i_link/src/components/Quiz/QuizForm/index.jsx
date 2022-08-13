@@ -78,6 +78,11 @@ const QuizForm = () => {
     }
   };
 
+  const isEmpty = (array) => {
+    if (array.length === 0) return false;
+    return true;
+  };
+
   // 오늘의 퀴즈 get
   const getTodayQuiz = () => {
     try {
@@ -119,27 +124,31 @@ const QuizForm = () => {
               오늘의 퀴즈
             </Typography>
           </Grid>
-          <Grid xs={3}></Grid>
-          <Grid
-            item
-            xs={6}
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              fontFamily: "NanumGimYuICe",
-              marginBottom: "20px",
-            }}
-          >
-            <QuizFrame
-              data={todayQuizList[0]}
-              getQuizData={getQuizData}
-              getTodayQuiz={getTodayQuiz}
-              state={1}
-            />
-          </Grid>
-          <Grid xs={3}></Grid>
+          {isEmpty(todayQuizList) && (
+            <Box sx={{ width: "100%", display: "flex" }}>
+              <Grid item xs={3}></Grid>
+              <Grid
+                item
+                xs={6}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  fontFamily: "NanumGimYuICe",
+                  marginBottom: "20px",
+                }}
+              >
+                <QuizFrame
+                  data={todayQuizList[0]}
+                  getQuizData={getQuizData}
+                  getTodayQuiz={getTodayQuiz}
+                  state={1}
+                />
+              </Grid>
+              <Grid item xs={3}></Grid>
+            </Box>
+          )}
         </Grid>
       </Box>
       <Box
