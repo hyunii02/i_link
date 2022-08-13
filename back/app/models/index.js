@@ -37,5 +37,6 @@ db.reports = models.reports;
 db.notices = models.notices;
 db.files = models.files;
 db.quiz = models.quiz;
+db.quizImages = models.quizImages;
 
 module.exports = db;

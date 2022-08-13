@@ -16,7 +16,7 @@ const quiz = require(path.join(__dirname, "..", "utils", "quiz"));
  *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (퀴즈 등록)
  *          required: true
  *          content:
- *            application/x-www-form-urlencoded:
+ *            multipart/form-data:
  *              schema:
  *                type: object
  *                properties:
@@ -48,6 +48,22 @@ const quiz = require(path.join(__dirname, "..", "utils", "quiz"));
  *                    type: string
  *                    format: date
  *                    description: "퀴즈 날짜"
+ *
+ *                  contentImg:
+ *                    type: file
+ *                    description: "퀴즈 질문 사진"
+ *                  sel1Img:
+ *                    type: file
+ *                    description: "퀴즈 선택지 1 사진"
+ *                  sel2Img:
+ *                    type: file
+ *                    description: "퀴즈 선택지 2 사진"
+ *                  sel3Img:
+ *                    type: file
+ *                    description: "퀴즈 선택지 3 사진"
+ *                  sel4Img:
+ *                    type: file
+ *                    description: "퀴즈 선택지 4 사진"
  *      responses:
  *        "200":
  *          description: 퀴즈 등록 성공
@@ -73,7 +89,17 @@ const quiz = require(path.join(__dirname, "..", "utils", "quiz"));
  *                      example:
  *                          "퀴즈 등록 실패"
  */
-router.post("/register", quizController.quiz_regist);
+router.post(
+  "/register",
+  quiz.fields([
+    { name: "quizContentUrl", maxCount: 1 },
+    { name: "quizSel1Url", maxCount: 1 },
+    { name: "quizSel2Url", maxCount: 1 },
+    { name: "quizSel3Url", maxCount: 1 },
+    { name: "quizSel4Url", maxCount: 1 },
+  ]),
+  quizController.quiz_regist,
+);
 
 /**
  * @swagger
@@ -266,7 +292,7 @@ router.get("/:quizNo", quizController.quiz_detail);
  *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. ( 퀴즈 정보 수정)
  *          required: true
  *          content:
- *            application/x-www-form-urlencoded:
+ *            multipart/form-data:
  *              schema:
  *                type: object
  *                properties:
@@ -288,6 +314,21 @@ router.get("/:quizNo", quizController.quiz_detail);
  *                  quizAns:
  *                    type: integer
  *                    description: "퀴즈 답(1,2,3,4)"
+ *                  contentImg:
+ *                    type: file
+ *                    description: "퀴즈 질문 사진"
+ *                  sel1Img:
+ *                    type: file
+ *                    description: "퀴즈 선택지 1 사진"
+ *                  sel2Img:
+ *                    type: file
+ *                    description: "퀴즈 선택지 2 사진"
+ *                  sel3Img:
+ *                    type: file
+ *                    description: "퀴즈 선택지 3 사진"
+ *                  sel4Img:
+ *                    type: file
+ *                    description: "퀴즈 선택지 4 사진"
  *      responses:
  *        "200":
  *          description: 퀴즈 수정 성공
@@ -313,7 +354,17 @@ router.get("/:quizNo", quizController.quiz_detail);
  *                      example:
  *                          "퀴즈 수정 실패"
  */
-router.put("/:quizNo", quizController.quiz_update);
+router.put(
+  "/:quizNo",
+  quiz.fields([
+    { name: "quizContentUrl", maxCount: 1 },
+    { name: "quizSel1Url", maxCount: 1 },
+    { name: "quizSel2Url", maxCount: 1 },
+    { name: "quizSel3Url", maxCount: 1 },
+    { name: "quizSel4Url", maxCount: 1 },
+  ]),
+  quizController.quiz_update,
+);
 
 /**
  * @swagger

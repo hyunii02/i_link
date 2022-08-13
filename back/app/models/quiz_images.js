@@ -9,24 +9,24 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         primaryKey: true,
       },
-      content_img_url: {
-        type: DataTypes.STRING,
+      content_url: {
+        type: DataTypes.STRING(255),
         allowNull: true,
       },
-      sel_1_img_url: {
-        type: DataTypes.STRING,
+      sel_1_url: {
+        type: DataTypes.STRING(255),
         allowNull: true,
       },
-      sel_2_img_url: {
-        type: DataTypes.STRING,
+      sel_2_url: {
+        type: DataTypes.STRING(255),
         allowNull: true,
       },
-      sel_3_img_url: {
-        type: DataTypes.STRING,
+      sel_3_url: {
+        type: DataTypes.STRING(255),
         allowNull: true,
       },
-      sel_4_img_url: {
-        type: DataTypes.STRING,
+      sel_4_url: {
+        type: DataTypes.STRING(255),
         allowNull: true,
       },
       quiz_no: {

@@ -9,10 +9,10 @@ const Op = db.Sequelize.Op;
 // 공지사항 등록
 // [get]  /notices/register
 exports.notice_regist = async function (req, res) {
+  const transaction = await db.sequelize.transaction(); // 트랜잭션
   try {
     const fileList = req.files ? req.files : null;
 
-    const transaction = await db.sequelize.transaction(); // 트랜잭션
     const promises = [];
 
     const notice = {
