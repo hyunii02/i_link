@@ -13,7 +13,7 @@ import SearchForm from "./searchform";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/user";
-import { axios, urls } from "../../api/axios";
+import { axios, baseURL, urls } from "../../api/axios";
 import { colorPalette } from "../../constants/constants";
 import { Alert } from "@mui/material";
 
@@ -23,8 +23,8 @@ export default function MasterRegistCenter(props) {
   // 원장회원번호
 
   const navigate = useNavigate();
-  
-  const { userNo } = useContext(UserContext);
+
+  const { userNo, setUserCenter } = useContext(UserContext);
 
   const obj = {
     centerName: "",
@@ -44,12 +44,11 @@ export default function MasterRegistCenter(props) {
 
   //유효성 검사
   const validate = () => {
-    const errors ={};
+    const errors = {};
     let flag = false;
     if (!totalData.centerName) {
       errors.centerName = "유치원 이름을 입력해주세요.";
       flag = true;
-      
     }
 
     if (!totalData.centerAddr) {
@@ -58,12 +57,11 @@ export default function MasterRegistCenter(props) {
     }
 
     if (!totalData.centerTel) {
-      errors.centerTel = "유치원 번호를 입력해주세요.";
+      errors.centerTel = "전화번호를 입력해주세요.";
       flag = true;
     }
     setFormErrors(errors);
     if (flag) {
-      
       return false;
     }
     return true;
@@ -100,20 +98,16 @@ export default function MasterRegistCenter(props) {
   };
   // 최종 데이터 submit
   const submitAddress = (event) => {
-    
     event.preventDefault();
-
     if (validate()) {
-
-      
-      axios
-
-      .post(urls.fetchCentersRegister, totalData)
-
-      .then((response) => console.log(response));
-      navigate("/master/managemember");
+      axios.post(urls.fetchCentersRegister, totalData).then((response) => {
+        if (response.status === 200) {
+          setUserCenter(response.data.center_no);
+          navigate("/master/managemember");
+        }
+      });
+      //navigate("/master/managemember");
     }
-    
   };
 
   return (
@@ -173,7 +167,7 @@ export default function MasterRegistCenter(props) {
                   required
                   fullWidth
                   id="font_test"
-                  placeholder="유치원 번호를 입력하세요"
+                  placeholder="전화번호를 입력하세요"
                   name="center_tel"
                   onChange={handleChangeTel}
                   sx={{ background: "white" }}

@@ -1,7 +1,7 @@
 // 2022.08.05 김국진
 // 2022.08.06 김국진 식단 api get 작업
 // 달력 통합 컴포넌트
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Box, Grid, Card, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -17,24 +17,17 @@ import {
 import { baseURL } from "../../../api/axios";
 import axios from "axios";
 import { urls } from "../../../api/axios";
-
-let dateTime = new Date();
-let year = dateTime.getFullYear();
-let month = dateTime.getMonth() + 1;
+import { UserContext } from "../../../context/user";
 
 const days = ["일", "월", "화", "수", "목", "금", "토"];
-
-// default 현재 날짜 읽어들이기
-const currentTime = {
-  year: year,
-  month: month,
-};
 
 const CalendarMonthMove = () => {
   // 현재 달력 상태 관리
   const [searchDate, setSearchDate] = useState(new Date());
   // 서버에서 응답받은 달 단위 식단 데이터 상태 관리
   const [monthMenu, setMonthMenu] = useState([]);
+
+  const { firstKid, userGroup, userCenter } = useContext(UserContext);
 
   // 하위 컴포넌트로 보낼 데이터 포매팅
   const dataSetting = (data) => {
@@ -46,8 +39,6 @@ const CalendarMonthMove = () => {
     const startDay = startOfMonth(searchDate).getDay();
     // 현재 달에서 마지막날짜를 가져옴
     const endDay = endOfMonth(searchDate).getDate();
-
-    console.log(startDay + endDay);
 
     // 주 기준으로 배열 관리
     for (let i = 0; i < (startDay + endDay) / 7; i++) {
@@ -82,7 +73,8 @@ const CalendarMonthMove = () => {
 
   const getDietList = () => {
     const subParams =
-      "1/" +
+      (firstKid === null ? userCenter : firstKid.center_no) +
+      "/" +
       // YYYY-MM-DD 문자열 포맷으로 변경
       searchDate.getFullYear() +
       "-" +

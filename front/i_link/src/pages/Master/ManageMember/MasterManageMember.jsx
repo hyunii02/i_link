@@ -1,6 +1,6 @@
 // 2022-08-10 김국진 학생/선생 목록 axios 작업. 등원/하원/설문완료 상태 관리
 import React, { useState, useContext, useEffect } from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, AppBar, Tabs, Tab } from "@mui/material";
 import MemberStudent from "../../../components/Member/Student";
 import MemberTeacher from "../../../components/Member/Teacher";
 import axios from "axios";
@@ -52,6 +52,47 @@ const BasicSelectCheck = ({ groupList, getTotalList }) => {
   );
 };
 
+const AppBarTab = (props) => {
+  const { groupList, getTotalList } = props;
+
+  const [value, setValue] = useState(groupList[0].value);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  // selectedBox의 선택 값이 바뀌게 될 시, 선생/원아 목록을 다시 불러들임
+  useEffect(() => {
+    getTotalList(value);
+  }, [value]);
+  return (
+    <AppBar position="static" color="default">
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        indicatorColor="primary"
+        textColor="primary"
+        variant="fullWidth"
+        aria-label="action tabs example"
+        sx={{ border: "6px solid #fae2e2", background: "#FAF1DA" }}
+      >
+        {groupList.map((list) => (
+          <Tab
+            label={
+              <Typography id="font_test" variant="h5">
+                {list.content}
+              </Typography>
+            }
+            value={list.value}
+            key={list.value}
+            sx={{ background: "#FAF1DA" }}
+          />
+        ))}
+      </Tabs>
+    </AppBar>
+  );
+};
+
 const MasterManageMember = () => {
   // 원생 목록 상태 관리
   const [student, setStudent] = useState([]);
@@ -93,7 +134,6 @@ const MasterManageMember = () => {
   const getKidList = (value) => {
     // 요청할 URL 포매팅
     const fullURL = baseURL + urls.fetchMemberKidsList + userCenter;
-    console.log("원생목록 다시 value: ", value);
     // axios.get으로 현재 반의 선생 목록을 가져옴
     try {
       axios
@@ -102,7 +142,6 @@ const MasterManageMember = () => {
         })
         .then((response) => {
           const newData = [...response.data];
-          console.log(newData);
           setStudent((student) => newData);
         });
     } catch (e) {
@@ -139,9 +178,16 @@ const MasterManageMember = () => {
 
   return (
     <Box>
+      {/* 셀렉트박스 
       <div style={{ marginBottom: "30px" }}>
         {arrayIsEmpty(groupList) || (
           <BasicSelectCheck groupList={groupList} getTotalList={getTotalList} />
+        )}
+      </div>
+        */}
+      <div style={{ marginBottom: "30px" }}>
+        {arrayIsEmpty(groupList) || (
+          <AppBarTab groupList={groupList} getTotalList={getTotalList} />
         )}
       </div>
       <Box>

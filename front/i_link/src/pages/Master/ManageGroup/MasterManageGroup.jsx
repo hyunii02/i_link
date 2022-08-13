@@ -20,13 +20,18 @@ const MasterManageGroup = () => {
   const [selectedItem, setSelectedItem] = useState("1");
 
   const { userType, userCenter } = useContext(UserContext);
-
+  console.log(userCenter);
   // 유치원의 그룹 리스트를 가져오는 axios
   const getGroupList = () => {
     try {
       axios
         .get(baseURL + urls.fetchGroupsList + userCenter)
-        .then((response) => setClassData(response.data));
+        .then((response) => {
+          console.log(response.data);
+          if (response.status === 200) {
+            setClassData(response.data);
+          }
+        });
     } catch (e) {
       console.log(e);
     }
@@ -44,7 +49,7 @@ const MasterManageGroup = () => {
   // 원생 가입 승인 대기 목록 가져오는 axios
   const getKidsList = () => {
     axios
-      .get(baseURL + urls.fetchSubmitWaitKids + userType)
+      .get(baseURL + urls.fetchSubmitWaitKids + userCenter)
       .then((response) => {
         // 받은 데이터를 화면에서 쓰기 위해 새롭게 포매팅
         const newArray = [];
@@ -74,7 +79,7 @@ const MasterManageGroup = () => {
   // 선생 가입 승인 대기 목록 가져오는 axios
   const getTeacherList = () => {
     axios
-      .get(baseURL + urls.fetchSubmitWaitTeacher + userType)
+      .get(baseURL + urls.fetchSubmitWaitTeacher + userCenter)
       .then((response) => {
         // 받은 데이터를 화면에서 쓰기 위해 새롭게 포매팅
         const newArray = [];

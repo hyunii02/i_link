@@ -55,7 +55,7 @@ const urls = {
   fetchSurveysDetail: "/surveys/",
   fetchStamps: "/stamp/",
   fetchTodaysWeathers: "/weathers/",
-  fetchQuizsList: "/quizs/list/",
+  fetchQuizsList: "/quiz/list/",
   // 2022-08-09 김국진 추가
   fetchSubmitWaitTeacher: "/members/manage/teacher/", // 가입 승인 대기 교사 목록
   fetchSubmitWaitKids: "/members/manage/kids/", // 가입 승인 대기 원아 목록
@@ -64,6 +64,11 @@ const urls = {
   fetchMemberTeacherList: "/members/teacher/", // 유치원 반별 교사 목록 조회
   fetchMemberKidsList: "/members/kids/", // 유치원 반별 원아 목록 조회
   fetchKidsStateChange: "/kids/attendance/",
+  fetchTeacherCenterSet: "/users/center/modify", // 선생님용 유치원 정보 수정
+  featchQuizRegister: "/quiz/register", // 퀴즈 등록
+  fetchQuizDelete: "/quiz/", // 퀴즈 삭제
+  fetchQuizTodaySet: "/quiz/today/", // 퀴즈 오늘 날짜로 지정
+  fetchQuizTodayList: "/quiz/today/", // 오늘의 퀴즈 정보 조회
 };
 
 const axios = Axios.create({

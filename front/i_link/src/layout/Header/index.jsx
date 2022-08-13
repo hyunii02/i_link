@@ -61,7 +61,7 @@ const Header = () => {
   }, []);
 
   return (
-    <Box>
+    <Box sx={{ boxShadow: 3, marginBottom: "30px" }}>
       {/* 헤더색 투명하게 */}
       <Box position="static" style={{ background: "rgba(52, 52, 52, 0)" }}>
         <Container maxWidth="xl">
@@ -151,7 +151,7 @@ const Header = () => {
                 </Button>
               ))}
             </Box>
-            {firstKid && <SelectKidWeb />}
+            <SelectKidWeb />
             <Logout />
           </Toolbar>
         </Container>

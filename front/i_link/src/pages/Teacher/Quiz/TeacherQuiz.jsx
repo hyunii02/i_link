@@ -1,7 +1,12 @@
-import React from 'react';
+import React from "react";
+import QuizForm from "../../../components/Quiz/QuizForm";
 
 const TeacherQuiz = () => {
-  return <div>TeacherQuiz</div>;
+  return (
+    <div>
+      <QuizForm />
+    </div>
+  );
 };
 
 export default TeacherQuiz;
