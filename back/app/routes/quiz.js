@@ -3,7 +3,7 @@ const path = require("path");
 const router = express.Router();
 
 const quizController = require(path.join(__dirname, "..", "controllers", "quiz"));
-
+const quiz = require(path.join(__dirname, "..", "utils", "quiz"));
 /**
  * @swagger
  * paths:

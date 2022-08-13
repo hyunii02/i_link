@@ -8,6 +8,7 @@ var _meals = require("./meals");
 var _memos = require("./memos");
 var _notices = require("./notices");
 var _quiz = require("./quiz");
+var _quiz_images = require("./quiz_images");
 var _quiz_results = require("./quiz_results");
 var _report_types = require("./report_types");
 var _reports = require("./reports");
@@ -25,6 +26,7 @@ function initModels(sequelize) {
   var memos = _memos(sequelize, DataTypes);
   var notices = _notices(sequelize, DataTypes);
   var quiz = _quiz(sequelize, DataTypes);
+  var quiz_images = _quiz_images(sequelize, DataTypes);
   var quiz_results = _quiz_results(sequelize, DataTypes);
   var report_types = _report_types(sequelize, DataTypes);
   var reports = _reports(sequelize, DataTypes);
@@ -60,6 +62,8 @@ function initModels(sequelize) {
   kids.hasMany(surveys, { as: "surveys", foreignKey: "kid_no" });
   files.belongsTo(notices, { as: "notice_no_notice", foreignKey: "notice_no" });
   notices.hasMany(files, { as: "files", foreignKey: "notice_no" });
+  quiz_images.belongsTo(quiz, { as: "quiz_no_quiz", foreignKey: "quiz_no" });
+  quiz.hasMany(quiz_images, { as: "quiz_images", foreignKey: "quiz_no" });
   quiz_results.belongsTo(quiz, { as: "quiz_no_quiz", foreignKey: "quiz_no" });
   quiz.hasMany(quiz_results, { as: "quiz_results", foreignKey: "quiz_no" });
   reports.belongsTo(report_types, { as: "report_type_report_type", foreignKey: "report_type" });
@@ -85,6 +89,7 @@ function initModels(sequelize) {
     memos,
     notices,
     quiz,
+    quiz_images,
     quiz_results,
     report_types,
     reports,

@@ -1,27 +1,33 @@
 const Sequelize = require("sequelize");
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    "quiz_results",
+    "quiz_images",
     {
-      result_no: {
+      img_no: {
         autoIncrement: true,
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
       },
-      result_ans: {
-        type: DataTypes.BOOLEAN,
+      content_img_url: {
+        type: DataTypes.STRING,
         allowNull: true,
       },
-      kid_no: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "kids",
-          key: "kid_no",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
+      sel_1_img_url: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      sel_2_img_url: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      sel_3_img_url: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      sel_4_img_url: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       quiz_no: {
         type: DataTypes.INTEGER,
@@ -36,22 +42,17 @@ module.exports = function (sequelize, DataTypes) {
     },
     {
       sequelize,
-      tableName: "quiz_results",
+      tableName: "quiz_images",
       timestamps: false,
       indexes: [
         {
           name: "PRIMARY",
           unique: true,
           using: "BTREE",
-          fields: [{ name: "result_no" }],
+          fields: [{ name: "img_no" }],
         },
         {
-          name: "RESULT_KID_FK_idx",
-          using: "BTREE",
-          fields: [{ name: "kid_no" }],
-        },
-        {
-          name: "RESULT_QUIZ_FK_idx",
+          name: "IMAGE_QUIZ_FK_idx",
           using: "BTREE",
           fields: [{ name: "quiz_no" }],
         },
