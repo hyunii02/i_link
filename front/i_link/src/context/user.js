@@ -18,6 +18,8 @@ const UserProvider = ({ children }) => {
   const [kidsList, setKidsList] = useState(() => JSON.parse(sessionStorage.getItem('kidsList')))
   // 부모 로그인 시, 부모의 아이들 리스트 중 대표 아이 상태 저장
   const [firstKid, setFirstKid] = useState(() => JSON.parse(sessionStorage.getItem('firstKid')))
+  // 개인 이미지 url 주소
+  const [userProfileUrl, setUserProfileUrl] = useState(() => sessionStorage.getItem('userProfileUrl'))
 
   const navigate = useNavigate();
 
@@ -62,6 +64,10 @@ const UserProvider = ({ children }) => {
     sessionStorage.setItem('firstKid', JSON.stringify(firstKid))
   }, [firstKid])
 
+  useEffect(() => {
+    sessionStorage.setItem('userProfileUrl', userProfileUrl);
+  }, [userProfileUrl])
+
   const value = {
     userNo,
     userName,
@@ -73,6 +79,7 @@ const UserProvider = ({ children }) => {
     refreshToken,
     kidsList,
     firstKid,
+    userProfileUrl,
     setUserNo,
     setUserName,
     setUserType,
@@ -82,7 +89,8 @@ const UserProvider = ({ children }) => {
     setAccessToken,
     setRefreshToken,
     setKidsList,
-    setFirstKid
+    setFirstKid,
+    setUserProfileUrl,
   }
   return (
     <UserContext.Provider value={value}>

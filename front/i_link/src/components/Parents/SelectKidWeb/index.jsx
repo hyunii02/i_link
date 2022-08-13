@@ -8,26 +8,78 @@ import {
   Typography,
   Tooltip,
   IconButton,
-  ListItemIcon,
+  Grid,
 } from "@mui/material";
 import { PersonAdd } from "@mui/icons-material";
-import { axios, urls } from "../../../api/axios";
 import { UserContext } from "../../../context/user";
-import { baseURL } from "../../../api/axios";
+import { baseURL, urls } from "../../../api/axios";
+import axios from "axios";
 
 const SelectKidWeb = ({ kidName, setKidName }) => {
-  const [kidsList, setKidsList] = useState(
+  const {
+    userType,
+    firstKid,
+    setFirstKid,
+    kidsList,
+    userName,
+    userCenter,
+    userGroup,
+    userProfileUrl,
+  } = useContext(UserContext);
+
+  /*
+  const [totalkidsList, setTotalKidsList] = useState(
     JSON.parse(sessionStorage.getItem("kidsList") || "[]"),
-  );
-  const { firstKid, setFirstKid } = useContext(UserContext);
+  );*/
+
+  const [totalkidsList, setTotalKidsList] = useState(kidsList);
+
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+
+  // 유치원명, 반 명
+  const [centerName, setCenterName] = useState("");
+  const [centerNo, setCenterNo] = useState("");
+  const [groupName, setGroupName] = useState("");
+
+  // 서버에 현재 속해있는 유치원 이름을 요청
+  const getCenterName = async () => {
+    const fullURL = baseURL + urls.fetchCentersDetial + userCenter;
+    try {
+      const response = await axios.get(fullURL);
+      if (response.status === 200) {
+        setCenterName((centerName) => response.data.center_name);
+        setCenterNo((centerNo) => response.data.center_no);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 서버에 현재 속해있는 반 이름을 요청
+  const getGroupName = async () => {
+    const fullURL = baseURL + urls.fetchGroupsDetail + userGroup;
+    try {
+      const response = await axios.get(fullURL);
+      if (response.status === 200) {
+        setGroupName((groupName) => response.data.group_name);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+    if (parseInt(userType) === 1) {
+      getCenterName();
+    } else if (parseInt(userType) === 2) {
+      getCenterName();
+      getGroupName();
+    }
   };
 
   const handleCloseNavMenu = () => {
@@ -47,11 +99,20 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
 
   return (
     <Box sx={{ flexGrow: 0 }}>
-      <Tooltip title="아이 선택">
-        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+      <Tooltip title="프로필관리">
+        <IconButton
+          onClick={handleOpenUserMenu}
+          sx={{ p: 0, border: "3px solid #ffe2e2" }}
+        >
           <Avatar
-            alt={firstKid.kid_name.slice(1)}
-            src={baseURL + firstKid.kid_profile_url}
+            alt={firstKid.length === 0 ? userName : firstKid.kid_name.slice(1)}
+            src={
+              baseURL +
+              (firstKid.length === 0
+                ? userProfileUrl
+                : firstKid.kid_profile_url)
+            }
+            sx={{ background: "rgba(0, 0, 0, 0.2)" }}
           />
         </IconButton>
       </Tooltip>
@@ -71,11 +132,45 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        {kidsList.map((list, index) => (
-          <MenuItem key={index} onClick={menuItemClicked} value={index}>
-            <Typography textAlign="center">{list.kid_name}</Typography>
-          </MenuItem>
-        ))}
+        {parseInt(userType) === 3 &&
+          kidsList?.map((list, index) => (
+            <MenuItem key={index} onClick={menuItemClicked} value={index}>
+              <Typography id="font_text" textAlign="center">
+                {list.kid_name}
+              </Typography>
+            </MenuItem>
+          ))}
+        {parseInt(userType) === 2 && (
+          <Box>
+            <Grid container>
+              <Grid item xs={12}>
+                <Typography id="font_text">
+                  {centerName} [{centerNo}]
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography id="font_text">{groupName}</Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography id="font_text">{userName} 선생님</Typography>
+              </Grid>
+            </Grid>
+          </Box>
+        )}
+        {parseInt(userType) === 1 && (
+          <Box>
+            <Grid container>
+              <Grid item xs={12}>
+                <Typography id="font_text">
+                  {centerName} [{centerNo}]
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography id="font_text">{userName} 원장님</Typography>
+              </Grid>
+            </Grid>
+          </Box>
+        )}
       </Menu>
     </Box>
   );

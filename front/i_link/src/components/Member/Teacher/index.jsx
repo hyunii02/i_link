@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box, Grid, IconButton, Badge, Avatar } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { baseURL } from "../../../api/axios";
 
 // 알림 뱃지 스타일링
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -47,7 +48,7 @@ const MemberTeacher = (props) => {
       >
         {
           <Avatar
-            src={teacher.src}
+            src={baseURL + teacher.user_profile_url}
             sx={{
               width: 112,
               height: 112,
@@ -67,7 +68,7 @@ const MemberTeacher = (props) => {
         }}
       >
         <Typography id="font_test" variant="h5">
-          {teacher.name} 선생님
+          {teacher.user_name} 선생님
         </Typography>
       </CardContent>
       {/* Card 버튼 파트 */}

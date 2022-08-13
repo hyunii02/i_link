@@ -17,7 +17,7 @@ const LayOut = (props) => {
   return (
     <Box
       style={{
-        background: colorPalette.BACKGROUND_COLOR,
+        background: "#FDFDF6",
         height: "fit-content",
         minHeight: "100vh",
       }}

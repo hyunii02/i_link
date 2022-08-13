@@ -36,6 +36,8 @@ import { UserProvider } from './context/user';
 import TeacherJoinCenter from "./pages/Teacher/JoinCenter/JoinCenter";
 import ParentsJoinCenter from './pages/Parents/JoinCenter/JoinCenter';
 import PictureBoard from "./pages/Common/PictureBoard";
+import TeacherWait from "./pages/Teacher/Wait/TeacherWait";
+
 
 const App = () => {
   return (
@@ -55,6 +57,8 @@ const App = () => {
           <Route path="/user/signup" element={<UserSignUp />} />
           <Route path="/user/update" element={<UserUpdate />} />
           <Route path="/master/registacademy" element={<MasterRegistAcademy />} />
+          <Route path="/teacher/joincenter" element={<TeacherJoinCenter />} />
+          <Route path="/teacher/wait" element={<TeacherWait />} />
         </Route>
         {/* 원장님, 학부모, 선생님 */}
         <Route element={<LayOut />}>
@@ -83,7 +87,7 @@ const App = () => {
           <Route path="/teacher/memo" element={<TeacherMemo />} />
           <Route path="/teacher/notice" element={<TeacherNotice />} />
           <Route path="/teacher/quiz" element={<TeacherQuiz />} />
-          <Route path="/teacher/joincenter" element={<TeacherJoinCenter />} />
+          {/*<Route path="/teacher/joincenter" element={<TeacherJoinCenter />} />*/}
           <Route path="/teacher/pictureboard" element={<PictureBoard />} />
 
         </Route>
