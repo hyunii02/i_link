@@ -43,11 +43,11 @@ exports.quiz_regist = async function (req, res) {
           {
             type: db.sequelize.QueryTypes.INSERT,
             replacements: [
-              imgList.contentImg ? uploadPath + imgList.quizContentUrl[0].filename : null,
-              imgList.sel1Img ? uploadPath + imgList.quizSel1Url[0].filename : null,
-              imgList.sel2Img ? uploadPath + imgList.quizSel2Url[0].filename : null,
-              imgList.sel3Img ? uploadPath + imgList.quizSel3Url[0].filename : null,
-              imgList.sel4Img ? uploadPath + imgList.quizSel4Url[0].filename : null,
+              imgList.quizContentUrl ? uploadPath + imgList.quizContentUrl[0].filename : null,
+              imgList.quizSel1Url ? uploadPath + imgList.quizSel1Url[0].filename : null,
+              imgList.quizSel2Url ? uploadPath + imgList.quizSel2Url[0].filename : null,
+              imgList.quizSel3Url ? uploadPath + imgList.quizSel3Url[0].filename : null,
+              imgList.quizSel4Url ? uploadPath + imgList.quizSel4Url[0].filename : null,
               quizNo,
             ],
             transaction,
@@ -73,7 +73,7 @@ exports.quiz_list = async function (req, res) {
   const writerNo = req.params.userNo;
 
   let query =
-    "SELECT * FROM quiz q LEFT JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
+    "SELECT q.*, quiz_content_url, quiz_sel_1_url, quiz_sel_2_url, quiz_sel_3_url, quiz_sel_4_url FROM quiz q LEFT JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
     ` WHERE quiz_writer = ${writerNo}`;
 
   await db.sequelize
@@ -109,7 +109,7 @@ exports.quiz_today = async function (req, res) {
   const groupNo = req.params.groupNo;
 
   let query =
-    "SELECT * FROM quiz q LEFT JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
+    "SELECT q.*, quiz_content_url, quiz_sel_1_url, quiz_sel_2_url, quiz_sel_3_url, quiz_sel_4_url FROM quiz q LEFT JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
     ` WHERE group_no = ${groupNo} AND quiz_date = DATE_FORMAT(now(), '%Y-%m-%d');`;
 
   await db.sequelize
@@ -155,7 +155,7 @@ exports.quiz_detail = async function (req, res) {
     .then((data) => {
       if (data.length > 0) {
         query =
-          "SELECT * FROM quiz q LEFT JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
+          "SELECT q.*, quiz_content_url, quiz_sel_1_url, quiz_sel_2_url, quiz_sel_3_url, quiz_sel_4_url FROM quiz q LEFT JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
           ` WHERE q.quiz_no = ${quizNo};`;
       } else {
         query = "SELECT * FROM quiz " + ` WHERE quiz_no = ${quizNo};`;
