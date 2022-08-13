@@ -61,7 +61,7 @@ const Header = () => {
   }, []);
 
   return (
-    <Box>
+    <Box sx={{ boxShadow: 1 }}>
       {/* 헤더색 투명하게 */}
       <Box position="static" style={{ background: "rgba(52, 52, 52, 0)" }}>
         <Container maxWidth="xl">
