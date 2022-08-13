@@ -12,7 +12,7 @@ const colorPalette = {
 
 // 원장님 권한 ID NavBar Data, Path 관리 객체배열
 const MASTER = [
-    { id: 1, name: "원생관리", path: "/master/managemember", },
+    { id: 1, name: "유치원관리", path: "/master/managemember", },
     { id: 2, name: "공지사항", path: "/master/notice", },
     { id: 3, name: "알림장", path: "/master/memo", },
     { id: 4, name: "식단관리", path: "/master/diet", },

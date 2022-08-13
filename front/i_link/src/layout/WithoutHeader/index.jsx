@@ -17,7 +17,7 @@ const LayoutWithoutHeader = (props) => {
   return (
     <Box
       sx={{
-        background: colorPalette.BACKGROUND_COLOR,
+        background: "#FdFdF6",
         height: "100%",
         minHeight: "100vh",
       }}
