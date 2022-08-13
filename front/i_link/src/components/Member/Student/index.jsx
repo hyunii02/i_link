@@ -140,7 +140,6 @@ const MemberStudent = (props) => {
           data.report_date,
         ]);
       });
-      console.log(newReportForm);
       setReportList(newReportForm);
     });
   };

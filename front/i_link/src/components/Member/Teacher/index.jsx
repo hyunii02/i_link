@@ -26,7 +26,6 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 const MemberTeacher = (props) => {
   // page에서 가져온 원생 정보
   const { teacher } = props;
-  console.log(teacher);
   const [teacherState, setTeacherState] = useState(teacher);
 
   return (
