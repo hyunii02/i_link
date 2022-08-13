@@ -9,23 +9,23 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         primaryKey: true,
       },
-      content_url: {
+      quiz_content_url: {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
-      sel_1_url: {
+      quiz_sel_1_url: {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
-      sel_2_url: {
+      quiz_sel_2_url: {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
-      sel_3_url: {
+      quiz_sel_3_url: {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
-      sel_4_url: {
+      quiz_sel_4_url: {
         type: DataTypes.STRING(255),
         allowNull: true,
       },

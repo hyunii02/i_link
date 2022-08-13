@@ -30,7 +30,7 @@ exports.notice_regist = async function (req, res) {
       })
       .catch((err) => res.status(500).json({ error: err.message, message: "공지 작성 실패." }));
 
-    if (fileList) {
+    if (Object.keys(fileList).length !== 0) {
       for (let i = 0; i < fileList.length; i++) {
         // 쿼리 실행 후 결과 저장
         promises.push(
@@ -54,13 +54,14 @@ exports.notice_regist = async function (req, res) {
 
       await Promise.all(promises)
         .then(() => {
-          res.status(200).json({ message: "공지사항 등록 완료." });
+          console.log("공지 첨부 등록 완료");
         })
         .catch((err) => {
-          res.status(500).json({ error: err.message, message: "공지사항 등록 실패." });
+          res.status(500).json({ error: err.message, message: "공지 첨부 등록 실패." });
         });
     }
     await transaction.commit();
+    res.status(200).json({ message: "공지사항 등록 완료." });
   } catch (err) {
     await transaction.rollback();
     res.status(500).json({ error: err.message, message: "공지 작성 실패." });
@@ -187,6 +188,7 @@ exports.notice_update = async function (req, res) {
       }
 
       await Promise.all(promises)
+        // 공지 수정 처리 후 서버에 저장되어 있던 파일 삭제
         .then(() => {
           if (originFileList.length > 0) {
             for (let i = 0; i < originFileList.length; i++) {
@@ -199,13 +201,14 @@ exports.notice_update = async function (req, res) {
               }
             }
           }
-          res.status(200).json({ message: "공지사항 수정 완료" });
+          console.log("공지사항 첨부파일 수정 완료");
         })
         .catch((err) => {
-          res.status(500).json({ error: err.message, message: "공지사항 수정 실패" });
+          res.status(500).json({ error: err.message, message: "공지사항 첨부파일 수정 실패" });
         });
     }
     await transaction.commit();
+    res.status(200).json({ message: "공지사항 수정 완료" });
   } catch (err) {
     await transaction.rollback();
     res.status(500).json({ error: err.message, message: "공지사항 수정 실패" });
@@ -216,12 +219,35 @@ exports.notice_update = async function (req, res) {
 // [delete] /notices/:noticeNo
 exports.notice_remove = async function (req, res) {
   const noticeNo = req.params.noticeNo;
+  let originFileList = null;
+
+  await Files.findAll({ where: { notice_no: noticeNo }, raw: true })
+    .then((data) => {
+      originFileList = data;
+      console.log(data);
+    })
+    .catch((err) => console.log({ error: err.message, message: "파일 조회 실패." }));
+
   await Promise.all([
     Notices.destroy({ where: { notice_no: noticeNo } }),
     Files.destroy({ where: { notice_no: noticeNo } }),
   ])
     .then((result) => {
+      // 삭제 완료 시
       if (result[0] == 1) {
+        // 첨부된 파일이 존재했다면
+        if (originFileList.length > 0) {
+          for (let i = 0; i < originFileList.length; i++) {
+            // 해당 파일 서버에서 삭제
+            if (fs.existsSync(path.join(__dirname, "..", originFileList[i].file_location))) {
+              try {
+                fs.unlinkSync(path.join(__dirname, "..", originFileList[i].file_location));
+              } catch (err) {
+                console.log(err.message);
+              }
+            }
+          }
+        }
         res.status(200).json({ message: "공지사항 삭제 완료." });
       } else {
         res.status(400).json({ message: "해당 데이터를 찾을 수 없음." });
