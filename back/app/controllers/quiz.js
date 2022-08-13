@@ -24,7 +24,6 @@ exports.quiz_regist = async function (req, res) {
       quiz_sel_3: req.body.quizSel3 ? req.body.quizSel3 : null, // 선택지 3
       quiz_sel_4: req.body.quizSel4 ? req.body.quizSel4 : null, // 선택지 4
       quiz_ans: req.body.quizAns ? req.body.quizAns : null, // 퀴즈 답
-      quiz_date: req.body.quizDate ? req.body.quizDate : null,
     };
 
     await Quiz.create(quiz, { transaction })
