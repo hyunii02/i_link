@@ -9,6 +9,7 @@ import { axios, baseURL, urls } from "../../../api/axios";
 const QuizFrame = (props) => {
   const { data, getQuizData, getTodayQuiz, state } = props;
   // state : 오늘의 퀴즈/퀴즈 리스트 구분해주는 변수. 1:오늘의 퀴즈  2:퀴즈 리스트
+  console.log(data);
 
   // 오늘의 퀴즈 등록
   const todayQuizButtonClicked = () => {
