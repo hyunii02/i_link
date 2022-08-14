@@ -8,8 +8,7 @@ import { axios, baseURL, urls } from "../../../api/axios";
 
 const QuizFrame = (props) => {
   const { data, getQuizData, getTodayQuiz, state } = props;
-  // state : 오늘의 퀴즈/퀴즈 리스트 구분해주는 변수. 1:오늘의 퀴즈  2:퀴즈 리스트
-  console.log(data);
+  // state : 오늘의 퀴즈/퀴즈 리스트 구분해주는 변수. 1:오늘의 퀴즈  2:퀴즈 리스트. 3:아이가 푼 퀴즈
 
   // 오늘의 퀴즈 등록
   const todayQuizButtonClicked = () => {
@@ -67,22 +66,56 @@ const QuizFrame = (props) => {
 
       {/* 퀴즈 정답 틀 */}
       <Box
-        sx={{ height: "40%", display: "flex", justifyContent: "space-around" }}
+        sx={{
+          height: "40%",
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+          flexDirection: "row",
+        }}
       >
         {/* 1번 정답 */}
-        <Box sx={{ width: "20%", height: "90%", background: "#D6FABA" }}>
+        <Box
+          sx={{
+            width: "20%",
+            height: "90%",
+            background: "#D6FABA",
+            border: state === 3 && data.kid_ans === 1 ? "3px solid red" : "",
+          }}
+        >
           <QuizSolForm solText={data.quiz_sel_1} solUrl={data.quiz_sel_1_url} />
         </Box>
         {/* 2번 정답 */}
-        <Box sx={{ width: "20%", height: "90%", background: "#D6FABA" }}>
+        <Box
+          sx={{
+            width: "20%",
+            height: "90%",
+            background: "#D6FABA",
+            border: state === 3 && data.kid_ans === 2 ? "3px solid red" : "",
+          }}
+        >
           <QuizSolForm solText={data.quiz_sel_2} solUrl={data.quiz_sel_2_url} />
         </Box>
         {/* 3번 정답 */}
-        <Box sx={{ width: "20%", height: "90%", background: "#D6FABA" }}>
+        <Box
+          sx={{
+            width: "20%",
+            height: "90%",
+            background: "#D6FABA",
+            border: state === 3 && data.kid_ans === 3 ? "3px solid red" : "",
+          }}
+        >
           <QuizSolForm solText={data.quiz_sel_3} solUrl={data.quiz_sel_3_url} />
         </Box>
         {/* 4번 정답 */}
-        <Box sx={{ width: "20%", height: "90%", background: "#D6FABA" }}>
+        <Box
+          sx={{
+            width: "20%",
+            height: "90%",
+            background: "#D6FABA",
+            border: state === 3 && data.kid_ans === 1 ? "3px solid red" : "",
+          }}
+        >
           <QuizSolForm solText={data.quiz_sel_4} solUrl={data.quiz_sel_4_url} />
         </Box>
       </Box>

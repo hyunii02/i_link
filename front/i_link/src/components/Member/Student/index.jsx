@@ -184,8 +184,8 @@ const MemberStudent = (props) => {
       <div
         style={{
           position: "absolute",
-          right: "70px",
-          top: "10px",
+          right: "20%",
+          top: "5%",
           zIndex: "100",
         }}
       >

@@ -67,6 +67,8 @@ const CalendarDay = (props) => {
 
   // 편집 권한 체크를 위한 Context 호출
   const { userType } = useContext(UserContext);
+  let i = 2;
+  console.log(userType === "3");
 
   // 모달창 > 식단 추가 시
   const dietInsertHandler = (e) => {
