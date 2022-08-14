@@ -9,7 +9,7 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         primaryKey: true,
       },
-      result_ans: {
+      quiz_ans: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
       },

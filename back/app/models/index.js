@@ -38,5 +38,6 @@ db.notices = models.notices;
 db.files = models.files;
 db.quiz = models.quiz;
 db.quiz_images = models.quiz_images;
+db.quiz_results = models.quiz_results;
 
 module.exports = db;

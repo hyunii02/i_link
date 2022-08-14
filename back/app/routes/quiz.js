@@ -220,6 +220,10 @@ router.get("/list/:userNo", quizController.quiz_list);
  */
 router.get("/today/:groupNo", quizController.quiz_today);
 
+router.post("/kids/register", quizController.quiz_kid_regist);
+
+router.get("/kids/:kidNo", quizController.quiz_kidList);
+
 /**
  * @swagger
  * paths:
