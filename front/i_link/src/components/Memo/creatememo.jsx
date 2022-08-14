@@ -37,7 +37,7 @@ export default function CreateMemo(props) {
   };
   //모달창 열고닫기 관리
   const [open, setOpen] = useState(false);
-  const [clicks, setClicks] = useState(false);
+  
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);

@@ -24,7 +24,8 @@ export default function Notice(props) {
   const [details, setDetails] = useState("");
 
   //게시글 넘버 받아오는 것
-
+  let userCenterNumber = userCenter;
+  console.log(userCenterNumber);
   useEffect(() => {
     getNoticeList();
   }, []);
@@ -47,7 +48,7 @@ export default function Notice(props) {
     transform: "translate(-50%, -50%)",
     width: 800,
     height: 600,
-    bgcolor: "#F8FAD7",
+    bgcolor: "white",
     border: "5px solid #FCE6D4",
     boxShadow: 24,
     p: 4,
@@ -72,10 +73,6 @@ export default function Notice(props) {
     } catch (e) {
       console.log(e);
     }
-  };
-
-  const detailCount = (notice) => {
-    notice.hit += 1;
   };
 
   //공지사항 디테일 모달관리
@@ -137,7 +134,6 @@ export default function Notice(props) {
                   onClick={() => {
                     handleOpen1();
                     detailNotice(notice);
-                    detailCount(notice);
                   }}
                   align="center"
                   component="th"
@@ -146,10 +142,10 @@ export default function Notice(props) {
                   {notice.notice_no}
                 </TableCell>
                 <TableCell
+                  sx={{ pl: 7 }}
                   onClick={() => {
                     handleOpen1();
                     detailNotice(notice);
-                    detailCount(notice);
                   }}
                   id="font_test"
                   align="left"
@@ -170,7 +166,6 @@ export default function Notice(props) {
                   onClick={() => {
                     handleOpen1();
                     detailNotice(notice);
-                    detailCount(notice);
                   }}
                   align="right"
                 >
@@ -252,7 +247,13 @@ export default function Notice(props) {
               justifyContent: "end",
             }}
           >
-            <Button id="font_test" sx={{mt:1,mr:18}}onClick={handleClose2}>닫기</Button>
+            <Button
+              id="font_test"
+              sx={{ mt: 1, mr: 18 }}
+              onClick={handleClose2}
+            >
+              닫기
+            </Button>
           </Box>
         </Box>
       </Modal>
