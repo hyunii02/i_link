@@ -4,6 +4,8 @@ import Typography from "@mui/material/Typography";
 import { useEffect, useContext, useState } from "react";
 import axios from "axios";
 
+import { Box, Grid } from "@mui/material";
+
 import { UserContext } from "../../../context/user";
 import { urls, baseURL } from "../../../api/axios";
 import { getToday } from "../../../commonFuction";
@@ -38,12 +40,15 @@ const SnackHome = () => {
   };
 
   return (
-    <div>
-      <Typography variant="h6" component="h2" id="font_test" align="center">
-        간식
+    <Box>
+      <Typography variant="h6" component="h2" id="font_test" align="center" sx={{ mt:1, mb:1 }}>
+        🥪 간식 🥪
       </Typography>
+      <Grid container sx={{justifyContent:"center"}}>
+        {!snack && <Typography id="font_test" sx={{ marginLeft:2}}>오늘의 간식이 아직 올라오지 않았어요</Typography>}
+      </Grid>
       <TodayList items={snack}></TodayList>
-    </div>
+    </Box>
   );
 };
 
