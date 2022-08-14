@@ -4,55 +4,135 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 import { useState, useContext } from "react";
 import { UserContext } from "../../context/user";
-import axios from "axios";
-import { baseURL, urls } from "../../api/axios";
+
+import { axios, baseURL, urls } from "../../api/axios";
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+import { Typography } from "@mui/material";
+
+const defaultImageState = {
+  image_file: "",
+  preview_URL: "",
+};
+
+const Uploader = ({ image, setImage }) => {
+  let inputRef; //이미지 미리보기를 위해서 Ref를 사용
+
+  //이미지 저장
+  const saveImage = (event) => {
+    //event.preventDefault();
+
+    // 이미지를 가져 올 시
+    if (event.target.files[0]) {
+      //setSendImage((sendImage) => event.target.files[0]);
+      // 새로운 이미지를 올리면 createObjectURL()을 통해 기존 URL을 폐기
+      URL.revokeObjectURL(image.preview_URL);
+      const preview_URL = URL.createObjectURL(event.target.files[0]);
+      setImage(() => ({
+        image_file: event.target.files[0],
+        preview_URL: preview_URL,
+      }));
+    }
+  };
+
+  return (
+    <Box>
+      {/* 이미지 삽입 */}
+      <input
+        id="noticefileeurl"
+        type="file"
+        accept="image/*"
+        onChange={saveImage}
+        onClick={(event) => (event.target.value = null)} // 클릭할 때 마다 file input의 value를 초기화 하지 않으면 버그가 발생할 수 있다
+        ref={(refParam) => (inputRef = refParam)}
+        style={{ display: "none" }}
+      />
+      {/* 이미지 창 */}
+      <Button onClick={() => inputRef.click()} style={{ cursor: "pointer" }}>
+        사진첨부
+      </Button>
+    </Box>
+  );
+};
+
 export default function NoticeWriteForm(props) {
   const [noticeTitle, setNoticeTitle] = useState("");
   const [noticeContent, setNoticeContent] = useState("");
   const { getNoticeList, handleClose2 } = props;
   const { userCenter } = useContext(UserContext);
   const [formErrors, setFormErrors] = useState({});
+  const [NoticeImage, setNoticeImage] = useState(defaultImageState);
 
-  
+  // 이미지 저장
+
+  // const CkEditorForm = () => {
+  //   return (
+  //     <CKEditor
+  //       editor={ClassicEditor}
+  //       data="<p></p>"
+
+  //       onChange={(event, editor) => {
+
+  //         const data = editor.getData();
+  //         console.log({ event, editor, data });
+  //       }}
+
+  //     />
+  //   );
+  // };
+
+  //제목 내용 유효성 검사
+  const validate = (noticeData) => {
+    const errors = {};
+    let flag = false;
+    if (!noticeData.noticeTitle) {
+      errors.noticeTitle = "제목을 입력해주세요";
+      flag = true;
+    }
+
+    if (!noticeData.noticeContent) {
+      errors.noticeContent = "내용을 입력해주세요";
+      flag = true;
+    }
+
+    setFormErrors(errors);
+    if (flag) {
+      return false;
+    }
+    return true;
+  };
+
   // 정보를 보내는 함수
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const noticeData = {
+    // 서버에 요청보낼 Body
+    const body = {
       centerNo: userCenter,
       noticeTitle: noticeTitle,
       noticeContent: noticeContent,
+      files: NoticeImage.image_file,
     };
-    //제목 내용 유효성 검사
-    const validate = () => {
-      const errors = {};
-      let flag = false;
-      if (!noticeData.noticeTitle) {
-        errors.noticeTitle = "제목을 입력해주세요";
-        flag = true;
-      }
-
-      if (!noticeData.noticeContent) {
-        errors.noticeContent = "내용을 입력해주세요";
-        flag = true;
-      }
-
-      setFormErrors(errors);
-      if (flag) {
-        return false;
-      }
-      return true;
+    console.log(body);
+    // 사진 전송을 위해 헤더에 Multi-part로 type 설정
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
     };
 
     //유효성 검사 후 데이터 보낸다.
 
-    if (validate()) {
+    if (validate(body)) {
       try {
         axios
-          .post(baseURL + urls.fetchNoticsRegister, noticeData)
+          .post(baseURL + urls.fetchNoticsRegister, body, config)
           .then((response) => {
+            console.log(response);
             if (response.status === 200) {
               getNoticeList();
               handleClose2();
@@ -66,9 +146,8 @@ export default function NoticeWriteForm(props) {
 
   return (
     <Box
-      component="form"
       sx={{
-        "& .MuiTextField-root": { mt: 2 }, // 텍스트필드마다 mt 5
+        "& .MuiTextField-root": { mt: 0 }, // 텍스트필드마다 mt 5
 
         display: "flex",
         flexDirection: "column",
@@ -79,16 +158,33 @@ export default function NoticeWriteForm(props) {
       <Box>
         <h1>공지사항</h1>
       </Box>
+
       <TextField
-        sx={{ background: "white", width: 500 }}
+        sx={{
+          background: "white",
+          width: 500,
+          borderBottom: "2px solid #8E8F91",
+        }}
         onChange={(e) => setNoticeTitle(e.target.value)}
         label="제목을 작성하세요"
         id="title"
         name="title"
         multiline
         maxRows={4}
+        variant="standard"
       />
       <p id="font_test">{formErrors.noticeTitle}</p>
+      {/* <CkEditorForm
+      sx={{ background: "white" }}
+        
+        onChange={(e) => setNoticeContent(e.target.value)}
+        id="content"
+        name="content"
+        
+        multiline
+        rows={10}
+      />
+      <p id="font_test">{formErrors.noticeContent}</p> */}
 
       <TextField
         sx={{ background: "white", width: 500 }}
@@ -99,7 +195,15 @@ export default function NoticeWriteForm(props) {
         multiline
         rows={10}
       />
-      <p id="font_test">{formErrors.noticeContent}</p>
+
+      <Box sx={{ width: 500, display: "flex", justifyContent: "flex-start" }}>
+        <Uploader image={NoticeImage} setImage={setNoticeImage} />
+        <p>{NoticeImage.image_file.name}</p>
+      </Box>
+
+      <Box sx={{ width: 300 }}>
+        <p id="font_test">{formErrors.noticeContent}</p>
+      </Box>
 
       <Button
         onClick={handleSubmit}
