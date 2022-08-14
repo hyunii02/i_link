@@ -25,7 +25,7 @@ const KioskMain = () => {
     }
   }, [navigate, kidName]);
   return (
-    <div style={{ color: "white" }}>
+    <div style={{ color: "white", flexGrow: 1 }}>
       <Grid
         container
         spacing={2}
