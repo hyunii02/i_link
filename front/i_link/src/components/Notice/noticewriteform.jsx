@@ -79,7 +79,7 @@ export default function NoticeWriteForm(props) {
     };
     setContentList([...contentList, content]);
     console.log(content);
-    setNoticeContent("");
+    
   };
 
   // 이미지 저장
@@ -179,11 +179,12 @@ export default function NoticeWriteForm(props) {
           background: "white",
           width: 500,
           borderBottom: "2px solid #8E8F91",
+          
         }}
         id="font_test"
         onChange={(e) => setNoticeTitle(e.target.value)}
-        label="제목을 작성하세요"
         
+        placeholder="  제목을 입력하세요"
         name="title"
         multiline
         maxRows={4}
@@ -207,7 +208,7 @@ export default function NoticeWriteForm(props) {
         onChange={(e) => setNoticeContent(e.target.value)}
         id="font_test"
         name="content"
-        label="내용을 작성하세요"
+        placeholder="내용을 입력하세요"
         multiline
         
         rows={10}
