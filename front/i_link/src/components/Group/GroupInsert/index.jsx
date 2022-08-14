@@ -9,46 +9,34 @@ import { UserContext } from "../../../context/user";
 
 const GroupInsert = (props) => {
   // 부모의 props 함수 가져오기
-  const { cancelClicked, getGroupList } = props;
+  const { insertClass, cancelClicked, getGroupList } = props;
 
   // 새로운 반 이름 State
   const [newClass, setNewClass] = useState("");
 
   // 전역객체
-  const { userType } = useContext(UserContext);
+  const { userType, userCenter } = useContext(UserContext);
 
   // 텍스트 Change Event
   const onChange = (e) => {
     setNewClass((newClass) => e.target.value);
   };
 
-  // axios post를 통한 반 추가
-  const insertClass = () => {
+  // 반 추가 시 동작 함수
+  const insertClicked = () => {
+    if (newClass.length === 0) return;
     const newObj = {
-      centerNo: parseInt(userType),
+      centerNo: parseInt(userCenter),
       groupName: newClass,
     };
     // Data부에 객체를 담아 POST 전송
     try {
-      axios.post(urls.fetchGroupsRegister, newObj).then((response) => {
-        getGroupList();
-        setNewClass((newClass) => "");
-      });
+      axios
+        .post(urls.fetchGroupsRegister, newObj)
+        .then((response) => getGroupList());
     } catch (e) {
       console.log(e);
     }
-  };
-
-  // 반 추가 후 엔터키다운 시 동작 함수
-  const onKeyDownHandler = (e) => {
-    if (e.key === "Enter") {
-      insertClass();
-    }
-  };
-
-  // 반 추가 버튼 클릭 시 동작 함수
-  const insertClicked = () => {
-    insertClass();
   };
 
   return (
@@ -69,7 +57,6 @@ const GroupInsert = (props) => {
             value={newClass}
             fullWidth
             onChange={onChange}
-            onKeyDown={onKeyDownHandler}
           />
         </Grid>
         <Grid item xs={8}>

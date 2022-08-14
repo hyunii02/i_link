@@ -14,6 +14,7 @@ import { PersonAdd } from "@mui/icons-material";
 import { UserContext } from "../../../context/user";
 import { baseURL, urls } from "../../../api/axios";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 const SelectKidWeb = ({ kidName, setKidName }) => {
   const {
@@ -26,6 +27,8 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
     userGroup,
     userProfileUrl,
   } = useContext(UserContext);
+
+  const navigate = useNavigate();
 
   /*
   const [totalkidsList, setTotalKidsList] = useState(
@@ -95,6 +98,7 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
   const menuItemClicked = (e) => {
     setFirstKid((firstKid) => kidsList[e.currentTarget.value]);
     setAnchorElUser(null);
+    navigate("/parents/home", { state: kidsList[e.currentTarget.value] });
   };
 
   return (
@@ -135,24 +139,28 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
         {parseInt(userType) === 3 &&
           kidsList?.map((list, index) => (
             <MenuItem key={index} onClick={menuItemClicked} value={index}>
-              <Typography id="font_text" textAlign="center">
+              <Typography id="font_test" textAlign="center">
                 {list.kid_name}
               </Typography>
             </MenuItem>
           ))}
         {parseInt(userType) === 2 && (
-          <Box>
+          <Box sx={{ ml: "10px", width: "150px" }}>
             <Grid container>
               <Grid item xs={12}>
-                <Typography id="font_text">
+                <Typography id="font_test" variant="body2">
                   {centerName} [{centerNo}]
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography id="font_text">{groupName}</Typography>
+                <Typography id="font_test" variant="body2">
+                  {groupName}
+                </Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography id="font_text">{userName} 선생님</Typography>
+                <Typography id="font_test" variant="body2">
+                  {userName} 선생님
+                </Typography>
               </Grid>
             </Grid>
           </Box>
@@ -161,12 +169,12 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
           <Box>
             <Grid container>
               <Grid item xs={12}>
-                <Typography id="font_text">
+                <Typography id="font_test">
                   {centerName} [{centerNo}]
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography id="font_text">{userName} 원장님</Typography>
+                <Typography id="font_test">{userName} 원장님</Typography>
               </Grid>
             </Grid>
           </Box>

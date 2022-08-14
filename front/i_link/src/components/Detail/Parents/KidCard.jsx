@@ -1,68 +1,80 @@
 // 2022.08.12 강민재, 안정현
 // 아이 사진 및 상태
-import axios from 'axios';
-import { useContext, useEffect } from 'react';
-import { urls, baseURL } from '../../../api/axios';
+import axios from "axios";
+import { useContext, useEffect } from "react";
+import { urls, baseURL } from "../../../api/axios";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { UserContext } from "../../../context/user";
 
-import {
-  Box,
-  Grid,
-  Avatar,
-} from "@mui/material";
+import { Box, Grid, Avatar } from "@mui/material";
 
-const KidCard = ({ centerName, setCenterName, groupName, setGroupName}) => {
+const KidCard = ({ centerName, setCenterName, groupName, setGroupName }) => {
   const { firstKid } = useContext(UserContext);
   // 버튼에 넣어줘야 할 텍스트
   const buttonText = ["등원완료", "하원완료", "설문완료"];
 
   const getCenterName = async () => {
     const response = await axios.get(
-      baseURL + urls.fetchCentersDetial + firstKid.center_no
-    ) 
-    setCenterName(response.data.center_name)
-  }
+      baseURL + urls.fetchCentersDetial + firstKid.center_no,
+    );
+    setCenterName(response.data.center_name);
+  };
 
   const getGroupName = async () => {
     const response = await axios.get(
-      baseURL + urls.fetchGroupsDetail + firstKid.group_no
-    ) 
-    setGroupName(response.data.group_name)
-  }
+      baseURL + urls.fetchGroupsDetail + firstKid.group_no,
+    );
+    setGroupName(response.data.group_name);
+  };
   useEffect(() => {
-    getCenterName()
-    getGroupName()
-  }, [])
+    getCenterName();
+    getGroupName();
+  }, []);
 
   return (
     <Box sx={{ position: "relative" }}>
       <Grid>
-        <Grid container sx={{ justifyContent:"center"}}>
-            {
-              <Avatar
-                src={baseURL + firstKid.kid_profile_url}
-                sx={{
-                  width: 130,
-                  height: 130,
-                  border: "3px solid #ffe2e2",
-                  marginTop: "10px",
-                }}
-              />
-            }
+        <Grid container sx={{ justifyContent: "center" }}>
+          {
+            <Avatar
+              src={baseURL + firstKid.kid_profile_url}
+              sx={{
+                width: 180,
+                height: 180,
+                border: "3px solid #ffe2e2",
+                marginTop: "10px",
+              }}
+              variant="square"
+            />
+          }
         </Grid>
-        <Grid sx={{ mt:2 }} >
-          <Typography variant="body2" component="h2" id="font_test" align='center'>
+        <Grid sx={{ mt: 2 }}>
+          <Typography
+            variant="body2"
+            component="h2"
+            id="font_test"
+            align="center"
+          >
             이름 : {firstKid.kid_name}
           </Typography>
-          <Typography variant="body2" component="h2" id="font_test" align='center'>
-            유치원 : {centerName||''}
+          <Typography
+            variant="body2"
+            component="h2"
+            id="font_test"
+            align="center"
+          >
+            유치원 : {centerName || ""}
           </Typography>
-          <Typography variant="body2" component="h2" id="font_test" align='center'>
-            반 : {groupName||''}
+          <Typography
+            variant="body2"
+            component="h2"
+            id="font_test"
+            align="center"
+          >
+            반 : {groupName || ""}
           </Typography>
-          </Grid>
+        </Grid>
         {/* 버튼 파트 */}
         <Box
           style={{
@@ -70,7 +82,7 @@ const KidCard = ({ centerName, setCenterName, groupName, setGroupName}) => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "row",
-            marginTop:"15px",
+            marginTop: "15px",
           }}
         >
           <Grid container>
@@ -85,9 +97,10 @@ const KidCard = ({ centerName, setCenterName, groupName, setGroupName}) => {
                   value={index + 1}
                   size="small"
                   color="warning"
-                  
                 >
-                  <Typography variant="body2" id="font_test">{text}</Typography>
+                  <Typography variant="body2" id="font_test">
+                    {text}
+                  </Typography>
                 </Button>
               </Grid>
             ))}
@@ -98,4 +111,4 @@ const KidCard = ({ centerName, setCenterName, groupName, setGroupName}) => {
   );
 };
 
-export default KidCard
+export default KidCard;
