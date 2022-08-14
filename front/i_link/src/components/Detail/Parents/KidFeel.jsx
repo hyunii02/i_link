@@ -1,19 +1,21 @@
 // 2022.08.12 강민재, 안정현
 // 아이 기분
-import React from 'react'
-import axios from 'axios'
+import React from 'react';
+import axios from 'axios';
 import Typography from "@mui/material/Typography";
 import { Box, Grid } from "@mui/material";
+import Divider from '@mui/material/Divider';
 
-import { urls, baseURL } from '../../../api/axios'
-import { useContext, useEffect } from 'react'
-import { UserContext } from '../../../context/user'
-import { getToday } from '../../../commonFuction'
+import { urls, baseURL } from '../../../api/axios';
+import { useContext, useEffect } from 'react';
+import { UserContext } from '../../../context/user';
+import { getToday } from '../../../commonFuction';
+import KidCard from './KidCard';
 
-import happy from './FeelPng/happy.png'
-import smile from './FeelPng/smile.png'
-import so_so from './FeelPng/so_so.png'
-import sad from './FeelPng/sad.png'
+import happy from './FeelPng/happy.png';
+import smile from './FeelPng/smile.png';
+import so_so from './FeelPng/so_so.png';
+import sad from './FeelPng/sad.png';
 
 const KidFeel = ({feel, setFeel, centerName, setCenterName, groupName, setGroupName}) => {
   const {firstKid} = useContext(UserContext)
@@ -55,21 +57,29 @@ const KidFeel = ({feel, setFeel, centerName, setCenterName, groupName, setGroupN
 
   return (
     <Box>
-      <Typography variant="h5" component="h2" id="font_test" align="center">
-        오늘의 "{firstKid.kid_name}"의 기분
-      </Typography>
-      <Grid container sx={{ justifyContent:"center"}}>
-        { feel === '1' && <img src={sad} alt="슬퍼요" style={{ width: "70%", height: "70%"}}/>}
-        { feel === '2' && <img src={so_so} alt="그저 그래요" style={{ width: "70%", height: "70%"}}/>}
-        { feel === '3' && <img src={smile} alt="좋아요" style={{ width: "70%", height: "70%"}}/>}
-        { feel === '4' && <img src={happy} alt="행복해요" style={{ width: "70%", height: "70%"}}/>}
+      <Grid container item sx={{ justifyContent:"space-between" }}>
+        <Grid item xs sx={{ marginRight:2}}>
+          <KidCard centerName={centerName} setCenterName={setCenterName} groupName={groupName} setGroupName={setGroupName}></KidCard>
+        </Grid>
+        <Divider orientation='vertical' flexItem/>
+        <Grid container item xs sx={{ alignItems:"center"}}>
+          <Grid container sx={{ justifyContent:"center" }}>
+            <Typography variant="h6" id="font_test">🍀 오늘의 기분 🍀</Typography>
+          </Grid>
+          <Grid container sx={{ justifyContent:"center"}}>
+            { feel === '1' && <img src={sad} alt="슬퍼요" style={{ width: "80%", height: "80%"}}/>}
+            { feel === '2' && <img src={so_so} alt="그저 그래요" style={{ width: "80%", height: "80%"}}/>}
+            { feel === '3' && <img src={smile} alt="좋아요" style={{ width: "80%", height: "80%"}}/>}
+            { feel === '4' && <img src={happy} alt="행복해요" style={{ width: "80%", height: "80%"}}/>}
+          </Grid>
+          <Grid container sx={{ justifyContent:"center", marginLeft:1}}>
+            { feel === '1' && <Typography id="font_test" align="center">오늘 "{firstKid.kid_name}"의 기분은 슬퍼요</Typography>}
+            { feel === '2' && <Typography id="font_test" align="center">오늘 "{firstKid.kid_name}"의 기분은 그저 그래요</Typography>}
+            { feel === '3' && <Typography id="font_test" align="center">오늘 "{firstKid.kid_name}"의 기분은 좋아요</Typography>}
+            { feel === '4' && <Typography id="font_test" align="center">오늘 "{firstKid.kid_name}"의 기분은 행복해요</Typography>}
+          </Grid>
+        </Grid>
       </Grid>
-      <Typography variant="body1" component="h2" id="font_test" align="center">
-        {centerName||''}
-      </Typography>
-      <Typography variant="body1" component="h2" id="font_test" align="center">
-        {groupName||''}
-      </Typography>
     </Box>
   )
 }
