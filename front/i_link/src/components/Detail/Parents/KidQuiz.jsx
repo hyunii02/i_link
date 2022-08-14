@@ -5,20 +5,12 @@ import Typography from "@mui/material/Typography";
 import { Box, Grid } from "@mui/material";
 
 import { urls, baseURL } from "../../../api/axios";
-import { useState, useContext, useEffect } from "react";
-import { UserContext } from "../../../context/user";
-import { colorPalette } from "../../../constants/constants.js";
+import { useState, useEffect } from "react";
 import QuizFrame from "../../Quiz/QuizFrame.jsx";
 
 const KidQuiz = ({ kidNo }) => {
   // 퀴즈 리스트 관리
   const [quizList, setQuizList] = useState([]);
-
-  const [kid, setKid] = useState(kidNo);
-  // 오늘의 퀴즈 리스트 관리
-  const [todayQuizList, setTodayQuizList] = useState([]);
-
-  const { userGroup, userNo, firstKid } = useContext(UserContext);
 
   useEffect(() => {
     getQuizData();

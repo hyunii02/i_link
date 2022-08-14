@@ -61,7 +61,7 @@ const MealHome = () => {
           </Grid>
           <TodayList items={meal}></TodayList>
         </Grid>
-        <Divider orientation="vertical" flexItem sx={{ mt: 1 }} />
+        <Divider orientation="vertical" flexItem />
         <Grid item xs>
           <SnackHome></SnackHome>
         </Grid>
