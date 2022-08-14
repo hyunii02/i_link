@@ -134,7 +134,7 @@ exports.quiz_kidList = async function (req, res) {
   let query =
     "SELECT qi.*, r.quiz_ans kid_ans, r.kid_no FROM quiz_results r JOIN " +
     " (SELECT q.*, quiz_content_url, quiz_sel_1_url, quiz_sel_2_url, quiz_sel_3_url, quiz_sel_4_url " +
-    " FROM quiz q JOIN quiz_images i ON q.quiz_no = i.quiz_no) qi ON qi.quiz_no = r.quiz_no " +
+    " FROM quiz q LEFT JOIN quiz_images i ON q.quiz_no = i.quiz_no) qi ON qi.quiz_no = r.quiz_no " +
     ` WHERE kid_no = ${kidNo} ORDER BY result_no DESC;`;
 
   await db.sequelize
