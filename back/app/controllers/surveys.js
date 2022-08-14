@@ -20,7 +20,7 @@ exports.survey_regist = async function (req, res) {
     .create(survey)
     .then((data) => {
       console.log("설문 등록 완료");
-      res.status(200).json(data);
+      res.status(201).json(data);
     })
     .catch((err) => {
       res.status(500).json({
@@ -60,7 +60,7 @@ exports.survey_detail = async function (req, res) {
     .findByPk(surveyNo)
     .then((data) => {
       if (data === null) {
-        res.status(500).json({
+        res.status(400).json({
           message: "해당 정보를 찾을 수 없습니다.",
         });
       } else {

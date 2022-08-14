@@ -15,7 +15,7 @@ exports.report_regist = async function (req, res) {
     report_content: req.body.reportContent,
   };
   await Reports.create(report)
-    .then((data) => res.status(200).json(data))
+    .then((data) => res.status(201).json(data))
     .catch((err) => res.status(500).json({ error: err.message, message: "특이사항 작성 실패" }));
 };
 

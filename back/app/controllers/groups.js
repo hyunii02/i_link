@@ -14,7 +14,7 @@ exports.group_regist = async function (req, res) {
 
   await Groups.create(group)
     .then((data) => {
-      res.status(200).json({ message: "반 등록 완료" });
+      res.status(201).json({ message: "반 등록 완료" });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message, message: "반 등록 실패" });
@@ -76,7 +76,7 @@ exports.group_update = async function (req, res) {
 
   await Groups.update(group, { where: { group_no: groupNo } })
     .then(() => {
-      res.status(200).json({ message: "반 수정 완료" });
+      res.status(201).json({ message: "반 수정 완료" });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message, message: "반 수정 실패." });

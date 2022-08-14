@@ -23,7 +23,7 @@ exports.center_regist = async function (req, res) {
         .then((result) => {
           if (result[0] === 1) {
             // 소속 유치원 정보 수정 완료
-            res.status(200).json({
+            res.status(201).json({
               center_no: data.center_no,
               message: "유치원 등록 후 소속 유치원 정보 수정 완료",
             });
@@ -98,7 +98,7 @@ exports.center_update = async function (req, res) {
 
   await Centers.update(center, { where: { center_no: centerNo } })
     .then(() => {
-      res.status(200).json({ message: "유치원 수정 완료" }); // 유치원 정보 조회 페이지
+      res.status(201).json({ message: "유치원 수정 완료" }); // 유치원 정보 조회 페이지
     })
     .catch((err) => {
       res.status(500).json({ error: err.message, message: "유치원 수정 실패" });

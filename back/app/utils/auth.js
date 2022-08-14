@@ -26,7 +26,7 @@ function verifyToken(req, res, next) {
     return res.status(401).json({
       logined: false,
       message: "유효하지 않은 세션",
-      data: err,
+      error: err.message,
     });
   }
 }
@@ -71,7 +71,7 @@ function verifyRefreshToken(req, res, next) {
     return res.status(401).json({
       logined: false,
       message: "토큰 만료",
-      data: err.message,
+      error: err.message,
     });
   }
 }

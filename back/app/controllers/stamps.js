@@ -27,7 +27,7 @@ exports.stamp_stamping = async function (req, res) {
     })
     .catch((err) => {
       res.status(500).json({
-        errMessage: err.message,
+        error: err.message,
         message: "칭찬 도장 찍기 실패",
       });
     });
@@ -48,7 +48,7 @@ exports.stamp_update = async function (req, res) {
     })
     .catch((err) => {
       res.status(500).json({
-        errMessage: err.message,
+        error: err.message,
         message: "칭찬 도장 수정 실패",
       });
     });

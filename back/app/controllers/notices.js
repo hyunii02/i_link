@@ -4,7 +4,6 @@ const fs = require("fs");
 const db = require(path.join(__dirname, "..", "models"));
 const Notices = db.notices;
 const Files = db.files;
-const Op = db.Sequelize.Op;
 
 // 공지사항 등록
 // [get]  /notices/register
@@ -61,7 +60,7 @@ exports.notice_regist = async function (req, res) {
         });
     }
     await transaction.commit();
-    res.status(200).json({ message: "공지사항 등록 완료." });
+    res.status(201).json({ message: "공지사항 등록 완료." });
   } catch (err) {
     await transaction.rollback();
     res.status(500).json({ error: err.message, message: "공지 작성 실패." });
@@ -208,7 +207,7 @@ exports.notice_update = async function (req, res) {
         });
     }
     await transaction.commit();
-    res.status(200).json({ message: "공지사항 수정 완료" });
+    res.status(201).json({ message: "공지사항 수정 완료" });
   } catch (err) {
     await transaction.rollback();
     res.status(500).json({ error: err.message, message: "공지사항 수정 실패" });

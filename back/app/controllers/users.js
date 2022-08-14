@@ -34,12 +34,14 @@ exports.user_regist = async function (req, res) {
 
     await Users.create(user)
       .then((data) => {
-        res.status(200).json({ message: "회원가입 완료" });
+        res.status(201).json({ message: "회원가입 완료" });
       })
       .catch((err) => {
         res.status(500).json({ error: err.message, message: "회원 가입 실패." });
       });
-  } catch (err) {}
+  } catch (err) {
+    res.status(500).json({ error: err.message, message: "회원 가입 실패." });
+  }
 };
 
 // 로그인
@@ -62,7 +64,7 @@ exports.user_login = async function (req, res) {
 
     // 로그인 성공
     if (password_valid) {
-      user.user_pw = "";
+      delete user.user_pw;
 
       const access_token = jwt.sign(user.toJSON(), JWT_ACCESS_SECRET, {
         expiresIn: JWT_ACCESS_TIME,
@@ -85,24 +87,16 @@ exports.user_login = async function (req, res) {
       });
     } else {
       // 비밀번호 틀린 경우
-      res.status(500).json({ message: "비밀번호 오류" });
+      res.status(401).json({ message: "비밀번호 오류" });
     }
   } else {
     // 아이디가 없는 경우
-    res.status(500).json({ message: "아이디 없음" });
+    res.status(401).json({ message: "아이디 없음" });
   }
 };
 
-// 토큰 검증(test) // TODO: 경로 설정 고민
-// [get]  /users
-exports.verify_token = function (req, res) {
-  // *** front에서 Header에 입력할 값 ***
-  // Authorization: Bearer [access token]
-  return res.json({ logined: true, message: "로그인 되어 있음" });
-};
-
 // 토큰 갱신
-// [post] /users/token
+// [post] /users/auth/refresh
 exports.refresh_token = function (req, res) {
   const user = req.body.user;
 
@@ -119,9 +113,9 @@ exports.refresh_token = function (req, res) {
   redisClient.set(user.user_no.toString(), JSON.stringify({ token: refresh_token }));
   redisClient.expire(user.user_no.toString(), 604800); // redis 키 TTL 갱신
 
-  return res.status(200).json({
+  return res.status(201).json({
     logined: true,
-    message: "로그인 성공",
+    message: "토큰 갱신 완료",
     data: { user, token: { access_token, refresh_token } },
   });
 };
@@ -132,13 +126,7 @@ exports.refresh_token = function (req, res) {
 exports.user_logout = function (req, res) {
   console.log("[get] /users/logout (로그아웃)");
 
-  // TODO: 토큰정보 지울때? ?
-  // res.removeHeader("set-cookie");
-  // res.removeHeader("Authorization");
-
-  // 토큰 헤더에 작성했는지 확인 로그
-  const header = req.headers.authorization;
-  console.log("Header: ", header);
+  res.removeHeader("Authorization");
 
   return res.status(200).json({ logined: false, message: "로그아웃" });
 };
@@ -231,19 +219,19 @@ exports.user_update = async function (req, res) {
         // 정보 수정
         await Users.update(user, condition)
           .then((result) => {
-            res.status(200).json({ message: "회원 정보 수정 완료." });
+            res.status(201).json({ message: "회원 정보 수정 완료." });
           })
           .catch((err) => {
             res.status(500).json({ error: err.message, message: "회원 정보 수정 실패." });
           });
       } else {
-        res.status(400).json({ message: "비밀번호 입력 오류." });
+        res.status(401).json({ message: "비밀번호 입력 오류." });
       }
     } catch (err) {
       res.status(500).json({ error: err.message, message: "회원 정보 수정 실패." });
     }
   } else {
-    res.status(400).json({ message: "사용자를 찾을 수 없습니다." });
+    res.status(401).json({ message: "사용자를 찾을 수 없습니다." });
   }
 };
 
@@ -255,13 +243,13 @@ exports.user_center_update = async function (req, res) {
 
   await Users.update({ center_no: centerNo }, { where: { user_no: userNo } })
     .then((result) => {
-      res.status(200).json({
+      res.status(201).json({
         message: "소속 유치원 정보 수정 완료",
       });
     })
     .catch((err) => {
       res.status(500).json({
-        errMessage: err.message,
+        error: err.message,
         message: "소속 유치원 정보 수정 실패",
       });
     });
@@ -277,7 +265,7 @@ exports.user_remove = async function (req, res) {
       if (result == 1) {
         res.status(200).json({ logined: false, message: "회원 탈퇴 완료" });
       } else {
-        res.status(400).json({ message: "해당 회원을 찾을 수 없음." });
+        res.status(401).json({ message: "해당 회원을 찾을 수 없음." });
       }
     })
     .catch((err) => {
