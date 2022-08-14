@@ -220,7 +220,7 @@ const CalendarDay = (props) => {
           marginTop: "10px",
         }}
       >
-        {userType !== "3" &&
+        {userType !== 3 &&
           day.day !== 0 &&
           index % 6 !== 0 &&
           isEmptyArr(day.meal) && (
@@ -392,7 +392,7 @@ const CalendarDay = (props) => {
           top: "110px",
         }}
       >
-        {userType !== "3" && !isEmptyArr(day.meal) && (
+        {userType !== 3 && !isEmptyArr(day.meal) && (
           <Box sx={{ textAlign: "right" }}>
             <IconButton onClick={deleteButtonClickHandler}>
               <RemoveCircleOutlineIcon fontSize="small" />
