@@ -17,6 +17,14 @@ const options = {
         url: "https://localhost:8000",
       },
     ],
+    // securityDefinitions: {
+    //   jwt: {
+    //     type: "apiKey",
+    //     name: "Authorization",
+    //     in: "header",
+    //   },
+    // },
+    // security: [{ jwt: [] }],
   },
   apis: ["./routes/*.js"], //Swagger 파일 연동
 };

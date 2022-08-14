@@ -25,7 +25,7 @@ exports.kid_regist = async function (req, res) {
 
     await Kids.create(kid)
       .then((data) => {
-        res.status(200).json({ kid_no: data.kid_no, message: "아이 등록 완료" });
+        res.status(201).json({ kid_no: data.kid_no, message: "아이 등록 완료" });
       })
       .catch((err) => {
         res.status(500).json({ error: err.message, message: "아이 등록 실패." });
@@ -47,7 +47,7 @@ exports.kid_center_regist = async function (req, res) {
     .then((result) => {
       if (result[0] === 1) {
         // 유치원 등록 완료
-        res.status(200).json({ message: "유치원 등록 완료, 승인 대기 상태" });
+        res.status(201).json({ message: "유치원 등록 완료, 승인 대기 상태" });
         // 승인 구분: 원생의 유치원은 등록되어 있으나 반이 등록되어 있지 않다면 승인 대기 상태임.
       } else {
         // 유치원 등록 실패
@@ -77,9 +77,7 @@ exports.kid_class_list = async function (req, res) {
       res.status(200).json(data);
     })
     .catch((err) => {
-      res.status(500).json({
-        message: err.message || "목록 조회 과정에 문제 발생",
-      });
+      res.status(500).json({ error: err.message, message: "목록 조회 과정에 문제 발생" });
     });
 };
 
@@ -96,9 +94,7 @@ exports.kid_parent_list = async function (req, res) {
       res.status(200).json(data);
     })
     .catch((err) => {
-      res.status(500).json({
-        message: err.message || "목록 조회 과정에 문제 발생",
-      });
+      res.status(500).json({ error: err.message, message: "목록 조회 과정에 문제 발생" });
     });
 };
 
@@ -107,10 +103,7 @@ exports.kid_parent_list = async function (req, res) {
 exports.kid_detail = async function (req, res) {
   const kidNo = req.params.kidNo;
   const kid = await Kids.findByPk(kidNo).catch((err) => {
-    res.status(400).json({
-      errormessage: err.message,
-      message: "잘못된 요청입니다.",
-    });
+    res.status(400).json({ error: err.message, message: "잘못된 요청입니다." });
   });
 
   if (kid === null) {
@@ -168,7 +161,7 @@ exports.kid_update = async function (req, res) {
 
     await Kids.update(kid, { where: { kid_no: kidNo } })
       .then(() => {
-        res.status(200).json({ message: "정보 수정 완료" });
+        res.status(201).json({ message: "정보 수정 완료" });
       })
       .catch((err) => {
         res.status(500).json({ error: err.message, message: "정보 수정 실패" });
@@ -190,7 +183,7 @@ exports.kid_update_attendance = async function (req, res) {
 
   await Kids.update(kid, { where: { kid_no: kidNo } })
     .then(() => {
-      res.status(200).json({ message: "정보 수정 완료" });
+      res.status(201).json({ message: "정보 수정 완료" });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message, message: "정보 수정 실패" });

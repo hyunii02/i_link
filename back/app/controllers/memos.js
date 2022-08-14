@@ -18,7 +18,7 @@ exports.memo_regist = async function (req, res) {
   await Memos.create(memo)
     .then((data) => {
       console.log("알림장 등록 완료");
-      res.status(200).json(data);
+      res.status(201).json(data);
     })
     .catch((err) => {
       res.status(500).json({ error: err.message, message: "알림장 등록 실패" });
@@ -70,7 +70,7 @@ exports.memo_update = async function (req, res) {
 
   await Memos.update(memo, { where: { memo_no: memoNo } })
     .then(() => {
-      res.status(200).json({ message: "알림장 수정 완료" });
+      res.status(201).json({ message: "알림장 수정 완료" });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message, message: "알림장 수정 실패" });

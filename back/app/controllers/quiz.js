@@ -56,7 +56,7 @@ exports.quiz_regist = async function (req, res) {
     }
 
     await transaction.commit();
-    res.status(200).json({ message: "퀴즈 등록 완료." });
+    res.status(201).json({ message: "퀴즈 등록 완료." });
   } catch (err) {
     await transaction.rollback();
     res.status(500).json({ error: err.message, message: "퀴즈 등록 실패." });
@@ -77,9 +77,7 @@ exports.quiz_list = async function (req, res) {
       res.status(200).json(data);
     })
     .catch((err) => {
-      res.status(500).json({
-        message: err.message || "목록 조회 과정에 문제 발생",
-      });
+      res.status(500).json({ error: err.message, message: "목록 조회 과정에 문제 발생" });
     });
 };
 
@@ -225,7 +223,7 @@ exports.quiz_update = async function (req, res) {
     }
 
     await transaction.commit();
-    res.status(200).json({ message: "퀴즈 수정 완료." });
+    res.status(201).json({ message: "퀴즈 수정 완료." });
   } catch (err) {
     await transaction.rollback();
     res.status(500).json({ error: err.message, message: "퀴즈 수정 실패." });
@@ -250,7 +248,7 @@ exports.quiz_date_update = async function (req, res) {
         .then((result) => {
           // 수정 완료
           console.log("퀴즈 날짜 수정 완료");
-          res.status(200).json({
+          res.status(201).json({
             message: "퀴즈 날짜 수정 완료",
           });
         })

@@ -20,7 +20,7 @@ exports.meal_regist = async function (req, res) {
 
   await Meals.create(meal)
     .then((data) => {
-      res.status(200).json(data);
+      res.status(201).json(data);
     })
     .catch((err) => {
       res.status(500).json({ error: err.message, message: "식단 등록 실패" });
@@ -66,7 +66,7 @@ exports.meal_detail = async function (req, res) {
   await Meals.findByPk(mealNo)
     .then((data) => {
       if (data === null) {
-        res.status(500).json({
+        res.status(400).json({
           message: "해당 정보를 찾을 수 없습니다.",
         });
       } else {
@@ -92,7 +92,7 @@ exports.meal_update = async function (req, res) {
 
   await Meals.update(meal, { where: { meal_no: mealNo } })
     .then(() => {
-      res.status(200).json({ message: "정보 수정 완료" });
+      res.status(201).json({ message: "정보 수정 완료" });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message, message: "식단 수정 실패" });
@@ -107,9 +107,9 @@ exports.meal_remove = async function (req, res) {
   await Meals.destroy({ where: { meal_no: mealNo } })
     .then((result) => {
       if (result == 1) {
-        res.json({ message: "식단 삭제 완료" });
+        res.status(200).json({ message: "식단 삭제 완료" });
       } else {
-        res.json({ message: "해당 식단을 찾을 수 없습니다." });
+        res.status(400).json({ message: "해당 식단을 찾을 수 없습니다." });
       }
     })
     .catch((err) => {

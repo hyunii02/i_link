@@ -8,8 +8,6 @@ const userController = require(path.join(__dirname, "..", "controllers", "users"
 
 // 토큰 검증 test
 // auth.verifyToken을 통해 유효한 토큰인지 검증 후, 유효하다면 다음 경로 이동 가능, 그렇지 않다면 이동 불가
-// 홈으로 이동하기 전 auth.verifyToken 미들웨어 사용
-router.get("/", auth.verifyToken, userController.verify_token);
 
 // 토큰 업데이트 test
 router.post("/token", auth.verifyRefreshToken, userController.refresh_token);
