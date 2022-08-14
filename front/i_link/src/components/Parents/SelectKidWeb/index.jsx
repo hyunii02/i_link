@@ -14,7 +14,7 @@ import { PersonAdd } from "@mui/icons-material";
 import { UserContext } from "../../../context/user";
 import { baseURL, urls } from "../../../api/axios";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SelectKidWeb = ({ kidName, setKidName }) => {
   const {
@@ -98,7 +98,7 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
   const menuItemClicked = (e) => {
     setFirstKid((firstKid) => kidsList[e.currentTarget.value]);
     setAnchorElUser(null);
-    navigate("/parents/home");
+    navigate("/parents/home", { state: kidsList[e.currentTarget.value] });
   };
 
   return (
