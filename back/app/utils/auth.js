@@ -47,8 +47,8 @@ function verifyRefreshToken(req, res, next) {
     redisClient.get(decoded.user_no.toString(), (err, data) => {
       if (err) {
         // throw err;
-        console.log("fff", err.message);
         return res.status(500).json({
+          logined: false,
           message: "DB에서 토큰 가져오기 실패",
         });
       }
@@ -70,7 +70,7 @@ function verifyRefreshToken(req, res, next) {
     // redis에 갱신 토큰 없음
     return res.status(401).json({
       logined: false,
-      message: "토큰 만료",
+      message: "토큰 만료, 재로그인 필요",
       error: err.message,
     });
   }
