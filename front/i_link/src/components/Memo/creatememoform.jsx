@@ -53,7 +53,7 @@ const CreateMemoForm = (props) => {
       content: memoContent,
     };
     setContentList([...contentList, content]);
-    console.log(content);
+    console.log(contentList);
     setMemoContent("");
   };
 
