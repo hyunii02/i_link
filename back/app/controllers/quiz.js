@@ -112,7 +112,7 @@ exports.quiz_today = async function (req, res) {
 exports.quiz_kid_regist = async function (req, res) {
   // 퀴즈
   const result = {
-    quiz_ans: req.body.quizAns, // 아이별 설문
+    quiz_ans: req.body.quizAns, // 퀴즈 정답
     kid_no: req.body.kidNo,
     quiz_no: req.body.quizNo,
   };
