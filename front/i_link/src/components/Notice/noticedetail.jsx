@@ -1,5 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
+import { Avatar } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -11,34 +12,54 @@ import { baseURL, urls } from "../../api/axios";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { eventWrapper } from "@testing-library/user-event/dist/utils";
-
+import { maxWidth } from "@mui/system";
 
 const NoticeDetail = (props) => {
-  const { detailNotice } = props;
-  const [detailNotice2, setDetailNotice2] = useState({});
+  const { detailNotice, handleClose1 } = props;
+  const [detailNotice2, setDetailNotice2] = useState([]);
+
+  // 빈배열 체크
+  const isEmptyArray = (array) => {
+    if (Array.isArray(array) && array.length === 0) {
+      return true;
+    }
+
+    return false;
+  };
+
+  // 빈 파일 체크
+  const isEmptyFile = (array) => {
+    if (isEmptyArray(array)) return true;
+
+    console.log(array.files);
+    if (isEmptyArray(array.files)) return true;
+
+    return false;
+  };
 
   useEffect(() => {
     getNoticeDetail();
   }, []);
 
+  useEffect(() => {}, [detailNotice2]);
+
   const getNoticeDetail = (e) => {
     try {
       axios
         .get(baseURL + urls.fetchNoticesDetail + detailNotice.notice_no)
-        .then((response) => {setDetailNotice2(response.data)
+        .then((response) => {
+          setDetailNotice2(response.data);
         });
     } catch (e) {
       console.log(e);
     }
   };
-  
-  
+
   return (
     <Box sx={{ width: 800, height: 1000, background: "white" }}>
       {" "}
       {/*#F8FAD7*/}
       <Box
-        className="a"
         sx={{
           background: "white",
           display: "flex",
@@ -67,51 +88,40 @@ const NoticeDetail = (props) => {
           {detailNotice2.notice_title}
         </Typography>
       </Box>
-      <Box sx={{display:"flex",justifyContent:"flex-end",mr:6,}}>
-        <Typography  id="font_test">작성일 : {detailNotice2.notice_date}</Typography>
-      </Box>
-      <Box sx={{ height: 370, width: 790 }}>
-        {/* <TextareaAutosize
-          maxRows={4}
-          defaultValue={detailNotice.notice_content}
-          
-          > */}
-
-        <Typography
-          fontSize="15px"
-          id="font_test"
-          minrows={3}
-          fullwidth="true"
-          sx={{
-            height: 310,
-            width: 730,
-            background: "white",
-            border: "3px solid white",
-            p: 4,
-          }}
-        >
-          {detailNotice2.notice_content}
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mr: 6 }}>
+        <Typography id="font_test">
+          작성일 : {detailNotice2.notice_date}
         </Typography>
-
-        <Typography
-          fontSize="15px"
-          id="font_test"
-          minrows={3}
-          fullwidth="true"
-          whiteSpace="pre-wrap"
-          sx={{
-            whiteSpace:"pre-wrap",
-            height: 30,
-            width: 795,
-            background: "white",
-            border: "3px solid red",
+      </Box>
+      <div sx={{ height: 790, width: 790 }}>
+        {isEmptyFile(detailNotice2) ||
+          detailNotice2.files.map((file, index) => (
             
-          }}
-        >
-          첨부파일 : 
-        </Typography>
+            <Avatar
+              sx={{ mt: 3, ml: 4, minWidth:750, height:"auto" }}
+              key={index}
+              src={baseURL + file.file_location}
+              variant="square"
+            ></Avatar>
+            
+          ))}
+        <Box sx={{ml:3}}>
+          <Typography
+            sx={{pl:2,mt:3}}
+            fontSize="15px"
+            id="font_test"
+            minrows={3}
+            fullwidth="true"
+          >
+            {detailNotice2.notice_content}
+          </Typography>
+        </Box>
+
+        <Button id="font_test" sx={{ ml: 90,mt:5 }} onClick={handleClose1}>
+          닫기
+        </Button>
         {/* </TextareaAutosize> */}
-      </Box>
+      </div>
     </Box>
   );
 };

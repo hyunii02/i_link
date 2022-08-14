@@ -29,7 +29,7 @@ export default function CreateMemo(props) {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 400,
-    height: 600,
+    height: 700,
     bgcolor: "#F8FAD7",
     border: "5px solid #FCE6D4",
     boxShadow: 24,
@@ -85,8 +85,9 @@ export default function CreateMemo(props) {
                   
                 />
                 
+                
                 <div>
-                  <Button id="font_test" sx={{ mt:19,ml: 35 }} onClick={handleClose}>
+                  <Button id="font_test" sx={{ mt:30,ml: 35 }} onClick={handleClose}>
                     닫기
                   </Button>
                 </div>
