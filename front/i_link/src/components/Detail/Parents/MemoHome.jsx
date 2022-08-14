@@ -49,7 +49,7 @@ const MemoHome = () => {
       </Typography>
       <Grid container sx={{ justifyContent: "center" }}>
         {!memo && (
-          <Typography id="font_test">
+          <Typography id="font_test" sx={{ marginLeft: 2 }}>
             오늘의 알림장이 아직 올라오지 않았어요
           </Typography>
         )}

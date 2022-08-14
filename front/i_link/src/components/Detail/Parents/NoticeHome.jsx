@@ -139,7 +139,7 @@ const NoticeHome = () => {
           onClick={() => {
             navigate("/parents/notice");
           }}
-          sx={{ cursor: "pointer", color: "rgba(0, 0, 0, 0.4)", mr: "10px" }}
+          sx={{ cursor: "pointer", color: "rgba(0, 0, 0, 0.4)", mr: "10px", mb: "5px" }}
         >
           {text}
         </Typography>
