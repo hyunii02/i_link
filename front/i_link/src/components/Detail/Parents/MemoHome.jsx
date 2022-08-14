@@ -9,6 +9,7 @@ import { getToday } from "../../../commonFuction";
 import { urls, baseURL } from "../../../api/axios";
 
 import Typography from "@mui/material/Typography";
+import { Box, Grid } from "@mui/material";
 
 import TodayList from "./TodayList";
 
@@ -36,14 +37,15 @@ const MemoHome = () => {
     };
   
     return (
-      <div>
-        <div>
-          <Typography variant="h6" component="h2" id="font_test" align="center">
-            알림장
+        <Box>
+          <Typography variant="h6" component="h2" id="font_test" align="center" sx={{ mt:1, mb:1 }}>
+            🔔 알림장 🔔
           </Typography>
+          <Grid container sx={{justifyContent:"center"}}>
+            {!memo && <Typography id="font_test">오늘의 알림장이 아직 올라오지 않았어요</Typography>}
+          </Grid>
           <TodayList items={memo} />
-        </div>
-      </div>
+        </Box>
     );
   }
 

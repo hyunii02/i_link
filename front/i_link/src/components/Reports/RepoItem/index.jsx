@@ -10,6 +10,7 @@ import CardActions from "@mui/material/CardActions";
 import { reportTypes } from "../../../api/common";
 import axios from "axios";
 import { urls, baseURL } from "../../../api/axios";
+import Box from "@mui/material/Box";
 
 export default function RepoItem({ repo, onRemove, getReportData }) {
   const { report_no, report_content, report_type } = repo;
@@ -23,8 +24,8 @@ export default function RepoItem({ repo, onRemove, getReportData }) {
   };
 
   return (
-    <Card sx={{ mt: 2, mx: 3, height: 250, width: 250 }}>
-      <CardContent>
+    <Card sx={{ mt: 2, mx: 3, height: 250, width: 250, display: "flex", flexDirection: "column"}}>
+      <CardContent sx={{ flexGrow: 1 }}>
         <Typography
           sx={{ fontSize: 14 }}
           color="text.secondary"
@@ -33,15 +34,15 @@ export default function RepoItem({ repo, onRemove, getReportData }) {
         >
           {types[report_type]}
         </Typography>
-        <Typography variant="body3" component="div" id="font_test">
+        <Typography variant="body3" component="div" id="font_test" sx={{ mt:2}}>
           {report_content}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small" onClick={deleteReport} id="font_test">
+      <Box sx={{ display: "flex", justifyContent: "end" }}>
+        <Button size="small" onClick={deleteReport} id="font_test" sx={{ color: "#FF8A7B"}}>
           삭제
         </Button>
-      </CardActions>
+      </Box>
     </Card>
   );
 }

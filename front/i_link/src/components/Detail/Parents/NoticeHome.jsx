@@ -8,7 +8,7 @@ import { urls, baseURL } from "../../../api/axios";
 import TodayList from "./TodayList";
 
 import Typography from "@mui/material/Typography";
-import Box from '@mui/material/Box';
+import { Box, Grid } from "@mui/material";
 
 const NoticeHome = () => {
   const {userCenter} = useContext(UserContext);
@@ -25,9 +25,9 @@ const NoticeHome = () => {
       }
       else {
         const todaysNotice = response.data;
-        const lenNoticeArr = todaysNotice.length
-        const noticeStr = todaysNotice[lenNoticeArr-1].notice_title + ',' + todaysNotice[lenNoticeArr-2].notice_title + ',' + todaysNotice[lenNoticeArr-3].notice_title
-        setNotice(noticeStr);
+        console.log(todaysNotice)
+        const mainNotice = todaysNotice[0].notice_title + ',' + todaysNotice[1].notice_title + ',' + todaysNotice[2].notice_title;
+        setNotice(mainNotice); //최신 3개의 공지사항 title을 보여줌
       }
     } catch (err) {
       console.log(err);
@@ -35,10 +35,13 @@ const NoticeHome = () => {
   };
 
   return (
-      <Box>
-        <Typography variant="h6" component="h2" id="font_test" align="center">
-          공지사항
+      <Box sx={{ height: 200 }}>
+        <Typography variant="h6" component="h2" id="font_test" align="center" sx={{ mt:1 }}>
+          ❗ 공지사항 ❗
         </Typography>
+        <Grid container sx={{justifyContent:"center"}}>
+          {!notice && <Typography id="font_test" sx={{ marginLeft:2, mt:1 }}>공지사항이 아직 올라오지 않았어요</Typography>}
+        </Grid>
         <TodayList items={notice} />
       </Box>
   );
