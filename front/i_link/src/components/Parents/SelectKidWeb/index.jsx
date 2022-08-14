@@ -135,24 +135,28 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
         {parseInt(userType) === 3 &&
           kidsList?.map((list, index) => (
             <MenuItem key={index} onClick={menuItemClicked} value={index}>
-              <Typography id="font_text" textAlign="center">
+              <Typography id="font_test" textAlign="center">
                 {list.kid_name}
               </Typography>
             </MenuItem>
           ))}
         {parseInt(userType) === 2 && (
-          <Box>
+          <Box sx={{ ml: "10px", width: "150px" }}>
             <Grid container>
               <Grid item xs={12}>
-                <Typography id="font_text">
+                <Typography id="font_test" variant="body2">
                   {centerName} [{centerNo}]
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography id="font_text">{groupName}</Typography>
+                <Typography id="font_test" variant="body2">
+                  {groupName}
+                </Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography id="font_text">{userName} 선생님</Typography>
+                <Typography id="font_test" variant="body2">
+                  {userName} 선생님
+                </Typography>
               </Grid>
             </Grid>
           </Box>
@@ -161,12 +165,12 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
           <Box>
             <Grid container>
               <Grid item xs={12}>
-                <Typography id="font_text">
+                <Typography id="font_test">
                   {centerName} [{centerNo}]
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography id="font_text">{userName} 원장님</Typography>
+                <Typography id="font_test">{userName} 원장님</Typography>
               </Grid>
             </Grid>
           </Box>
