@@ -9,10 +9,12 @@ import { useState, useContext } from "react";
 import { UserContext } from "../../context/user";
 
 import { axios, baseURL, urls } from "../../api/axios";
+import AddNotice from "./addnotice";
 // import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import { Typography } from "@mui/material";
+let id_index = 1; //리스트 저장
 
 const defaultImageState = {
   image_file: "",
@@ -52,7 +54,7 @@ const Uploader = ({ image, setImage }) => {
         style={{ display: "none" }}
       />
       {/* 이미지 창 */}
-      <Button onClick={() => inputRef.click()} style={{ cursor: "pointer" }}>
+      <Button id="font_test" onClick={() => inputRef.click()} sx={{ cursor: "pointer",mt:1,pr:2 }}>
         사진첨부
       </Button>
     </Box>
@@ -62,10 +64,23 @@ const Uploader = ({ image, setImage }) => {
 export default function NoticeWriteForm(props) {
   const [noticeTitle, setNoticeTitle] = useState("");
   const [noticeContent, setNoticeContent] = useState("");
+  const [contentList, setContentList] = useState([]);
   const { getNoticeList, handleClose2 } = props;
   const { userCenter } = useContext(UserContext);
   const [formErrors, setFormErrors] = useState({});
   const [NoticeImage, setNoticeImage] = useState(defaultImageState);
+
+  //여러개의 파일을 받기위한 함수
+  const eachMemoAdd = () => {
+    const content = {
+      id: id_index++,
+
+      content: noticeContent,
+    };
+    setContentList([...contentList, content]);
+    console.log(content);
+    setNoticeContent("");
+  };
 
   // 이미지 저장
 
@@ -145,7 +160,7 @@ export default function NoticeWriteForm(props) {
   };
 
   return (
-    <Box
+    <Box id="font_test"
       sx={{
         "& .MuiTextField-root": { mt: 0 }, // 텍스트필드마다 mt 5
 
@@ -165,9 +180,10 @@ export default function NoticeWriteForm(props) {
           width: 500,
           borderBottom: "2px solid #8E8F91",
         }}
+        id="font_test"
         onChange={(e) => setNoticeTitle(e.target.value)}
         label="제목을 작성하세요"
-        id="title"
+        
         name="title"
         multiline
         maxRows={4}
@@ -187,33 +203,40 @@ export default function NoticeWriteForm(props) {
       <p id="font_test">{formErrors.noticeContent}</p> */}
 
       <TextField
-        sx={{ background: "white", width: 500 }}
+        sx={{ background: "white", width: 500 ,border: "2px solid #8E8F91"}}
         onChange={(e) => setNoticeContent(e.target.value)}
-        id="content"
+        id="font_test"
         name="content"
         label="내용을 작성하세요"
         multiline
+        
         rows={10}
       />
 
       <Box sx={{ width: 500, display: "flex", justifyContent: "flex-start" }}>
         <Uploader image={NoticeImage} setImage={setNoticeImage} />
         <p>{NoticeImage.image_file.name}</p>
+        <AddNotice />
       </Box>
 
       <Box sx={{ width: 300 }}>
         <p id="font_test">{formErrors.noticeContent}</p>
       </Box>
-
-      <Button
-        onClick={handleSubmit}
-        sx={{ mt: 1 }}
-        type="submit"
-        variant="contained"
-        color="warning"
-      >
-        글 작성
-      </Button>
+      <Box sx={{ width: 500, display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          sx={{}}
+          onClick={handleSubmit}
+          type="submit"
+          variant="contained"
+          color="warning"
+          
+        >
+          글 작성
+        </Button>
+        <Button id="font_test" sx={{ ml: 2 }} onClick={handleClose2}>
+          닫기
+        </Button>
+      </Box>
     </Box>
   );
 }
