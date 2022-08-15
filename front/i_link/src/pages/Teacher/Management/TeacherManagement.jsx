@@ -25,7 +25,6 @@ const TeacherManagement = () => {
   const getKidList = () => {
     // 요청할 URL 포매팅
     const fullURL = baseURL + urls.fetchMemberKidsList + userCenter;
-    console.log(fullURL);
     // axios.get으로 현재 반의 선생 목록을 가져옴
     try {
       axios
