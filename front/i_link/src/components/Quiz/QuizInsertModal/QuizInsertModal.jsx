@@ -119,6 +119,11 @@ const QuizInsertModal = ({ open, setOpen, getQuizData }) => {
   // 입력상태 Clear
   const inputClear = () => {
     setFormValues(defaultState);
+    setQuestionImage(defaultImageState);
+    setAnswerImage1(defaultImageState);
+    setAnswerImage2(defaultImageState);
+    setAnswerImage3(defaultImageState);
+    setAnswerImage4(defaultImageState);
   };
 
   // 입력상태 유효성 체크
@@ -161,7 +166,6 @@ const QuizInsertModal = ({ open, setOpen, getQuizData }) => {
         quizSel4Url: answerImage4.image_file,
         quizDate: "",
       };
-      console.log(body);
       // 사진 전송을 위해 헤더에 Multi-part로 type 설정
       const config = {
         headers: {
@@ -173,7 +177,6 @@ const QuizInsertModal = ({ open, setOpen, getQuizData }) => {
         .post(urls.featchQuizRegister, body, config)
         .then((response) => {
           if (response.status === 200) {
-            console.log(response);
             handleClose();
             getQuizData();
           }

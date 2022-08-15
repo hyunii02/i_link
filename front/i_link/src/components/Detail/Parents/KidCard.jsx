@@ -1,90 +1,91 @@
 // 2022.08.12 강민재, 안정현
 // 아이 사진 및 상태
-import { useContext } from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
+import axios from "axios";
+import { useContext, useEffect } from "react";
+import { urls, baseURL } from "../../../api/axios";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { UserContext } from "../../../context/user";
 
-import {
-  Box,
-  Grid,
-  Avatar,
-} from "@mui/material";
-import { baseURL } from "../../../api/axios";
+import { Box, Grid, Avatar } from "@mui/material";
 
-const KidCard = () => {
+const KidCard = ({ centerName, setCenterName, groupName, setGroupName }) => {
   const { firstKid } = useContext(UserContext);
   // 버튼에 넣어줘야 할 텍스트
   const buttonText = ["등원완료", "하원완료", "설문완료"];
 
+  const getCenterName = async () => {
+    const response = await axios.get(
+      baseURL + urls.fetchCentersDetial + firstKid.center_no,
+    );
+    setCenterName(response.data.center_name);
+  };
+
+  const getGroupName = async () => {
+    const response = await axios.get(
+      baseURL + urls.fetchGroupsDetail + firstKid.group_no,
+    );
+    setGroupName(response.data.group_name);
+  };
+  useEffect(() => {
+    getCenterName();
+    getGroupName();
+  }, []);
+
   return (
     <Box sx={{ position: "relative" }}>
-      <div
-        style={{
-          position: "absolute",
-          right: "70px",
-          top: "10px",
-          zIndex: "100",
-        }}
-      >
-      </div>
-      <Card
-        sx={{
-          maxWidth: 500,
-          height: 200,
-          border: "10px solid #fae2e2",
-          background: "#FAF1DA",
-          /* FAE6D7 */
-        }}
-      >
-        <CardMedia
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
+      <Grid>
+        <Grid container sx={{ justifyContent: "center" }}>
           {
             <Avatar
               src={baseURL + firstKid.kid_profile_url}
               sx={{
-                width: 112,
-                height: 112,
+                width: 180,
+                height: 180,
                 border: "3px solid #ffe2e2",
                 marginTop: "10px",
               }}
+              variant="square"
             />
           }
-        </CardMedia>
-        {/* Card 사진 이미지 파트 */}
-        {/*<CardMedia component="img" height="150" src={student.src} />*/}
-        {/* Card 이름 파트 */}
-        <CardContent
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "10px",
-          }}
-        >
-          <Typography id="font_test" variant="h5">
-            {firstKid.kid_name}
+        </Grid>
+        <Grid sx={{ mt: 2 }}>
+          <Typography
+            variant="body2"
+            component="h2"
+            id="font_test"
+            align="center"
+          >
+            이름 : {firstKid.kid_name}
           </Typography>
-        </CardContent>
-        {/* Card 버튼 파트 */}
+          <Typography
+            variant="body2"
+            component="h2"
+            id="font_test"
+            align="center"
+          >
+            유치원 : {centerName || ""}
+          </Typography>
+          <Typography
+            variant="body2"
+            component="h2"
+            id="font_test"
+            align="center"
+          >
+            반 : {groupName || ""}
+          </Typography>
+        </Grid>
+        {/* 버튼 파트 */}
         <Box
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "row",
+            marginTop: "15px",
           }}
         >
-          <Grid container style={{ marginLeft: "2px" }}>
+          <Grid container>
             {buttonText.map((text, index) => (
               <Grid item xs={4} key={index} sx={{ textAlign: "center" }}>
                 <Button
@@ -97,15 +98,17 @@ const KidCard = () => {
                   size="small"
                   color="warning"
                 >
-                  <Typography variant="body2">{text}</Typography>
+                  <Typography variant="body2" id="font_test">
+                    {text}
+                  </Typography>
                 </Button>
               </Grid>
             ))}
           </Grid>
         </Box>
-      </Card>
+      </Grid>
     </Box>
   );
 };
 
-export default KidCard
+export default KidCard;

@@ -1,6 +1,6 @@
 // 원생관리에 쓸 프로필
 // create by 김국진
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -8,7 +8,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ListItemButton from "@mui/material/ListItemButton";
 import Report from "./Report";
-
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../../context/user";
 import {
   Box,
   Grid,
@@ -89,6 +90,10 @@ const MemberStudent = (props) => {
   // 버튼에 넣어줘야 할 텍스트
   const buttonText = ["등원완료", "하원완료", "설문완료"];
 
+  const { userType } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
   // 특이사항 디테일 리스트 toggle view
   const setViewChange = (index) => {
     const newArray = [...childDetailView];
@@ -144,6 +149,15 @@ const MemberStudent = (props) => {
     });
   };
 
+  // 학생 디테일 페이지로 이동
+  const moveDetailPage = () => {
+    if (userType === "2" || userType === 2) {
+      navigate("/teacher/kidsdetail", { state: { kidNo: student.kid_no } });
+    } else if (userType === "1" || userType === 1) {
+      navigate("/master/kidsdetail", { state: { kidNo: student.kid_no } });
+    }
+  };
+
   return (
     <Box sx={{ position: "relative" }}>
       {/* 모달창 표시 */}
@@ -184,8 +198,8 @@ const MemberStudent = (props) => {
       <div
         style={{
           position: "absolute",
-          right: "70px",
-          top: "10px",
+          right: "20%",
+          top: "5%",
           zIndex: "100",
         }}
       >
@@ -240,7 +254,13 @@ const MemberStudent = (props) => {
             height: "10px",
           }}
         >
-          <Typography id="font_test" variant="h5">
+          <Typography
+            id="font_test"
+            className="AA"
+            variant="h5"
+            sx={{ cursor: "pointer" }}
+            onClick={moveDetailPage}
+          >
             {student.kid_name}
           </Typography>
         </CardContent>

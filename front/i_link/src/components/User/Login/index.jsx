@@ -50,7 +50,7 @@ export default function Login() {
 
   useEffect(() => {
     if (changeState) {
-      navigate("/parents/home");
+      navigate("/parents/home", {});
     }
   }, [changeState]);
 
@@ -152,7 +152,7 @@ export default function Login() {
                       setKidsList(response.data);
                       setFirstKid(response.data[0]);
                       setChangeState(true);
-                      navigate("/parents/home");
+                      navigate("/parents/home", { state: response.data[0] });
                     }
                   }
                 });

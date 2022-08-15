@@ -21,6 +21,7 @@ import axios from "axios";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CreateMemo from "./creatememo";
 import Box from "@mui/material/Box";
+import { AppBar, Tabs, Tab } from "@mui/material";
 import { baseURL, urls } from "../../api/axios";
 
 const theme = createTheme();
@@ -44,7 +45,7 @@ export default function Album() {
         };
         newArray.push(newObj);
       });
-      console.log(newArray);
+      
       setGroupList(newArray);
       setSelectValue(newArray[0].value);
     });
@@ -105,11 +106,15 @@ export default function Album() {
     }
   };
 
+  const handleChange = (event, newValue) => {
+    setSelectValue(newValue);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <main>
-        {userType == 1 && (
+        {/* {userType == 1 && (
           <FormControl sx={{pt:5,pl:18,pr:18}}fullWidth>
             <Select
               onChange={(e) => setSelectValue(e.target.value)}
@@ -134,7 +139,31 @@ export default function Album() {
               ))}
             </Select>
           </FormControl>
-        )}
+        )} */}
+        <AppBar position="static" color="default" >
+          <Tabs
+            value={selectValue}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="fullWidth"
+            aria-label="action tabs example"
+            sx={{ border: "6px solid #fae2e2", background: "#FAF1DA" }}
+          >
+            {groupList.map((list, index) => (
+              <Tab
+                label={
+                  <Typography id="font_test" variant="h5">
+                    {list.content}
+                  </Typography>
+                }
+                value={list.value}
+                key={index}
+                sx={{ background: "#FAF1DA" }}
+              />
+            ))}
+          </Tabs>
+        </AppBar>
 
         {/* Hero unit */}
 
@@ -153,9 +182,10 @@ export default function Album() {
                 >
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography
+                      id="font_test"
                       sx={{ background: "#F2FADC", mb: 4 }}
                       gutterBottom
-                      variant="h5"
+                      fontSize="17px"
                       component="h2"
                     >
                       {card.memo_date}
@@ -166,21 +196,23 @@ export default function Album() {
                       </Typography>
                     ))}
                   </CardContent>
-                  {userType!==3 &&(
-                  <Box sx={{ display: "flex", justifyContent: "end" }}>
-                    <Button
-                      id="font_test"
-                      onClick={() => handleDelete(card.memo_no)}
-                      sx={{
-                        background: "#C5EDFD",
-                        width: 20,
-                        height: 20,
-                        color: "#591E59",
-                      }}
-                    >
-                      삭제
-                    </Button>
-                  </Box>
+                  {userType !== 3 && (
+                    <Box sx={{ display: "flex", justifyContent: "end" }}>
+                      <Button
+                        id="font_test"
+                        onClick={() => handleDelete(card.memo_no)}
+                        sx={{
+                          mr: 1.5,
+                          mb: 1.5,
+                          background: "#C5EDFD",
+                          width: 20,
+                          height: 20,
+                          color: "#591E59",
+                        }}
+                      >
+                        삭제
+                      </Button>
+                    </Box>
                   )}
                 </Card>
               </Grid>

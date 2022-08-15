@@ -38,12 +38,13 @@ const SelectKidKiosk = ({ kidName, setKidName, kidUrl, setKidUrl }) => {
       console.log(err);
     }
   };
-  const handleSelect = (kidName, kidNo, kidUrl) => {
+  const handleSelect = (kidName, kidNo, kidUrl, kidGroup) => {
     setKidName(kidName);
     setKidUrl(kidUrl);
     localStorage.setItem("kidName", kidName);
     localStorage.setItem("kidNo", kidNo);
     localStorage.setItem("kidUrl", kidUrl);
+    localStorage.setItem("kidGroup", kidGroup);
   };
 
   return (
@@ -105,7 +106,12 @@ const SelectKidKiosk = ({ kidName, setKidName, kidUrl, setKidUrl }) => {
             sx={{ fontSize: "3rem" }}
             key={kid.kid_name}
             onClick={() =>
-              handleSelect(kid.kid_name, kid.kid_no, kid.kid_profile_url)
+              handleSelect(
+                kid.kid_name,
+                kid.kid_no,
+                kid.kid_profile_url,
+                kid.group_no
+              )
             }
           >
             <Avatar
@@ -121,7 +127,7 @@ const SelectKidKiosk = ({ kidName, setKidName, kidUrl, setKidUrl }) => {
           <ListItemIcon>
             <PersonAdd sx={{ fontSize: "5rem", marginRight: 5 }} />
           </ListItemIcon>
-          아이들 목록 가져오기
+          목록 새로고침
         </MenuItem>
       </Menu>
     </React.Fragment>
