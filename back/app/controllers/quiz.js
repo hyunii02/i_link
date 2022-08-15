@@ -69,18 +69,20 @@ exports.quiz_regist = async function (req, res) {
 exports.quiz_list = async function (req, res) {
   const writerNo = req.params.userNo;
 
-  await Quiz.findAll({
-    include: [{ model: QuizImages, as: "quiz_images" }],
-    where: { quiz_writer: writerNo },
-    raw: true,
-  })
+  let query =
+    "SELECT q.*, quiz_content_url, quiz_sel_1_url, quiz_sel_2_url, quiz_sel_3_url, quiz_sel_4_url FROM quiz q LEFT JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
+    ` WHERE quiz_writer = ${writerNo} ORDER BY quiz_no DESC`;
+
+  await db.sequelize
+    .query(query, {
+      type: db.sequelize.QueryTypes.SELECT,
+      raw: true,
+    })
     .then((data) => {
       res.status(200).json(data);
     })
     .catch((err) => {
-      res.status(500).json({
-        message: err.message || "목록 조회 과정에 문제 발생",
-      });
+      res.status(500).json({ error: err.message, message: "목록 조회 과정에 문제 발생" });
     });
 };
 
@@ -89,16 +91,15 @@ exports.quiz_list = async function (req, res) {
 exports.quiz_today = async function (req, res) {
   const groupNo = req.params.groupNo;
 
-  await Quiz.findAll({
-    include: [{ model: QuizImages, as: "quiz_images" }],
-    where: {
-      [Op.and]: [
-        { group_no: groupNo },
-        { quiz_date: db.sequelize.fn("DATE_FORMAT", db.sequelize.fn("NOW"), "%Y-%m-%d") },
-      ],
-    },
-    raw: true,
-  })
+  let query =
+    "SELECT q.*, quiz_content_url, quiz_sel_1_url, quiz_sel_2_url, quiz_sel_3_url, quiz_sel_4_url FROM quiz q LEFT JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
+    ` WHERE group_no = ${groupNo} AND quiz_date = DATE_FORMAT(now(), '%Y-%m-%d');`;
+
+  await db.sequelize
+    .query(query, {
+      type: db.sequelize.QueryTypes.SELECT,
+      raw: true,
+    })
     .then((data) => {
       res.status(200).json(data);
     })
@@ -148,57 +149,39 @@ exports.quiz_kidList = async function (req, res) {
     .catch((err) => {
       res.status(500).json({ error: err.message, message: "목록 조회 과정에 문제 발생" });
     });
-
-  // await QuizResults.findAll({
-  //   attributes: ["quiz_ans", "kid_no"],
-  //   include: [
-  //     {
-  //       model: Quiz,
-  //       as: "quiz_no_quiz",
-  //       include: [
-  //         { model: QuizImages, as: "quiz_images", attributes: { exclude: ["img_no", "quiz_no"] } },
-  //       ],
-  //       attributes: { exclude: ["quiz_writer", "group_no"] },
-  //     },
-  //   ],
-  //   where: { kid_no: kidNo },
-  //   order: [["result_no", "DESC"]],
-  //   raw: true,
-  // })
 };
 
 // 퀴즈 상세 조회
 // [get]  /quiz/:quizNo
 exports.quiz_detail = async function (req, res) {
   const quizNo = req.params.quizNo;
-  let quizImg = null;
-  await QuizImages.findOne({ where: { quiz_no: quizNo }, raw: true })
+  let query = "SELECT * FROM quiz_images " + ` WHERE quiz_no = ${quizNo};`;
+  await db.sequelize
+    .query(query, {
+      type: db.sequelize.QueryTypes.SELECT,
+      raw: true,
+    })
     .then((data) => {
-      quizImg = data;
+      if (data.length > 0) {
+        query =
+          "SELECT q.*, quiz_content_url, quiz_sel_1_url, quiz_sel_2_url, quiz_sel_3_url, quiz_sel_4_url FROM quiz q LEFT JOIN quiz_images i ON q.quiz_no = i.quiz_no " +
+          ` WHERE q.quiz_no = ${quizNo};`;
+      } else {
+        query = "SELECT * FROM quiz " + ` WHERE quiz_no = ${quizNo};`;
+      }
     })
     .catch((err) => {
       res.status(500).json({ error: err.message, message: "퀴즈 조회 과정에 문제 발생" });
     });
 
-  const option = quizImg
-    ? {
-        include: [{ model: QuizImages, as: "quiz_images" }],
-        where: { quiz_no: quizNo },
-        raw: true,
-      }
-    : {
-        where: { quiz_no: quizNo },
-        raw: true,
-      };
-
-  await Quiz.findOne(option)
+  await db.sequelize
+    .query(query, {
+      type: db.sequelize.QueryTypes.SELECT,
+      raw: true,
+    })
     .then((data) => {
-      if (data === null) {
-        res.status(400).json({ message: "해당 정보를 찾을 수 없습니다." });
-      } else {
-        console.log(data);
-        res.status(200).json(data);
-      }
+      console.log(data);
+      res.status(200).json(data);
     })
     .catch((err) => {
       res.status(500).json({ error: err.message, message: "퀴즈 조회 과정에 문제 발생" });
