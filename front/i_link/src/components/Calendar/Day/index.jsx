@@ -56,6 +56,8 @@ const CalendarDay = (props) => {
     setOpen(false);
     setDiet("");
     setDietList([]);
+    setSnack("");
+    setSnackList([]);
   };
   // 식단 추가
   const [diet, setDiet] = useState("");
