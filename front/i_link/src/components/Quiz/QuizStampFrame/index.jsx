@@ -33,24 +33,8 @@ const defaultStamp = [
   { id: 18 },
 ];
 
-const QuizStampFrame = ({ kidNo }) => {
-  const [stampCount, setStampCount] = useState(0);
-  const [kid, setKid] = useState(kidNo);
-
-  const getKidInfo = () => {
-    try {
-      const fullURL = baseURL + urls.fetchKidsDetail + kidNo;
-      axios.get(fullURL).then((response) => {
-        setStampCount(parseInt(response.data.kid_stamp));
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    getKidInfo();
-  }, [kidNo]);
+const QuizStampFrame = ({ stampCount }) => {
+  //const [stampCnt, setStampCnt] = useState(stampCount);
 
   return (
     <Box

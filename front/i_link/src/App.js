@@ -37,7 +37,7 @@ import TeacherJoinCenter from "./pages/Teacher/JoinCenter/JoinCenter";
 import ParentsJoinCenter from './pages/Parents/JoinCenter/JoinCenter';
 import PictureBoard from "./pages/Common/PictureBoard";
 import TeacherWait from "./pages/Teacher/Wait/TeacherWait";
-
+import KidsDetail from "./pages/Common/KidsDetail";
 
 const App = () => {
   return (
@@ -69,6 +69,7 @@ const App = () => {
           <Route path="/master/memo" element={<MasterMemo />} />
           <Route path="/master/notice" element={<MasterNotice />} />
           <Route path="/master/pictureboard" element={<PictureBoard />} />
+          <Route path="/master/kidsdetail" element={<KidsDetail />} />
 
           {/* 학부모 */}
           <Route path="/parents/diet" element={<ParentsDiet />} />
@@ -89,6 +90,7 @@ const App = () => {
           <Route path="/teacher/quiz" element={<TeacherQuiz />} />
           {/*<Route path="/teacher/joincenter" element={<TeacherJoinCenter />} />*/}
           <Route path="/teacher/pictureboard" element={<PictureBoard />} />
+          <Route path="/teacher/kidsdetail" element={<KidsDetail />} />
 
         </Route>
         {/* 헤더, 사이드바 없는 화면 */}
