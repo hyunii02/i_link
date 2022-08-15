@@ -22,6 +22,7 @@ const KidCard = ({ centerName, setCenterName, groupName, setGroupName }) => {
   };
 
   const getGroupName = async () => {
+    if (firstKid.group_no === null) return;
     const response = await axios.get(
       baseURL + urls.fetchGroupsDetail + firstKid.group_no,
     );
