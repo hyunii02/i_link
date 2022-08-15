@@ -1,5 +1,6 @@
 // 2022.08.05 김국진 create
 // 2022.08.11 ~ 12 안정현
+// 2022.08.14 김국진
 // 부모>아이보기 페이지 통합 컴포넌트
 import { useState, useContext } from "react";
 
@@ -16,6 +17,8 @@ import MealHome from "./MealHome";
 import KidQuiz from "./KidQuiz";
 import QuizStampFrame from "../../Quiz/QuizStampFrame/";
 import { useEffect } from "react";
+import { baseURL, urls } from "../../../api/axios.jsx";
+import axios from "axios";
 
 // 학부모 home 페이지
 export default function ParentsDetail() {
@@ -25,9 +28,22 @@ export default function ParentsDetail() {
 
   const { firstKid } = useContext(UserContext);
   const [kidInfo, setKidInfo] = useState(firstKid);
+  const [stampCount, setStampCount] = useState(0);
+
+  const getKidInfo = (kidno) => {
+    try {
+      const fullURL = baseURL + urls.fetchKidsDetail + kidno;
+      axios.get(fullURL).then((response) => {
+        setStampCount(parseInt(response.data.kid_stamp));
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   useEffect(() => {
     setKidInfo(firstKid);
+    getKidInfo(firstKid.kid_no);
   }, [firstKid]);
 
   return (
@@ -75,7 +91,7 @@ export default function ParentsDetail() {
           >
             칭찬도장
           </Typography>
-          <QuizStampFrame kidNo={kidInfo.kid_no} />
+          <QuizStampFrame stampCount={stampCount} />
         </Grid>
         {/* 중간줄 =>공지사항, 알림장, 식단/간식 */}
         {/* 공지사항 */}
