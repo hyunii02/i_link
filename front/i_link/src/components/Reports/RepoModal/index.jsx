@@ -100,6 +100,7 @@ export default function BasicModal({ getReportData }) {
   return (
     <div>
       <Button
+        id="font_test"
         variant="contained"
         onClick={handleOpen} 
         style={{ background: colorPalette.BUTTON_COLOR }}>

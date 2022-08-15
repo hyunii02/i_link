@@ -1,7 +1,7 @@
 // 2022.08.05 김국진 create
 // 2022.08.11 ~ 12 안정현
 // 부모>아이보기 페이지 통합 컴포넌트
-import { useState, useContext, uesEffect } from "react";
+import { useState, useContext } from "react";
 
 import { Box, Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -15,7 +15,6 @@ import NoticeHome from "./NoticeHome";
 import MealHome from "./MealHome";
 import KidQuiz from "./KidQuiz";
 import QuizStampFrame from "../../Quiz/QuizStampFrame/";
-import { useLocation } from "react-router";
 import { useEffect } from "react";
 
 // 학부모 home 페이지
@@ -40,9 +39,6 @@ export default function ParentsDetail() {
           item
           xs={5.8}
           sx={{
-            // border: 2.5,
-            // borderColor: "#FF8A7B",
-            // background: colorPalette.BACKGROUND_COLOR,
             background: colorPalette.BACKGROUND_COLOR,
             boxShadow: 2,
             borderRadius: 2,
@@ -64,9 +60,6 @@ export default function ParentsDetail() {
           item
           xs={5.8}
           sx={{
-            // border: 2.5,
-            // borderColor: "#FF8A7B",
-            // background: colorPalette.BACKGROUND_COLOR,
             background: colorPalette.BACKGROUND_COLOR,
             boxShadow: 2,
             borderRadius: 2,
@@ -90,9 +83,6 @@ export default function ParentsDetail() {
           item
           xs={4.5}
           sx={{
-            // border: 2.5,
-            // borderColor: "#FF8A7B",
-            // background: colorPalette.BACKGROUND_COLOR,
             background: colorPalette.BACKGROUND_COLOR,
             boxShadow: 2,
             borderRadius: 2,
@@ -106,9 +96,6 @@ export default function ParentsDetail() {
           item
           xs={2.5}
           sx={{
-            // border: 2.5,
-            // borderColor: "#FF8A7B",
-            // background: colorPalette.BACKGROUND_COLOR,
             background: colorPalette.BACKGROUND_COLOR,
             boxShadow: 2,
             borderRadius: 2,
@@ -122,9 +109,6 @@ export default function ParentsDetail() {
           item
           xs={4}
           sx={{
-            // border: 2.5,
-            // borderColor: "#FF8A7B",
-            // background: colorPalette.BACKGROUND_COLOR,
             background: colorPalette.BACKGROUND_COLOR,
             boxShadow: 2,
             borderRadius: 2,
@@ -139,9 +123,6 @@ export default function ParentsDetail() {
           item
           xs={12}
           sx={{
-            // border: 2.5,
-            // borderColor: "#FF8A7B",
-            // background: colorPalette.BACKGROUND_COLOR,
             background: colorPalette.BACKGROUND_COLOR,
             boxShadow: 2,
             borderRadius: 2,

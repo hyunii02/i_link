@@ -57,19 +57,18 @@ export default function Reports(props) {
             display: "flex",
             flexDirection: "column",
             alignItems: "end",
-            mb: 5,
           }}
         >
           <BasicModal getReportData={getReportData} />
         </Grid>
-        <Grid item>
+        <Grid item sx={{ mb: 7 }}>
           <RepoItemList
             repos={repos}
             onRemove={onRemove}
             getReportData={getReportData}
           />
         </Grid>
-      </Grid>
+        </Grid>
     </Box>
   );
 }

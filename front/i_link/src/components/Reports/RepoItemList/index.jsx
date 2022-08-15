@@ -10,9 +10,8 @@ export default function RepoItemList({ repos, onRemove, getReportData }) {
   return (
     <Grid
       container
-      justifyContent={"center"}
-      // alignItems={"center"}
-      // textAlign= {'center'}
+      flexWrap={'wrap'}
+      ml='150px' //중앙정렬처럼 보이게 해놓은 것(수정필요)
     >
       {repos.map((repo) => (
         <RepoItem
