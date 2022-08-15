@@ -7,7 +7,6 @@ import { colorPalette } from "../../../constants/constants";
 
 const ParentsQuiz = () => {
   const { firstKid } = useContext(UserContext);
-  console.log(firstKid);
   return (
     <Box>
       <Grid container>

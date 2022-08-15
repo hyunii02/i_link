@@ -34,7 +34,6 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
   const [totalkidsList, setTotalKidsList] = useState(
     JSON.parse(sessionStorage.getItem("kidsList") || "[]"),
   );*/
-
   const [totalkidsList, setTotalKidsList] = useState(kidsList);
 
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -136,7 +135,8 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        {parseInt(userType) === 3 &&
+        {parseInt(userType) == 3 &&
+          kidsList !== "" &&
           kidsList?.map((list, index) => (
             <MenuItem key={index} onClick={menuItemClicked} value={index}>
               <Typography id="font_test" textAlign="center">
@@ -144,7 +144,7 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
               </Typography>
             </MenuItem>
           ))}
-        {parseInt(userType) === 2 && (
+        {parseInt(userType) == 2 && (
           <Box sx={{ ml: "10px", width: "150px" }}>
             <Grid container>
               <Grid item xs={12}>
@@ -165,7 +165,7 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
             </Grid>
           </Box>
         )}
-        {parseInt(userType) === 1 && (
+        {parseInt(userType) == 1 && (
           <Box>
             <Grid container>
               <Grid item xs={12}>

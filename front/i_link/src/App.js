@@ -59,6 +59,8 @@ const App = () => {
           <Route path="/master/registacademy" element={<MasterRegistAcademy />} />
           <Route path="/teacher/joincenter" element={<TeacherJoinCenter />} />
           <Route path="/teacher/wait" element={<TeacherWait />} />
+          <Route path="/parents/registkid" element={<ParentsRegistKid />} />
+          <Route path="/parents/joincenter" element={<ParentsJoinCenter />} />
         </Route>
         {/* 원장님, 학부모, 선생님 */}
         <Route element={<LayOut />}>
@@ -75,9 +77,7 @@ const App = () => {
           <Route path="/parents/home" element={<ParentsHome />} />
           <Route path="/parents/notice" element={<ParentsNotice />} />
           <Route path="/parents/quiz" element={<ParentsQuiz />} />
-          <Route path="/parents/registkid" element={<ParentsRegistKid />} />
           <Route path="/parents/repo" element={<ParentsRepo />} />
-          <Route path="/parents/joincenter" element={<ParentsJoinCenter />} />
 
           {/* 선생님 */}
           <Route path="/teacher/detail" element={<TeacherDetail />} />

@@ -50,6 +50,20 @@ export default function ParentsDetail() {
     <Box>
       {/* 첫줄 =>아이디테일, 아이 기분 칭찬스티커 */}
       <Grid container sx={{ justifyContent: "space-between" }}>
+        {firstKid.group_no === null && (
+          <Grid item xs={12}>
+            <Typography
+              id="font_test"
+              variant="h5"
+              color="rgba(0,0,0,0.5)"
+              textAlign="center"
+              mb="20px"
+            >
+              아직 유치원 반 배정이 되지 않았습니다.
+              <br /> 반 배정이 완료되어야 정상적인 서비스 이용이 가능합니다.
+            </Typography>
+          </Grid>
+        )}
         {/* 아이디테일, 아이 기분 */}
         <Grid
           item
