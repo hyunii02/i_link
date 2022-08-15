@@ -14,8 +14,8 @@ const ItemsList = ({ items }) => {
       }}
     >
       {items &&
-        items.split(",").map((item) => (
-          <li key={item} style={{ marginLeft: "0px", marginBottom: "1vh" }}>
+        items.split(",").map((item, index) => (
+          <li key={index} style={{ marginLeft: "0px", marginBottom: "1vh" }}>
             {item}
           </li>
         ))}

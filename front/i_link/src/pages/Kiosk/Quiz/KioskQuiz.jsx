@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { Box } from "@mui/material";
 import { axios, urls } from "../../../api/axios";
 
@@ -6,7 +7,9 @@ import QuizKioskQuestion from "../../../components/Quiz/KioskQuestion";
 import QuizKioskChoices from "../../../components/Quiz/KioskChoices";
 
 const KioskQuiz = () => {
+  const navigate = useNavigate();
   const [quiz, setQuiz] = useState({
+    quizNo: "",
     title: "",
     sel1: "",
     sel2: "",
@@ -24,7 +27,12 @@ const KioskQuiz = () => {
     const getQuiz = async () => {
       try {
         const response = await axios.get(urls.fetchQuizTodayList + kidGroup);
+        // 오늘의 퀴즈가 없다면 메인으로 보냄
+        if (Array.isArray(response.data) && response.data.length === 0) {
+          navigate("/kiosk/main");
+        }
         const quizData = {
+          quizNo: response.data[0].quiz_no,
           title: response.data[0].quiz_content,
           sel1: response.data[0].quiz_sel_1,
           sel2: response.data[0].quiz_sel_2,
@@ -38,11 +46,11 @@ const KioskQuiz = () => {
         };
         setQuiz(quizData);
       } catch (err) {
-        console.log(err);
+        navigate("/kiosk/main");
       }
     };
     getQuiz();
-  }, []);
+  }, [navigate]);
 
   return (
     <Box
