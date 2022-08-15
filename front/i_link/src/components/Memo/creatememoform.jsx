@@ -10,8 +10,8 @@ import Button from "@mui/material/Button";
 import AddMemoContent from "./addmemocontent";
 import DatePicker from "react-datepicker";
 import { UserContext } from "../../context/user";
-import { baseURL, urls } from "../../api/axios";
-import axios from "axios";
+import { axios,baseURL, urls } from "../../api/axios";
+
 import Grid from "@mui/material/Grid";
 
 let id_index = 1;

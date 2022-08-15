@@ -12,8 +12,8 @@ import { UserContext } from "../../context/user";
 import NoticeWriteForm from "./noticewriteform";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import axios from "axios";
-import { baseURL, urls } from "../../api/axios";
+
+import { axios,baseURL, urls } from "../../api/axios";
 import Modal from "@mui/material/Modal";
 import { Box, Grid } from "@mui/material";
 import NoticeDetail from "./noticedetail";

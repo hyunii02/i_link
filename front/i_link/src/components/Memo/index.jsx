@@ -17,12 +17,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
-import axios from "axios";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CreateMemo from "./creatememo";
 import Box from "@mui/material/Box";
 import { AppBar, Tabs, Tab } from "@mui/material";
-import { baseURL, urls } from "../../api/axios";
+import { axios,baseURL, urls } from "../../api/axios";
 
 const theme = createTheme();
 
