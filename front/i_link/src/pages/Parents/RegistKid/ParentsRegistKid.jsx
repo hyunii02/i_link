@@ -1,10 +1,13 @@
 import React from "react";
 import ParentsKids from "../../../components/Parents/ParentsKids";
+import { Box, Grid, Typography } from "@mui/material";
 
 const ParentsRegistKid = () => {
   return (
     <>
-      <ParentsKids />
+      <Box sx={{ mt: "20px" }}>
+        <ParentsKids />
+      </Box>
     </>
   );
 };

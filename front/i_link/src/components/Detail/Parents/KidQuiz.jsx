@@ -58,20 +58,17 @@ const KidQuiz = ({ kidNo }) => {
         🧡 아이가 푼 퀴즈 🧡
       </Typography>
       <Grid container spacing={1}>
-        {isEmpty(quizList) &&
-          quizList.map((list, index) => (
-            <Grid item xs={6} key={index}>
-              <QuizFrame data={list} state={3} />
-            </Grid>
-          ))}
-        {isEmpty(quizList) || (
-          <Grid item xs={12}>
-            <Typography id="font_test" variant="h5" textAlign="center">
-              최근 푼 문제가 없어요.
-            </Typography>
+        {quizList?.map((list, index) => (
+          <Grid item xs={6} key={index}>
+            <QuizFrame data={list} state={3} />
           </Grid>
-        )}
+        ))}
       </Grid>
+      {isEmpty(quizList) || (
+        <Typography id="font_test" variant="h5" textAlign="center">
+          최근 푼 문제가 없어요.
+        </Typography>
+      )}
     </Box>
   );
 };
