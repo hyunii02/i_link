@@ -11,7 +11,7 @@
   
   height:200;
   background-repeat: no-repeat;
-  overflow: scroll;
+  overflow: auto;
 }
 .fixed {
   background-attachment: fixed;

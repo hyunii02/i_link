@@ -47,6 +47,9 @@ const CreateMemoForm = (props) => {
   };
 
   const eachMemoAdd = () => {
+    if (memoContent !==""){
+
+    
     const content = {
       id: id_index++,
 
@@ -56,6 +59,7 @@ const CreateMemoForm = (props) => {
     
     setMemoContent("");
   };
+}
 
   const buttonClickHandler = (e) => {
     const subData = [];
@@ -115,7 +119,7 @@ const CreateMemoForm = (props) => {
 
   return (
     <div>
-      <h3 style={{ display: "flex", justifyContent: "center" }}>알림장 등록</h3>
+      <h3 id="font_test" style={{ display: "flex", justifyContent: "center" }}>알림장 등록</h3>
       <Box
         sx={{
           "& .MuiTextField-root": { mt: 2 }, // 텍스트필드마다 mt 3
@@ -131,7 +135,7 @@ const CreateMemoForm = (props) => {
               type="date"
               sx={{
                 background: "#F2EFDA",
-                width: 200,
+                width: 313,
               }}
               value={memoTitle}
               onChange={(e) => setMemoTitle(e.target.value)}
@@ -155,7 +159,7 @@ const CreateMemoForm = (props) => {
             <p id="font_test">{formErrors.lastMemoContent}</p>
           </Grid>
           <Grid item xs={3}>
-            {memoContent !== "" && (
+            
               <Button
                 id="font_test"
                 onClick={eachMemoAdd}
@@ -169,7 +173,7 @@ const CreateMemoForm = (props) => {
               >
                 항목추가
               </Button>
-            )}
+            
           </Grid>
         </Grid>
         <br />

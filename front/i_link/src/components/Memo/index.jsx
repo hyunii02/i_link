@@ -51,7 +51,7 @@ export default function Album() {
   };
 
   // 반 목록 선택 시 반에 맞는 정보
-
+  
   const clickGroupHandler = () => {
     if (selectValue === "") {
       return;
@@ -78,6 +78,7 @@ export default function Album() {
   useEffect(() => {
     getGroupList();
   }, []);
+  
 
   //axios 로 정보를 받아온다.
   const getMemoList = (e) => {
@@ -108,6 +109,8 @@ export default function Album() {
   const handleChange = (event, newValue) => {
     setSelectValue(newValue);
   };
+  
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -139,6 +142,7 @@ export default function Album() {
             </Select>
           </FormControl>
         )} */}
+        {userType !== 2 && userType !== "2" &&(
         <AppBar position="static" color="default" >
           <Tabs
             value={selectValue}
@@ -148,7 +152,8 @@ export default function Album() {
             variant="fullWidth"
             aria-label="action tabs example"
             sx={{ border: "6px solid #fae2e2", background: "#FAF1DA" }}
-          >
+          > 
+          
             {groupList.map((list, index) => (
               <Tab
                 label={
@@ -163,6 +168,7 @@ export default function Album() {
             ))}
           </Tabs>
         </AppBar>
+)}
 
         {/* Hero unit */}
 
@@ -181,17 +187,17 @@ export default function Album() {
                 >
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography
-                      id="font_test"
-                      sx={{ background: "#F2FADC", mb: 4 }}
+                      id="font_test"  
+                      sx={{ background: "#F2FADC", mb: 4 ,pl:2 }}
                       gutterBottom
                       fontSize="17px"
                       component="h2"
                     >
-                      {card.memo_date}
+                     {card.memo_date}
                     </Typography>
                     {card.memo_content.split(",").map((card, key) => (
-                      <Typography id="font_test" key={key}>
-                        🏳️‍🌈 {card}
+                      <Typography sx={{ml:1.2}}id="font_test" key={key}>
+                        🏳️‍🌈{card}
                       </Typography>
                     ))}
                   </CardContent>
