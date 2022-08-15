@@ -9,16 +9,20 @@ import {
   Container,
 } from "@mui/material/";
 import { colorPalette } from "../../../constants/constants";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { baseURL, urls } from "../../../api/axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { UserContext } from "../../../context/user";
 
 const ParentsJoinCenter = () => {
   const [centerNo, setCenterNo] = useState("");
   const [center, setCenter] = useState({});
   const [error, setError] = useState("");
   const [selectedCenter, setSelectedCenter] = useState("");
+
+  const { kidsList, userNo, setKidsList, setFirstKid } =
+    useContext(UserContext);
 
   const location = useLocation();
 
@@ -84,7 +88,14 @@ const ParentsJoinCenter = () => {
       axios
         .put(baseURL + urls.fetchKidsRegister, body)
         .then((response) => {
-          navigate("/parents/home");
+          // 유치원 등록 완료. 아이의 리스트를 받아옴
+          axios
+            .get(baseURL + urls.fetchParentKids + userNo)
+            .then((response) => {
+              setKidsList(response.data);
+              setFirstKid(response.data[0]);
+              navigate("/parents/home");
+            });
         })
         .catch((error) => {
           //console.log(error);
@@ -97,10 +108,11 @@ const ParentsJoinCenter = () => {
   return (
     <Box
       sx={{
-        marginTop: "50px",
         display: "flex",
         flexDirection: "column",
+        justifyContent: "center",
         alignItems: "center",
+        height: "100vh",
       }}
     >
       <Container component="main" maxWidth="xs">
@@ -108,6 +120,7 @@ const ParentsJoinCenter = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
+            justifyContent: "center",
             alignItems: "center",
           }}
         >

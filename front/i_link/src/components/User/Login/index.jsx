@@ -143,7 +143,6 @@ export default function Login() {
               axios
                 .get(baseURL + urls.fetchParentKids + resUserNo)
                 .then((response) => {
-                  console.log(response.data.length);
                   // 등록된 아이가 없을 시
                   if (response.data.length === 0) {
                     navigate("/parents/registkid");

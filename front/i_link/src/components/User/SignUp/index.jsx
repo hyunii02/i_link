@@ -187,7 +187,6 @@ export default function SignUp() {
         userPhone: formValues.phone_number,
         userProfile: image.image_file,
       };
-      console.log(body);
       // 사진 전송을 위해 헤더에 Multi-part로 type 설정
       const config = {
         headers: {
@@ -198,7 +197,6 @@ export default function SignUp() {
         axios
           .post(baseURL + urls.fetchUsersRegister, body, config)
           .then((response) => {
-            console.log("RES: ", response);
             // 응답 성공 시
             if (response.status === 200) {
               navigate("/");

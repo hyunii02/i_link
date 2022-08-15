@@ -31,9 +31,12 @@ const GroupInsert = (props) => {
     };
     // Data부에 객체를 담아 POST 전송
     try {
-      axios
-        .post(urls.fetchGroupsRegister, newObj)
-        .then((response) => getGroupList());
+      axios.post(urls.fetchGroupsRegister, newObj).then((response) => {
+        if (response.status === 200) {
+          getGroupList();
+          setNewClass((newClass) => "");
+        }
+      });
     } catch (e) {
       console.log(e);
     }
