@@ -29,8 +29,7 @@ const KidsDetailInfo = ({ kidNo }) => {
   }, [state]);
 
   useEffect(() => {
-    //    getKidsData();
-    console.log("렌더링요청");
+    getKidsData();
   }, [reRender]);
 
   // 아이 디테일 페이지에 표시할 정보들을 가져온다.
@@ -139,7 +138,7 @@ const KidsDetailInfo = ({ kidNo }) => {
           mb: 5,
         }}
       >
-        <KidQuiz kidNo={kidInfo.kid_no} />
+        {kidInfo !== null && <KidQuiz kidNo={kidInfo.kid_no} />}
       </Grid>
     </Box>
   );

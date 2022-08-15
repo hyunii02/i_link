@@ -68,7 +68,6 @@ const App = () => {
           <Route path="/master/managemember" element={<MasterManageMember />} />
           <Route path="/master/memo" element={<MasterMemo />} />
           <Route path="/master/notice" element={<MasterNotice />} />
-          <Route path="/master/pictureboard" element={<PictureBoard />} />
           <Route path="/master/kidsdetail" element={<KidsDetail />} />
 
           {/* 학부모 */}
@@ -79,7 +78,6 @@ const App = () => {
           <Route path="/parents/registkid" element={<ParentsRegistKid />} />
           <Route path="/parents/repo" element={<ParentsRepo />} />
           <Route path="/parents/joincenter" element={<ParentsJoinCenter />} />
-          <Route path="/parents/pictureboard" element={<PictureBoard />} />
 
           {/* 선생님 */}
           <Route path="/teacher/detail" element={<TeacherDetail />} />
@@ -89,7 +87,6 @@ const App = () => {
           <Route path="/teacher/notice" element={<TeacherNotice />} />
           <Route path="/teacher/quiz" element={<TeacherQuiz />} />
           {/*<Route path="/teacher/joincenter" element={<TeacherJoinCenter />} />*/}
-          <Route path="/teacher/pictureboard" element={<PictureBoard />} />
           <Route path="/teacher/kidsdetail" element={<KidsDetail />} />
 
         </Route>
