@@ -33,7 +33,7 @@ const KidFeel = ({
       );
       const lenData = response.data.length;
       const latestFeel = response.data[lenData - 1];
-
+      if (response.data.length === 0) return;
       if (latestFeel.survey_date.slice(0, 10) === getToday()) {
         setFeel(latestFeel.survey_result);
       } else {
@@ -50,6 +50,7 @@ const KidFeel = ({
   };
 
   const getGroupName = async () => {
+    if (firstKid.group_no === null) return;
     const response = await axios.get(
       baseURL + urls.fetchGroupsDetail + firstKid.group_no,
     );

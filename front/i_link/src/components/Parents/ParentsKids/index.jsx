@@ -207,6 +207,14 @@ export default function ParentsKids() {
           <Typography id="font_test" component="h1" variant="h4">
             아이등록
           </Typography>
+          <Typography
+            id="font_test"
+            component="h1"
+            variant="body2"
+            color="rgba(0, 0, 0, 0.4)"
+          >
+            유치원의 가입승인 후, 이용할 수 있습니다.
+          </Typography>
           {/* 아이등록 form */}
           <Box
             component="form"
