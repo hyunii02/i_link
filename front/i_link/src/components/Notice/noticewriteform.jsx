@@ -167,6 +167,7 @@ export default function NoticeWriteForm(props) {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        ml:2.6
       }}
       autoComplete="off"
     >
@@ -204,7 +205,7 @@ export default function NoticeWriteForm(props) {
       <p id="font_test">{formErrors.noticeContent}</p> */}
 
       <TextField
-        sx={{ background: "white", width: 500 ,border: "2px solid #8E8F91"}}
+        sx={{ background: "white", width: 500 ,border: "2px solid #8E8F91",}}
         onChange={(e) => setNoticeContent(e.target.value)}
         id="font_test"
         name="content"
@@ -223,13 +224,13 @@ export default function NoticeWriteForm(props) {
       <Box sx={{ width: 300 }}>
         <p id="font_test">{formErrors.noticeContent}</p>
       </Box>
-      <Box sx={{ width: 500, display: "flex", justifyContent: "flex-end" }}>
+      <Box sx={{ width: 500, display: "flex", justifyContent: "flex-end", }}>
         <Button
-          sx={{}}
+          sx={{background: "rgb(255, 138, 123)"}}
           onClick={handleSubmit}
           type="submit"
           variant="contained"
-          color="warning"
+          
           
         >
           글 작성

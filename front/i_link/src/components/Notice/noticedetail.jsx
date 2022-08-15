@@ -8,8 +8,7 @@ import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-import { baseURL, urls } from "../../api/axios";
-import axios from "axios";
+import { axios,baseURL, urls } from "../../api/axios";
 import { useState, useEffect } from "react";
 import { eventWrapper } from "@testing-library/user-event/dist/utils";
 import { maxWidth } from "@mui/system";
@@ -83,12 +82,13 @@ const NoticeDetail = (props) => {
             flexDirection: "row",
             justifyContent: "center",
             borderBottom: "2px solid #8E8F91",
+            ml:4
           }}
         >
           {detailNotice2.notice_title}
         </Typography>
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mr: 6 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mr: 4 }}>
         <Typography id="font_test">
           작성일 : {detailNotice2.notice_date}
         </Typography>
@@ -98,16 +98,16 @@ const NoticeDetail = (props) => {
           detailNotice2.files.map((file, index) => (
             
             <Avatar
-              sx={{ mt: 3, ml: 4, minWidth:750, height:"auto" }}
+              sx={{ mt: 3, ml: 5.5, minWidth:750, height:"auto" }}
               key={index}
               src={baseURL + file.file_location}
               variant="square"
             ></Avatar>
             
           ))}
-        <Box sx={{ml:3}}>
+        <Box sx={{ml:1}}>
           <Typography
-            sx={{pl:2,mt:3}}
+            sx={{pl:5,mt:3}}
             fontSize="15px"
             id="font_test"
             minrows={3}
@@ -117,7 +117,7 @@ const NoticeDetail = (props) => {
           </Typography>
         </Box>
 
-        <Button id="font_test" sx={{ ml: 90,mt:5 }} onClick={handleClose1}>
+        <Button id="font_test" sx={{ ml: 93,mt:5,  }} onClick={handleClose1}>
           닫기
         </Button>
         {/* </TextareaAutosize> */}

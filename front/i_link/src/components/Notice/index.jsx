@@ -12,8 +12,8 @@ import { UserContext } from "../../context/user";
 import NoticeWriteForm from "./noticewriteform";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import axios from "axios";
-import { baseURL, urls } from "../../api/axios";
+
+import { axios,baseURL, urls } from "../../api/axios";
 import Modal from "@mui/material/Modal";
 import { Box, Grid } from "@mui/material";
 import NoticeDetail from "./noticedetail";
@@ -46,7 +46,24 @@ export default function Notice(props) {
     }
     
   };
-  
+  const styleWrite = {
+    
+    display: "flex",
+    flexDirection: "column",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width:520,
+    height:510,
+    
+    bgcolor: "white",
+    border: "5px solid #FCE6D4",
+    boxShadow: 24,
+    p: 4,
+    pl:1,
+  };
+
   const style = {
     
     display: "flex",
@@ -55,7 +72,7 @@ export default function Notice(props) {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width:800,
+    width:820,
     height:600,
     
     bgcolor: "white",
@@ -202,9 +219,10 @@ export default function Notice(props) {
         {userType !== 3 && userType !== "3" && (
           <Button
             className="write-button"
+            id="font_test"
             sx={{
               borderColor: "red",
-              border: 1,
+              
               color: "black",
               background: "#7FC3FD",
               display: "flex",
@@ -242,7 +260,7 @@ export default function Notice(props) {
         aria-describedby="modal-modal-description"
       >
         {/* 모달창 스타일 글작성 페이지 닫기*/}
-        <Box sx={style}>
+        <Box sx={styleWrite}>
           <NoticeWriteForm
             handleClose2={handleClose2}
             getNoticeList={getNoticeList}
