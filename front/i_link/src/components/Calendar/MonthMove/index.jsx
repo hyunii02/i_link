@@ -82,7 +82,6 @@ const CalendarMonthMove = () => {
         ? "0" + (parseInt(searchDate.getMonth()) + 1)
         : parseInt(searchDate.getMonth()) + 1) +
       "-01";
-    console.log(firstKid);
     // [API] 현재 달의 급식 목록 get
     axios
       .get(baseURL + urls.fetchMealsList + subParams)

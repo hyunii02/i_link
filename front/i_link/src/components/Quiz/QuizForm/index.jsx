@@ -11,44 +11,6 @@ import { baseURL, urls } from "../../../api/axios.jsx";
 import { UserContext } from "../../../context/user.js";
 import { colorPalette } from "../../../constants/constants.js";
 
-const dummy = [
-  {
-    content: "인사",
-    ans1: "안녕하세요",
-    ans2: "이랏샤이마세",
-    ans3: "니하오",
-    ans4: "구텐탁",
-  },
-  {
-    content: "인사",
-    ans1: "안녕하세요",
-    ans2: "이랏샤이마세",
-    ans3: "니하오",
-    ans4: "구텐탁",
-  },
-  {
-    content: "인사",
-    ans1: "안녕하세요",
-    ans2: "이랏샤이마세",
-    ans3: "니하오",
-    ans4: "구텐탁",
-  },
-  {
-    content: "인사",
-    ans1: "안녕하세요",
-    ans2: "이랏샤이마세",
-    ans3: "니하오",
-    ans4: "구텐탁",
-  },
-  {
-    content: "인사",
-    ans1: "안녕하세요",
-    ans2: "이랏샤이마세",
-    ans3: "니하오",
-    ans4: "구텐탁",
-  },
-];
-
 const QuizForm = () => {
   // 모달창 상태관리
   const [open, setOpen] = useState(false);
@@ -91,7 +53,6 @@ const QuizForm = () => {
         .get(fullURL)
         .then((response) => {
           if (response.status === 200) {
-            console.log(response);
             setTodayQuizList(response.data);
           }
         })

@@ -29,7 +29,7 @@ const MemoHome = () => {
         const todaysMemos = response.data.filter(
           (memos) => memos.memo_date === today,
         );
-        setMemo(todaysMemos[0].memo_content);
+        setMemo(todaysMemos.length === 0 ? "" : todaysMemos[0].memo_content);
       }
     } catch (err) {
       console.log(err);

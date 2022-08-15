@@ -67,8 +67,6 @@ const CalendarDay = (props) => {
 
   // 편집 권한 체크를 위한 Context 호출
   const { userType, userCenter } = useContext(UserContext);
-  let i = 2;
-  console.log(userType === "3");
 
   // 모달창 > 식단 추가 시
   const dietInsertHandler = (e) => {
@@ -234,7 +232,7 @@ const CalendarDay = (props) => {
           marginTop: "10px",
         }}
       >
-        {userType !== "3" &&
+        {userType != 3 &&
           day.day !== 0 &&
           index % 6 !== 0 &&
           isEmptyArr(day.meal) && (
@@ -406,7 +404,7 @@ const CalendarDay = (props) => {
           top: "110px",
         }}
       >
-        {userType !== "3" && !isEmptyArr(day.meal) && (
+        {userType != 3 && !isEmptyArr(day.meal) && (
           <Box sx={{ textAlign: "right" }}>
             <IconButton onClick={deleteButtonClickHandler}>
               <RemoveCircleOutlineIcon fontSize="small" />
