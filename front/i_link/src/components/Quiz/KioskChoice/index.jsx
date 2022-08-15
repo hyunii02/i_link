@@ -13,8 +13,8 @@ const QuizKioskChoice = ({ sel, selUrl, quizNo, index }) => {
         kidNo: localStorage.getItem("kidNo"),
         quizNo: quizNo,
       };
-      await axios.post(urls.fetchKidsAnswer, body);
-      navigate("/kiosk/main");
+      axios.post(urls.fetchKidsAnswer, body);
+      navigate("/kiosk/stamp");
     } catch (err) {
       console.log(err);
     }
