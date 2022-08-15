@@ -20,14 +20,13 @@ const MasterManageGroup = () => {
   const [selectedItem, setSelectedItem] = useState("1");
 
   const { userType, userCenter } = useContext(UserContext);
-  console.log(userCenter);
+
   // 유치원의 그룹 리스트를 가져오는 axios
   const getGroupList = () => {
     try {
       axios
         .get(baseURL + urls.fetchGroupsList + userCenter)
         .then((response) => {
-          console.log(response.data);
           if (response.status === 200) {
             setClassData(response.data);
           }

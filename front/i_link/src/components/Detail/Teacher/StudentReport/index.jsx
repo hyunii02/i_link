@@ -29,7 +29,6 @@ const StudentReport = ({ kidInfo }) => {
   const getReportList = () => {
     try {
       const fullURL = baseURL + urls.fetchKidsReport + kidInfo.kid_no;
-      console.log(fullURL);
       axios.get(fullURL).then((response) => {
         if (response.status === 200) {
           setReportList(response.data);

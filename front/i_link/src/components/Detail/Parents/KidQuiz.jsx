@@ -64,6 +64,13 @@ const KidQuiz = ({ kidNo }) => {
               <QuizFrame data={list} state={3} />
             </Grid>
           ))}
+        {isEmpty(quizList) || (
+          <Grid item xs={12}>
+            <Typography id="font_test" variant="h5" textAlign="center">
+              최근 푼 문제가 없어요.
+            </Typography>
+          </Grid>
+        )}
       </Grid>
     </Box>
   );
