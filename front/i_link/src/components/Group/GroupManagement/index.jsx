@@ -19,21 +19,25 @@ const headerList = [
     id: 1,
     text: "반 이름",
     length: 4,
+    ml: 2,
   },
   {
     id: 2,
     text: "반 인원",
     length: 4,
+    ml: -2,
   },
   {
     id: 3,
     text: "교사 수",
     length: 3,
+    ml: -1,
   },
   {
     id: 4,
     text: "반 삭제",
     length: 1,
+    ml: 0,
   },
 ];
 
@@ -122,6 +126,7 @@ const GroupManagement = (props) => {
                 alignItems: "center",
                 flexDirection: "row",
               }}
+              ml={list.ml}
               key={list.id}
             >
               <ListItemText>
@@ -138,10 +143,14 @@ const GroupManagement = (props) => {
         </Grid>
         {/* state값에 맞게 반 등록 컴포넌트를 on/off */}
         {insertFlag && (
-          <GroupInsert
-            cancelClicked={insertComponentToggle}
-            getGroupList={getGroupList}
-          />
+          <Box
+            sx={{ marginTop: "10px", marginBottom: "10px", marginLeft: "10px" }}
+          >
+            <GroupInsert
+              cancelClicked={insertComponentToggle}
+              getGroupList={getGroupList}
+            />
+          </Box>
         )}
         {/* 반의 객체 갯수만큼 반 리스트 컴포넌트를 화면에 렌더링 */}
         {classData.map((data) => (

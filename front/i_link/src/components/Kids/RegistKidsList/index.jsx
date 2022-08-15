@@ -71,7 +71,7 @@ const RegistKidsList = ({ kid, classList, submitListStateChange }) => {
             {kid.name}
           </Typography>
         </Grid>
-        <Grid item xs={7}>
+        <Grid item xs={6}>
           <GroupSelect
             classList={classList}
             kidId={kid.no}

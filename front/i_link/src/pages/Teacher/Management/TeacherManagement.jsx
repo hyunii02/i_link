@@ -46,6 +46,17 @@ const TeacherManagement = () => {
       <Box>
         <Box>
           <Grid container spacing={0.5}>
+            {student.length === 0 && (
+              <Box>
+                <Typography
+                  id="font_test"
+                  color="rgba(0, 0, 0, 0.5)"
+                  variant="h5"
+                >
+                  현재 반에 등록된 원아가 없습니다.
+                </Typography>
+              </Box>
+            )}
             {student?.map((stu, index) => (
               <Grid item xs={3} key={index} style={{ marginBottom: "10px" }}>
                 <MemberStudent student={stu} getKidList={getKidList} />
