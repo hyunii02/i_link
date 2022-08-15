@@ -31,14 +31,15 @@ export default function Notice(props) {
   console.log(firstKid);
   useEffect(() => {
     getNoticeList();
+    console.log(123123)
   }, []);
 
   const getNoticeList = (e) => {
     
     try {
-      
+      console.log(userCenter === "null")
       axios
-        .get(baseURL + urls.fetchNotices + (userCenter === "null" ? firstKid.center_no : userCenter))
+        .get(baseURL + urls.fetchNotices + (userCenter === null ? firstKid.center_no : userCenter))
         .then((response) => setNotices(response.data));
     } catch (e) {
       console.log(e);
