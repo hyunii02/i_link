@@ -132,6 +132,7 @@ export default function ParentsKids() {
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [gender, setGender] = useState("M");
+  const [error, setError] = useState("");
   const [sendImage, setSendImage] = useState("");
   const [image, setImage] = useState({
     image_file: "",
@@ -142,7 +143,11 @@ export default function ParentsKids() {
   const validate = () => {
     const errors = {};
     if (!formValues.kidname) {
-      errors.kidname = "아이의 이름을 입력해주세요.";
+      alert("아이의 이름을 입력해주세요.");
+      return false;
+    }
+    if (formValues.kidname.length >= 10) {
+      alert("아이의 이름은 10글자를 넘길 수 없습니다.");
       return false;
     }
     return true;
@@ -247,10 +252,6 @@ export default function ParentsKids() {
                   sx={{ background: "white", mt: 4 }}
                 />
               </Grid>
-              {/* 아이 이름 미입력 후 아이등록 버튼 클릭시 띄울 에러메시지 */}
-              <p id="font_size_test" align="center">
-                {formErrors.kidname}
-              </p>
               {/* 아이 생년월일 입력창 */}
               <Grid item xs={12} sm={12}>
                 <p id="font_test" align="center">
