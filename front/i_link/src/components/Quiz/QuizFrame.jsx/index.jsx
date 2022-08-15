@@ -113,7 +113,7 @@ const QuizFrame = (props) => {
             width: "20%",
             height: "90%",
             background: "#D6FABA",
-            border: state === 3 && data.kid_ans === 1 ? "3px solid red" : "",
+            border: state === 3 && data.kid_ans === 4 ? "3px solid red" : "",
           }}
         >
           <QuizSolForm solText={data.quiz_sel_4} solUrl={data.quiz_sel_4_url} />
