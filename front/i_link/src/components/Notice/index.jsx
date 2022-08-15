@@ -28,16 +28,16 @@ export default function Notice(props) {
   //게시글 넘버 받아오는 것
   let userCenterNumber = userCenter;
   
-  console.log(firstKid);
+  
   useEffect(() => {
     getNoticeList();
-    console.log(123123)
+    
   }, []);
 
   const getNoticeList = (e) => {
     
     try {
-      console.log(userCenter === "null")
+      
       axios
         .get(baseURL + urls.fetchNotices + (userCenter === null ? firstKid.center_no : userCenter))
         .then((response) => setNotices(response.data));
@@ -71,7 +71,7 @@ export default function Notice(props) {
 
   //삭제
   const handleDelete = (event) => {
-    console.log(event);
+    
 
     try {
       axios
