@@ -31,7 +31,7 @@ const NoticeDetail = (props) => {
   const isEmptyFile = (array) => {
     if (isEmptyArray(array)) return true;
 
-    console.log(array.files);
+    
     if (isEmptyArray(array.files)) return true;
 
     return false;
