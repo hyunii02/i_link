@@ -41,7 +41,7 @@ export default function CreateMemo(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    console.log("wefwefwef");
+    
   };
   
   return (

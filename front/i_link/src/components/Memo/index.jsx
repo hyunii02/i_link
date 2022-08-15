@@ -45,7 +45,7 @@ export default function Album() {
         };
         newArray.push(newObj);
       });
-      console.log(newArray, 11);
+      
       setGroupList(newArray);
       setSelectValue(newArray[0].value);
     });
