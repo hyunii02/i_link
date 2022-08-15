@@ -69,6 +69,8 @@ const urls = {
   fetchQuizDelete: "/quiz/", // 퀴즈 삭제
   fetchQuizTodaySet: "/quiz/today/", // 퀴즈 오늘 날짜로 지정
   fetchQuizTodayList: "/quiz/today/", // 오늘의 퀴즈 정보 조회
+  fetchQuizKidsDetail: "/quiz/kids/", // 아이별 퀴즈 결과 조회
+  fetchKidsMemoUpdate: "/kids/memos/", // 아이별 메모 업데이트
 };
 
 const axios = Axios.create({

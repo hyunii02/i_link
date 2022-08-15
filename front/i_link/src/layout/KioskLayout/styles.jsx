@@ -8,6 +8,7 @@ const Wrapper = styled.div`
     background-color: #4ca761;
     border: 1.5vw solid #cda352;
     padding: 1vw;
+    display: flex;
   }
 `;
 export default Wrapper;
