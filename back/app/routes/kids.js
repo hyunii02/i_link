@@ -244,11 +244,26 @@ router.get("/list/parent/:userNo", kidsController.kid_parent_list);
  *                  kid_stamp:
  *                    type: integer
  *                    example: 0
- *                  kidProfileUrl:
+ *                  kid_profile_url:
  *                    type: string
- *                    description: "아이 프로필 사진 주소"
+ *                    example: "/uploads/profile/1660205087717.png"
+ *                  kid_memo:
+ *                    type: string
+ *                    example: "자동차 장난감을 좋아한다."
+ *                  kid_state:
+ *                    type: string
+ *                    example: "0"
+ *                  parents_no:
+ *                    type: integer
+ *                    example: 43,
+ *                  group_no:
+ *                    type: integer
+ *                    example: 21
+ *                  center_no:
+ *                    type: integer
+ *                    example: 1
  *        "400":
- *          description: 반 정보 조회 실패
+ *          description: 아이 정보 조회 실패
  *          content:
  *            application/json:
  *              schema:
@@ -331,6 +346,70 @@ router.get("/:kidNo", kidsController.kid_detail);
  *                          "서버 오류 발생"
  */
 router.put("/:kidNo", profile.single("kidProfile"), kidsController.kid_update);
+
+/**
+ * @swagger
+ * paths:
+ *  /kids/{kidNo}:
+ *    put:
+ *      summary: "아이 정보 수정"
+ *      description: "put 방식으로 아이 정보 수정"
+ *      tags: [Kids]
+ *      parameters:
+ *        - in: path
+ *          name: kidNo
+ *          required: true
+ *          description: 아이 번호
+ *          schema:
+ *            type: integer
+ *      requestBody:
+ *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (아이 정보 수정)
+ *          required: true
+ *          content:
+ *            application/x-www-form-urlencoded:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  kidMemo:
+ *                    type: string
+ *                    description: "원생 메모"
+ *      responses:
+ *        "200":
+ *          description: 원생 메모 수정 성공
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "원생 메모 수정 완료"
+ *
+ *        "400":
+ *          description: 원생 메모 수정 실패
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "요청 실패"
+ *        "500":
+ *          description: 서버 오류 발생
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "서버 오류 발생"
+ */
+router.put("/memos/:kidNo", kidsController.kid_update_memo);
 
 /**
  * @swagger

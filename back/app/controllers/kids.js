@@ -178,6 +178,17 @@ exports.kid_update = async function (req, res) {
   }
 };
 
+// 원생 메모 수정
+exports.kid_update_memo = async function (req, res) {
+  await Kids.update({ kid_memo: req.body.kidMemo }, { where: { kid_no: req.params.kidNo } })
+    .then(() => {
+      res.status(200).json({ message: "정보 수정 완료" });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message, message: "정보 수정 실패" });
+    });
+};
+
 // 원생 등원상태 수정
 // [put]  /kids/attendance/:kidNo/:kidState
 exports.kid_update_attendance = async function (req, res) {
