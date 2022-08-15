@@ -257,7 +257,7 @@ const MemberStudent = (props) => {
           <Typography
             id="font_test"
             className="AA"
-            variant="h5"
+            variant="h6"
             sx={{ cursor: "pointer" }}
             onClick={moveDetailPage}
           >

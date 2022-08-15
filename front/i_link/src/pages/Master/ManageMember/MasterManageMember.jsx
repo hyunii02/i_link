@@ -193,6 +193,18 @@ const MasterManageMember = () => {
       <Box>
         <Box>
           <Grid container spacing={0.5}>
+            {teacher.length === 0 && (
+              <Box sx={{ width: "100%", height: "200px" }}>
+                <Typography
+                  id="font_test"
+                  textAlign="center"
+                  variant="h5"
+                  color="rgba(0, 0, 0, 0.5)"
+                >
+                  현재 반에 등록된 교사가 없습니다.
+                </Typography>
+              </Box>
+            )}
             {teacher?.map((tea, index) => (
               <Grid
                 sx={{
@@ -213,6 +225,18 @@ const MasterManageMember = () => {
         </Box>
         <Box>
           <Grid container spacing={0.5}>
+            {student.length === 0 && (
+              <Box sx={{ width: "100%", height: "200px" }}>
+                <Typography
+                  id="font_test"
+                  textAlign="center"
+                  variant="h5"
+                  color="rgba(0, 0, 0, 0.5)"
+                >
+                  현재 반에 등록된 원아가 없습니다.
+                </Typography>
+              </Box>
+            )}
             {student?.map((stu, index) => (
               <Grid item xs={3} key={index} style={{ marginBottom: "10px" }}>
                 <MemberStudent

@@ -57,6 +57,7 @@ const GroupInsert = (props) => {
             label="반을 입력해 주세요"
             variant="outlined"
             size="small"
+            sx={{ background: "white" }}
             value={newClass}
             fullWidth
             onChange={onChange}
