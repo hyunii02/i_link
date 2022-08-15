@@ -41,7 +41,7 @@ const CreateMemoForm = (props) => {
         content: memoContent,
       };
       setContentList([...contentList, content]);
-      console.log(content);
+      
       setMemoContent("");
     }
   };
@@ -53,7 +53,7 @@ const CreateMemoForm = (props) => {
       content: memoContent,
     };
     setContentList([...contentList, content]);
-    console.log(contentList);
+    
     setMemoContent("");
   };
 
@@ -94,7 +94,7 @@ const CreateMemoForm = (props) => {
           .post(baseURL + urls.fetchMemosRegister, newData)
           .then((response) => {
             if (response.status === 200) {
-              console.log(response);
+              
 
               clickGroupHandler();
               handleClose();
@@ -105,11 +105,11 @@ const CreateMemoForm = (props) => {
       }
     }
 
-    console.log(newData);
+    
   };
 
   const onRemove2 = (id) => {
-    console.log(id);
+    
     setContentList(contentList.filter((content) => content.id !== id));
   };
 

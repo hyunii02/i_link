@@ -78,7 +78,7 @@ export default function NoticeWriteForm(props) {
       content: noticeContent,
     };
     setContentList([...contentList, content]);
-    console.log(content);
+    
     
   };
 
@@ -132,7 +132,7 @@ export default function NoticeWriteForm(props) {
       noticeContent: noticeContent,
       files: NoticeImage.image_file,
     };
-    console.log(body);
+    
     // 사진 전송을 위해 헤더에 Multi-part로 type 설정
     const config = {
       headers: {
