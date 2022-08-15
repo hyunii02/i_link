@@ -27,9 +27,9 @@ const KioskQuiz = () => {
     const getQuiz = async () => {
       try {
         const response = await axios.get(urls.fetchQuizTodayList + kidGroup);
-        // 오늘의 퀴즈가 없다면 메인으로 보냄
+        // 오늘의 퀴즈가 없다면 칭찬스티커로 보냄
         if (Array.isArray(response.data) && response.data.length === 0) {
-          navigate("/kiosk/main");
+          navigate("/kiosk/stamp");
         }
         const quizData = {
           quizNo: response.data[0].quiz_no,
@@ -46,7 +46,7 @@ const KioskQuiz = () => {
         };
         setQuiz(quizData);
       } catch (err) {
-        navigate("/kiosk/main");
+        navigate("/kiosk/stamp");
       }
     };
     getQuiz();
