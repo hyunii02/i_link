@@ -48,6 +48,9 @@ exports.user_login = async function (req, res) {
   const userEmail = req.body.userEmail;
   const userPw = req.body.userPw;
 
+  // 로그인 상태 = false가 default임
+  req.body.logined = false;
+
   // 입력된 이메일로 사용자 찾기
   let user = await Users.findOne({ where: { user_email: userEmail } }).catch((err) => {
     res.status(500).json({ error: err.message, message: "잘못된 요청입니다." });
@@ -93,18 +96,18 @@ exports.user_login = async function (req, res) {
   }
 };
 
-// 토큰 검증(test) // TODO: 경로 설정 고민
-// [get]  /users
-exports.verify_token = function (req, res) {
-  // *** front에서 Header에 입력할 값 ***
-  // Authorization: Bearer [access token]
-  return res.json({ logined: true, message: "로그인 되어 있음" });
-};
-
 // 토큰 갱신
 // [post] /users/token
-exports.refresh_token = function (req, res) {
-  const user = req.body.user;
+exports.refresh_token = async function (req, res) {
+  let user = null;
+  await Users.findOne({ where: { user_no: req.body.userNo }, raw: true })
+    .then((data) => {
+      user = data;
+      user.user_pw = "";
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message, message: "사용자를 찾을 수 없습니다." });
+    });
 
   console.log("토큰 갱신 사용자", user);
   const access_token = jwt.sign(user, JWT_ACCESS_SECRET, { expiresIn: JWT_ACCESS_TIME });
@@ -121,7 +124,7 @@ exports.refresh_token = function (req, res) {
 
   return res.status(200).json({
     logined: true,
-    message: "로그인 성공",
+    message: "토큰 갱신 완료",
     data: { user, token: { access_token, refresh_token } },
   });
 };
