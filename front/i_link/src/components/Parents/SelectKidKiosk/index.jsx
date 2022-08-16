@@ -38,7 +38,14 @@ const SelectKidKiosk = ({ kidName, setKidName, kidUrl, setKidUrl }) => {
       console.log(err);
     }
   };
-  const handleSelect = (kidName, kidNo, kidUrl, kidGroup, kidStamp) => {
+  const handleSelect = (
+    kidName,
+    kidNo,
+    kidUrl,
+    kidGroup,
+    kidStamp,
+    kidCenter
+  ) => {
     setKidName(kidName);
     setKidUrl(kidUrl);
     localStorage.setItem("kidName", kidName);
@@ -46,6 +53,7 @@ const SelectKidKiosk = ({ kidName, setKidName, kidUrl, setKidUrl }) => {
     localStorage.setItem("kidUrl", kidUrl);
     localStorage.setItem("kidGroup", kidGroup);
     localStorage.setItem("kidStamp", kidStamp);
+    localStorage.setItem("kidCenter", kidCenter);
   };
 
   return (
@@ -112,7 +120,8 @@ const SelectKidKiosk = ({ kidName, setKidName, kidUrl, setKidUrl }) => {
                 kid.kid_no,
                 kid.kid_profile_url,
                 kid.group_no,
-                kid.kid_stamp
+                kid.kid_stamp,
+                kid.center_no
               )
             }
           >
