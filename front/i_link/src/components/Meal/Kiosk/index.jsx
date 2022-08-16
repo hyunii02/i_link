@@ -1,5 +1,5 @@
 import React from "react";
-import { axios, urls } from "../../../api/axios";
+import { axiosKiosk, urls } from "../../../api/axios";
 import { useEffect, useState } from "react";
 import { getToday } from "../../../commonFuction";
 import { ItemsList, KioskTitle } from "../../Common";
@@ -9,7 +9,7 @@ const MealKioskSnack = () => {
 
   const getMeal = async (centerNo, today) => {
     try {
-      const response = await axios.get(
+      const response = await axiosKiosk.get(
         urls.fetchMealsList + centerNo + "/" + today
       );
       const todaysMealArr = response.data.filter(
