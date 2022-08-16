@@ -139,6 +139,26 @@ const QuizInsertModal = ({ open, setOpen, getQuizData }) => {
     if (checkValue === "") {
       errorMsg = "정답을 체크하세요.";
     }
+
+    // 둘중에 하나만 입력 가능하게
+    if (formValues.answerText1.length !== 0 && answerImage1.length !== 0) {
+      errorMsg = "답을 한 종류만 입력 해 주세요.";
+    } else if (
+      formValues.answerText2.length !== 0 &&
+      answerImage2.length !== 0
+    ) {
+      errorMsg = "답을 한 종류만 입력 해 주세요.";
+    } else if (
+      formValues.answerText3.length !== 0 &&
+      answerImage3.length !== 0
+    ) {
+      errorMsg = "답을 한 종류만 입력 해 주세요.";
+    } else if (
+      formValues.answerText4.length !== 0 &&
+      answerImage4.length !== 0
+    ) {
+      errorMsg = "답을 한 종류만 입력 해 주세요.";
+    }
     return errorMsg;
   };
 
@@ -155,7 +175,7 @@ const QuizInsertModal = ({ open, setOpen, getQuizData }) => {
         quizWriter: userNo,
         groupNo: userGroup,
         quizContent: formValues.questionText,
-        quizCotentUrl: questionImage.image_file,
+        quizContentUrl: questionImage.image_file,
         quizSel1: formValues.answerText1,
         quizSel1Url: answerImage1.image_file,
         quizSel2: formValues.answerText2,
@@ -166,19 +186,21 @@ const QuizInsertModal = ({ open, setOpen, getQuizData }) => {
         quizSel4Url: answerImage4.image_file,
         quizDate: "",
       };
+
       // 사진 전송을 위해 헤더에 Multi-part로 type 설정
       const config = {
         headers: {
           "Content-type": "multipart/form-data",
         },
       };
-
       axios
         .post(urls.featchQuizRegister, body, config)
         .then((response) => {
+          console.log(response);
           if (response.status === 200) {
             handleClose();
             getQuizData();
+            inputClear();
           }
         })
         .catch((error) => console.log(error));
