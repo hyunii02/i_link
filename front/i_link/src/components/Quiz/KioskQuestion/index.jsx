@@ -1,6 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { baseURL } from "../../../api/axios";
+import TTSButton from "../../TTSButton";
 
 const QuizKioskQuestion = ({ quizTitle, quizUrl }) => {
   let question;
@@ -21,7 +22,10 @@ const QuizKioskQuestion = ({ quizTitle, quizUrl }) => {
           style={{ height: "70%" }}
           alt="퀴즈이미지"
         />
-        <span>{quizTitle}</span>
+        <span>
+          {quizTitle}
+          <TTSButton source={quizTitle} fontSize="8vh" />
+        </span>
       </Box>
     );
   } else {
@@ -36,7 +40,10 @@ const QuizKioskQuestion = ({ quizTitle, quizUrl }) => {
           justifyContent: "center",
         }}
       >
-        <span>{quizTitle}</span>
+        <span>
+          {quizTitle}
+          <TTSButton source={quizTitle} fontSize="12vh" />
+        </span>
       </Box>
     );
   }

@@ -1,4 +1,5 @@
 import React from "react";
+import TTSButton from "../TTSButton";
 
 const ItemsList = ({ items }) => {
   return (
@@ -17,6 +18,7 @@ const ItemsList = ({ items }) => {
         items.split(",").map((item, index) => (
           <li key={index} style={{ marginLeft: "0px", marginBottom: "1vh" }}>
             {item}
+            <TTSButton source={item} fontSize="5vh" />
           </li>
         ))}
     </ul>
