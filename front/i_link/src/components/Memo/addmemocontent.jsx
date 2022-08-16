@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 
 const AddMemoContent = (props) => {
   const { content, onRemove2 } = props;
+  const space = " "  // 한칸띄우기 용도
 
   return (
     <Box>
@@ -22,7 +23,7 @@ const AddMemoContent = (props) => {
         variant="button"
         display="flex"
       >
-        🏳️‍🌈 {content.content}
+        🏳️‍🌈{space} {content.content}
         <Button id="font_test" onClick={() => onRemove2(content.id)} sx={{ color: "red" }}>
           삭제
         </Button>

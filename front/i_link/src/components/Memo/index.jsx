@@ -31,7 +31,7 @@ export default function Album() {
   const [groupList, setGroupList] = useState([]);
   const [groupNo, setGroupNo] = useState(null);
   const [selectValue, setSelectValue] = useState("");
-
+  const space = " "
   //반정보받아오기
   const getGroupList = () => {
     const fullURL = baseURL + urls.fetchGroupsList + userCenter;
@@ -145,17 +145,20 @@ export default function Album() {
         {userType !== 2 && userType !== "2" &&(
         <AppBar position="static" color="default" >
           <Tabs
+            
             value={selectValue}
             onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
+            indicatorColor="white"
+            textColor="white"
             variant="fullWidth"
             aria-label="action tabs example"
-            sx={{ border: "6px solid #fae2e2", background: "#FAF1DA" }}
+            
+            
           > 
           
             {groupList.map((list, index) => (
               <Tab
+                
                 label={
                   <Typography id="font_test" variant="h5">
                     {list.content}
@@ -163,7 +166,7 @@ export default function Album() {
                 }
                 value={list.value}
                 key={index}
-                sx={{ background: "#FAF1DA" }}
+               
               />
             ))}
           </Tabs>
@@ -197,7 +200,7 @@ export default function Album() {
                     </Typography>
                     {card.memo_content.split(",").map((card, key) => (
                       <Typography sx={{ml:1.2}}id="font_test" key={key}>
-                        🏳️‍🌈{card}
+                        🏳️‍🌈{space}{card}
                       </Typography>
                     ))}
                   </CardContent>
