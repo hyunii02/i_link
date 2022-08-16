@@ -1,6 +1,6 @@
 // 퀴즈 컴포넌트
 // 2022.08.13 김국진
-import { Box, Typography, IconButton, Tooltip } from "@mui/material";
+import { Box, Typography, IconButton, Tooltip, Avatar } from "@mui/material";
 import QuizSolForm from "../QuizSolForm";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -9,7 +9,7 @@ import { axios, baseURL, urls } from "../../../api/axios";
 const QuizFrame = (props) => {
   const { data, getQuizData, getTodayQuiz, state } = props;
   // state : 오늘의 퀴즈/퀴즈 리스트 구분해주는 변수. 1:오늘의 퀴즈  2:퀴즈 리스트. 3:아이가 푼 퀴즈
-
+  console.log(data.quiz_content_url);
   // 오늘의 퀴즈 등록
   const todayQuizButtonClicked = () => {
     try {
@@ -61,7 +61,35 @@ const QuizFrame = (props) => {
           flexDirection: "column",
         }}
       >
-        <Typography id="font_test">{data.quiz_content}</Typography>
+        {data.quiz_content_url !== null && (
+          <Box
+            sx={{
+              width: "60%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <Avatar
+              src={baseURL + data.quiz_content_url}
+              sx={{
+                maxWidth: 100,
+                maxHeight: 100,
+                width: "auto",
+                height: "auto",
+              }}
+              variant="square"
+            ></Avatar>
+            <Typography id="font_test">{data.quiz_content}</Typography>
+          </Box>
+        )}
+        {data.quiz_content_url === null && (
+          <Box>
+            <Typography id="font_test">{data.quiz_content}</Typography>
+          </Box>
+        )}
       </Box>
 
       {/* 퀴즈 정답 틀 */}

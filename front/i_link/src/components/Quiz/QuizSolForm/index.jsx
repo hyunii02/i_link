@@ -19,21 +19,22 @@ const QuizSolForm = ({ solText, solUrl }) => {
     return false;
   };
   return (
-    <Box sx={{ height: "100%" }}>
+    <Box sx={{ height: "100%", width: "100%" }}>
       {/* 텍스트가 비어있을 시 사진으로 전환 */}
       {isNullData(solText) && (
         <Box
           sx={{
+            width: "100%",
+            height: "100%",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "row",
-            height: "100%",
           }}
         >
           <Avatar
+            sx={{ width: "auto", height: "auto", maxHeight: 70, maxWidth: 70 }}
             src={baseURL + solUrl}
-            sx={{ width: "100%", height: "100%" }}
             variant="square"
           ></Avatar>
         </Box>
@@ -49,9 +50,41 @@ const QuizSolForm = ({ solText, solUrl }) => {
             height: "100%",
           }}
         >
-          <Typography id="font_test" variant="h6">
+          <Typography id="font_test" variant="body1">
             {solText}
           </Typography>
+        </Box>
+      )}
+      {!isNullData(solUrl) && !isNullData(solText) && (
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <Box
+            sx={{
+              width: "100%",
+              height: "auto",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "row",
+              maxHeight: 50,
+              maxWidth: 50,
+            }}
+          >
+            <Avatar
+              src={baseURL + solUrl}
+              sx={{ width: "90%", height: "80%" }}
+              variant="square"
+            ></Avatar>
+          </Box>
+          <Box sx={{ height: "20%" }}>
+            <Typography id="font_test" variant="body2">
+              {solText}
+            </Typography>
+          </Box>
         </Box>
       )}
     </Box>
