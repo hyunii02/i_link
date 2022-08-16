@@ -2,21 +2,13 @@
 // 2022.08.06 김국진 식단 api get 작업
 // 달력 통합 컴포넌트
 import { useState, useEffect, useContext } from "react";
-import { Box, Grid, Card, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CalendarMonth from "../Month";
-import {
-  format,
-  subMonths,
-  addMonths,
-  startOfMonth,
-  endOfMonth,
-} from "date-fns";
-import { baseURL } from "../../../api/axios";
-import axios from "axios";
-import { urls } from "../../../api/axios";
+import { subMonths, addMonths, startOfMonth, endOfMonth } from "date-fns";
+import { axios, urls } from "../../../api/axios";
 import { UserContext } from "../../../context/user";
 
 const days = ["일", "월", "화", "수", "목", "금", "토"];
@@ -84,7 +76,7 @@ const CalendarMonthMove = () => {
       "-01";
     // [API] 현재 달의 급식 목록 get
     axios
-      .get(baseURL + urls.fetchMealsList + subParams)
+      .get(urls.fetchMealsList + subParams)
       .then((response) => dataSetting(response.data));
   };
 

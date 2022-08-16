@@ -3,8 +3,7 @@ import GroupManagement from "../../../components/Group/GroupManagement";
 import RegistKids from "../../../components/Kids/RegistKids";
 import { Box } from "@mui/material";
 import { useState, useEffect, React, useContext } from "react";
-import axios from "axios";
-import { baseURL, urls } from "../../../api/axios";
+import { axios, baseURL, urls } from "../../../api/axios";
 import { UserContext } from "../../../context/user";
 
 const MasterManageGroup = () => {
@@ -24,13 +23,11 @@ const MasterManageGroup = () => {
   // 유치원의 그룹 리스트를 가져오는 axios
   const getGroupList = () => {
     try {
-      axios
-        .get(baseURL + urls.fetchGroupsList + userCenter)
-        .then((response) => {
-          if (response.status === 200) {
-            setClassData(response.data);
-          }
-        });
+      axios.get(urls.fetchGroupsList + userCenter).then((response) => {
+        if (response.status === 200) {
+          setClassData(response.data);
+        }
+      });
     } catch (e) {
       console.log(e);
     }

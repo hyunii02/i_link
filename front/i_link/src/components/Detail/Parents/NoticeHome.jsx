@@ -1,10 +1,9 @@
 // 2022.08.11 안정현
 // 공지사항 날짜별로 가지고 오는 컴포넌트
 import { useEffect, useContext, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../context/user";
-import { urls, baseURL } from "../../../api/axios";
+import { axios, urls, baseURL } from "../../../api/axios";
 import TodayList from "./TodayList";
 
 import Typography from "@mui/material/Typography";
@@ -29,7 +28,7 @@ const NoticeHome = () => {
 
   const getNotice = async (centerNo) => {
     try {
-      const response = await axios.get(baseURL + urls.fetchNotices + centerNo);
+      const response = await axios.get(urls.fetchNotices + centerNo);
       if (response.data.length === 0) {
         setNotice("공지사항이 없습니다.");
       } else {
@@ -139,7 +138,12 @@ const NoticeHome = () => {
           onClick={() => {
             navigate("/parents/notice");
           }}
-          sx={{ cursor: "pointer", color: "rgba(0, 0, 0, 0.4)", mr: "10px", mb: "5px" }}
+          sx={{
+            cursor: "pointer",
+            color: "rgba(0, 0, 0, 0.4)",
+            mr: "10px",
+            mb: "5px",
+          }}
         >
           {text}
         </Typography>

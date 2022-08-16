@@ -12,8 +12,7 @@ import {
 } from "@mui/material";
 import { PersonAdd } from "@mui/icons-material";
 import { UserContext } from "../../../context/user";
-import { baseURL, urls } from "../../../api/axios";
-import axios from "axios";
+import { axios, baseURL, urls } from "../../../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 
 const SelectKidWeb = ({ kidName, setKidName }) => {
@@ -46,7 +45,7 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
 
   // 서버에 현재 속해있는 유치원 이름을 요청
   const getCenterName = async () => {
-    const fullURL = baseURL + urls.fetchCentersDetial + userCenter;
+    const fullURL = urls.fetchCentersDetial + userCenter;
     try {
       const response = await axios.get(fullURL);
       if (response.status === 200) {
@@ -60,7 +59,7 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
 
   // 서버에 현재 속해있는 반 이름을 요청
   const getGroupName = async () => {
-    const fullURL = baseURL + urls.fetchGroupsDetail + userGroup;
+    const fullURL = urls.fetchGroupsDetail + userGroup;
     try {
       const response = await axios.get(fullURL);
       if (response.status === 200) {
