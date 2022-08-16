@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Grid, Button } from "@mui/material";
 import Square from "./styles";
+import { axios, urls } from "../../../api/axios";
 
 const KioskStamp = () => {
   const [stampArr, setStampArr] = useState([]);
@@ -17,8 +18,19 @@ const KioskStamp = () => {
     setEmptyArr(emptyArr);
   }, []);
 
-  const navToMain = () => {
-    navigate("/kiosk/main");
+  const navToMain = async () => {
+    try {
+      await axios.put(urls.fetchStampPlus, {
+        kidNo: localStorage.getItem("kidNo"),
+      });
+      localStorage.setItem(
+        "kidStamp",
+        Number(localStorage.getItem("kidStamp")) + 1
+      );
+      navigate("/kiosk/main");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
