@@ -7,6 +7,7 @@ import smile from "./smile.png";
 import happy from "./happy.png";
 import { axios, urls } from "../../api/axios";
 import { getToday } from "../../commonFuction";
+import TTSButton from "../TTSButton";
 
 const Survey = () => {
   const navigate = useNavigate();
@@ -48,6 +49,10 @@ const Survey = () => {
             }}
           >
             오늘 친구들과 보낸 '하루' 어땠나요?
+            <TTSButton
+              source="오늘 친구들과 보낸 하루 어땠나요?"
+              fontSize="10vh"
+            />
           </div>
         </Grid>
 

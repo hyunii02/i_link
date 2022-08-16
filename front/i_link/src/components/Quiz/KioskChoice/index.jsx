@@ -1,8 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router";
-import { Grid, Button } from "@mui/material";
+import { Grid, Button, Box } from "@mui/material";
 import { axios, urls, baseURL } from "../../../api/axios";
 import Square from "./styles";
+import TTSButton from "../../TTSButton";
 
 const QuizKioskChoice = ({ sel, selUrl, quizNo, index }) => {
   const navigate = useNavigate();
@@ -49,21 +50,35 @@ const QuizKioskChoice = ({ sel, selUrl, quizNo, index }) => {
   } else {
     choice = (
       <Square>
-        <Button
+        <Box
           className="content"
-          variant="contained"
-          color="success"
           sx={{
             backgroundColor: "#D6FABA",
             borderRadius: "2vh",
-            fontFamily: "NanumGimYuICe",
-            fontSize: "12vh",
-            color: "black",
           }}
-          onClick={handleChoice}
         >
-          {sel}
-        </Button>
+          <TTSButton
+            className="content"
+            source={sel}
+            fontSize="12vh"
+            color="black"
+          />
+
+          <Button
+            variant="contained"
+            color="success"
+            sx={{
+              backgroundColor: "#D6FABA",
+              borderRadius: "2vh",
+              fontFamily: "NanumGimYuICe",
+              fontSize: "12vh",
+              color: "black",
+            }}
+            onClick={handleChoice}
+          >
+            <div>{sel}</div>
+          </Button>
+        </Box>
       </Square>
     );
   }
