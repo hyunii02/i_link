@@ -25,9 +25,9 @@ const MealKioskSnack = () => {
       localStorage.getItem("kidName") + "SurveyDay"
     );
     if (surveyDay === getToday()) {
-      getSnack(localStorage.getItem("userCenter"), getToday(true));
+      getSnack(localStorage.getItem("kidCenter"), getToday(true));
     } else {
-      getSnack(localStorage.getItem("userCenter"), getToday());
+      getSnack(localStorage.getItem("kidCenter"), getToday());
     }
   }, []);
   return (
