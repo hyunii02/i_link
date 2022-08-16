@@ -133,16 +133,7 @@ exports.refresh_token = async function (req, res) {
 // [get] /users/logout
 // TODO: blacklist 관리 - logout 유저 관리
 exports.user_logout = function (req, res) {
-  console.log("[get] /users/logout (로그아웃)");
-
-  // TODO: 토큰정보 지울때? ?
-  // res.removeHeader("set-cookie");
-  // res.removeHeader("Authorization");
-
-  // 토큰 헤더에 작성했는지 확인 로그
-  const header = req.headers.authorization;
-  console.log("Header: ", header);
-
+  res.removeHeader("Authorization");
   return res.status(200).json({ logined: false, message: "로그아웃" });
 };
 

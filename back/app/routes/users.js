@@ -32,7 +32,7 @@ const userController = require(path.join(__dirname, "..", "controllers", "users"
  *                    example: "eyJhbGciOiJIUzI15cCI6IkpXVCJ9.eyJ1c2VxXNlcl9lb.WFpbCI6IuyVzZXwI"
  *      responses:
  *        "200":
- *          description: 회원 가입 성공
+ *          description: 토큰 갱신 성공
  *          content:
  *            application/json:
  *              schema:
