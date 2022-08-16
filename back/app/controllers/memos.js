@@ -30,7 +30,7 @@ exports.memo_regist = async function (req, res) {
 exports.memo_list = async function (req, res) {
   const groupNo = req.params.groupNo;
 
-  await Memos.findAll({ where: { group_no: groupNo } })
+  await Memos.findAll({ where: { group_no: groupNo }, raw: true, order: [["memo_date", "DESC"]] })
     .then((data) => {
       res.status(200).json(data);
     })
