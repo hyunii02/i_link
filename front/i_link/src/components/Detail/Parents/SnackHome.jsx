@@ -2,12 +2,11 @@
 // 간식 날짜별로 가지고오는 컴포넌트
 import Typography from "@mui/material/Typography";
 import { useEffect, useContext, useState } from "react";
-import axios from "axios";
 
 import { Box, Grid } from "@mui/material";
 
 import { UserContext } from "../../../context/user";
-import { urls, baseURL } from "../../../api/axios";
+import { axios, urls, baseURL } from "../../../api/axios";
 import { getToday } from "../../../commonFuction";
 import TodayList from "./TodayList";
 
@@ -22,7 +21,7 @@ const SnackHome = () => {
   const getSnack = async (centerNo, today) => {
     try {
       const response = await axios.get(
-        baseURL + urls.fetchMealsList + centerNo + "/" + today,
+        urls.fetchMealsList + centerNo + "/" + today,
       );
       if (response.data.length === 0) {
         setSnack("오늘의 간식이 없습니다.");

@@ -17,12 +17,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
-import axios from "axios";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CreateMemo from "./creatememo";
 import Box from "@mui/material/Box";
 import { AppBar, Tabs, Tab } from "@mui/material";
-import { baseURL, urls } from "../../api/axios";
+import { axios, baseURL, urls } from "../../api/axios";
 
 const theme = createTheme();
 
@@ -35,7 +34,7 @@ export default function Album() {
 
   //반정보받아오기
   const getGroupList = () => {
-    const fullURL = baseURL + urls.fetchGroupsList + userCenter;
+    const fullURL = urls.fetchGroupsList + userCenter;
     const newArray = [];
     axios.get(fullURL).then((response) => {
       response.data.map((data) => {
@@ -45,7 +44,7 @@ export default function Album() {
         };
         newArray.push(newObj);
       });
-      
+
       setGroupList(newArray);
       setSelectValue(newArray[0].value);
     });
@@ -60,12 +59,7 @@ export default function Album() {
 
     try {
       axios
-
-        .get(
-          baseURL +
-            urls.fetchMemosList +
-            (userType === "2" ? userGroup : selectValue)
-        )
+        .get(urls.fetchMemosList + (userType == 2 ? userGroup : selectValue))
         .then((response) => setCards(response.data));
     } catch (e) {
       console.log(e);
@@ -84,7 +78,7 @@ export default function Album() {
   const getMemoList = (e) => {
     try {
       axios
-        .get(baseURL + urls.fetchMemosList + userGroup)
+        .get(urls.fetchMemosList + userGroup)
         .then((response) => setCards(response.data));
     } catch (e) {
       console.log(e);
@@ -94,13 +88,11 @@ export default function Album() {
 
   const handleDelete = (memoNo) => {
     try {
-      axios
-        .delete(baseURL + urls.fetchMemosDelete + memoNo)
-        .then((response) => {
-          if (response.status === 200) {
-            clickGroupHandler();
-          }
-        });
+      axios.delete(urls.fetchMemosDelete + memoNo).then((response) => {
+        if (response.status === 200) {
+          clickGroupHandler();
+        }
+      });
     } catch (e) {
       console.log(e);
     }
@@ -140,30 +132,32 @@ export default function Album() {
             </Select>
           </FormControl>
         )} */}
-        <AppBar position="static" color="default" >
-          <Tabs
-            value={selectValue}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="fullWidth"
-            aria-label="action tabs example"
-            sx={{ border: "6px solid #fae2e2", background: "#FAF1DA" }}
-          >
-            {groupList.map((list, index) => (
-              <Tab
-                label={
-                  <Typography id="font_test" variant="h5">
-                    {list.content}
-                  </Typography>
-                }
-                value={list.value}
-                key={index}
-                sx={{ background: "#FAF1DA" }}
-              />
-            ))}
-          </Tabs>
-        </AppBar>
+        {userType !== 2 && userType !== "2" && (
+          <AppBar position="static" color="default">
+            <Tabs
+              value={selectValue}
+              onChange={handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="fullWidth"
+              aria-label="action tabs example"
+              sx={{ border: "6px solid #fae2e2", background: "#FAF1DA" }}
+            >
+              {groupList.map((list, index) => (
+                <Tab
+                  label={
+                    <Typography id="font_test" variant="h5">
+                      {list.content}
+                    </Typography>
+                  }
+                  value={list.value}
+                  key={index}
+                  sx={{ background: "#FAF1DA" }}
+                />
+              ))}
+            </Tabs>
+          </AppBar>
+        )}
 
         {/* Hero unit */}
 
@@ -183,7 +177,7 @@ export default function Album() {
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography
                       id="font_test"
-                      sx={{ background: "#F2FADC", mb: 4 }}
+                      sx={{ background: "#F2FADC", mb: 4, pl: 2 }}
                       gutterBottom
                       fontSize="17px"
                       component="h2"
@@ -191,8 +185,8 @@ export default function Album() {
                       {card.memo_date}
                     </Typography>
                     {card.memo_content.split(",").map((card, key) => (
-                      <Typography id="font_test" key={key}>
-                        🏳️‍🌈 {card}
+                      <Typography sx={{ ml: 1.2 }} id="font_test" key={key}>
+                        🏳️‍🌈{card}
                       </Typography>
                     ))}
                   </CardContent>

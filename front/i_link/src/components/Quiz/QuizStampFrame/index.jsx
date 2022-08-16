@@ -9,8 +9,6 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import heart from "../../Detail/Parents/FeelPng/heart.png";
-import axios from "axios";
-import { baseURL, urls } from "../../../api/axios";
 
 const defaultStamp = [
   { id: 1 },

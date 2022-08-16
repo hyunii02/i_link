@@ -13,9 +13,8 @@ import SearchForm from "./searchform";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/user";
-import { axios, baseURL, urls } from "../../api/axios";
+import { axios, urls } from "../../api/axios";
 import { colorPalette } from "../../constants/constants";
-import { Alert } from "@mui/material";
 
 const theme = createTheme();
 

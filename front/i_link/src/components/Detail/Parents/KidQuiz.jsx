@@ -1,10 +1,9 @@
 // 아이 퀴즈
 import React from "react";
-import axios from "axios";
 import Typography from "@mui/material/Typography";
 import { Box, Grid } from "@mui/material";
 
-import { urls, baseURL } from "../../../api/axios";
+import { axios, urls } from "../../../api/axios";
 import { useState, useEffect } from "react";
 import QuizFrame from "../../Quiz/QuizFrame.jsx";
 
@@ -19,9 +18,8 @@ const KidQuiz = ({ kidNo }) => {
   // 퀴즈 리스트 get
   const getQuizData = () => {
     try {
-      const fullURL = baseURL + urls.fetchQuizKidsDetail + kidNo;
       axios
-        .get(fullURL)
+        .get(urls.fetchQuizKidsDetail + kidNo)
         .then((response) => {
           if (response.status === 200) {
             setQuizList(response.data);

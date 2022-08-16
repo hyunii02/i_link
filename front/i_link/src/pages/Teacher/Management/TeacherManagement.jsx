@@ -2,8 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import MemberStudent from "../../../components/Member/Student";
 import MemberTeacher from "../../../components/Member/Teacher";
-import axios from "axios";
-import { baseURL, urls } from "../../../api/axios";
+import { axios, baseURL, urls } from "../../../api/axios";
 import { UserContext } from "../../../context/user";
 
 const TeacherManagement = () => {
@@ -24,7 +23,7 @@ const TeacherManagement = () => {
   // 서버에서 원생 목록을 가져옴
   const getKidList = () => {
     // 요청할 URL 포매팅
-    const fullURL = baseURL + urls.fetchMemberKidsList + userCenter;
+    const fullURL = urls.fetchMemberKidsList + userCenter;
     // axios.get으로 현재 반의 선생 목록을 가져옴
     try {
       axios
@@ -46,6 +45,17 @@ const TeacherManagement = () => {
       <Box>
         <Box>
           <Grid container spacing={0.5}>
+            {student.length === 0 && (
+              <Box>
+                <Typography
+                  id="font_test"
+                  color="rgba(0, 0, 0, 0.5)"
+                  variant="h5"
+                >
+                  현재 반에 등록된 원아가 없습니다.
+                </Typography>
+              </Box>
+            )}
             {student?.map((stu, index) => (
               <Grid item xs={3} key={index} style={{ marginBottom: "10px" }}>
                 <MemberStudent student={stu} getKidList={getKidList} />

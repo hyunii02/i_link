@@ -1,7 +1,6 @@
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { baseURL, urls } from "../../../../api/axios";
+import { axios, baseURL, urls } from "../../../../api/axios";
 import ReportDetailView from "../../../Member/Student/ReportDetailView";
 
 import Table from "@mui/material/Table";
@@ -28,7 +27,7 @@ const StudentReport = ({ kidInfo }) => {
 
   const getReportList = () => {
     try {
-      const fullURL = baseURL + urls.fetchKidsReport + kidInfo.kid_no;
+      const fullURL = urls.fetchKidsReport + kidInfo.kid_no;
       axios.get(fullURL).then((response) => {
         if (response.status === 200) {
           setReportList(response.data);
