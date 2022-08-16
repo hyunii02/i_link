@@ -9,5 +9,5 @@
     - 이소영
 
 ## 프로젝트 Notion  
-- [노션 바로가기](https://chrome-thief-e28.notion.site/README-3affcfddd7c04feda912cc8c611b6d04)
+- [노션 바로가기](https://chrome-thief-e28.notion.site/README-19f13f85f6fa4913b6499516550d7bb1)
  
