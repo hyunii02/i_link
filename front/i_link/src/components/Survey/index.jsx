@@ -5,7 +5,7 @@ import sad from "./sad.png";
 import so_so from "./so_so.png";
 import smile from "./smile.png";
 import happy from "./happy.png";
-import { axios, urls } from "../../api/axios";
+import { axiosKiosk, urls } from "../../api/axios";
 import { getToday } from "../../commonFuction";
 import TTSButton from "../TTSButton";
 
@@ -18,7 +18,7 @@ const Survey = () => {
       surveyResult: mood,
     };
     try {
-      await axios.post(urls.fetchSurveysRegister, body);
+      await axiosKiosk.post(urls.fetchSurveysRegister, body);
       localStorage.setItem(kidName + "SurveyDay", getToday());
       navigate("/kiosk/quiz");
     } catch (err) {
