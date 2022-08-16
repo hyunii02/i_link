@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import { Grid, Button, Box } from "@mui/material";
-import { axios, urls, baseURL } from "../../../api/axios";
+import { axiosKiosk, urls, baseURL } from "../../../api/axios";
 import Square from "./styles";
 import TTSButton from "../../TTSButton";
 
@@ -14,7 +14,7 @@ const QuizKioskChoice = ({ sel, selUrl, quizNo, index }) => {
         kidNo: localStorage.getItem("kidNo"),
         quizNo: quizNo,
       };
-      axios.post(urls.fetchKidsAnswer, body);
+      axiosKiosk.post(urls.fetchKidsAnswer, body);
       navigate("/kiosk/stamp");
     } catch (err) {
       console.log(err);
