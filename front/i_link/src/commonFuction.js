@@ -6,10 +6,13 @@ const isLogin = () => {
     }
 }
 
-const getToday = (tomorrow) => {
+const getToday = (tomorrow, yesterday) => {
     let date = new Date();
     if (tomorrow) {
         date = new Date(date.setDate(date.getDate() + 1))
+    }
+    if (yesterday) {
+        date = new Date(date.setDate(date.getDate() - 1))
     }
     const year = date.getFullYear();
     const month = ("0" + (1 + date.getMonth())).slice(-2);
