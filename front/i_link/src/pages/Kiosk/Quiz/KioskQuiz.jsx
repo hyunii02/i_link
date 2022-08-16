@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Box } from "@mui/material";
-import { axios, urls } from "../../../api/axios";
+import { axiosKiosk, urls } from "../../../api/axios";
 
 import QuizKioskQuestion from "../../../components/Quiz/KioskQuestion";
 import QuizKioskChoices from "../../../components/Quiz/KioskChoices";
@@ -26,7 +26,9 @@ const KioskQuiz = () => {
     const kidGroup = localStorage.getItem("kidGroup");
     const getQuiz = async () => {
       try {
-        const response = await axios.get(urls.fetchQuizTodayList + kidGroup);
+        const response = await axiosKiosk.get(
+          urls.fetchQuizTodayList + kidGroup
+        );
         // 오늘의 퀴즈가 없다면 칭찬스티커로 보냄
         if (Array.isArray(response.data) && response.data.length === 0) {
           navigate("/kiosk/stamp");

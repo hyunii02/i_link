@@ -1,6 +1,6 @@
 import React from "react";
 import { getToday } from "../../../commonFuction";
-import { axios, urls } from "../../../api/axios";
+import { axiosKiosk, urls } from "../../../api/axios";
 import { useEffect, useState } from "react";
 import { ItemsList, KioskTitle } from "../../Common";
 
@@ -24,7 +24,7 @@ const MemoKiosk = () => {
 
   const getMomos = async (groupNo, today) => {
     try {
-      const response = await axios.get(urls.fetchMemosList + groupNo);
+      const response = await axiosKiosk.get(urls.fetchMemosList + groupNo);
       const todaysMemos = response.data.filter(
         (memos) => memos.memo_date === today
       );
