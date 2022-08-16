@@ -2,7 +2,7 @@
 // 원장/선생>아이보기 페이지 통합 컴포넌트
 import { useState, useContext, useEffect } from "react";
 
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, Button, TextField } from "@mui/material";
 
 import { colorPalette } from "../../../constants/constants.js";
 import { UserContext } from "../../../context/user.js";
@@ -22,6 +22,8 @@ const KidsDetailInfo = ({ kidNo }) => {
   const [parentInfo, setParentInfo] = useState([]);
   // 화면 리렌더링 플래그
   const [reRender, setReRender] = useState(false);
+  // 칭찬도장 수정 상태관리
+  const [stampState, setStampState] = useState(false);
 
   useEffect(() => {
     getKidsData();
@@ -78,15 +80,47 @@ const KidsDetailInfo = ({ kidNo }) => {
             p: 2,
           }}
         >
-          <Typography
-            variant="h6"
-            component="h2"
-            id="font_test"
-            textAlign="center"
-            sx={{ mt: "5px", mb: "5px" }}
-          >
-            칭찬도장
-          </Typography>
+          <Box sx={{ display: "flex", width: "100%", mb: 1.5 }}>
+            <Box sx={{ width: "25%" }}></Box>
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                variant="h5"
+                component="h2"
+                id="font_test"
+                textAlign="center"
+                sx={{ mt: "5px", mb: "5px" }}
+              >
+                칭찬도장
+              </Typography>
+            </Box>
+            <Box sx={{ width: "25%", display: "flex", mt: 1 }}>
+              {stampState && (
+                <Box sx={{ width: "50%" }}>
+                  <TextField
+                    id="outlined-basic"
+                    variant="outlined"
+                    size="small"
+                    sx={{ background: "white", height: "80%" }}
+                    value={kidInfo.kid_stamp}
+                    fullWidth
+                    //onChange={onChange}
+                  />
+                </Box>
+              )}
+              <Button
+                variant="contained"
+                size="small"
+                sx={{ height: "90%" }}
+                color="warning"
+                onClick={() => setStampState((stampState) => !stampState)}
+              >
+                <Typography id="font_test" variant="body2">
+                  {stampState ? "저장" : "수정"}
+                </Typography>
+              </Button>
+            </Box>
+          </Box>
+
           <QuizStampFrame stampCount={kidInfo.kid_stamp} />
         </Grid>
         {/* 아이 메모 */}
