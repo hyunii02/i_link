@@ -82,12 +82,16 @@ const QuizFrame = (props) => {
               }}
               variant="square"
             ></Avatar>
-            <Typography id="font_test">{data.quiz_content}</Typography>
+            <Typography id="font_test" variant="h6">
+              {data.quiz_content}
+            </Typography>
           </Box>
         )}
         {data.quiz_content_url === null && (
           <Box>
-            <Typography id="font_test">{data.quiz_content}</Typography>
+            <Typography id="font_test" variant="h6">
+              {data.quiz_content}
+            </Typography>
           </Box>
         )}
       </Box>
