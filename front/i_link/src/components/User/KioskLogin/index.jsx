@@ -83,14 +83,12 @@ export default function KioskLogin() {
         baseURL + urls.fetchParentKids + resUserNo
       );
       localStorage.setItem("kidsList", JSON.stringify(kidResponse.data));
-      if (!localStorage.getItem("kidName")) {
-        localStorage.setItem("kidName", kidResponse.data[0].kid_name);
-        localStorage.setItem("kidNo", kidResponse.data[0].kid_no);
-        localStorage.setItem("kidUrl", kidResponse.data[0].kid_profile_url);
-        localStorage.setItem("kidGroup", kidResponse.data[0].group_no);
-        localStorage.setItem("kidCenter", kidResponse.data[0].center_no);
-        localStorage.setItem("kidStamp", kidResponse.data[0].kid_stamp);
-      }
+      localStorage.setItem("kidName", kidResponse.data[0].kid_name);
+      localStorage.setItem("kidNo", kidResponse.data[0].kid_no);
+      localStorage.setItem("kidUrl", kidResponse.data[0].kid_profile_url);
+      localStorage.setItem("kidGroup", kidResponse.data[0].group_no);
+      localStorage.setItem("kidCenter", kidResponse.data[0].center_no);
+      localStorage.setItem("kidStamp", kidResponse.data[0].kid_stamp);
 
       navigate("/kiosk/main");
     } catch (err) {
