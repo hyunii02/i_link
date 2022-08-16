@@ -11,7 +11,7 @@ import {
   ListItemIcon,
 } from "@mui/material";
 import { PersonAdd } from "@mui/icons-material";
-import { axios, urls, baseURL } from "../../../api/axios";
+import { axiosKiosk, urls, baseURL } from "../../../api/axios";
 
 const SelectKidKiosk = ({ kidName, setKidName, kidUrl, setKidUrl }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -29,7 +29,7 @@ const SelectKidKiosk = ({ kidName, setKidName, kidUrl, setKidUrl }) => {
 
   const getKidsList = async () => {
     try {
-      const response = await axios.get(
+      const response = await axiosKiosk.get(
         urls.fetchParentKids + localStorage.getItem("userNo")
       );
       localStorage.setItem("kidsList", JSON.stringify(response.data));
