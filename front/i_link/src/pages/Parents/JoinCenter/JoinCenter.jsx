@@ -10,8 +10,7 @@ import {
 } from "@mui/material/";
 import { colorPalette } from "../../../constants/constants";
 import { useState, useEffect, useContext } from "react";
-import axios from "axios";
-import { baseURL, urls } from "../../../api/axios";
+import { axios, baseURL, urls } from "../../../api/axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../../../context/user";
 
@@ -31,7 +30,7 @@ const ParentsJoinCenter = () => {
   const getCenterData = (centerId) => {
     try {
       axios
-        .get(baseURL + urls.fetchCentersDetial + centerId)
+        .get(urls.fetchCentersDetial + centerId)
         .then((response) => {
           // 응답 성공 시
           if (response.status === 200) {
@@ -86,16 +85,14 @@ const ParentsJoinCenter = () => {
     };
     try {
       axios
-        .put(baseURL + urls.fetchKidsRegister, body)
+        .put(urls.fetchKidsRegister, body)
         .then((response) => {
           // 유치원 등록 완료. 아이의 리스트를 받아옴
-          axios
-            .get(baseURL + urls.fetchParentKids + userNo)
-            .then((response) => {
-              setKidsList(response.data);
-              setFirstKid(response.data[0]);
-              navigate("/parents/home");
-            });
+          axios.get(urls.fetchParentKids + userNo).then((response) => {
+            setKidsList(response.data);
+            setFirstKid(response.data[0]);
+            navigate("/parents/home");
+          });
         })
         .catch((error) => {
           //console.log(error);

@@ -3,25 +3,24 @@
 // 2022.08.05 안정현 디자인 수정 //
 // 2022.08.11 안정현 axios //
 
-import React, { useContext } from 'react';
-import { useState } from 'react';
+import React, { useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { urls, baseURL } from "../../../api/axios";
 import { colorPalette } from "../../../constants/constants";
-import { UserContext } from "../../../context/user"
+import { UserContext } from "../../../context/user";
 
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme();
 
@@ -38,15 +37,15 @@ export default function Update() {
     setRefreshToken,
     userNo,
   } = useContext(UserContext);
-  
+
   // validation
   const initialValues = {
-    email: '',
-    password: '',
-    new_password: '',
-    new_check_password: '',
-    new_username: '',
-    new_phone_number: '',
+    email: "",
+    password: "",
+    new_password: "",
+    new_check_password: "",
+    new_username: "",
+    new_phone_number: "",
   };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
@@ -59,7 +58,7 @@ export default function Update() {
       errors.password = "비밀번호를 입력해주세요.";
       flag = true;
     }
-    if (!formValues.new_password || formValues.new_password.indexOf(" ")>= 0) {
+    if (!formValues.new_password || formValues.new_password.indexOf(" ") >= 0) {
       errors.new_password = "새로운 비밀번호를 입력해주세요.";
       flag = true;
     }
@@ -84,8 +83,7 @@ export default function Update() {
       return false;
     }
     return true;
-  }
-
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -101,10 +99,7 @@ export default function Update() {
         // userEmail: formValues.email,
       };
       try {
-        const response = await axios.put(
-          baseURL + urls.fetchUsersUpdate + userNo,
-          body
-        );
+        const response = await axios.put(urls.fetchUsersUpdate + userNo, body);
         setUserNo("");
         setUserName("");
         setUserType("");
@@ -136,9 +131,9 @@ export default function Update() {
         <Box
           sx={{
             mb: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           {/* 로고 이미지 */}
@@ -147,7 +142,7 @@ export default function Update() {
             alt="Academy"
             src="/images/logo.png"
           ></Avatar>
-          <Typography 
+          <Typography
             component="h1"
             variant="h5"
             id="font_test"
@@ -270,12 +265,15 @@ export default function Update() {
             {/* 뒤로가기 버튼 */}
             <Grid container justifyContent="flex-end">
               <Button
-                variant="body2" 
-                id="font_test" 
-                style={{ color: "#808080", textDecoration:"none" }}
-                onClick={() => {navigate(-1)}}>
-                  뒤로가기
-                </Button>
+                variant="body2"
+                id="font_test"
+                style={{ color: "#808080", textDecoration: "none" }}
+                onClick={() => {
+                  navigate(-1);
+                }}
+              >
+                뒤로가기
+              </Button>
             </Grid>
           </Box>
         </Box>

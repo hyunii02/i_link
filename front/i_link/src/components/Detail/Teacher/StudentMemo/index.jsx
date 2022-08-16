@@ -1,18 +1,9 @@
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { baseURL, urls } from "../../../../api/axios";
+import { axios, baseURL, urls } from "../../../../api/axios";
 const StudentMemo = ({ kidInfo, reRender, setReRender }) => {
   const [memoState, setMemoState] = useState(false);
   const [memo, setMemo] = useState("");
-  const memoSave = () => {
-    try {
-      const fullURL = baseURL;
-      axios.get();
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   useEffect(() => {
     setMemo((memo) => kidInfo.kid_memo);
@@ -23,10 +14,11 @@ const StudentMemo = ({ kidInfo, reRender, setReRender }) => {
       kidMemo: memo,
     };
     try {
-      const fullURL = baseURL + urls.fetchKidsMemoUpdate + kidInfo.kid_no;
+      const fullURL = urls.fetchKidsMemoUpdate + kidInfo.kid_no;
       axios.put(fullURL, body).then((response) => {
         if (response.status === 200) {
           setReRender((reRender) => !reRender);
+          setMemoState(false);
         }
       });
     } catch (e) {

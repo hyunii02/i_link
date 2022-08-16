@@ -6,8 +6,7 @@ import { Box, Grid, Typography } from "@mui/material";
 
 import { colorPalette } from "../../../constants/constants.js";
 import { UserContext } from "../../../context/user.js";
-import axios from "axios";
-import { baseURL, urls } from "../../../api/axios.jsx";
+import { axios, baseURL, urls } from "../../../api/axios.jsx";
 import { useLocation } from "react-router";
 import QuizStampFrame from "../../Quiz/QuizStampFrame/index.jsx";
 import StudentInfo from "./StudentInfo/index.jsx";
@@ -36,13 +35,11 @@ const KidsDetailInfo = ({ kidNo }) => {
   const getKidsData = async () => {
     try {
       // kidNo를 기반으로 아이 정보를 가져옴
-      const kidsResponse = await axios.get(
-        baseURL + urls.fetchKidsDelete + state.kidNo,
-      );
+      const kidsResponse = await axios.get(urls.fetchKidsDelete + state.kidNo);
 
       // parentNo를 기반으로 부모님의 데이터를 가져옴
       const parentResponse = await axios.get(
-        baseURL + urls.fetchUsersDelete + kidsResponse.data.parents_no,
+        urls.fetchUsersDelete + kidsResponse.data.parents_no,
       );
 
       setKidInfo(kidsResponse.data);

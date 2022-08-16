@@ -19,7 +19,7 @@ const Survey = () => {
     try {
       await axios.post(urls.fetchSurveysRegister, body);
       localStorage.setItem(kidName + "SurveyDay", getToday());
-      navigate("/kiosk/main");
+      navigate("/kiosk/quiz");
     } catch (err) {
       console.log(err);
     }

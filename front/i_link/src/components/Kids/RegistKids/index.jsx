@@ -6,8 +6,7 @@ import { Box, Typography } from "@mui/material";
 import RegistMemberLists from "../RegistKidsLists";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import axios from "axios";
-import { baseURL, urls } from "../../../api/axios";
+import { axios, baseURL, urls } from "../../../api/axios";
 import { UserContext } from "../../../context/user";
 import { useEffect } from "react";
 
@@ -33,11 +32,11 @@ const RegistKids = (props) => {
     let newArray = null;
     if (selectedItem === "1") {
       newArray = submitList.map((list) =>
-        list.kidNo === id ? { ...list, groupNo: group } : list
+        list.kidNo === id ? { ...list, groupNo: group } : list,
       );
     } else if (selectedItem === "2") {
       newArray = submitList.map((list) =>
-        list.userNo === id ? { ...list, groupNo: group } : list
+        list.userNo === id ? { ...list, groupNo: group } : list,
       );
     }
     setSubmitList(newArray);
@@ -47,7 +46,6 @@ const RegistKids = (props) => {
   const onSubmitButtonClickHandler = () => {
     // 가입 승인 상태(원아/선생)에 따라 URL을 다르게 설정
     const fullURL =
-      baseURL +
       (selectedItem === "1" ? urls.fetchSubmitKids : urls.fetchSubmitTeacher) +
       userType;
 
@@ -96,12 +94,13 @@ const RegistKids = (props) => {
           sx={{
             color: "rgba(0, 0, 0, 0.7)",
           }}
+          ml={1}
         >
           가입승인대기
         </Typography>
       </Box>
       {/* 원아/선생님 버튼 표시 */}
-      <Box sx={{ p: 1 }}>
+      <Box sx={{ p: 1 }} ml={1}>
         <ButtonGroup
           variant="contained"
           aria-label="outlined primary button group"
@@ -126,7 +125,7 @@ const RegistKids = (props) => {
       </Box>
       {/* 가입 승인 요청 리스트 표시 */}
       <Box
-        sx={{ marginLeft: "10px", marginRight: "10px", marginBottom: "10px" }}
+        sx={{ marginLeft: "15px", marginRight: "10px", marginBottom: "10px" }}
       >
         <RegistMemberLists
           datas={listItem}

@@ -1,8 +1,7 @@
 // 2022.08.12 강민재, 안정현
 // 아이 사진 및 상태
-import axios from "axios";
 import { useContext, useEffect } from "react";
-import { urls, baseURL } from "../../../api/axios";
+import { axios, baseURL, urls } from "../../../api/axios";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { UserContext } from "../../../context/user";
@@ -16,7 +15,7 @@ const KidCard = ({ centerName, setCenterName, groupName, setGroupName }) => {
 
   const getCenterName = async () => {
     const response = await axios.get(
-      baseURL + urls.fetchCentersDetial + firstKid.center_no,
+      urls.fetchCentersDetial + firstKid.center_no,
     );
     setCenterName(response.data.center_name);
   };
@@ -24,7 +23,7 @@ const KidCard = ({ centerName, setCenterName, groupName, setGroupName }) => {
   const getGroupName = async () => {
     if (firstKid.group_no === null) return;
     const response = await axios.get(
-      baseURL + urls.fetchGroupsDetail + firstKid.group_no,
+      urls.fetchGroupsDetail + firstKid.group_no,
     );
     setGroupName(response.data.group_name);
   };

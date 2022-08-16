@@ -38,13 +38,14 @@ const SelectKidKiosk = ({ kidName, setKidName, kidUrl, setKidUrl }) => {
       console.log(err);
     }
   };
-  const handleSelect = (kidName, kidNo, kidUrl, kidGroup) => {
+  const handleSelect = (kidName, kidNo, kidUrl, kidGroup, kidStamp) => {
     setKidName(kidName);
     setKidUrl(kidUrl);
     localStorage.setItem("kidName", kidName);
     localStorage.setItem("kidNo", kidNo);
     localStorage.setItem("kidUrl", kidUrl);
     localStorage.setItem("kidGroup", kidGroup);
+    localStorage.setItem("kidStamp", kidStamp);
   };
 
   return (
@@ -110,7 +111,8 @@ const SelectKidKiosk = ({ kidName, setKidName, kidUrl, setKidUrl }) => {
                 kid.kid_name,
                 kid.kid_no,
                 kid.kid_profile_url,
-                kid.group_no
+                kid.group_no,
+                kid.kid_stamp
               )
             }
           >

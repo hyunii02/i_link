@@ -6,8 +6,7 @@ import Button from "@mui/material/Button";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import GroupDetail from "../GroupDetail";
-import axios from "axios";
-import { baseURL, urls } from "../../../api/axios";
+import { axios, baseURL, urls } from "../../../api/axios";
 
 const GroupListItem = (props) => {
   // 반 상세 보기 컴포넌트 상태 관리
@@ -20,14 +19,14 @@ const GroupListItem = (props) => {
   // 리스트 버튼 클릭 핸들러 => 반 디테일 컴포넌트 표시
   const listClickedHandler = (e) => {
     axios
-      .get(baseURL + urls.fetchKids + classData.group_no)
+      .get(urls.fetchKids + classData.group_no)
       .then((response) => setStudent((student) => response.data));
     setChildView((childView) => !childView);
   };
 
   // 삭제 버튼 클릭 핸들러
   const deleteClickedHandler = (e) => {
-    const fullURL = baseURL + urls.fetchGroupsDelete + e.currentTarget.value;
+    const fullURL = urls.fetchGroupsDelete + e.currentTarget.value;
     // axios delete를 이용하여 현재 classNo를 삭제
     axios.delete(fullURL).then(() => {
       getGroupList();

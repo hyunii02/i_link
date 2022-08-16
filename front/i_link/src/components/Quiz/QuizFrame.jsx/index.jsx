@@ -13,7 +13,7 @@ const QuizFrame = (props) => {
   // 오늘의 퀴즈 등록
   const todayQuizButtonClicked = () => {
     try {
-      const fullURL = baseURL + urls.fetchQuizTodaySet + data.quiz_no;
+      const fullURL = urls.fetchQuizTodaySet + data.quiz_no;
       axios.put(fullURL).then((response) => {
         if (response.status === 200) {
           getTodayQuiz();
@@ -27,7 +27,7 @@ const QuizFrame = (props) => {
   // 퀴즈 삭제 버튼 클릭 핸들러
   const removeButtonClicked = () => {
     try {
-      const fullURL = baseURL + urls.fetchQuizDelete + data.quiz_no;
+      const fullURL = urls.fetchQuizDelete + data.quiz_no;
       axios.delete(fullURL).then((response) => {
         if (response.status === 200) {
           getQuizData();
@@ -113,7 +113,7 @@ const QuizFrame = (props) => {
             width: "20%",
             height: "90%",
             background: "#D6FABA",
-            border: state === 3 && data.kid_ans === 1 ? "3px solid red" : "",
+            border: state === 3 && data.kid_ans === 4 ? "3px solid red" : "",
           }}
         >
           <QuizSolForm solText={data.quiz_sel_4} solUrl={data.quiz_sel_4_url} />

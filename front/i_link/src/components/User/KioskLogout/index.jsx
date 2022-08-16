@@ -1,6 +1,5 @@
 import React from "react";
 import { IconButton } from "@mui/material";
-import { colorPalette } from "../../../constants/constants";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 
@@ -16,6 +15,7 @@ const KioskLogout = () => {
     localStorage.setItem("userPhone", "");
     localStorage.setItem("userCenter", "");
     localStorage.setItem("userGroup", "");
+    localStorage.setItem("kidName", "");
     navigate("/kiosk");
   };
 
