@@ -3,8 +3,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Box, Grid, Typography, AppBar, Tabs, Tab } from "@mui/material";
 import MemberStudent from "../../../components/Member/Student";
 import MemberTeacher from "../../../components/Member/Teacher";
-import axios from "axios";
-import { baseURL, urls } from "../../../api/axios";
+import { axios, baseURL, urls } from "../../../api/axios";
 import { UserContext } from "../../../context/user";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -117,7 +116,7 @@ const MasterManageMember = () => {
   // 서버에서 선생 목록을 가져옴
   const getTeacherList = (value) => {
     // 요청할 URL 포매팅
-    const fullURL = baseURL + urls.fetchMemberTeacherList + userCenter;
+    const fullURL = urls.fetchMemberTeacherList + userCenter;
     // axios.get으로 현재 반의 선생 목록을 가져옴
     try {
       axios

@@ -6,8 +6,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddIcon from "@mui/icons-material/Add";
 import QuizFrame from "../QuizFrame.jsx";
 import QuizInsertModal from "../QuizInsertModal/QuizInsertModal.jsx";
-import axios from "axios";
-import { baseURL, urls } from "../../../api/axios.jsx";
+import { axios, baseURL, urls } from "../../../api/axios.jsx";
 import { UserContext } from "../../../context/user.js";
 import { colorPalette } from "../../../constants/constants.js";
 
@@ -26,7 +25,7 @@ const QuizForm = () => {
   // 퀴즈 리스트 get
   const getQuizData = () => {
     try {
-      const fullURL = baseURL + urls.fetchQuizsList + userNo;
+      const fullURL = urls.fetchQuizsList + userNo;
       axios
         .get(fullURL)
         .then((response) => {
@@ -48,7 +47,7 @@ const QuizForm = () => {
   // 오늘의 퀴즈 get
   const getTodayQuiz = () => {
     try {
-      const fullURL = baseURL + urls.fetchQuizTodayList + userGroup;
+      const fullURL = urls.fetchQuizTodayList + userGroup;
       axios
         .get(fullURL)
         .then((response) => {

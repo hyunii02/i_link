@@ -6,8 +6,7 @@ import { Box, Typography } from "@mui/material";
 import RegistMemberLists from "../RegistKidsLists";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import axios from "axios";
-import { baseURL, urls } from "../../../api/axios";
+import { axios, baseURL, urls } from "../../../api/axios";
 import { UserContext } from "../../../context/user";
 import { useEffect } from "react";
 
@@ -47,7 +46,6 @@ const RegistKids = (props) => {
   const onSubmitButtonClickHandler = () => {
     // 가입 승인 상태(원아/선생)에 따라 URL을 다르게 설정
     const fullURL =
-      baseURL +
       (selectedItem === "1" ? urls.fetchSubmitKids : urls.fetchSubmitTeacher) +
       userType;
 

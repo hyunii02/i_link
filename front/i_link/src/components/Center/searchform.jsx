@@ -1,6 +1,6 @@
 // 2022 08 08 배지우
 
-import React, { useState } from "react";
+import { useState } from "react";
 import PopupPostCode from "./PopupPostCode";
 import { Button } from "@mui/material";
 // import PopupDom from './PopupDom';
@@ -22,7 +22,17 @@ const SearchForm = (props) => {
 
   return (
     <div>
-      <Button id="font_test" sx={{ width: 120, height: 50,background:"#E7E9ED",border:3,color:"#414142" }} onClick={openPostCode}>
+      <Button
+        id="font_test"
+        sx={{
+          width: 120,
+          height: 50,
+          background: "#E7E9ED",
+          border: 3,
+          color: "#414142",
+        }}
+        onClick={openPostCode}
+      >
         우편번호 검색
       </Button>
 

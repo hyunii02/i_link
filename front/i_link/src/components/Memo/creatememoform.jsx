@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 import AddMemoContent from "./addmemocontent";
 import DatePicker from "react-datepicker";
 import { UserContext } from "../../context/user";
-import { axios,baseURL, urls } from "../../api/axios";
+import { axios, baseURL, urls } from "../../api/axios";
 
 import Grid from "@mui/material/Grid";
 
@@ -41,25 +41,23 @@ const CreateMemoForm = (props) => {
         content: memoContent,
       };
       setContentList([...contentList, content]);
-      
+
       setMemoContent("");
     }
   };
 
   const eachMemoAdd = () => {
-    if (memoContent !==""){
+    if (memoContent !== "") {
+      const content = {
+        id: id_index++,
 
-    
-    const content = {
-      id: id_index++,
+        content: memoContent,
+      };
+      setContentList([...contentList, content]);
 
-      content: memoContent,
-    };
-    setContentList([...contentList, content]);
-    
-    setMemoContent("");
+      setMemoContent("");
+    }
   };
-}
 
   const buttonClickHandler = (e) => {
     const subData = [];
@@ -94,32 +92,27 @@ const CreateMemoForm = (props) => {
     };
     if (validate()) {
       try {
-        axios
-          .post(baseURL + urls.fetchMemosRegister, newData)
-          .then((response) => {
-            if (response.status === 200) {
-              
-
-              clickGroupHandler();
-              handleClose();
-            }
-          });
+        axios.post(urls.fetchMemosRegister, newData).then((response) => {
+          if (response.status === 200) {
+            clickGroupHandler();
+            handleClose();
+          }
+        });
       } catch (e) {
         console.log(e);
       }
     }
-
-    
   };
 
   const onRemove2 = (id) => {
-    
     setContentList(contentList.filter((content) => content.id !== id));
   };
 
   return (
     <div>
-      <h3 id="font_test" style={{ display: "flex", justifyContent: "center" }}>알림장 등록</h3>
+      <h3 id="font_test" style={{ display: "flex", justifyContent: "center" }}>
+        알림장 등록
+      </h3>
       <Box
         sx={{
           "& .MuiTextField-root": { mt: 2 }, // 텍스트필드마다 mt 3
@@ -159,21 +152,19 @@ const CreateMemoForm = (props) => {
             <p id="font_test">{formErrors.lastMemoContent}</p>
           </Grid>
           <Grid item xs={3}>
-            
-              <Button
-                id="font_test"
-                onClick={eachMemoAdd}
-                sx={{
-                  mt: 2,
-                  width: 90,
-                  height: 58,
-                  background: "#6E5203",
-                  color: "white",
-                }}
-              >
-                항목추가
-              </Button>
-            
+            <Button
+              id="font_test"
+              onClick={eachMemoAdd}
+              sx={{
+                mt: 2,
+                width: 90,
+                height: 58,
+                background: "#6E5203",
+                color: "white",
+              }}
+            >
+              항목추가
+            </Button>
           </Grid>
         </Grid>
         <br />
