@@ -11,8 +11,7 @@ import {
 } from "@mui/material/";
 import { colorPalette } from "../../../constants/constants";
 import { useState, useEffect, useContext } from "react";
-import axios from "axios";
-import { baseURL, urls } from "../../../api/axios";
+import { axios, baseURL, urls } from "../../../api/axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../../../context/user";
 
@@ -31,7 +30,7 @@ const TeacherJoinCenter = () => {
   const getCenterData = (centerId) => {
     try {
       axios
-        .get(baseURL + urls.fetchCentersDetial + centerId)
+        .get(urls.fetchCentersDetial + centerId)
         .then((response) => {
           // 응답 성공 시
           if (response.status === 200) {
@@ -86,7 +85,7 @@ const TeacherJoinCenter = () => {
       centerNo: parseInt(selectedCenter),
       userNo: userNo,
     };
-    const fullURL = baseURL + urls.fetchTeacherCenterSet;
+    const fullURL = urls.fetchTeacherCenterSet;
     console.log(fullURL);
     try {
       axios

@@ -1,12 +1,8 @@
 // 2022.08.05 김국진
 // 1달치 달력 컴포넌트
 
-import { Box, Grid, Card, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
+import { Box, Grid, Typography } from "@mui/material";
 import CalendayWeek from "../Week";
-import axios from "axios";
-import { baseURL } from "../../../api/axios";
-import { urls } from "../../../api/axios";
 
 const date = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 

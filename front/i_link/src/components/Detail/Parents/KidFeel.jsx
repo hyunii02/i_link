@@ -1,17 +1,16 @@
 // 2022.08.12 강민재, 안정현
 // 아이 기분
-import React from "react";
-import axios from "axios";
 import Typography from "@mui/material/Typography";
 import { Box, Grid } from "@mui/material";
 import Divider from "@mui/material/Divider";
 
-import { urls, baseURL } from "../../../api/axios";
+import { axios, urls, baseURL } from "../../../api/axios";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../../context/user";
 import { getToday } from "../../../commonFuction";
 import KidCard from "./KidCard";
 
+// 기분 이미지
 import happy from "./FeelPng/happy.png";
 import smile from "./FeelPng/smile.png";
 import so_so from "./FeelPng/so_so.png";
@@ -28,9 +27,7 @@ const KidFeel = ({
   const { firstKid } = useContext(UserContext);
   const getFeel = async () => {
     try {
-      const response = await axios.get(
-        baseURL + urls.fetchSurveysList + firstKid.kid_no,
-      );
+      const response = await axios.get(urls.fetchSurveysList + firstKid.kid_no);
       const lenData = response.data.length;
       const latestFeel = response.data[lenData - 1];
       if (response.data.length === 0) return;
@@ -44,7 +41,7 @@ const KidFeel = ({
   };
   const getCenterName = async () => {
     const response = await axios.get(
-      baseURL + urls.fetchCentersDetial + firstKid.center_no,
+      urls.fetchCentersDetial + firstKid.center_no,
     );
     setCenterName(response.data.center_name);
   };
@@ -52,7 +49,7 @@ const KidFeel = ({
   const getGroupName = async () => {
     if (firstKid.group_no === null) return;
     const response = await axios.get(
-      baseURL + urls.fetchGroupsDetail + firstKid.group_no,
+      urls.fetchGroupsDetail + firstKid.group_no,
     );
     setGroupName(response.data.group_name);
   };

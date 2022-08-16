@@ -1,7 +1,6 @@
 import { Box, Grid, Typography, Divider, Avatar, Button } from "@mui/material";
-import { baseURL, urls } from "../../../../api/axios";
+import { axios, baseURL, urls } from "../../../../api/axios";
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 // 버튼에 넣어줘야 할 텍스트
 const buttonText = ["등원완료", "하원완료", "설문완료"];
@@ -10,9 +9,10 @@ const StudentInfo = ({ kidInfo, parentInfo, getKidsData }) => {
   const [groupName, setGroupName] = useState("");
   // 서버에 현재 속해있는 반 이름을 요청
   const getGroupName = async () => {
-    const fullURL = baseURL + urls.fetchGroupsDetail + kidInfo.group_no;
     try {
-      const response = await axios.get(fullURL);
+      const response = await axios.get(
+        urls.fetchGroupsDetail + kidInfo.group_no,
+      );
       if (response.status === 200) {
         setGroupName((groupName) => response.data.group_name);
       }
@@ -29,7 +29,6 @@ const StudentInfo = ({ kidInfo, parentInfo, getKidsData }) => {
   const buttonClickHandler = (e) => {
     try {
       const fullURL =
-        baseURL +
         urls.fetchKidsStateChange +
         kidInfo.kid_no +
         "/" +

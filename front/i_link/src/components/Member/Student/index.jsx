@@ -6,24 +6,13 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import ListItemButton from "@mui/material/ListItemButton";
 import Report from "./Report";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../context/user";
-import {
-  Box,
-  Grid,
-  Modal,
-  Badge,
-  Avatar,
-  TextField,
-  IconButton,
-} from "@mui/material";
+import { Box, Grid, Modal, Badge, Avatar, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import axios from "axios";
-import { baseURL, urls } from "../../../api/axios";
+import { axios, baseURL, urls } from "../../../api/axios";
 import MailIcon from "@mui/icons-material/Mail";
-import { Translate } from "@mui/icons-material";
 
 // 알림 뱃지 스타일링
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -105,7 +94,6 @@ const MemberStudent = (props) => {
   const buttonClickHandler = (e) => {
     try {
       const fullURL =
-        baseURL +
         urls.fetchKidsStateChange +
         student.kid_no +
         "/" +
@@ -125,7 +113,7 @@ const MemberStudent = (props) => {
   // 우측 상단 뱃지 클릭 이벤트 핸들러
   const badgeClickHandler = (e) => {
     setOpen((open) => true);
-    const fullURL = baseURL + urls.fetchKidsReport + student.kid_no;
+    const fullURL = urls.fetchKidsReport + student.kid_no;
     // 뱃지를 클릭했는지 유효성 검사
     axios.get(fullURL).then((response) => {
       const newReportForm = [

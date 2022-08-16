@@ -10,8 +10,6 @@ import ListSubheader from "@mui/material/ListSubheader";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
-import axios from "axios";
-import { baseURL } from "../../../api/axios";
 import { UserContext } from "../../../context/user";
 
 const headerList = [

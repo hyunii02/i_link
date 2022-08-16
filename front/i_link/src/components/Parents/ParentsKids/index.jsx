@@ -7,8 +7,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { getToday } from "../../../commonFuction";
 
-import { urls, baseURL } from "../../../api/axios";
-import axios from "axios";
+import { axios, urls, baseURL } from "../../../api/axios";
 import { UserContext } from "../../../context/user";
 import { colorPalette } from "../../../constants/constants";
 
@@ -173,19 +172,17 @@ export default function ParentsKids() {
         },
       };
       try {
-        axios
-          .post(baseURL + urls.fetchKidsRegister, body, config)
-          .then((response) => {
-            // 응답 성공 시
-            if (response.status === 200) {
-              navigate("/parents/joincenter", {
-                state: { kid_no: response.data.kid_no },
-              });
-            } else {
-              // 응답 실패 시
-              console.log("아이 등록 실패");
-            }
-          });
+        axios.post(urls.fetchKidsRegister, body, config).then((response) => {
+          // 응답 성공 시
+          if (response.status === 200) {
+            navigate("/parents/joincenter", {
+              state: { kid_no: response.data.kid_no },
+            });
+          } else {
+            // 응답 실패 시
+            console.log("아이 등록 실패");
+          }
+        });
       } catch (err) {}
     }
   };
