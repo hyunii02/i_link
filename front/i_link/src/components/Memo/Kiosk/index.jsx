@@ -11,9 +11,9 @@ const MemoKiosk = () => {
       localStorage.getItem("kidName") + "SurveyDay"
     );
     if (surveyDay === getToday()) {
-      getMomos(localStorage.getItem("userGroup"), getToday(true));
+      getMomos(localStorage.getItem("kidGroup"), getToday());
     } else {
-      getMomos(localStorage.getItem("userGroup"), getToday());
+      getMomos(localStorage.getItem("kidGroup"), getToday(false, true));
     }
   }, []);
 
