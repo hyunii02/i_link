@@ -139,23 +139,25 @@ const QuizInsertModal = ({ open, setOpen, getQuizData }) => {
     if (checkValue === "") {
       errorMsg = "정답을 체크하세요.";
     }
-
     // 둘중에 하나만 입력 가능하게
-    if (formValues.answerText1.length !== 0 && answerImage1.length !== 0) {
+    if (
+      formValues.answerText1.length !== 0 &&
+      answerImage1.image_file.length !== 0
+    ) {
       errorMsg = "답을 한 종류만 입력 해 주세요.";
     } else if (
       formValues.answerText2.length !== 0 &&
-      answerImage2.length !== 0
+      answerImage2.image_file.length !== 0
     ) {
       errorMsg = "답을 한 종류만 입력 해 주세요.";
     } else if (
       formValues.answerText3.length !== 0 &&
-      answerImage3.length !== 0
+      answerImage3.image_file.length !== 0
     ) {
       errorMsg = "답을 한 종류만 입력 해 주세요.";
     } else if (
       formValues.answerText4.length !== 0 &&
-      answerImage4.length !== 0
+      answerImage4.image_file.length !== 0
     ) {
       errorMsg = "답을 한 종류만 입력 해 주세요.";
     }

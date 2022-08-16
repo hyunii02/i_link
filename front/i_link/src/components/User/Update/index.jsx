@@ -3,12 +3,11 @@
 // 2022.08.05 안정현 디자인 수정 //
 // 2022.08.11 안정현 axios //
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
-import { urls, baseURL } from "../../../api/axios";
+import { axios, urls, baseURL } from "../../../api/axios";
 import { colorPalette } from "../../../constants/constants";
 import { UserContext } from "../../../context/user";
 
@@ -23,6 +22,71 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme();
+
+//이미지 업로드
+const Uploader = ({
+  defaultImage,
+  image,
+  setImage,
+  sendImage,
+  setSendImage,
+}) => {
+  let inputRef; //이미지 미리보기를 위해서 Ref를 사용
+  //이미지 저장
+  const saveImage = (event) => {
+    //event.preventDefault();
+
+    // 이미지를 가져 올 시
+    if (event.target.files[0]) {
+      setSendImage((sendImage) => event.target.files[0]);
+      // 새로운 이미지를 올리면 createObjectURL()을 통해 기존 URL을 폐기
+      URL.revokeObjectURL(image.preview_URL);
+      const preview_URL = URL.createObjectURL(event.target.files[0]);
+      setImage(() => ({
+        image_file: event.target.files[0],
+        preview_URL: preview_URL,
+      }));
+    }
+  };
+
+  return (
+    <Box
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      {/* 이미지 삽입 */}
+      <input
+        id="kidprofileurl"
+        type="file"
+        accept="image/*"
+        onChange={saveImage}
+        onClick={(event) => (event.target.value = null)} // 클릭할 때 마다 file input의 value를 초기화 하지 않으면 버그가 발생할 수 있다
+        ref={(refParam) => (inputRef = refParam)}
+        style={{ display: "none" }}
+      />
+      {/* 이미지 창 */}
+      <Avatar
+        onClick={() => inputRef.click()}
+        alt="kids_picture"
+        src={
+          image.preview_URL === "" ? baseURL + defaultImage : image.preview_URL
+        }
+        sx={{
+          width: 200,
+          height: 200,
+          "&:hover": {
+            backgroundColor: "#FFFEF4",
+          },
+        }}
+        style={{ cursor: "pointer" }}
+      ></Avatar>
+    </Box>
+  );
+};
 
 export default function Update() {
   const navigate = useNavigate();
@@ -46,9 +110,41 @@ export default function Update() {
     new_check_password: "",
     new_username: "",
     new_phone_number: "",
+    new_user_profile: "",
   };
+
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
+  const [sendImage, setSendImage] = useState("");
+  const [image, setImage] = useState({
+    image_file: "",
+    preview_URL: "",
+  });
+
+  // 화면이 렌더링 될 때 유저 정보를 입력받음
+  useEffect(() => {
+    try {
+      axios
+        .get(urls.fetchUsersDetail + userNo)
+        .then((response) => {
+          if (response.status === 200) {
+            const newObj = {
+              ...formValues,
+              email: response.data.user_email,
+              new_username: response.data.user_name,
+              new_phone_number: response.data.user_phone,
+              new_user_profile: response.data.user_profile_url,
+            };
+            setFormValues(newObj);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
 
   // 에러메시지
   const validate = () => {
@@ -95,11 +191,21 @@ export default function Update() {
         currentPw: formValues.password,
         userPw: formValues.new_password,
         userPhone: formValues.new_phone_number,
-        userProfile: null,
+        userProfile: image.image_file,
         // userEmail: formValues.email,
       };
+      // 사진 전송을 위해 헤더에 Multi-part로 type 설정
+      const config = {
+        headers: {
+          "Content-type": "multipart/form-data",
+        },
+      };
       try {
-        const response = await axios.put(urls.fetchUsersUpdate + userNo, body);
+        const response = await axios.put(
+          urls.fetchUsersUpdate + userNo,
+          body,
+          config,
+        );
         setUserNo("");
         setUserName("");
         setUserType("");
@@ -144,7 +250,7 @@ export default function Update() {
           ></Avatar>
           <Typography
             component="h1"
-            variant="h5"
+            variant="h4"
             id="font_test"
             sx={{ color: "rgba(0, 0, 0, 0.6)" }}
           >
@@ -171,6 +277,16 @@ export default function Update() {
                   sx={{ background: "white" }}
                 />
               </Grid> */}
+              {/* 이미지 업로드 */}
+              <Grid item xs={12} sm={12}>
+                <Uploader
+                  defaultImage={formValues.new_user_profile}
+                  image={image}
+                  setImage={setImage}
+                  sendImage={sendImage}
+                  setSendImage={setSendImage}
+                ></Uploader>
+              </Grid>
               {/* 기존 비밀번호 입력창 */}
               <Grid item xs={12} sm={12}>
                 <TextField

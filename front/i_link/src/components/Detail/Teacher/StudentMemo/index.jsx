@@ -47,7 +47,9 @@ const StudentMemo = ({ kidInfo, reRender, setReRender }) => {
             sx={{ marginRight: "5px" }}
             onClick={() => setMemoState(true)}
           >
-            수정
+            <Typography id="font_test" variant="body2">
+              수정
+            </Typography>
           </Button>
           <Button
             variant="contained"
@@ -55,7 +57,9 @@ const StudentMemo = ({ kidInfo, reRender, setReRender }) => {
             color="warning"
             onClick={saveButtonClicked}
           >
-            저장
+            <Typography id="font_test" variant="body2">
+              저장
+            </Typography>
           </Button>
         </Grid>
         <Grid item xs={12} sx={{ borderTop: "1px solid rgba(0, 0, 0, 0.3)" }}>
