@@ -10,8 +10,9 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
       quiz_ans: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { min: 1, max: 4 },
       },
       kid_no: {
         type: DataTypes.INTEGER,
