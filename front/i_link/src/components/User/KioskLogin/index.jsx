@@ -7,12 +7,10 @@ import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 
-import { urls, baseURL } from "../../../api/axios";
+import { urls, baseURL, axiosKiosk } from "../../../api/axios";
 import { colorPalette } from "../../../constants/constants";
 
 export default function KioskLogin() {
@@ -79,8 +77,8 @@ export default function KioskLogin() {
       localStorage.setItem("userPhone", resUserPhone);
       localStorage.setItem("userCenter", resUserCenter);
       localStorage.setItem("userGroup", resUserGroup);
-      const kidResponse = await axios.get(
-        baseURL + urls.fetchParentKids + resUserNo
+      const kidResponse = await axiosKiosk.get(
+        urls.fetchParentKids + resUserNo
       );
       localStorage.setItem("kidsList", JSON.stringify(kidResponse.data));
       localStorage.setItem("kidName", kidResponse.data[0].kid_name);
@@ -116,92 +114,96 @@ export default function KioskLogin() {
   };
 
   return (
-    <Container>
+    <Box
+      sx={{
+        marginTop: "5vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "80vh",
+        flexShrink: 1,
+      }}
+    >
       <CssBaseline />
-      <Box
+      {/* 로고 이미지 */}
+      <Typography
+        id="font_test"
+        component="h6"
+        variant="h1"
         sx={{
-          marginTop: "80px",
+          color: "rgba(0, 0, 0, 0.6)",
+          flexGrow: 0.1,
+          flexShrink: 1,
+          verticalAlign: "bottom",
+          fontSize: "8vh",
+        }}
+      >
+        원과 가정을 잇다
+      </Typography>
+      {/* 로고 */}
+      <img
+        alt="logo"
+        src="images/logo.png"
+        style={{ objectFit: "scale-down", width: "20vw", flexShrink: 1 }}
+      />
+      {/* 로그인 form */}
+      <Box
+        component="form"
+        noValidate
+        onSubmit={handleSubmit}
+        sx={{
+          mt: 3,
+          flexGrow: 1,
+          width: 0.6,
+          flexShrink: 1,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          height: "80vh",
         }}
       >
-        {/* 로고 이미지 */}
-        <Typography
-          id="font_test"
-          component="h6"
-          variant="h1"
-          sx={{
-            color: "rgba(0, 0, 0, 0.6)",
-            flexGrow: 0.1,
-            verticalAlign: "bottom",
-          }}
-        >
-          원과 가정을 잇다
-        </Typography>
-        {/* 로고 */}
-        <img
-          alt="logo"
-          src="images/logo.png"
-          style={{ objectFit: "scale-down", width: "60%" }}
+        {/* 이메일 입력창 */}
+        <TextField
+          required
+          fullWidth
+          id="email"
+          label="이메일"
+          name="email"
+          autoComplete="email"
+          autoFocus
+          value={formValues.email}
+          onChange={handleChange}
+          sx={{ background: "white", width: "50vw" }}
+          size="large"
         />
-        {/* 로그인 form */}
-        <Box
-          component="form"
-          noValidate
-          onSubmit={handleSubmit}
-          sx={{ mt: 3, flexGrow: 1, width: 0.6 }}
+        <p>{formErrors.email}</p>
+        {/* 비밀번호 입력창 */}
+        <TextField
+          required
+          fullWidth
+          name="password"
+          label="비밀번호"
+          type="password"
+          id="password"
+          autoComplete="current-password"
+          value={formValues.password}
+          onChange={handleChange}
+          sx={{ background: "white", width: "50vw" }}
+        />
+        <p>{formErrors.password}</p>
+        {/* 로그인 버튼 */}
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          style={{ background: colorPalette.BUTTON_COLOR }}
+          sx={{ width: "50vw" }}
+          onChange={handleChange}
         >
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12}>
-              {/* 이메일 입력창 */}
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="이메일"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                value={formValues.email}
-                onChange={handleChange}
-                sx={{ background: "white" }}
-              />
-              <p>{formErrors.email}</p>
-            </Grid>
-            {/* 비밀번호 입력창 */}
-            <Grid item xs={12} sm={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="비밀번호"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={formValues.password}
-                onChange={handleChange}
-                sx={{ background: "white" }}
-              />
-              <p>{formErrors.password}</p>
-            </Grid>
-          </Grid>
-          {/* 로그인 버튼 */}
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            style={{ background: colorPalette.BUTTON_COLOR }}
-            sx={{ mt: 3, mb: 2 }}
-            onChange={handleChange}
-          >
-            <Typography id="font_test" component="h6" variant="h6">
-              로그인
-            </Typography>
-          </Button>
-        </Box>
+          <Typography id="font_test" component="h6" variant="h6">
+            로그인
+          </Typography>
+        </Button>
       </Box>
-    </Container>
+    </Box>
   );
 }
