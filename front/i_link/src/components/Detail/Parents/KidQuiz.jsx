@@ -36,12 +36,8 @@ const KidQuiz = ({ kidNo }) => {
     return true;
   };
 
-  useEffect(() => {
-    getQuizData();
-  }, []);
-
   return (
-    <Box
+    <div
       sx={{
         // background: colorPalette.BACKGROUND_COLOR,
         borderRadius: "20px",
@@ -58,7 +54,15 @@ const KidQuiz = ({ kidNo }) => {
       <Grid container spacing={1}>
         {quizList?.map((list, index) => (
           <Grid item xs={6} key={index}>
-            <QuizFrame data={list} state={3} />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <QuizFrame data={list} state={3} />
+            </Box>
           </Grid>
         ))}
       </Grid>
@@ -67,7 +71,7 @@ const KidQuiz = ({ kidNo }) => {
           최근 푼 문제가 없어요.
         </Typography>
       )}
-    </Box>
+    </div>
   );
 };
 
