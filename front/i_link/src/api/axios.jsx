@@ -78,8 +78,22 @@ const urls = {
 
 const axios = Axios.create({
   baseURL: baseURL,
-  headers: { Authorization: `Bearer ${sessionStorage.getItem("accessToken")}` },
 });
+
+// 요청 인터셉터 추가
+axios.interceptors.request.use(
+  function (config) {
+    config.headers["Authorization"] = `Bearer ${sessionStorage.getItem(
+      "accessToken"
+    )}`;
+    return config;
+  },
+  function (error) {
+    // 오류 요청을 보내기전 수행할 일
+    // ...
+    return Promise.reject(error);
+  }
+);
 
 axios.interceptors.response.use(
   function (response) {
@@ -97,7 +111,7 @@ axios.interceptors.response.use(
       응답 에러 처리를 작성합니다.
       .catch() 으로 이어집니다.    
   */
-
+    console.log(error);
     // 무한루프 방지를 위해 같은 에러가 2번 발생하면 재발급 처리 안함
     if (error.response.statusText === sessionStorage.getItem("statusText")) {
       return Promise.reject(error);
@@ -113,7 +127,7 @@ axios.interceptors.response.use(
       sessionStorage.setItem("accessToken", access_token);
       sessionStorage.setItem("refreshToken", refresh_token);
       sessionStorage.setItem("statusText", error.response.statusText);
-      axios.defaults.headers.common.Authorization = `Bearer ${access_token}`;
+      axios.defaults.headers.Authorization = `Bearer ${access_token}`;
 
       return axios(config);
     }
@@ -125,8 +139,22 @@ axios.interceptors.response.use(
 // 키오스크용 axios 인스턴스
 const axiosKiosk = Axios.create({
   baseURL: baseURL,
-  headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
 });
+
+// 요청 인터셉터 추가
+axiosKiosk.interceptors.request.use(
+  function (config) {
+    config.headers["Authorization"] = `Bearer ${localStorage.getItem(
+      "accessToken"
+    )}`;
+    return config;
+  },
+  function (error) {
+    // 오류 요청을 보내기전 수행할 일
+    // ...
+    return Promise.reject(error);
+  }
+);
 
 axiosKiosk.interceptors.response.use(
   function (response) {
@@ -160,7 +188,7 @@ axiosKiosk.interceptors.response.use(
       localStorage.setItem("accessToken", access_token);
       localStorage.setItem("refreshToken", refresh_token);
       localStorage.setItem("statusText", error.response.statusText);
-      axiosKiosk.defaults.headers.common.Authorization = `Bearer ${access_token}`;
+      axiosKiosk.defaults.headers.Authorization = `Bearer ${access_token}`;
 
       return axiosKiosk(config);
     }

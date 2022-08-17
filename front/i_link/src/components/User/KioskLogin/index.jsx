@@ -78,7 +78,10 @@ export default function KioskLogin() {
       localStorage.setItem("userCenter", resUserCenter);
       localStorage.setItem("userGroup", resUserGroup);
       const kidResponse = await axiosKiosk.get(
-        urls.fetchParentKids + resUserNo
+        urls.fetchParentKids + resUserNo,
+        {
+          headers: { Authorization: `Bearer ${resAccessToken}` },
+        }
       );
       localStorage.setItem("kidsList", JSON.stringify(kidResponse.data));
       localStorage.setItem("kidName", kidResponse.data[0].kid_name);

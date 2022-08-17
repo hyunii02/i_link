@@ -109,6 +109,17 @@ export default function Login() {
       setUserProfileUrl(resUserProfileUrl);
       setKidsList("");
       setFirstKid("");
+      sessionStorage.setItem("userType", resUserType);
+      sessionStorage.setItem("userName", resUserName);
+      sessionStorage.setItem("userNo", resUserNo);
+      sessionStorage.setItem("accessToken", resAccessToken);
+      sessionStorage.setItem("refreshToken", resRefreshToken);
+      sessionStorage.setItem("userPhone", resUserPhone);
+      sessionStorage.setItem("userCenter", resUserCenter);
+      sessionStorage.setItem("userGroup", resUserGroup);
+      sessionStorage.setItem("userProfileUrl", resUserProfileUrl);
+      sessionStorage.setItem("kidList", "");
+      sessionStorage.setItem("firstKid", "");
 
       // 로그인 성공 시 대응되는 페이지로 네비게이트
       if (response.data.message === "로그인 성공") {
@@ -141,7 +152,9 @@ export default function Login() {
           case 3:
             {
               axios
-                .get(baseURL + urls.fetchParentKids + resUserNo)
+                .get(urls.fetchParentKids + resUserNo, {
+                  headers: { Authorization: `Bearer ${resAccessToken}` },
+                })
                 .then((response) => {
                   // 등록된 아이가 없을 시
                   if (response.data.length === 0) {
