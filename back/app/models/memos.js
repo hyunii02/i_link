@@ -20,12 +20,12 @@ module.exports = function (sequelize, DataTypes) {
         onDelete: "CASCADE",
       },
       memo_content: {
-        type: DataTypes.STRING(200),
+        type: DataTypes.STRING(255),
         allowNull: false,
       },
       memo_date: {
         type: DataTypes.DATEONLY,
-        allowNull: true,
+        allowNull: false,
       },
     },
     {

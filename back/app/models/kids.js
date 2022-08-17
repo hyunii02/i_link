@@ -14,7 +14,7 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
       },
       kid_birth: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.DATEONLY,
         allowNull: true,
       },
       kid_gender: {
@@ -24,15 +24,15 @@ module.exports = function (sequelize, DataTypes) {
       },
       kid_stamp: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
         defaultValue: 0,
       },
       kid_profile_url: {
-        type: DataTypes.STRING(500),
+        type: DataTypes.STRING(255),
         allowNull: true,
       },
       kid_memo: {
-        type: DataTypes.STRING(200),
+        type: DataTypes.STRING(255),
         allowNull: true,
       },
       kid_state: {

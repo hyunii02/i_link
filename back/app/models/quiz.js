@@ -31,7 +31,7 @@ module.exports = function (sequelize, DataTypes) {
       },
       quiz_content: {
         type: DataTypes.STRING(100),
-        allowNull: false,
+        allowNull: true,
       },
       quiz_sel_1: {
         type: DataTypes.STRING(50),

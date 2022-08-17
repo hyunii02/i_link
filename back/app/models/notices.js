@@ -29,13 +29,8 @@ module.exports = function (sequelize, DataTypes) {
       },
       notice_date: {
         type: DataTypes.DATE,
-        allowNull: true,
+        allowNull: false,
         defaultValue: Sequelize.Sequelize.literal("CURRENT_TIMESTAMP"),
-      },
-      hit: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        defaultValue: 0,
       },
     },
     {
