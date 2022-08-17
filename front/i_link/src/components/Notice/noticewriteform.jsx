@@ -54,11 +54,7 @@ const Uploader = ({ image, setImage }) => {
         style={{ display: "none" }}
       />
       {/* 이미지 창 */}
-      <Button
-        id="font_test"
-        onClick={() => inputRef.click()}
-        sx={{ cursor: "pointer", mt: 1, pr: 2 }}
-      >
+      <Button id="font_test" onClick={() => inputRef.click()} sx={{ cursor: "pointer",mt:1,pr:2,color:"#808080" }}>
         사진첨부
       </Button>
     </Box>
@@ -82,6 +78,8 @@ export default function NoticeWriteForm(props) {
       content: noticeContent,
     };
     setContentList([...contentList, content]);
+    
+    
   };
 
   // 이미지 저장
@@ -134,7 +132,7 @@ export default function NoticeWriteForm(props) {
       noticeContent: noticeContent,
       files: NoticeImage.image_file,
     };
-
+    
     // 사진 전송을 위해 헤더에 Multi-part로 type 설정
     const config = {
       headers: {
@@ -146,13 +144,15 @@ export default function NoticeWriteForm(props) {
 
     if (validate(body)) {
       try {
-        axios.post(urls.fetchNoticsRegister, body, config).then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            getNoticeList();
-            handleClose2();
-          }
-        });
+        axios
+          .post(baseURL + urls.fetchNoticsRegister, body, config)
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              getNoticeList();
+              handleClose2();
+            }
+          });
       } catch (e) {
         console.log(e);
       }
@@ -160,15 +160,14 @@ export default function NoticeWriteForm(props) {
   };
 
   return (
-    <Box
-      id="font_test"
+    <Box id="font_test"
       sx={{
         "& .MuiTextField-root": { mt: 0 }, // 텍스트필드마다 mt 5
 
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        ml: 2.6,
+        ml:2.6
       }}
       autoComplete="off"
     >
@@ -181,9 +180,11 @@ export default function NoticeWriteForm(props) {
           background: "white",
           width: 500,
           borderBottom: "2px solid #8E8F91",
+          
         }}
         id="font_test"
         onChange={(e) => setNoticeTitle(e.target.value)}
+        
         placeholder="  제목을 입력하세요"
         name="title"
         multiline
@@ -204,12 +205,13 @@ export default function NoticeWriteForm(props) {
       <p id="font_test">{formErrors.noticeContent}</p> */}
 
       <TextField
-        sx={{ background: "white", width: 500, border: "2px solid #8E8F91" }}
+        sx={{ background: "white", width: 500 ,border: "2px solid #8E8F91",}}
         onChange={(e) => setNoticeContent(e.target.value)}
         id="font_test"
         name="content"
         placeholder="내용을 입력하세요"
         multiline
+        
         rows={10}
       />
 
@@ -222,16 +224,18 @@ export default function NoticeWriteForm(props) {
       <Box sx={{ width: 300 }}>
         <p id="font_test">{formErrors.noticeContent}</p>
       </Box>
-      <Box sx={{ width: 500, display: "flex", justifyContent: "flex-end" }}>
+      <Box sx={{ width: 500, display: "flex", justifyContent: "flex-end", }}>
         <Button
-          sx={{ background: "rgb(255, 138, 123)" }}
+          sx={{background: "rgb(255, 138, 123)"}}
           onClick={handleSubmit}
           type="submit"
           variant="contained"
+          
+          
         >
           글 작성
         </Button>
-        <Button id="font_test" sx={{ ml: 2 }} onClick={handleClose2}>
+        <Button id="font_test" sx={{ ml: 2,color:"#808080"}} onClick={handleClose2}>
           닫기
         </Button>
       </Box>
