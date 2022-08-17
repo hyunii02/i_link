@@ -9,6 +9,7 @@ const Wrapper = styled.div`
     border: 1.5vw solid #cda352;
     padding: 1vw;
     display: flex;
+    flex-direction: column;
   }
 `;
 export default Wrapper;
