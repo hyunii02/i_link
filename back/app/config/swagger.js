@@ -20,13 +20,18 @@ const options = {
     components: {
       securitySchemes: {
         Authorization: {
-          type: "apiKey",
+          type: "http",
+          in: "header",
+          name: "Authorization",
           scheme: "bearer",
-          bearerFormat: "JWT",
-          value: "Bearer <JWT token here>",
         },
       },
     },
+    security: [
+      {
+        Authorization: [],
+      },
+    ],
   },
   apis: ["./routes/*.js"], //Swagger 파일 연동
 };
