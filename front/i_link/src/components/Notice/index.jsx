@@ -46,7 +46,7 @@ export default function Notice(props) {
   const styleWrite = {
     display: "flex",
     flexDirection: "column",
-    
+
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -63,7 +63,7 @@ export default function Notice(props) {
 
   const style = {
     display: "flex",
-    
+
     flexDirection: "column",
     position: "absolute",
     top: "50%",
@@ -114,73 +114,87 @@ export default function Notice(props) {
   return (
     <div id="font_test">
       {/* <h2>공지사항</h2> */}
-
-      <TableContainer sx={{ mt: 3 }} component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow sx={{ background: "#FF8A7B" }}>
-              <TableCell id="font_test" width="30px" alingn="center">
-                번호
-              </TableCell>
-              <TableCell
-                sx={{ pl: 7 }}
-                id="font_test"
-                width="700px"
-                align="left"
-              >
-                제목
-              </TableCell>
-
-              <TableCell
-                sx={{ pr: 5 }}
-                id="font_test"
-                width="120px"
-                align="right"
-              >
-                작성일
-              </TableCell>
-              {userType !== 3 && userType !== "3" && (
+      <Box>
+        <TableContainer
+          sx={{
+            mt: 3,
+            display: "flex",
+            justifyContent: "center",
+            borderRadius: "16px",
+          }}
+        >
+          <Table sx={{ maxWidth: 800 }} aria-label="simple table">
+            <TableHead>
+              <TableRow sx={{ background: "#FF8A7B" }}>
                 <TableCell
+                  sx={{pl:4,borderTopLeftRadius: "10px" }}
                   id="font_test"
-                  width="10px"
-                  align="center"
-                ></TableCell>
-              )}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {notices.map((notice) => (
-              <TableRow
-                key={notice.notice_no}
-                sx={{
-                  cursor: "pointer",
-                  background: "white",
-                  "&:last-child td, &:last-child th": { border: 0 },
-                }}
-              >
-                <TableCell
-                  onClick={() => {
-                    handleOpen1();
-                    detailNotice(notice);
-                  }}
-                  align="center"
-                  component="th"
-                  scope="row"
+                  width="40px"
+                  alingn="center"
                 >
-                  {notice.notice_no}
+                  번호
                 </TableCell>
                 <TableCell
                   sx={{ pl: 7 }}
-                  onClick={() => {
-                    handleOpen1();
-                    detailNotice(notice);
-                  }}
                   id="font_test"
+                  width="700px"
                   align="left"
                 >
-                  {notice.notice_title}
+                  제목
                 </TableCell>
-                {/* <TableCell
+
+                <TableCell
+                  sx={{ pr: 5 }}
+                  id="font_test"
+                  width="120px"
+                  align="right"
+                >
+                  작성일
+                </TableCell>
+                {userType !== 3 && userType !== "3" && (
+                  <TableCell
+                    sx={{ borderTopRightRadius: "10px" }}
+                    id="font_test"
+                    width="10px"
+                    align="center"
+                  ></TableCell>
+                )}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {notices.map((notice) => (
+                <TableRow
+                  key={notice.notice_no}
+                  sx={{
+                    cursor: "pointer",
+                    background: "white",
+                    "&:last-child td, &:last-child th": { border: 0 },
+                  }}
+                >
+                  <TableCell
+                    sx={{pl:3.5}}
+                    onClick={() => {
+                      handleOpen1();
+                      detailNotice(notice);
+                    }}
+                    align="center"
+                    component="th"
+                    scope="row"
+                  >
+                    {notice.notice_no}
+                  </TableCell>
+                  <TableCell
+                    sx={{ pl: 7 }}
+                    onClick={() => {
+                      handleOpen1();
+                      detailNotice(notice);
+                    }}
+                    id="font_test"
+                    align="left"
+                  >
+                    {notice.notice_title}
+                  </TableCell>
+                  {/* <TableCell
                   onClick={() => {
                     handleOpen1();
                     detailNotice(notice);
@@ -190,33 +204,34 @@ export default function Notice(props) {
                 >
                   {notice.notice_user}
                 </TableCell> */}
-                <TableCell
-                  onClick={() => {
-                    handleOpen1();
-                    detailNotice(notice);
-                  }}
-                  align="right"
-                >
-                  {notice.notice_date.substr(0, 10)}
-                </TableCell>
-                {userType !== 3 && userType !== "3" && (
-                  <TableCell align="right">
-                    <Button
-                      id="font_test"
-                      sx={{ height: 8, color: "red" }}
-                      size="small"
-                      onClick={() => handleDelete(notice.notice_no)}
-                    >
-                      삭제
-                    </Button>
+                  <TableCell
+                    onClick={() => {
+                      handleOpen1();
+                      detailNotice(notice);
+                    }}
+                    align="right"
+                  >
+                    {notice.notice_date.substr(0, 10)}
                   </TableCell>
-                )}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Box sx={{ display: "flex", justifyContent: "end" }}>
+                  {userType !== 3 && userType !== "3" && (
+                    <TableCell align="right">
+                      <Button
+                        id="font_test"
+                        sx={{ height: 8, color: "red" }}
+                        size="small"
+                        onClick={() => handleDelete(notice.notice_no)}
+                      >
+                        삭제
+                      </Button>
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+      <Box sx={{ width:"970px",display: "flex", justifyContent: "end" }}>
         {userType !== 3 && userType !== "3" && (
           <Button
             className="write-button"
@@ -229,6 +244,7 @@ export default function Notice(props) {
               display: "flex",
               justifyContent: "center",
               marginTop: "15px",
+              
 
               width: 30,
               height: 40,
@@ -248,14 +264,8 @@ export default function Notice(props) {
       >
         {/* 모달창 스타일 디테일페이지 닫기 */}
         <Box sx={style}>
-          
-          
           <NoticeDetail detailNotice={details} handleClose1={handleClose1} />
-          
-          
-
         </Box>
-        
       </Modal>
 
       <Modal
