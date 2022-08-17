@@ -11,9 +11,9 @@ export default function RepoItemList({ repos, onRemove, getReportData }) {
     <Grid
       container
       flexWrap={'wrap'}
-      ml='150px' //중앙정렬처럼 보이게 해놓은 것(수정필요)
+      ml='150px'
     >
-      {repos.map((repo) => (
+      {repos.slice(0).reverse().map((repo) => (
         <RepoItem
           repo={repo}
           key={repo.report_no}
