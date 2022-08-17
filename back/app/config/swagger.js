@@ -17,9 +17,23 @@ const options = {
         url: "https://localhost:8000",
       },
     ],
+    components: {
+      securitySchemes: {
+        Authorization: {
+          type: "apiKey",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          value: "Bearer <JWT token here>",
+        },
+      },
+    },
   },
   apis: ["./routes/*.js"], //Swagger 파일 연동
 };
 const specs = swaggereJsdoc(options);
 
-module.exports = { swaggerUi, specs };
+const swaggerUiOptions = {
+  explorer: true,
+};
+
+module.exports = { swaggerUi, specs, swaggerUiOptions };
