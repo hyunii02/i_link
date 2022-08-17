@@ -63,9 +63,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Swagger Config 파일과 연결
-const { swaggerUi, specs } = require("./config/swagger");
+const { swaggerUi, specs, swaggerUiOptions } = require("./config/swagger");
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs, swaggerUiOptions));
 
 // uploads 폴더 내에 있는 정적 파일 로드
 app.use("/uploads", express.static("uploads"));
