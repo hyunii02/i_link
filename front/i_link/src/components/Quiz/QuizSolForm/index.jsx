@@ -50,41 +50,9 @@ const QuizSolForm = ({ solText, solUrl }) => {
             height: "100%",
           }}
         >
-          <Typography id="font_test" variant="body1">
+          <Typography id="font_test" variant="body2">
             {solText}
           </Typography>
-        </Box>
-      )}
-      {!isNullData(solUrl) && !isNullData(solText) && (
-        <Box
-          sx={{
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          <Box
-            sx={{
-              width: "100%",
-              height: "auto",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
-              maxHeight: 50,
-              maxWidth: 50,
-            }}
-          >
-            <Avatar
-              src={baseURL + solUrl}
-              sx={{ width: "90%", height: "80%" }}
-              variant="square"
-            ></Avatar>
-          </Box>
-          <Box sx={{ height: "20%" }}>
-            <Typography id="font_test" variant="body2">
-              {solText}
-            </Typography>
-          </Box>
         </Box>
       )}
     </Box>

@@ -17,8 +17,7 @@ import MealHome from "./MealHome";
 import KidQuiz from "./KidQuiz";
 import QuizStampFrame from "../../Quiz/QuizStampFrame/";
 import { useEffect } from "react";
-import { baseURL, urls } from "../../../api/axios.jsx";
-import axios from "axios";
+import { baseURL, urls, axios } from "../../../api/axios.jsx";
 
 // 학부모 home 페이지
 export default function ParentsDetail() {
