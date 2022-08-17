@@ -32,6 +32,7 @@ const CreateMemoForm = (props) => {
   const day = date.getDate();
   const memo_date = `${year}-${month}-${day}`;
 
+
   // 엔터누를때마다 값을 하나씩 저장.
   const keyDownHandler = (e) => {
     if (e.key === "Enter") {
@@ -56,6 +57,7 @@ const CreateMemoForm = (props) => {
       content: memoContent,
     };
     setContentList([...contentList, content]);
+    
     
     setMemoContent("");
   };
@@ -140,7 +142,7 @@ const CreateMemoForm = (props) => {
               value={memoTitle}
               onChange={(e) => setMemoTitle(e.target.value)}
             ></TextField>
-            <p id="font_test">{formErrors.memoTitle}</p>
+            {memoTitle ==='' &&(<p id="font_test">{formErrors.memoTitle}</p>)}
           </Grid>
 
           <Grid item xs={8}>
@@ -156,7 +158,7 @@ const CreateMemoForm = (props) => {
               onChange={(e) => setMemoContent(e.target.value)}
               onKeyDown={keyDownHandler}
             ></TextField>
-            <p id="font_test">{formErrors.lastMemoContent}</p>
+            {contentList.length===0 && (<p id="font_test">{formErrors.lastMemoContent}</p>)}
           </Grid>
           <Grid item xs={3}>
             
