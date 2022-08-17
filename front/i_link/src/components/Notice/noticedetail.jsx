@@ -55,7 +55,7 @@ const NoticeDetail = (props) => {
   };
 
   return (
-    <Box sx={{ width: 800, height: 1000, background: "white" }}>
+    <Box sx={{ width: 800, height: 1000, background: "white",}}>
       {" "}
       {/*#F8FAD7*/}
       <Box
@@ -105,7 +105,7 @@ const NoticeDetail = (props) => {
             ></Avatar>
             
           ))}
-        <Box sx={{ml:1}}>
+        <Box sx={{ml:1,}}>
           <Typography
             sx={{pl:5,mt:3}}
             fontSize="15px"
@@ -117,7 +117,7 @@ const NoticeDetail = (props) => {
           </Typography>
         </Box>
 
-        <Button id="font_test" sx={{ ml: 93,mt:5,  }} onClick={handleClose1}>
+        <Button id="font_test" sx={{ ml: 93,mt:5,color:"#808080", }} onClick={handleClose1}>
           닫기
         </Button>
         {/* </TextareaAutosize> */}

@@ -54,7 +54,7 @@ const Uploader = ({ image, setImage }) => {
         style={{ display: "none" }}
       />
       {/* 이미지 창 */}
-      <Button id="font_test" onClick={() => inputRef.click()} sx={{ cursor: "pointer",mt:1,pr:2 }}>
+      <Button id="font_test" onClick={() => inputRef.click()} sx={{ cursor: "pointer",mt:1,pr:2,color:"#808080" }}>
         사진첨부
       </Button>
     </Box>
@@ -235,7 +235,7 @@ export default function NoticeWriteForm(props) {
         >
           글 작성
         </Button>
-        <Button id="font_test" sx={{ ml: 2 }} onClick={handleClose2}>
+        <Button id="font_test" sx={{ ml: 2,color:"#808080"}} onClick={handleClose2}>
           닫기
         </Button>
       </Box>

@@ -22,6 +22,8 @@ import CreateMemo from "./creatememo";
 import Box from "@mui/material/Box";
 import { AppBar, Tabs, Tab } from "@mui/material";
 import { axios,baseURL, urls } from "../../api/axios";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import DoneIcon from '@mui/icons-material/Done';
 
 const theme = createTheme();
 
@@ -143,15 +145,25 @@ export default function Album() {
           </FormControl>
         )} */}
         {userType !== 2 && userType !== "2" &&(
-        <AppBar position="static" color="default" >
+        <AppBar  position="static" color="default" elevation={0} >
           <Tabs
+            TabIndicatorProps={{
+              style: {
+                height:"6px",
+                background: "rgb(255, 138, 123)",
+                fontColor: "#D97D54",
+              },
+            }}
             
             value={selectValue}
             onChange={handleChange}
-            indicatorColor="white"
-            textColor="white"
+            indicatorColor="inherit"
+            textColor="inherit"
             variant="fullWidth"
+            
+            
             aria-label="action tabs example"
+            sx={{ background: "#FDFDF6 ",}}
             
             
           > 
@@ -159,8 +171,13 @@ export default function Album() {
             {groupList.map((list, index) => (
               <Tab
                 
+                sx={{
+                  
+                  color:"#ssf33",
+                  fontSize:"10px"
+                }}
                 label={
-                  <Typography id="font_test" variant="h5">
+                  <Typography id="font_test" fontSize="15px">
                     {list.content}
                   </Typography>
                 }
@@ -190,6 +207,7 @@ export default function Album() {
                 >
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography
+
                       id="font_test"  
                       sx={{ background: "#F2FADC", mb: 4 ,pl:2 }}
                       gutterBottom
@@ -199,15 +217,17 @@ export default function Album() {
                      {card.memo_date}
                     </Typography>
                     {card.memo_content.split(",").map((card, key) => (
-                      <Typography sx={{ml:1.2}}id="font_test" key={key}>
-                        🏳️‍🌈{space}{card}
-                      </Typography>
+                      <Box sx={{ml:1.2,mb:0.4}}id="font_test" key={key}>
+                        
+                        🌱{space}{card}
+                      </Box>
                     ))}
                   </CardContent>
                   {userType !== 3 && (
                     <Box sx={{ display: "flex", justifyContent: "end" }}>
                       <Button
                         id="font_test"
+                       
                         onClick={() => handleDelete(card.memo_no)}
                         sx={{
                           mr: 1.5,
@@ -216,9 +236,13 @@ export default function Album() {
                           width: 20,
                           height: 20,
                           color: "#591E59",
+                          
+                          
+
+                          
                         }}
                       >
-                        삭제
+                       삭제
                       </Button>
                     </Box>
                   )}
