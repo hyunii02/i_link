@@ -21,7 +21,9 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CreateMemo from "./creatememo";
 import Box from "@mui/material/Box";
 import { AppBar, Tabs, Tab } from "@mui/material";
-import { axios, baseURL, urls } from "../../api/axios";
+import { axios,baseURL, urls } from "../../api/axios";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import DoneIcon from '@mui/icons-material/Done';
 
 const theme = createTheme();
 
@@ -31,10 +33,10 @@ export default function Album() {
   const [groupList, setGroupList] = useState([]);
   const [groupNo, setGroupNo] = useState(null);
   const [selectValue, setSelectValue] = useState("");
-
+  const space = " "
   //반정보받아오기
   const getGroupList = () => {
-    const fullURL = urls.fetchGroupsList + userCenter;
+    const fullURL = baseURL + urls.fetchGroupsList + userCenter;
     const newArray = [];
     axios.get(fullURL).then((response) => {
       response.data.map((data) => {
@@ -44,14 +46,14 @@ export default function Album() {
         };
         newArray.push(newObj);
       });
-
+      
       setGroupList(newArray);
       setSelectValue(newArray[0].value);
     });
   };
 
   // 반 목록 선택 시 반에 맞는 정보
-
+  
   const clickGroupHandler = () => {
     if (selectValue === "") {
       return;
@@ -59,7 +61,12 @@ export default function Album() {
 
     try {
       axios
-        .get(urls.fetchMemosList + (userType == 2 ? userGroup : selectValue))
+
+        .get(
+          baseURL +
+            urls.fetchMemosList +
+            (userType === "2" ? userGroup : selectValue)
+        )
         .then((response) => setCards(response.data));
     } catch (e) {
       console.log(e);
@@ -73,12 +80,13 @@ export default function Album() {
   useEffect(() => {
     getGroupList();
   }, []);
+  
 
   //axios 로 정보를 받아온다.
   const getMemoList = (e) => {
     try {
       axios
-        .get(urls.fetchMemosList + userGroup)
+        .get(baseURL + urls.fetchMemosList + userGroup)
         .then((response) => setCards(response.data));
     } catch (e) {
       console.log(e);
@@ -88,11 +96,13 @@ export default function Album() {
 
   const handleDelete = (memoNo) => {
     try {
-      axios.delete(urls.fetchMemosDelete + memoNo).then((response) => {
-        if (response.status === 200) {
-          clickGroupHandler();
-        }
-      });
+      axios
+        .delete(baseURL + urls.fetchMemosDelete + memoNo)
+        .then((response) => {
+          if (response.status === 200) {
+            clickGroupHandler();
+          }
+        });
     } catch (e) {
       console.log(e);
     }
@@ -101,6 +111,8 @@ export default function Album() {
   const handleChange = (event, newValue) => {
     setSelectValue(newValue);
   };
+  
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -132,32 +144,51 @@ export default function Album() {
             </Select>
           </FormControl>
         )} */}
-        {userType !== 2 && userType !== "2" && (
-          <AppBar position="static" color="default">
-            <Tabs
-              value={selectValue}
-              onChange={handleChange}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="fullWidth"
-              aria-label="action tabs example"
-              sx={{ border: "6px solid #fae2e2", background: "#FAF1DA" }}
-            >
-              {groupList.map((list, index) => (
-                <Tab
-                  label={
-                    <Typography id="font_test" variant="h5">
-                      {list.content}
-                    </Typography>
-                  }
-                  value={list.value}
-                  key={index}
-                  sx={{ background: "#FAF1DA" }}
-                />
-              ))}
-            </Tabs>
-          </AppBar>
-        )}
+        {userType !== 2 && userType !== "2" &&(
+        <AppBar  position="static" color="default" elevation={0} >
+          <Tabs
+            TabIndicatorProps={{
+              style: {
+                height:"6px",
+                background: "rgb(255, 138, 123)",
+                fontColor: "#D97D54",
+              },
+            }}
+            
+            value={selectValue}
+            onChange={handleChange}
+            indicatorColor="inherit"
+            textColor="inherit"
+            variant="fullWidth"
+            
+            
+            aria-label="action tabs example"
+            sx={{ background: "#FDFDF6 ",}}
+            
+            
+          > 
+          
+            {groupList.map((list, index) => (
+              <Tab
+                
+                sx={{
+                  
+                  color:"#ssf33",
+                  fontSize:"10px"
+                }}
+                label={
+                  <Typography id="font_test" fontSize="15px">
+                    {list.content}
+                  </Typography>
+                }
+                value={list.value}
+                key={index}
+               
+              />
+            ))}
+          </Tabs>
+        </AppBar>
+)}
 
         {/* Hero unit */}
 
@@ -176,24 +207,27 @@ export default function Album() {
                 >
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography
-                      id="font_test"
-                      sx={{ background: "#F2FADC", mb: 4, pl: 2 }}
+
+                      id="font_test"  
+                      sx={{ background: "#F2FADC", mb: 4 ,pl:2 }}
                       gutterBottom
                       fontSize="17px"
                       component="h2"
                     >
-                      {card.memo_date}
+                     {card.memo_date}
                     </Typography>
                     {card.memo_content.split(",").map((card, key) => (
-                      <Typography sx={{ ml: 1.2 }} id="font_test" key={key}>
-                        🏳️‍🌈{card}
-                      </Typography>
+                      <Box sx={{ml:1.2,mb:0.4}}id="font_test" key={key}>
+                        
+                        🌱{space}{card}
+                      </Box>
                     ))}
                   </CardContent>
                   {userType !== 3 && (
                     <Box sx={{ display: "flex", justifyContent: "end" }}>
                       <Button
                         id="font_test"
+                       
                         onClick={() => handleDelete(card.memo_no)}
                         sx={{
                           mr: 1.5,
@@ -202,9 +236,13 @@ export default function Album() {
                           width: 20,
                           height: 20,
                           color: "#591E59",
+                          
+                          
+
+                          
                         }}
                       >
-                        삭제
+                       삭제
                       </Button>
                     </Box>
                   )}
