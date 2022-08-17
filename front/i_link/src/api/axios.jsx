@@ -113,24 +113,16 @@ axios.interceptors.response.use(
       .catch() 으로 이어집니다.    
   */
     console.log(error);
-    // 무한루프 방지를 위해 같은 에러가 2번 발생하면 재발급 처리 안함
-    if (error.response.statusText === sessionStorage.getItem("statusText")) {
-      return Promise.reject(error);
-    }
-
     const config = error.response.config;
     if (401 === error.response.status) {
       const { data } = await axios.post("/users/auth/refresh", {
         token: sessionStorage.getItem("refreshToken"),
         userNo: sessionStorage.getItem("userNo"),
       });
-      const { access_token, refresh_token } = data.token;
+      const { access_token, refresh_token } = data.data.token;
       sessionStorage.setItem("accessToken", access_token);
       sessionStorage.setItem("refreshToken", refresh_token);
-      sessionStorage.setItem("statusText", error.response.statusText);
       axios.defaults.headers.Authorization = `Bearer ${access_token}`;
-
-      return axios(config);
     }
 
     return Promise.reject(error);
@@ -175,9 +167,6 @@ axiosKiosk.interceptors.response.use(
   */
 
     // 무한루프 방지를 위해 같은 에러가 2번 발생하면 재발급 처리 안함
-    if (error.response.statusText === localStorage.getItem("statusText")) {
-      return Promise.reject(error);
-    }
 
     const config = error.response.config;
     if (401 === error.response.status) {
@@ -185,13 +174,10 @@ axiosKiosk.interceptors.response.use(
         token: localStorage.getItem("refreshToken"),
         userNo: localStorage.getItem("userNo"),
       });
-      const { access_token, refresh_token } = data.token;
+      const { access_token, refresh_token } = data.data.token;
       localStorage.setItem("accessToken", access_token);
       localStorage.setItem("refreshToken", refresh_token);
-      localStorage.setItem("statusText", error.response.statusText);
       axiosKiosk.defaults.headers.Authorization = `Bearer ${access_token}`;
-
-      return axiosKiosk(config);
     }
 
     return Promise.reject(error);

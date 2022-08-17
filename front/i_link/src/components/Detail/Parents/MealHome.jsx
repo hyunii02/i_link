@@ -20,15 +20,16 @@ const MealHome = () => {
   }, []);
 
   const getMeal = async (centerNo, today) => {
+    if (centerNo === null || centerNo === "") return;
     try {
       const response = await axios.get(
-        urls.fetchMealsList + centerNo + "/" + today,
+        urls.fetchMealsList + centerNo + "/" + today
       );
       if (response.data.length === 0) {
         setMeal("오늘의 식단이 없습니다.");
       } else {
         const todaysMealArr = response.data.filter(
-          (meal) => meal.meal_date === today,
+          (meal) => meal.meal_date === today
         );
         const todaysMeal = todaysMealArr[0].meal_content;
         setMeal(todaysMeal);
