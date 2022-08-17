@@ -78,7 +78,7 @@ const urls = {
 
 const axios = Axios.create({
   baseURL: baseURL,
-  headers: { Authorization: "Bearer " + sessionStorage.getItem("accessToken") },
+  headers: { Authorization: `Bearer ${sessionStorage.getItem("accessToken")}` },
 });
 
 axios.interceptors.response.use(
@@ -125,7 +125,7 @@ axios.interceptors.response.use(
 // 키오스크용 axios 인스턴스
 const axiosKiosk = Axios.create({
   baseURL: baseURL,
-  headers: { Authorization: "Bearer " + localStorage.getItem("accessToken") },
+  headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
 });
 
 axiosKiosk.interceptors.response.use(
