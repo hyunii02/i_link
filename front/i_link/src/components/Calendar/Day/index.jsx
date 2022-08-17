@@ -10,6 +10,7 @@ import { UserContext } from "../../../context/user";
 import DietInsert from "../DietInsert";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import { axios, baseURL, urls } from "../../../api/axios";
+import { getToday } from "../../../commonFuction";
 
 const style = {
   position: "absolute",
@@ -28,6 +29,29 @@ let snackIdx = 1; // 식단 추가 시 id
 
 const CalendarDay = (props) => {
   const { day, index, dateInfo, refreshHandler } = props;
+
+  const todayDate = new Date();
+
+  // 편집 가능한 날짜 체크
+  const dateCheck = () => {
+    const search = `${todayDate.getFullYear()}-${
+      todayDate.getMonth() + 1 < 10
+        ? "0" + (todayDate.getMonth() + 1)
+        : todayDate.getMonth() + 1
+    }-${todayDate.getDate()}`;
+
+    const today = `${dateInfo.getFullYear()}-${
+      dateInfo.getMonth() + 1 < 10
+        ? "0" + (dateInfo.getMonth() + 1)
+        : dateInfo.getMonth() + 1
+    }-${day.day > 10 ? day.day : "0" + day.day}`;
+    console.log(today);
+
+    if (today >= search) {
+      return true;
+    }
+    return false;
+  };
 
   const fullDateLatter =
     dateInfo.getFullYear() +
@@ -239,9 +263,11 @@ const CalendarDay = (props) => {
           index % 6 !== 0 &&
           isEmptyArr(day.meal) && (
             <Box>
-              <Button onClick={handleOpen}>
-                <AddCircleOutlineIcon fontSize="large"></AddCircleOutlineIcon>
-              </Button>
+              {dateCheck() && (
+                <Button onClick={handleOpen}>
+                  <AddCircleOutlineIcon fontSize="large"></AddCircleOutlineIcon>
+                </Button>
+              )}
               <Modal
                 open={open}
                 onClose={handleClose}

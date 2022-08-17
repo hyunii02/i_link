@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-import { axios, baseURL, urls } from "../../api/axios";
+import { axios,baseURL, urls } from "../../api/axios";
 import { useState, useEffect } from "react";
 import { eventWrapper } from "@testing-library/user-event/dist/utils";
 import { maxWidth } from "@mui/system";
@@ -30,6 +30,7 @@ const NoticeDetail = (props) => {
   const isEmptyFile = (array) => {
     if (isEmptyArray(array)) return true;
 
+    
     if (isEmptyArray(array.files)) return true;
 
     return false;
@@ -44,7 +45,7 @@ const NoticeDetail = (props) => {
   const getNoticeDetail = (e) => {
     try {
       axios
-        .get(urls.fetchNoticesDetail + detailNotice.notice_no)
+        .get(baseURL + urls.fetchNoticesDetail + detailNotice.notice_no)
         .then((response) => {
           setDetailNotice2(response.data);
         });
@@ -54,7 +55,7 @@ const NoticeDetail = (props) => {
   };
 
   return (
-    <Box sx={{ width: 800, height: 1000, background: "white" }}>
+    <Box sx={{ width: 800, height: 1000, background: "white",}}>
       {" "}
       {/*#F8FAD7*/}
       <Box
@@ -81,7 +82,7 @@ const NoticeDetail = (props) => {
             flexDirection: "row",
             justifyContent: "center",
             borderBottom: "2px solid #8E8F91",
-            ml: 4,
+            ml:4
           }}
         >
           {detailNotice2.notice_title}
@@ -95,16 +96,18 @@ const NoticeDetail = (props) => {
       <div sx={{ height: 790, width: 790 }}>
         {isEmptyFile(detailNotice2) ||
           detailNotice2.files.map((file, index) => (
+            
             <Avatar
-              sx={{ mt: 3, ml: 5.5, minWidth: 750, height: "auto" }}
+              sx={{ mt: 3, ml: 5.5, minWidth:750, height:"auto" }}
               key={index}
               src={baseURL + file.file_location}
               variant="square"
             ></Avatar>
+            
           ))}
-        <Box sx={{ ml: 1 }}>
+        <Box sx={{ml:1,}}>
           <Typography
-            sx={{ pl: 5, mt: 3 }}
+            sx={{pl:5,mt:3}}
             fontSize="15px"
             id="font_test"
             minrows={3}
@@ -114,7 +117,7 @@ const NoticeDetail = (props) => {
           </Typography>
         </Box>
 
-        <Button id="font_test" sx={{ ml: 93, mt: 5 }} onClick={handleClose1}>
+        <Button id="font_test" sx={{ ml: 93,mt:5,color:"#808080", }} onClick={handleClose1}>
           닫기
         </Button>
         {/* </TextareaAutosize> */}
