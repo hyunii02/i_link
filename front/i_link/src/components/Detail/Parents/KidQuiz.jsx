@@ -22,7 +22,6 @@ const KidQuiz = ({ kidNo }) => {
         .get(urls.fetchQuizKidsDetail + kidNo)
         .then((response) => {
           if (response.status === 200) {
-            console.log(response);
             setQuizList(response.data);
           }
         })
