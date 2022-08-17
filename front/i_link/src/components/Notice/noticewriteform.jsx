@@ -9,7 +9,7 @@ import { useState, useContext } from "react";
 import { UserContext } from "../../context/user";
 
 import { axios, baseURL, urls } from "../../api/axios";
-import AddNotice from "./addnotice";
+
 // import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
@@ -218,7 +218,7 @@ export default function NoticeWriteForm(props) {
       <Box sx={{ width: 500, display: "flex", justifyContent: "flex-start" }}>
         <Uploader image={NoticeImage} setImage={setNoticeImage} />
         <p>{NoticeImage.image_file.name}</p>
-        <AddNotice />
+        
       </Box>
 
       <Box sx={{ width: 300 }}>
