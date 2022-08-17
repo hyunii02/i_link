@@ -74,6 +74,7 @@ const urls = {
   fetchKidsMemoUpdate: "/kids/memos/", // 아이별 메모 업데이트
   fetchKidsAnswer: "/quiz/kids/register", // 아이 퀴즈 정답 제출
   fetchStampPlus: "/stamps/stamping", // 스탬프 하나 추가
+  fetchStampUpdate: "/stamps/", // 스탬프 갯수 수정
 };
 
 const axios = Axios.create({

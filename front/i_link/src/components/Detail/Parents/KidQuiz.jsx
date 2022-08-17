@@ -36,10 +36,6 @@ const KidQuiz = ({ kidNo }) => {
     return true;
   };
 
-  useEffect(() => {
-    getQuizData();
-  }, []);
-
   return (
     <Box
       sx={{

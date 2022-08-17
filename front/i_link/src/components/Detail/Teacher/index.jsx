@@ -22,9 +22,10 @@ const KidsDetailInfo = ({ kidNo }) => {
   const [parentInfo, setParentInfo] = useState([]);
   // 화면 리렌더링 플래그
   const [reRender, setReRender] = useState(false);
-  // 칭찬도장 수정 상태관리
+  // 칭찬도장 수정 컴포넌트 view 상태관리
   const [stampState, setStampState] = useState(false);
-
+  // 칭찬도장 수정 갯수 상태 관리
+  const [stampCount, setStampCount] = useState(0);
   useEffect(() => {
     getKidsData();
   }, [state]);
@@ -41,12 +42,45 @@ const KidsDetailInfo = ({ kidNo }) => {
 
       // parentNo를 기반으로 부모님의 데이터를 가져옴
       const parentResponse = await axios.get(
-        urls.fetchUsersDelete + kidsResponse.data.parents_no,
+        urls.fetchUsersDelete + kidsResponse.data.parents_no
       );
-
+      setStampCount((stampCount) => kidsResponse.kid_stamp);
       setKidInfo(kidsResponse.data);
       setParentInfo(parentResponse.data);
     } catch (e) {}
+  };
+
+  // 퀴즈 스탬프 갯수 변경 axios
+  const setQuizStampCount = () => {
+    const body = {
+      kidStamp: stampCount,
+    };
+    try {
+      axios
+        .put(urls.fetchStampUpdate, body)
+        .then((response) => {
+          if (response.status === 200) {
+            setKidInfo(response.data);
+          }
+        })
+        .catch((error) => console.log(error));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 퀴즈 스탬프 수정/저장 버튼 클릭 시
+  const quizStampSaveButtonClicked = () => {
+    // 저장 버튼 클릭 시
+    if (stampState) {
+      setQuizStampCount();
+    }
+    // 수정 버튼 클릭 시
+    else {
+    }
+
+    // 버튼 상태 Toggle
+    setStampState((stampState) => !stampState);
   };
 
   return (
@@ -97,11 +131,12 @@ const KidsDetailInfo = ({ kidNo }) => {
               {stampState && (
                 <Box sx={{ width: "50%" }}>
                   <TextField
-                    id="outlined-basic"
+                    id="font_test"
                     variant="outlined"
+                    label="0~18"
                     size="small"
                     sx={{ background: "white", height: "80%" }}
-                    value={kidInfo.kid_stamp}
+                    value={stampCount}
                     fullWidth
                     //onChange={onChange}
                   />
@@ -112,7 +147,7 @@ const KidsDetailInfo = ({ kidNo }) => {
                 size="small"
                 sx={{ height: "90%" }}
                 color="warning"
-                onClick={() => setStampState((stampState) => !stampState)}
+                onClick={quizStampSaveButtonClicked}
               >
                 <Typography id="font_test" variant="body2">
                   {stampState ? "저장" : "수정"}
@@ -169,7 +204,7 @@ const KidsDetailInfo = ({ kidNo }) => {
           mb: 5,
         }}
       >
-        {kidInfo !== null && <KidQuiz kidNo={kidInfo.kid_no} />}
+        {kidInfo.length !== 0 && <KidQuiz kidNo={kidInfo.kid_no} />}
       </Grid>
     </Box>
   );
