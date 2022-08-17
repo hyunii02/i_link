@@ -4,7 +4,7 @@
 
 import React, { useEffect } from "react";
 import { useState } from "react";
-import axios from "axios";
+import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 
@@ -19,7 +19,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { urls, baseURL } from "../../../api/axios";
+import { urls, baseURL, axios } from "../../../api/axios";
 import { colorPalette } from "../../../constants/constants";
 import { UserContext } from "../../../context/user";
 
@@ -86,7 +86,7 @@ export default function Login() {
       userPw: password,
     };
     try {
-      const response = await axios.post(baseURL + urls.fetchLogin, body);
+      const response = await Axios.post(baseURL + urls.fetchLogin, body);
       const resUserType = response.data.data.user.user_type;
       const resUserName = response.data.data.user.user_name;
       const resUserNo = response.data.data.user.user_no;
