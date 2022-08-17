@@ -17,13 +17,11 @@ import { axios, baseURL, urls } from "../../api/axios";
 import Modal from "@mui/material/Modal";
 import { Box, Grid } from "@mui/material";
 import NoticeDetail from "./noticedetail";
-import "./notice.css";
 
 export default function Notice(props) {
   const { userCenter, userType, firstKid } = useContext(UserContext);
   const [notices, setNotices] = useState([]);
   const [details, setDetails] = useState("");
-  const [firstK, setfirstK] = useState(firstKid);
 
   //게시글 넘버 받아오는 것
   let userCenterNumber = userCenter;
@@ -36,8 +34,9 @@ export default function Notice(props) {
     try {
       axios
         .get(
-          urls.fetchNotices +
-            (userCenter === null ? firstKid.center_no : userCenter),
+          baseURL +
+            urls.fetchNotices +
+            (userCenter === null ? firstKid.center_no : userCenter)
         )
         .then((response) => setNotices(response.data));
     } catch (e) {
@@ -47,6 +46,7 @@ export default function Notice(props) {
   const styleWrite = {
     display: "flex",
     flexDirection: "column",
+    
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -63,6 +63,7 @@ export default function Notice(props) {
 
   const style = {
     display: "flex",
+    
     flexDirection: "column",
     position: "absolute",
     top: "50%",
@@ -70,7 +71,7 @@ export default function Notice(props) {
     transform: "translate(-50%, -50%)",
     width: 820,
     height: 600,
-
+    overflow: "auto",
     bgcolor: "white",
     border: "5px solid #FCE6D4",
     boxShadow: 24,
@@ -85,11 +86,13 @@ export default function Notice(props) {
   //삭제
   const handleDelete = (event) => {
     try {
-      axios.delete(urls.fetchNoticesDelete + event).then((response) => {
-        if (response.status === 200) {
-          getNoticeList();
-        }
-      });
+      axios
+        .delete(baseURL + urls.fetchNoticesDelete + event)
+        .then((response) => {
+          if (response.status === 200) {
+            getNoticeList();
+          }
+        });
     } catch (e) {
       console.log(e);
     }
@@ -243,9 +246,15 @@ export default function Notice(props) {
         aria-describedby="modal-modal-description"
       >
         {/* 모달창 스타일 디테일페이지 닫기 */}
-        <Box className="notice" sx={style}>
+        <Box sx={style}>
+          
+          
           <NoticeDetail detailNotice={details} handleClose1={handleClose1} />
+          
+          
+
         </Box>
+        
       </Modal>
 
       <Modal
