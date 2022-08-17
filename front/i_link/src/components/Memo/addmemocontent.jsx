@@ -23,7 +23,7 @@ const AddMemoContent = (props) => {
         variant="button"
         display="flex"
       >
-        🏳️‍🌈{space} {content.content}
+        🌱{space} {content.content}
         <Button id="font_test" onClick={() => onRemove2(content.id)} sx={{ color: "red" }}>
           삭제
         </Button>
