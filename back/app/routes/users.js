@@ -6,13 +6,119 @@ const auth = require(path.join(__dirname, "..", "utils", "auth"));
 const profile = require(path.join(__dirname, "..", "utils", "profile"));
 const userController = require(path.join(__dirname, "..", "controllers", "users"));
 
-// 토큰 검증 test
-// auth.verifyToken을 통해 유효한 토큰인지 검증 후, 유효하다면 다음 경로 이동 가능, 그렇지 않다면 이동 불가
-// 홈으로 이동하기 전 auth.verifyToken 미들웨어 사용
-router.get("/", auth.verifyToken, userController.verify_token);
-
-// 토큰 업데이트 test
-router.post("/token", auth.verifyRefreshToken, userController.refresh_token);
+/**
+ * @swagger
+ * paths:
+ *  /users/auth/refresh:
+ *    post:
+ *      summary: "토큰 갱신"
+ *      description: "post 방식으로 토큰 갱신"
+ *      tags: [Users]
+ *      requestBody:
+ *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (유저 토큰 갱신)
+ *          required: true
+ *          content:
+ *            application/x-www-form-urlencoded:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  userNo:
+ *                    type: integer
+ *                    description: "유저 번호"
+ *                    example: 175
+ *                  token:
+ *                    type: string
+ *                    description: "유저 refresh token"
+ *                    example: "eyJhbGciOiJIUzI15cCI6IkpXVCJ9.eyJ1c2VxXNlcl9lb.WFpbCI6IuyVzZXwI"
+ *      responses:
+ *        "200":
+ *          description: 토큰 갱신 성공
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    logined:
+ *                      type: boolean
+ *                      example: true
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "토큰 갱신 완료"
+ *                    data:
+ *                      type: object
+ *                      properties:
+ *                        user:
+ *                          type: object
+ *                          properties:
+ *                            user_no:
+ *                              type: integer
+ *                              example: 128
+ *                            user_type:
+ *                              type: integer
+ *                              example: 1
+ *                            user_email:
+ *                              type: string
+ *                              example: "test@test.com"
+ *                            user_name:
+ *                              type: string
+ *                              example: "사용자이름"
+ *                            user_phone:
+ *                              type: string
+ *                              example: "010-1234-1234"
+ *                            user_profile_url:
+ *                              type: string
+ *                              example: "/uploads/profile/1231412341.png"
+ *                            group_no:
+ *                              type: integer
+ *                              example: 44
+ *                            center_no:
+ *                              type: integer
+ *                              example: 244
+ *                        token:
+ *                          type: object
+ *                          properties:
+ *                            access_token:
+ *                              type: string
+ *                              example: "GciOiJIUzI1NiIsInR5cCI6IkpXVC"
+ *                            refresh_token:
+ *                              type: string
+ *                              example: "GciOiJIUzI1NiIsInR5cCI6IkpXVC"
+ *        "401":
+ *          description: 토큰 없이 갱신 요청됨 / 토큰이 저장되어 있지 않음 / 토큰 만료
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "토큰이 저장되어 있지 않음"
+ *        "403":
+ *          description: 토큰이 일치하지 않음
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "토큰이 일치하지 않음"
+ *        "500":
+ *          description: DB에서 토큰 가져오기 실패
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "DB에서 토큰 가져오기 실패"
+ */
+router.post("/auth/refresh", auth.verifyRefreshToken, userController.refresh_token);
 
 /**
  * @swagger
@@ -239,7 +345,7 @@ router.get("/logout", userController.user_logout);
  *                  example:
  *                      "사용자를 찾을 수 없습니다."
  */
-router.get("/:userNo", userController.user_detail);
+router.get("/:userNo", auth.verifyToken, userController.user_detail);
 
 /**
  * @swagger
@@ -314,7 +420,7 @@ router.get("/:userNo", userController.user_detail);
  *                      example:
  *                          "회원 수정 실패."
  */
-router.put("/:userNo", profile.single("userProfile"), userController.user_update);
+router.put("/:userNo", auth.verifyToken, profile.single("userProfile"), userController.user_update);
 
 /**
  * @swagger
@@ -373,7 +479,7 @@ router.put("/:userNo", profile.single("userProfile"), userController.user_update
  *                      example:
  *                          "소속 유치원 정보 수정 실패."
  */
-router.put("/center/modify", userController.user_center_update);
+router.put("/center/modify", auth.verifyToken, userController.user_center_update);
 
 /**
  * @swagger
@@ -419,6 +525,6 @@ router.put("/center/modify", userController.user_center_update);
  *                      example:
  *                          "회원 탈퇴 실패"
  */
-router.delete("/:userNo", userController.user_remove);
+router.delete("/:userNo", auth.verifyToken, userController.user_remove);
 
 module.exports = router;
