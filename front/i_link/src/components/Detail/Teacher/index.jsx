@@ -44,7 +44,7 @@ const KidsDetailInfo = ({ kidNo }) => {
       const parentResponse = await axios.get(
         urls.fetchUsersDelete + kidsResponse.data.parents_no
       );
-      setStampCount((stampCount) => kidsResponse.kid_stamp);
+      setStampCount((stampCount) => kidsResponse.data.kid_stamp);
       setKidInfo(kidsResponse.data);
       setParentInfo(parentResponse.data);
     } catch (e) {}
@@ -57,10 +57,10 @@ const KidsDetailInfo = ({ kidNo }) => {
     };
     try {
       axios
-        .put(urls.fetchStampUpdate, body)
+        .put(urls.fetchStampUpdate + kidInfo.kid_no, body)
         .then((response) => {
           if (response.status === 200) {
-            setKidInfo(response.data);
+            getKidsData();
           }
         })
         .catch((error) => console.log(error));
@@ -71,6 +71,18 @@ const KidsDetailInfo = ({ kidNo }) => {
 
   // 퀴즈 스탬프 수정/저장 버튼 클릭 시
   const quizStampSaveButtonClicked = () => {
+    // 숫자 입력 체크
+    if (isNaN(stampCount)) {
+      alert("숫자만 입력하세요");
+      return;
+    }
+
+    // 범위 입력 체크
+    if (stampCount < 0 || stampCount > 18) {
+      alert("범위 안의 숫자를 입력 해 주세요");
+      return;
+    }
+
     // 저장 버튼 클릭 시
     if (stampState) {
       setQuizStampCount();
@@ -132,13 +144,14 @@ const KidsDetailInfo = ({ kidNo }) => {
                 <Box sx={{ width: "50%" }}>
                   <TextField
                     id="font_test"
-                    variant="outlined"
-                    label="0~18"
                     size="small"
                     sx={{ background: "white", height: "80%" }}
                     value={stampCount}
+                    label="0~18"
                     fullWidth
-                    //onChange={onChange}
+                    onChange={(e) =>
+                      setStampCount((stampCount) => e.target.value)
+                    }
                   />
                 </Box>
               )}
