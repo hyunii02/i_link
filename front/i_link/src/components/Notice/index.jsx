@@ -202,6 +202,7 @@ export default function Notice(props) {
                 {userType !== 3 && userType !== "3" && (
                   <TableCell align="right">
                     <Button
+                      id="font_test"
                       sx={{ height: 8, color: "red" }}
                       size="small"
                       onClick={() => handleDelete(notice.notice_no)}
