@@ -45,7 +45,6 @@ const CalendarDay = (props) => {
         ? "0" + (dateInfo.getMonth() + 1)
         : dateInfo.getMonth() + 1
     }-${day.day > 10 ? day.day : "0" + day.day}`;
-    console.log(today);
 
     if (today >= search) {
       return true;
