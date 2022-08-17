@@ -3,6 +3,7 @@ const path = require("path");
 const router = express.Router();
 
 const mealsController = require(path.join(__dirname, "..", "controllers", "meals"));
+const meals = require(path.join(__dirname, "..", "utils", "meals"));
 
 /**
  * @swagger
@@ -59,6 +60,55 @@ const mealsController = require(path.join(__dirname, "..", "controllers", "meals
  *                          "식단 등록 실패"
  */
 router.post("/register", mealsController.meal_regist);
+
+/**
+ * @swagger
+ * paths:
+ *  /meals/register/all:
+ *    post:
+ *      summary: "식단 등록"
+ *      description: "post 방식으로 식단 등록"
+ *      tags: [Meals]
+ *      requestBody:
+ *          description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (식단 등록)
+ *          required: true
+ *          content:
+ *            multipart/form-data:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  centerNo:
+ *                    type: integer
+ *                    description: "유치원 번호"
+ *                  meals:
+ *                    type: file
+ *                    description: "식단 데이터 파일(날짜/식단/간식 - 1행은 컬럼명)"
+ *      responses:
+ *        "200":
+ *          description: 식단 등록 성공
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "식단 등록 완료"
+ *
+ *        "500":
+ *          description: 식단 등록 실패
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    message:
+ *                      type: string
+ *                      example:
+ *                          "식단 등록 실패"
+ */
+router.post("/register/all", meals.single("meals"), mealsController.meal_regist_month);
 
 /**
  * @swagger
