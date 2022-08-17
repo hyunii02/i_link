@@ -27,6 +27,7 @@ const NoticeHome = () => {
   const text = "더보기 >";
 
   const getNotice = async (centerNo) => {
+    if (centerNo === null || centerNo === "") return;
     try {
       const response = await axios.get(urls.fetchNotices + centerNo);
       if (response.data.length === 0) {
@@ -34,7 +35,7 @@ const NoticeHome = () => {
       } else {
         const newArray = [];
         const length = response.data.length < 3 ? response.data.length : 3;
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < length; i++) {
           const newObj = {
             title: response.data[i].notice_title,
             date: response.data[i].notice_date,

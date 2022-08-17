@@ -65,26 +65,34 @@ const AppBarTab = (props) => {
     getTotalList(value);
   }, [value]);
   return (
-    <AppBar position="static" color="default">
+    <AppBar position="static" color="default" elevation={0}>
       <Tabs
         value={value}
         onChange={handleChange}
-        indicatorColor="primary"
-        textColor="primary"
+        indicatorColor="inherit"
+            textColor="inherit"
         variant="fullWidth"
         aria-label="action tabs example"
-        sx={{ border: "6px solid #fae2e2", background: "#FAF1DA" }}
+        TabIndicatorProps={{
+          style: {
+            height:"3px",
+            
+            background: "#FF8A7B",
+            fontColor: "#D97D54",
+          },
+        }}
+        
       >
         {groupList.map((list) => (
           <Tab
             label={
-              <Typography id="font_test" variant="h5">
+              <Typography id="font_test" fontSize="20px">
                 {list.content}
               </Typography>
             }
             value={list.value}
             key={list.value}
-            sx={{ background: "#FAF1DA" }}
+            sx={{ background: "#FDFDF6" }}
           />
         ))}
       </Tabs>

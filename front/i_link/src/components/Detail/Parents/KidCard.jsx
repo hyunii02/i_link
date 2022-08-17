@@ -14,16 +14,18 @@ const KidCard = ({ centerName, setCenterName, groupName, setGroupName }) => {
   const buttonText = ["등원완료", "하원완료", "설문완료"];
 
   const getCenterName = async () => {
+    if (firstKid.center_no === null || firstKid.center_no === "") return;
+
     const response = await axios.get(
-      urls.fetchCentersDetial + firstKid.center_no,
+      urls.fetchCentersDetial + firstKid.center_no
     );
     setCenterName(response.data.center_name);
   };
 
   const getGroupName = async () => {
-    if (firstKid.group_no === null) return;
+    if (firstKid.group_no === null || firstKid.group_no === "") return;
     const response = await axios.get(
-      urls.fetchGroupsDetail + firstKid.group_no,
+      urls.fetchGroupsDetail + firstKid.group_no
     );
     setGroupName(response.data.group_name);
   };

@@ -51,7 +51,7 @@ export default function CreateMemo(props) {
           height: 240,
           display: "flex",
           flexDirection: "column",
-          background: "#F1FAB7",
+          background: "white",
         }}
       >
         <Box
@@ -60,15 +60,18 @@ export default function CreateMemo(props) {
             justifyContent: "center",
             alignItems: "center",
             height: 300,
-            border: 2,
+            
+            // border: 2,
             color: "#FCCACA",
           }}
         >
           <Fab sx={{ background: "#FBF6F6" }} aria-label="add">
-            <AddIcon
-              sx={{ width: 60, height: 100 }}
+            <AddIcon 
+              sx={{ width: 60, height: 100 ,color:"rgb(255, 138, 123)"}}
+              
               onClick={handleOpen}
             ></AddIcon>
+            </Fab>
             <Modal
               open={open}
               onClose={handleClose}
@@ -94,7 +97,7 @@ export default function CreateMemo(props) {
                 </div>
               </Box>
             </Modal>
-          </Fab>
+          
         </Box>
       </Card>
     </Grid>
