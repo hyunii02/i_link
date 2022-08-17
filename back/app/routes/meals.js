@@ -3,7 +3,7 @@ const path = require("path");
 const router = express.Router();
 
 const mealsController = require(path.join(__dirname, "..", "controllers", "meals"));
-
+const meals = require(path.join(__dirname, "..", "utils", "meals"));
 /**
  * @swagger
  * paths:
@@ -59,6 +59,8 @@ const mealsController = require(path.join(__dirname, "..", "controllers", "meals
  *                          "식단 등록 실패"
  */
 router.post("/register", mealsController.meal_regist);
+
+router.post("/register/all", meals.single("meals"), mealsController.meal_regist_month);
 
 /**
  * @swagger

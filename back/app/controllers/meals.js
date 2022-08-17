@@ -3,6 +3,8 @@ const path = require("path");
 const db = require(path.join(__dirname, "..", "models"));
 const Meals = db.meals;
 
+const readXlsxFile = require("read-excel-file/node");
+
 const Op = db.Sequelize.Op; // 검색을 위한 객체
 
 // 식단 등록
@@ -25,6 +27,40 @@ exports.meal_regist = async function (req, res) {
     .catch((err) => {
       res.status(500).json({ error: err.message, message: "식단 등록 실패" });
     });
+};
+
+// 월별 식단 등록
+// [post] /meals/register/all
+exports.meal_regist_month = async function (req, res) {
+  const centerNo = req.body.centerNo;
+  try {
+    if (req.file == undefined || req.file == null) {
+      return res.status(400).json({ message: "excel file 업로드 하세요." });
+    }
+    let file = path.join(__dirname, "..", "uploads", "meals", req.file.filename);
+    readXlsxFile(file).then((rows) => {
+      rows.shift(); // 1열 생략
+      let meals = [];
+      rows.forEach((row) => {
+        let meal = {
+          center_no: centerNo,
+          meal_date: row[0],
+          meal_content: row[1],
+          snack_content: row[2],
+        };
+        meals.push(meal);
+      });
+      Meals.bulkCreate(meals)
+        .then(() => {
+          res.status(200).json({ message: "식단 등록 성공" });
+        })
+        .catch((err) => {
+          res.status(500).json({ error: err.message, message: "식단 등록 실패" });
+        });
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message, message: "식단 등록 실패" });
+  }
 };
 
 // 식단 목록 조회
