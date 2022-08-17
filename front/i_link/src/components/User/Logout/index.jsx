@@ -37,6 +37,7 @@ const Logout = () => {
 
   return (
     <Button
+      id="font_test"
       type="submit"
       variant="contained"
       style={{ background: colorPalette.BUTTON_COLOR }}
