@@ -149,8 +149,8 @@ export default function Album() {
           <Tabs
             TabIndicatorProps={{
               style: {
-                height:"6px",
-                background: "rgb(255, 138, 123)",
+                height:"3px",
+                background: "#FF8A7B",
                 fontColor: "#D97D54",
               },
             }}
@@ -177,7 +177,7 @@ export default function Album() {
                   fontSize:"10px"
                 }}
                 label={
-                  <Typography id="font_test" fontSize="15px">
+                  <Typography id="font_test" fontSize="20px">
                     {list.content}
                   </Typography>
                 }
@@ -209,7 +209,7 @@ export default function Album() {
                     <Typography
 
                       id="font_test"  
-                      sx={{ background: "#F2FADC", mb: 4 ,pl:2 }}
+                      sx={{ background: "#F2FADC", mb: 4 ,textAlign:"center",borderRadius:"10px"}}
                       gutterBottom
                       fontSize="17px"
                       component="h2"
@@ -230,12 +230,12 @@ export default function Album() {
                        
                         onClick={() => handleDelete(card.memo_no)}
                         sx={{
-                          mr: 1.5,
+                          mr: 0.7,
                           mb: 1.5,
-                          background: "#C5EDFD",
+                          
                           width: 20,
                           height: 20,
-                          color: "#591E59",
+                          color: "#FF8A7B",
                           
                           
 
