@@ -177,7 +177,7 @@ export default function Login() {
       }
     } catch (err) {
       // 로그인 실패 시
-      console.log(err.response.data.message);
+      
       switch (err.response.data.message) {
         case "비밀번호 오류":
           setFormErrors({ password: "잘못된 비밀번호 입니다." });
