@@ -123,7 +123,7 @@ export default function Notice(props) {
             borderRadius: "16px",
           }}
         >
-          <Table sx={{ maxWidth: 800 }} aria-label="simple table">
+          <Table sx={{ maxWidth: 800,background: "#FF8A7B",borderTopLeftRadius: "10px",borderTopRightRadius: "10px"  }} aria-label="simple table">
             <TableHead>
               <TableRow sx={{ background: "#FF8A7B" }}>
                 <TableCell
@@ -142,17 +142,36 @@ export default function Notice(props) {
                 >
                   제목
                 </TableCell>
-
+                {/* {userType !==1 && userType !=="1" &&(
                 <TableCell
-                  sx={{ pr: 5 }}
+                
+                  sx={{ pr: 5}}
                   id="font_test"
                   width="120px"
                   align="right"
                 >
+                
                   작성일
                 </TableCell>
+                )} */}
+                
+                <TableCell
+                  
+                  sx={{ pr: 5 ,borderTopRightRadius: "10px" }}
+                  
+                  id="font_test"
+                  width="120px"
+                  align="right"
+                >
+                
+                  작성일
+                </TableCell>
+                
+                
+                
                 {userType !== 3 && userType !== "3" && (
                   <TableCell
+                    
                     sx={{ borderTopRightRadius: "10px" }}
                     id="font_test"
                     width="10px"
