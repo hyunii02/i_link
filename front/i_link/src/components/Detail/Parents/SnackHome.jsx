@@ -29,8 +29,10 @@ const SnackHome = () => {
         const todaysSnackArr = response.data.filter(
           (snack) => snack.meal_date === today,
         );
-        const todaysSnack = todaysSnackArr[0].snack_content;
-        setSnack(todaysSnack);
+        if (todaysSnackArr.length !== 0) {
+          const todaysSnack = todaysSnackArr[0].snack_content;
+          setSnack(todaysSnack);
+        }
       }
     } catch (err) {
       console.log(err);

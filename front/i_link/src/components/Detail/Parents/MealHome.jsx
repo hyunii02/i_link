@@ -23,16 +23,18 @@ const MealHome = () => {
     if (centerNo === null || centerNo === "") return;
     try {
       const response = await axios.get(
-        urls.fetchMealsList + centerNo + "/" + today
+        urls.fetchMealsList + centerNo + "/" + today,
       );
       if (response.data.length === 0) {
         setMeal("오늘의 식단이 없습니다.");
       } else {
         const todaysMealArr = response.data.filter(
-          (meal) => meal.meal_date === today
+          (meal) => meal.meal_date === today,
         );
-        const todaysMeal = todaysMealArr[0].meal_content;
-        setMeal(todaysMeal);
+        if (todaysMealArr.length !== 0) {
+          const todaysMeal = todaysMealArr[0].meal_content;
+          setMeal(todaysMeal);
+        }
       }
     } catch (err) {
       console.log(err);
