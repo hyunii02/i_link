@@ -82,7 +82,6 @@ export default function BasicModal({ getReportData }) {
       reportType: parseInt(type),
       reportContent: text,
     };
-    console.log(firstKid)
     axios
       .post(urls.fetchReportsRegister, body)
       .then((response) => getReportData());
@@ -102,8 +101,9 @@ export default function BasicModal({ getReportData }) {
       <Button
         id="font_test"
         variant="contained"
-        onClick={handleOpen} 
-        style={{ background: colorPalette.BUTTON_COLOR }}>
+        onClick={handleOpen}
+        style={{ background: colorPalette.BUTTON_COLOR }}
+      >
         글쓰기
       </Button>
       <Modal
@@ -147,8 +147,20 @@ export default function BasicModal({ getReportData }) {
             </Box>
             <Divider variant="middle" />
             <Box sx={{ mt: 3, ml: 1, mb: 1 }}>
-              <Button onClick={handleSumit} sx={{ color: "#FF8A7B"}} id="font_test">저장</Button>
-              <Button onClick={handleClose} sx={{ color: "#FF8A7B"}} id="font_test">닫기</Button>
+              <Button
+                onClick={handleSumit}
+                sx={{ color: "#FF8A7B" }}
+                id="font_test"
+              >
+                저장
+              </Button>
+              <Button
+                onClick={handleClose}
+                sx={{ color: "#FF8A7B" }}
+                id="font_test"
+              >
+                닫기
+              </Button>
             </Box>
           </Box>
         </Box>
