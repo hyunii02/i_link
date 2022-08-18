@@ -31,10 +31,10 @@ const NoticeHome = () => {
     try {
       const response = await axios.get(urls.fetchNotices + centerNo);
       if (response.data.length === 0) {
-        setNotice("공지사항이 없습니다.");
+        setNotice(["공지사항이 없습니다."]);
       } else {
         const newArray = [];
-        const length = response.data.length < 3 ? response.data.length : 3;
+        const length = response.data.length < 2 ? response.data.length : 2;
         for (let i = 0; i < length; i++) {
           const newObj = {
             title: response.data[i].notice_title,
@@ -59,6 +59,7 @@ const NoticeHome = () => {
         setNotice(newArray); //최신 3개의 공지사항 title을 보여줌
       }
     } catch (err) {
+      setNotice(["공지사항이 없습니다."]);
       console.log(err);
     }
   };
