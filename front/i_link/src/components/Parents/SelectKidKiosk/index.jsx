@@ -110,10 +110,10 @@ const SelectKidKiosk = ({ kidName, setKidName, kidUrl, setKidUrl }) => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {kidsList.map((kid) => (
+        {kidsList.map((kid, index) => (
           <MenuItem
             sx={{ fontSize: "3rem" }}
-            key={kid.kid_name}
+            key={index}
             onClick={() =>
               handleSelect(
                 kid.kid_name,

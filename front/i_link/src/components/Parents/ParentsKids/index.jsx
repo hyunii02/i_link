@@ -284,7 +284,7 @@ export default function ParentsKids() {
                   fullWidth
                   variant="contained"
                   style={{ background: colorPalette.BUTTON_COLOR }}
-                  sx={{ mt: 3, mb: 5 }}
+                  sx={{ mt: 3, mb: 1 }}
                   onChange={handleChange}
                   size="large"
                 >
@@ -292,6 +292,18 @@ export default function ParentsKids() {
                     아이등록
                   </Typography>
                 </Button>
+                <Grid container justifyContent="flex-end">
+                  <Button
+                    variant="body2"
+                    id="font_test"
+                    style={{ color: "#808080", textDecoration: "none" }}
+                    onClick={() => {
+                      navigate(-1);
+                    }}
+                  >
+                    뒤로가기
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
           </Box>
