@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: "i7e102.p.ssafy.io",
+    origin: "https://i7e102.p.ssafy.io",
     methods: "*",
     credentials: true,
   }),
