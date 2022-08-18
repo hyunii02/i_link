@@ -218,7 +218,7 @@ export default function Login() {
             variant="h3"
             sx={{ color: "rgba(0, 0, 0, 0.6)" }}
           >
-            아이를 이어주다
+            아이와 이어주다
           </Typography>
           <Avatar
             sx={{ width: 380, height: 350 }}
