@@ -8,7 +8,13 @@ import { UserContext } from "../../../context/user";
 
 import { Box, Grid, Avatar } from "@mui/material";
 
-const KidCard = ({ centerName, setCenterName, groupName, setGroupName }) => {
+const KidCard = ({
+  centerName,
+  setCenterName,
+  groupName,
+  setGroupName,
+  kidState,
+}) => {
   const { firstKid } = useContext(UserContext);
   // 버튼에 넣어줘야 할 텍스트
   const buttonText = ["등원완료", "하원완료", "설문완료"];
@@ -17,7 +23,7 @@ const KidCard = ({ centerName, setCenterName, groupName, setGroupName }) => {
     if (firstKid.center_no === null || firstKid.center_no === "") return;
 
     const response = await axios.get(
-      urls.fetchCentersDetial + firstKid.center_no
+      urls.fetchCentersDetial + firstKid.center_no,
     );
     setCenterName(response.data.center_name);
   };
@@ -25,10 +31,11 @@ const KidCard = ({ centerName, setCenterName, groupName, setGroupName }) => {
   const getGroupName = async () => {
     if (firstKid.group_no === null || firstKid.group_no === "") return;
     const response = await axios.get(
-      urls.fetchGroupsDetail + firstKid.group_no
+      urls.fetchGroupsDetail + firstKid.group_no,
     );
     setGroupName(response.data.group_name);
   };
+
   useEffect(() => {
     getCenterName();
     getGroupName();
@@ -91,11 +98,7 @@ const KidCard = ({ centerName, setCenterName, groupName, setGroupName }) => {
             {buttonText.map((text, index) => (
               <Grid item xs={4} key={index} sx={{ textAlign: "center" }}>
                 <Button
-                  variant={
-                    parseInt(firstKid.kid_state) === index + 1
-                      ? "contained"
-                      : "outlined"
-                  }
+                  variant={kidState === index + 1 ? "contained" : "outlined"}
                   value={index + 1}
                   size="small"
                   color="warning"
