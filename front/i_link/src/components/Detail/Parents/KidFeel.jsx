@@ -23,6 +23,7 @@ const KidFeel = ({
   setCenterName,
   groupName,
   setGroupName,
+  kidState,
 }) => {
   const { firstKid } = useContext(UserContext);
   const getFeel = async () => {
@@ -68,6 +69,7 @@ const KidFeel = ({
             setCenterName={setCenterName}
             groupName={groupName}
             setGroupName={setGroupName}
+            kidState={kidState}
           ></KidCard>
         </Grid>
         <Divider orientation="vertical" flexItem />
