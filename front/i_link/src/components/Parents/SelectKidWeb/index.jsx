@@ -25,6 +25,8 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
     userCenter,
     userGroup,
     userProfileUrl,
+    setUserCenter,
+    setUserGroup,
   } = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -95,6 +97,8 @@ const SelectKidWeb = ({ kidName, setKidName }) => {
   // 아이를 클릭해서 대표아이 변경
   const menuItemClicked = (e) => {
     setFirstKid((firstKid) => kidsList[e.currentTarget.value]);
+    setUserCenter(kidsList[e.currentTarget.value].center_no);
+    setUserGroup(kidsList[e.currentTarget.value].group_no);
     setAnchorElUser(null);
     navigate("/parents/home", { state: kidsList[e.currentTarget.value] });
   };
