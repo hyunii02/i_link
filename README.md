@@ -299,10 +299,10 @@ i_link/front
 
 | 이름 | 직책 | 파트 | 업무 |
 | --- | --- | --- | --- |
-| 강민재 | 팀장 | FE | 전역 상태 관리, 키오스크 페이지 |
-| 안정현 | 팀원 | FE | 회원관리 페이지, 특이사항 페이지 |
-| 김국진 | 팀원 | FE | 메인 페이지, 퀴즈 페이지, 반 관리 페이지 |
-| 배지우 | 팀원 | FE | 공지사항 페이지, 알림장 페이지 |
+| 강민재 | 팀장 | FE | KIOSK 담당, 전역 상태 관리 |
+| 안정현 | 팀원 | FE | WEB 담당, 메인 페이지, 회원관리 페이지, 특이사항 페이지, UCC 담당 |
+| 김국진 | 팀원 | FE | Web 담당, 메인 페이지, 식단관리 페이지, 퀴즈 페이지, 반관리 페이지 |
+| 배지우 | 팀원 | FE | WEB 담당, 공지사항 페이지, 알림장 페이지, 유치원등록 페이지 |
 | 송형근 | 팀원 | BE | AWS/Jenkins Setting, 서비스 API 개발, 문서, 컨벤션 관리 |
 | 이소영 | 팀원 | BE | DB Setting, 서비스 API 개발, 사용자 인증 |
 
@@ -326,4 +326,65 @@ i_link/front
 - [중간발표자료](https://docs.google.com/presentation/d/1t5iPXE_KGjOoJk-zvma17btQpl48ymC5bX7pnzBlOgc/edit?usp=sharing)
 - [최종발표자료](https://docs.google.com/presentation/d/1NiSj9vUSFG0veN--SHTnRUA2tDIM5enbgn8hxETQWT0/edit?usp=sharing)
 
----
+## **✔ 시연 GIF**
+
+### 원장  
+- 로그인  
+![Alt Text](gif/master/아이링크_원장님_로그인.gif)  
+- 가입승인   
+![Alt Text](gif/master/아이링크_원장님_가입승인.gif)   
+- 공지사항  
+![Alt Text](gif/master/아이링크_원장님_공지사항.gif)  
+- 반관리  
+![Alt Text](gif/master/아이링크_원장님_반관리.gif)  
+- 알림장  
+![Alt Text](gif/master/아이링크_원장님_알림장.gif)  
+- 식단관리  
+![Alt Text](gif/master/아이링크_원장님_식단관리.gif)  
+
+### 선생  
+- 로그인  
+![Alt Text](gif/teacher/아이링크_선생님_로그인.gif)  
+- 특이사항 확인  
+![Alt Text](gif/teacher/아이링크_선생님_특이사항확인.gif)  
+- 등원완료 체크  
+![Alt Text](gif/teacher/아이링크_선생님_등원완료체크.gif)  
+- 공지사항 작성 및 삭제   
+![Alt Text](gif/teacher/아이링크_선생님_공지사항_작성_및_삭제.gif)   
+- 공지사항 확인  
+![Alt Text](gif/teacher/아이링크_선생님_공지사항확인.gif)  
+- 식단 등록 및 삭제  
+![Alt Text](gif/teacher/아이링크_선생님_식단등록_및_삭제.gif)    
+- 알림장 등록  
+![Alt Text](gif/teacher/아이링크_선생님_알림장등록.gif)  
+- 퀴즈 등록  
+![Alt Text](gif/teacher/아이링크_선생님_퀴즈등록.gif)  
+- 오늘의퀴즈 등록  
+![Alt Text](gif/teacher/아이링크_선생님_오늘의퀴즈_등록.gif)  
+
+### 학부모  
+- 로그인  
+![Alt Text](gif/parents/아이링크_부모님_로그인.gif)  
+- 아이등록  
+![Alt Text](gif/parents/아이링크_부모님_아이등록.gif)  
+- 아이변경  
+![Alt Text](gif/parents/아이링크_부모님_아이변경.gif)  
+- 식단간식   
+![Alt Text](gif/parents/아이링크_부모님_식단간식.gif)   
+- 공지사항  
+![Alt Text](gif/parents/아이링크_부모님_공지사항.gif)  
+- 특이사항  
+![Alt Text](gif/parents/아이링크_부모님_특이사항.gif)  
+
+
+### 아이  
+- 키오스크 메인  
+![Alt Text](gif/kids/아이링크_키오스크_오전.gif)  
+- 키오스크 프로필 변경   
+![Alt Text](gif/kids/아이링크_키오스크_프로필_변경.gif)  
+- 키오스크 오후 아이설문  
+![Alt Text](gif/kids/아이링크_키오스크_오후_아이설문.gif)  
+- 키오스크 오후 아이퀴즈  
+![Alt Text](gif/kids/아이링크_키오스크_오후_아이퀴즈.gif)  
+- 키오스크 오후 칭찬스티커  
+![Alt Text](gif/kids/아이링크_키오스크_오후_칭찬스티커.gif)  
