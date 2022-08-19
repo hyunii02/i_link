@@ -163,6 +163,8 @@ export default function Login() {
                     if (response.status === 200) {
                       setKidsList(response.data);
                       setFirstKid(response.data[0]);
+                      setUserCenter(response.data[0].center_no);
+                      setUserGroup(response.data[0].group_no);
                       setChangeState(true);
                       navigate("/parents/home", { state: response.data[0] });
                     }
