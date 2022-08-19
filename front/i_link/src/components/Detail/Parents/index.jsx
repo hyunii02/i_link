@@ -28,12 +28,15 @@ export default function ParentsDetail() {
   const { firstKid } = useContext(UserContext);
   const [kidInfo, setKidInfo] = useState(firstKid);
   const [stampCount, setStampCount] = useState(0);
+  const [kidState, setKidState] = useState(0);
 
   const getKidInfo = (kidno) => {
     try {
       const fullURL = baseURL + urls.fetchKidsDetail + kidno;
       axios.get(fullURL).then((response) => {
+        setKidState((kidState) => parseInt(response.data.kid_state));
         setStampCount(parseInt(response.data.kid_stamp));
+        setKidInfo(response.data);
       });
     } catch (e) {
       console.log(e);
@@ -81,6 +84,7 @@ export default function ParentsDetail() {
             setCenterName={setCenterName}
             groupName={groupName}
             setGroupName={setGroupName}
+            kidState={kidState}
             sx={{ justifyContent: "center" }}
           ></KidFeel>
         </Grid>
