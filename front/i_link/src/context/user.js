@@ -17,7 +17,11 @@ const UserProvider = ({ children }) => {
   // 부모 로그인 시, 부모의 아이들 리스트를 배열객체 형식으로 저장
   const [kidsList, setKidsList] = useState(() => JSON.parse(sessionStorage.getItem('kidsList')))
   // 부모 로그인 시, 부모의 아이들 리스트 중 대표 아이 상태 저장
-  const [firstKid, setFirstKid] = useState(() => JSON.parse(sessionStorage.getItem('firstKid')))
+  const [firstKid, setFirstKid] = useState(() => {
+    if (sessionStorage.getItem('firstKid') === "") {
+      return sessionStorage.getItem('firstKid');
+    } else { return JSON.parse(sessionStorage.getItem('firstKid')) }
+  })
   // 개인 이미지 url 주소
   const [userProfileUrl, setUserProfileUrl] = useState(() => sessionStorage.getItem('userProfileUrl'))
 
